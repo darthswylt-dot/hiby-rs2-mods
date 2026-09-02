@@ -1,0 +1,40 @@
+# Firmware and executable artifacts
+hiby_player
+hiby_player_*
+RS2_*.bin
+*.upt
+*.elf
+*.img
+*.apk
+
+# Device data and diagnostics
+*.log
+*.db
+*.db-*
+*.sqlite
+*.sqlite3
+*.trace
+*.hprof
+batlog.txt
+dumps/
+firmware/
+artifacts/
+
+# Media used by the regression card
+*.flac
+*.cue
+*.wav
+*.mp3
+
+# Local tooling
+adb.exe
+fastboot.exe
+AdbWinApi.dll
+AdbWinUsbApi.dll
+__pycache__/
+*.pyc
+.venv/
+.idea/
+.vscode/
+Thumbs.db
+.DS_Store
