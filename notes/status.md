@@ -79,7 +79,7 @@ Runtime diagnostics established that `BKL_5` is the screen-off path and
 metadata refresh and calls the stock progress refresh with `force=1` from the
 actual `BKL_3` path.
 
-## Active experiment: follow the current track folder
+## Latest hardware test: follow the current track folder
 
 Latest artifact:
 `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_swipe_test`
@@ -90,18 +90,36 @@ SHA-256:
 c4dc1fe8b3601505dcbf243f2f4dda5f0c5dc0a959008e512e7d7d4927d12e62
 ```
 
-Status: **awaiting hardware validation**.
+Status: **failed; do not use as a release candidate**.
 
 The Now Playing gesture callback was observed with `a2=1, a3=1` for the single
-swipe back to Folder View. The current approach invokes the original callback,
-destroys the old explorer stack, retrieves the current playback path, and asks
-the stock Folder View builder to rebuild the path. This is intended to avoid
-the stacked explorer views produced by the previous screen-on experiment.
+swipe back to Folder View. In the `c4dc...` build the original callback ran
+before the old explorer stack was destroyed and rebuilt for the current
+playback path.
+
+Observed on hardware:
+
+```text
+Now Playing -> swipe back
+-> the correct current-track folder appears briefly
+-> the UI falls back to the Music root
+-> the player hangs
+```
+
+The brief correct view is a useful positive result: current-track path lookup
+works, and the stock path builder can construct the desired Folder View. The
+failure is therefore most likely in stack/callback ordering rather than path
+resolution.
+
+Next candidate: destroy and rebuild the explorer stack for the current path
+**before** invoking the original Now Playing gesture callback, so that the
+stock callback operates on the new coherent stack instead of invalidating a
+stack that was replaced after it ran.
 
 ## Remaining work
 
-1. Validate the swipe-triggered folder-follow build and immediately revert to
-   the wake-refresh build if explorer views overlap or navigation regresses.
+1. Build and validate a folder-follow variant that reconstructs the explorer
+   stack before invoking the original gesture callback.
 2. Convert the binary edits into a reproducible patcher with strict input hash
    checks; do not distribute patched proprietary binaries.
 3. Add a byte-level patch manifest for the confirmed full-navigation and wake

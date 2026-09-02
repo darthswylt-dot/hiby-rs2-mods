@@ -13,9 +13,11 @@ The following fixes have been confirmed on hardware:
 | Folder traversal | `Next`, autoplay, and `Previous` traverse nested sibling directories in the expected order. |
 | Wake refresh | After a track changes while the screen is off, waking on Pause shows the current track, time, and progress bar. |
 
-The current experiment is a context-sensitive **Now Playing -> Folder View**
-transition that should open the folder containing the current track. It is not
-yet considered stable.
+The latest context-sensitive **Now Playing -> Folder View** experiment is now
+classified as failed: it briefly opened the correct folder, then returned to
+the Music root and hung. This still confirms that current-path lookup and the
+stock path builder work. The next candidate is to rebuild the explorer stack
+before invoking the original gesture callback.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered

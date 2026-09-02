@@ -88,8 +88,21 @@ artifact must be hashed before `adb push`.
 `fullnav_wake_swipediag`
 (`27ef241000b88143ef9b8282739c3b58b97912f3a1ae5941e7e3e810a41f54f6`)
 logged a single Now Playing exit swipe as `a2=1, a3=1`. It is diagnostic only
-and is superseded by the active swipe-triggered experiment documented in
-`status.md`.
+and was used to select the hook for the next test.
+
+### Swipe-triggered rebuild after the original callback — discard
+
+- Artifact: `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_swipe_test`
+- SHA-256: `c4dc1fe8b3601505dcbf243f2f4dda5f0c5dc0a959008e512e7d7d4927d12e62`
+- Hardware result: the correct folder appeared briefly, the UI then returned
+  to the Music root, and the player hung.
+- Positive finding: current-track path lookup and stock path construction are
+  functional. The experiment reached and rendered the intended folder.
+- Likely failure: the original gesture callback ran against the old stack, and
+  the subsequent destruction/rebuild left its navigation outcome or references
+  inconsistent.
+- Next candidate: destroy and rebuild the explorer stack for the current path
+  before invoking the original callback.
 
 ## Temporary ADB ordering
 

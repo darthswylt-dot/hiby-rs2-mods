@@ -68,8 +68,14 @@ affect the reproduced short-Power scenario.
 
 A single Now Playing -> Folder View swipe was logged as callback arguments
 `a2=1, a3=1`. Invoking `0x4E4640` during screen-on without first removing the
-old explorer stack produced several overlapping Folder View panels. The latest
-experiment moves the rebuild to this gesture path and invokes `0x4E4B20` first.
+old explorer stack produced several overlapping Folder View panels.
+
+The later swipe-triggered `c4dc...` hardware test briefly displayed the correct
+current-track folder before returning to the Music root and hanging. This
+confirms that `0x4E4B80` path lookup and `0x4E4640` path construction both work.
+In that build the original `0x4E5FA0` callback ran before stack destruction and
+reconstruction. The next candidate is to run `0x4E4B20` and `0x4E4640` first,
+then invoke the original callback against the rebuilt stack.
 
 ## MIPS patching warning
 

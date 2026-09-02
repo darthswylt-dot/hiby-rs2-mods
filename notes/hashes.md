@@ -12,7 +12,7 @@ testing.
 | Firmware 1.4 sorting fix | `91d9e4a5d041512d26724953efbb3903f47c10b1c7a7e970bf160770254a7b8a` |
 | Sorting + verified full traversal | `d2849a8c45ce378d3ad2b2b7cf163e6fcb22d5b1670b5c5e528557945519905c` |
 | Sorting + traversal + verified wake refresh | `c825a72e1078999f74822846d35c99971f9a660addd5f12d42d50a75f0b9b80e` |
-| Latest unverified folder-follow experiment | `c4dc1fe8b3601505dcbf243f2f4dda5f0c5dc0a959008e512e7d7d4927d12e62` |
+| Failed folder-follow hardware test; path lookup/build confirmed | `c4dc1fe8b3601505dcbf243f2f4dda5f0c5dc0a959008e512e7d7d4927d12e62` |
 
 ## Local artifact inventory
 
