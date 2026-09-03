@@ -61,10 +61,16 @@ affect the reproduced short-Power scenario.
 
 | Address | Observed role |
 | --- | --- |
-| `0x4E4B80` | Retrieves the current playback file path. |
+| `0x4E4B80` | Attempts to retrieve the current playback file path. It also performs internal synchronization/finalization and is not a pure field read. |
 | `0x4E4640` | Builds Folder View levels from a UTF-16 path. This actively creates explorer views; it is not a quiet state update. |
 | `0x4E4B20` | Walks and destroys the existing explorer-view stack. |
-| `0x4E5FA0` | Gesture/touch callback registered for the Now Playing root widget. |
+| `0x4E5FA0` | Gesture/touch callback registered for the Now Playing root widget. FD9 telemetry found no immediate explorer-state change across this callback. |
+| `0x4E5680` | Returns the current explorer view through an output pointer. |
+| `0x438BE0` | Counts views matching a view-type string. |
+| `0x4E57E0` | Finds the last view matching a view-type string. |
+| `0x4916A0` | Performs the current-view preparation used by stock `0x491E80`. |
+| `0x4919E0` | Retargets an existing explorer view in stock navigation paths. The `c637...` experiment did not make folder-follow work safely. |
+| `0x4BAA68` | Return site in the common callback dispatcher observed for all three `a2=1,a3=1` diagnostic records. |
 
 A single Now Playing -> Folder View swipe was logged as callback arguments
 `a2=1, a3=1`. Invoking `0x4E4640` during screen-on without first removing the
@@ -74,8 +80,24 @@ The later swipe-triggered `c4dc...` hardware test briefly displayed the correct
 current-track folder before returning to the Music root and hanging. This
 confirms that `0x4E4B80` path lookup and `0x4E4640` path construction both work.
 In that build the original `0x4E5FA0` callback ran before stack destruction and
-reconstruction. The next candidate is to run `0x4E4B20` and `0x4E4640` first,
-then invoke the original callback against the rebuilt stack.
+reconstruction. Candidate `5faa8c07...` reversed the ordering and failed with
+unsolicited navigation, overlapping views, loss of input, and a crash/reboot.
+Candidate `c637effa...` preserved the stack and used the stock `0x4919E0`
+retarget path, but still showed the old folder and temporarily lost physical
+button response.
+
+The later FD9 diagnostic (`6c274509...`) sampled the stable failure without
+retargeting or rebuilding views. In all three records, pre-callback `0x4E4B80`
+returned `-1` with an empty path. The player context, explorer, current view,
+explorer state, list head/tail, and matching Folder View pointer were unchanged
+immediately across original `0x4E5FA0`, which returned zero. The matching view
+path remained the folder where playback started even after playback had
+advanced to Slayer in another folder.
+
+This shows that the target callback does not own the synchronous Folder View
+retarget and has no usable playback path before the original callback. The
+next investigation must locate the source fields and deferred owner used by
+`0x4E4B80`, rather than invoke it again as if it were an observational getter.
 
 ## MIPS patching warning
 

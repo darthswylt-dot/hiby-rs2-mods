@@ -97,3 +97,17 @@ already be absent.
 To disable the launcher completely, replace `/ui_data/player` with
 [`scripts/rs2_passthrough_player.sh`](../scripts/rs2_passthrough_player.sh), or
 remove the one-shot flag before rebooting.
+
+Exact one-shot commands and hardware results are recorded per experiment:
+
+- [rebuild-before-callback test](folderfollow-rebuild-before-callback-test.md)
+- [preserve-stack retarget test](folderfollow-preserve-stack-retarget-test.md)
+- [dispatcher FD9 diagnostic](folderfollow-dispatch-fd9-diag.md)
+
+The FD9 diagnostic uses
+[`scripts/rs2_folderfollow_diag_launcher.sh`](../scripts/rs2_folderfollow_diag_launcher.sh)
+instead of the ordinary launcher. It truncates the binary log before launch,
+opens it as inherited descriptor 9, and lets the callback append fixed-size
+records without invoking a shell. Do not truncate that log while the patched
+process still holds FD 9 open; note any USB/DAC-screen prelude records and
+classify later Folder View records by index.

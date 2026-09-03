@@ -101,8 +101,36 @@ and was used to select the hook for the next test.
 - Likely failure: the original gesture callback ran against the old stack, and
   the subsequent destruction/rebuild left its navigation outcome or references
   inconsistent.
-- Next candidate: destroy and rebuild the explorer stack for the current path
-  before invoking the original callback.
+- The later `5faa8c07...` candidate reversed this ordering and also failed;
+  neither side of the callback is safe for stack destruction/rebuild.
+
+### Rebuild before the original callback — discard
+
+- Artifact:
+  `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_rebuild_before_callback_test`
+- SHA-256: `5faa8c07da3ffaeba0ac1480ae0694319473112862b3b111bd9f4920d4c06eda`
+- Ordering: `0x4E4B80`, `0x4E4B20`, `0x4E4640`, then original
+  `0x4E5FA0`.
+- Hardware result: Now Playing spontaneously transitioned through Music and
+  Files to Files root without user input. Later navigation returned to a broad
+  All list, panels shifted or overlapped, input stopped responding normally,
+  and the player exited or crashed before an automatic reboot.
+- Lesson: rebuilding the explorer stack is unsafe on both sides of the stock
+  callback. Do not try more simple order permutations of these four calls.
+
+### Preserve-stack existing-view retarget — discard
+
+- Artifact:
+  `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_preserve_stack_retarget_test`
+- SHA-256: `c637effab37ff202c172a3f32a75f0d7cfbf309eec13ab8c5ecd1a89de1adfcc`
+- Change: avoided stack destruction/building and used the stock current-view
+  preparation, view lookup, and `0x4919E0` existing-view retarget sequence.
+- Hardware result: Folder View still showed the folder where playback began
+  instead of the current track's folder. Physical buttons were temporarily
+  unresponsive.
+- Lesson: the existence of a stock retarget helper does not mean it is safe or
+  effective from this callback. Locate the owner and timing of the deferred
+  Folder View transition before trying another retarget.
 
 ## Temporary ADB ordering
 

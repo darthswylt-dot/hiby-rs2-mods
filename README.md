@@ -13,16 +13,21 @@ The following fixes have been confirmed on hardware:
 | Folder traversal | `Next`, autoplay, and `Previous` traverse nested sibling directories in the expected order. |
 | Wake refresh | After a track changes while the screen is off, waking on Pause shows the current track, time, and progress bar. |
 
-The latest context-sensitive **Now Playing -> Folder View** experiment is now
-classified as failed: it briefly opened the correct folder, then returned to
-the Music root and hung. This still confirms that current-path lookup and the
-stock path builder work. The next candidate is to rebuild the explorer stack
-before invoking the original gesture callback.
+Folder-follow is not fixed yet. Rebuilding the explorer stack on either side of
+the stock callback caused navigation corruption, and reusing the stock
+existing-view retarget path still left Folder View on the folder where playback
+started. A later FD9 telemetry test reproduced the stale-folder state without
+corrupting the UI: before the callback, `0x4E4B80` returned no playback path,
+and original `0x4E5FA0` did not immediately change the sampled explorer state.
+The next step is to identify and observe the underlying state fields rather
+than trying another stack-lifetime permutation.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered
-firmware addresses, and [notes/adb.md](notes/adb.md) for the reversible test
-launcher and temporary ADB setup.
+firmware addresses,
+[notes/folderfollow-dispatch-fd9-diag.md](notes/folderfollow-dispatch-fd9-diag.md)
+for the latest hardware evidence, and [notes/adb.md](notes/adb.md) for the
+reversible test launcher and temporary ADB setup.
 
 ## Repository policy
 
