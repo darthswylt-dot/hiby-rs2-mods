@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import argparse
 import struct
+import sys
 from pathlib import Path
 
 
@@ -221,6 +222,18 @@ def cstring(elf: Elf32, address: int, limit: int) -> None:
     print(raw.decode("utf-8", errors="backslashreplace"))
 
 
+def utf16_string(elf: Elf32, address: int, limit: int) -> None:
+    off = elf.va_to_off(address)
+    raw = elf.data[off:off + limit]
+    end = next(
+        (index for index in range(0, len(raw) - 1, 2) if raw[index:index + 2] == b"\0\0"),
+        len(raw) & ~1,
+    )
+    value = raw[:end].decode("utf-16le", errors="backslashreplace")
+    encoding = sys.stdout.encoding or "utf-8"
+    print(value.encode(encoding, errors="backslashreplace").decode(encoding))
+
+
 def imm_xrefs(elf: Elf32, immediate: int, context: int) -> None:
     wanted = immediate & 0xFFFF
     matches = []
@@ -299,6 +312,9 @@ def main() -> None:
     p_cstr = sub.add_parser("cstr")
     p_cstr.add_argument("address", type=parse_int)
     p_cstr.add_argument("--limit", type=int, default=512)
+    p_u16 = sub.add_parser("u16str")
+    p_u16.add_argument("address", type=parse_int)
+    p_u16.add_argument("--limit", type=int, default=512)
     p_imm = sub.add_parser("imm-xrefs")
     p_imm.add_argument("immediate", type=parse_int)
     p_imm.add_argument("--context", type=int, default=8)
@@ -320,6 +336,8 @@ def main() -> None:
         abs_xrefs(elf, args.address, args.context)
     elif args.command == "cstr":
         cstring(elf, args.address, args.limit)
+    elif args.command == "u16str":
+        utf16_string(elf, args.address, args.limit)
     elif args.command == "imm-xrefs":
         imm_xrefs(elf, args.immediate, args.context)
     elif args.command == "property-xrefs":

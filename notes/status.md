@@ -260,14 +260,18 @@ See [folderfollow-safe-pointer-diag.md](folderfollow-safe-pointer-diag.md).
 
 ## Remaining work
 
-1. Build a passive diagnostic around the single `0x4A7A70 -> 0x4EA500`
-   Now Playing metadata-delivery call, recording source path/cue state and the
-   inactive Folder View before and after the stock refresh.
-2. Use that timing evidence to decide whether to stage the path for page
+1. Classify the event selectors and payload lifetime at the four native
+   `0x4E8480` Now Playing refresh calls. `0x4EA500` is only a null-guard adapter
+   used by the successful `vg_listview_add_m3u` collect path and is not a
+   general track-change hook.
+2. Build a passive diagnostic only around a refresh path proven to run for
+   ordinary Next/autoplay, recording source path/cue state, its media-item
+   payload, and the inactive Folder View before and after the stock refresh.
+3. Use that timing evidence to decide whether to stage the path for page
    activation or retarget the inactive view using the complete stock
    `0x4919E0` ownership/preparation sequence.
-3. Trace the state transitions around the sole property-31 consumer at
+4. Trace the state transitions around the sole property-31 consumer at
    `0x4E4B80` and determine why it sometimes has no resolvable media ID.
-4. Add a byte-level patch manifest for the confirmed full-navigation and wake
+5. Add a byte-level patch manifest for the confirmed full-navigation and wake
    fixes.
-5. Remove `/etc/init.d/S99adb` after device testing is complete.
+6. Remove `/etc/init.d/S99adb` after device testing is complete.

@@ -26,7 +26,7 @@ The `a2=1` path does not enqueue work, call a Folder View helper, or mutate an
 explorer field. The UI framework performs the page transition independently
 and merely exposes the already-existing, stale Folder View.
 
-## Playback metadata lifecycle
+## Playback state and UI refresh lifecycle
 
 The source finalizer `0x42BBE0` writes property 32 (`source+0x28`, backing path)
 and property 31 (`source+0x230`, backing-file position). Its normal wrappers
@@ -37,31 +37,31 @@ global UTF-16 playback path at `0xADE9BC` and source state fields, then sends it
 through the stock message transport. Receiver `0x42A020` validates the same
 message ID, restores those fields, and finalizes the path with `0x6F76E0`.
 
-The Now Playing controller has a separate metadata update entry point:
+The Now Playing controller has an item/widget refresh routine:
 
 ```text
-0x4A7A70  jal 0x4EA500
+0x4E8480  refresh Now Playing item/widgets
 0x4EA500  load global controller 0xB8BACC, then tail-call 0x4E8480
-0x4E8480  refresh Now Playing metadata/widgets
 ```
 
-This is a single direct call site and is a substantially better timing probe
-than `0x4E5FA0`: it runs when playback metadata is delivered, while the old
-Folder View remains inactive, rather than inside the gesture transition.
+The only direct call to `0x4EA500`, at `0x4A7A70`, is inside a virtual method of
+`vg_listview_add_m3u`. It runs on the successful `collect`/Add-to-M3U branch,
+immediately before the `add_success` message. It is not a general playback
+metadata-delivery callback and will not reliably run on Next or autoplay.
+
+`0x4E8480` itself has four other direct callers inside the broader Now Playing
+event handler. None of its direct callees is a known Folder View navigation or
+lookup helper. See [4ea500-static-trace.md](4ea500-static-trace.md).
 
 ## Consequence for the next diagnostic
 
-Do not add another wrapper around `0x4E5FA0`. The next passive candidate should
-wrap the single call at `0x4A7A70` and record:
+Do not add another wrapper around `0x4E5FA0`, and do not wrap `0x4A7A70` as a
+track-change probe. First classify the event selectors and payload lifetime at
+the four native `0x4E8480` calls (`0x4E9590`, `0x4E9680`, `0x4E9830`, and
+`0x4E9A2C`). A passive diagnostic should target only a call path proven to run
+for ordinary Next/autoplay transitions and should record `source+0x28`,
+`source+0x230`, the media-item payload, and inactive Folder View state.
 
-- the event payload passed to `0x4EA500`;
-- `source+0x28` and `source+0x230`;
-- current/matching Folder View pointers and their stored paths;
-- controller/view state before and after original `0x4EA500`.
-
-This will establish whether the metadata callback is the safe point at which
-to stage a pending folder-follow path. Only after that timing is confirmed
-should an inactive-view retarget be attempted. Stock `0x4919E0` must be called
-with the same view preparation and ownership state as its native callers at
-`0x492B8C` and `0x494038`; the failed gesture-time experiment does not prove it
-unsafe at metadata-delivery time.
+Only after that timing is confirmed should an inactive-view retarget be
+attempted. Stock `0x4919E0` must be called with the same view preparation and
+ownership state as its native callers at `0x492B8C` and `0x494038`.
