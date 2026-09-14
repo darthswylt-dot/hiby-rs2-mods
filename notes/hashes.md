@@ -16,6 +16,8 @@ testing.
 | Failed rebuild-before-callback folder-follow test; severe UI corruption/reboot | `5faa8c07da3ffaeba0ac1480ae0694319473112862b3b111bd9f4920d4c06eda` |
 | Failed preserve-stack retarget test; old folder remained and input stalled | `c637effab37ff202c172a3f32a75f0d7cfbf309eec13ab8c5ecd1a89de1adfcc` |
 | Successful dispatcher FD9 telemetry build; not a functional candidate | `6c274509946c57a642a5ae7f7a42910e6bc8abe28fba8155c973bb6a56c08912` |
+| Recovered post-FD9 source-state diagnostic; not hardware-classified | `02fd1dd13db7aac1e6d150ec1866b93f57022c1d668b114720a36b7f232e5f87` |
+| Successful crash-resistant two-phase pointer diagnostic | `eba4b0c99ae0f0436a038d9db242b62176c9120bc79d64b6da40564288cf3a01` |
 
 ## Local artifact inventory
 
@@ -40,6 +42,8 @@ which is 7,109,624 bytes.
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_rebuild_before_callback_test` | `5faa8c07da3ffaeba0ac1480ae0694319473112862b3b111bd9f4920d4c06eda` |
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_preserve_stack_retarget_test` | `c637effab37ff202c172a3f32a75f0d7cfbf309eec13ab8c5ecd1a89de1adfcc` |
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_dispatch_fd9_diag_test` | `6c274509946c57a642a5ae7f7a42910e6bc8abe28fba8155c973bb6a56c08912` |
+| `hiby_player_02fd.bin` | `02fd1dd13db7aac1e6d150ec1866b93f57022c1d668b114720a36b7f232e5f87` |
+| `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_safe_pointer_diag_test` | `eba4b0c99ae0f0436a038d9db242b62176c9120bc79d64b6da40564288cf3a01` |
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_test` | `7e202a5f1e176138410da8ab7e79c5281e0741a3ef668212de29d07fb33fd23d` |
 | `hiby_player_1.4_sortfix_fullnav_wake_swipediag` | `27ef241000b88143ef9b8282739c3b58b97912f3a1ae5941e7e3e810a41f54f6` |
 | `hiby_player_1.4_sortfix_fullnav_wakefix_test` | `c0492d90058d0b2ccc20b5763cf77e54a965a144048e87300c5ed1714abd6dba` |
@@ -57,6 +61,7 @@ locally as `target_b_full.bin` only for analysis.
 | Log | SHA-256 |
 | --- | --- |
 | `rs2_folderfollow_dispatch_diag.bin` / `target_b_full.bin` | `a76aefceaed2a8100afc066261755032a2137ef71d5ca4f7e125a0ce0d408dc2` |
+| `rs2_folderfollow_safe_pointer_diag.bin` / `rs2_safe_complete_roots_slayers_sleep.bin` | `dc4272a9d4778cc447b1e37081ae853a68e6cac7ca09dd88eac392d5c36cff6c` |
 
 Historical failed artifacts no longer present locally:
 

@@ -220,12 +220,52 @@ See [folderfollow-dispatch-fd9-diag.md](folderfollow-dispatch-fd9-diag.md) for
 the byte scope, record format, corrected physical-device method, and decoded
 result.
 
+## Recovered later diagnostic: source-state telemetry
+
+Local artifact `hiby_player_02fd.bin` has SHA-256
+`02fd1dd13db7aac1e6d150ec1866b93f57022c1d668b114720a36b7f232e5f87`.
+Byte-level reconstruction proves that its base is exactly the validated
+`c825a72e...` sorting + full-navigation + wake binary. Its only additional
+layer is a passive `0x1200`-byte FD9 record wrapper at `0x988040`.
+
+Unlike `6c274509...`, it does not call `0x4E4B80`. It snapshots candidate
+global/path source fields and explorer state directly before and after original
+`0x4E5FA0`, matching the planned next investigation. See
+[02fd-archaeology.md](02fd-archaeology.md) for the complete byte decomposition,
+recovered record layout, and later hardware result.
+
+A 2026-09-14 hardware run obtained valid control records in Roots, then
+reproduced the stale Roots view after physical Next reached Slayer. The target
+record was not written: the patched process exited and the one-shot launcher
+rebooted the device. The unchanged `02fd...` artifact must not be run again.
+The safe successor later confirmed the cause: `+0x230` becomes a small scalar,
+but `02fd...` passed it to a UTF-16 copy helper as an address.
+
+## Successful safe pointer telemetry
+
+Artifact SHA-256:
+`eba4b0c99ae0f0436a038d9db242b62176c9120bc79d64b6da40564288cf3a01`.
+
+The 2026-09-14 Roots -> Slayer -> Sleep run completed without a process exit,
+reboot, UI corruption, or input loss. All eight phase-2 records have stage bits
+`0x7FFF`. Folder View remained stale on Roots throughout; all sampled
+explorer/view fields were unchanged. Source-object field `+0x230` alone changed
+with playback: `NULL`, `0x2EB64`, `0x5BA40`, then `0x1AA`. The Sleep value
+matches local database `begin_time=426`, pointing toward cue/timing state.
+
+Complete log SHA-256:
+`dc4272a9d4778cc447b1e37081ae853a68e6cac7ca09dd88eac392d5c36cff6c`.
+
+See [folderfollow-safe-pointer-diag.md](folderfollow-safe-pointer-diag.md).
+
 ## Remaining work
 
-1. Identify the source fields and state transitions used inside `0x4E4B80`,
-   then observe those fields directly without consuming transition state.
-2. Identify the owner of the deferred Folder View activation after
+1. Trace source-object field `+0x230` statically and determine its exact
+   cue/timing semantics and its consumers.
+2. Use that result to identify the source fields and state transitions used
+   inside `0x4E4B80` without consuming transition state.
+3. Identify the owner of the deferred Folder View activation after
    `0x4E5FA0`; do not try more stack rebuild/retarget permutations first.
-3. Add a byte-level patch manifest for the confirmed full-navigation and wake
+4. Add a byte-level patch manifest for the confirmed full-navigation and wake
    fixes.
-4. Remove `/etc/init.d/S99adb` after device testing is complete.
+5. Remove `/etc/init.d/S99adb` after device testing is complete.

@@ -29,6 +29,16 @@ firmware addresses,
 for the latest hardware evidence, and [notes/adb.md](notes/adb.md) for the
 reversible test launcher and temporary ADB setup.
 
+A later local binary with SHA-256 prefix `02fd` was recovered after these notes
+were written. Byte-level archaeology proves that it is the golden `c825...`
+sorting/full-navigation/wake build plus a newer passive source-state diagnostic.
+See [notes/02fd-archaeology.md](notes/02fd-archaeology.md).
+Its crash-resistant two-phase successor is documented in
+[notes/folderfollow-safe-pointer-diag.md](notes/folderfollow-safe-pointer-diag.md).
+The successor completed a full Roots -> Slayer -> Sleep hardware run and
+identified source-object field `+0x230` as changing scalar cue/timing state
+while the sampled Folder View and explorer state remained stale.
+
 ## Repository policy
 
 This repository intentionally contains no HiBy firmware images, original or

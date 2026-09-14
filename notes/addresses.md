@@ -71,6 +71,8 @@ affect the reproduced short-Power scenario.
 | `0x4916A0` | Performs the current-view preparation used by stock `0x491E80`. |
 | `0x4919E0` | Retargets an existing explorer view in stock navigation paths. The `c637...` experiment did not make folder-follow work safely. |
 | `0x4BAA68` | Return site in the common callback dispatcher observed for all three `a2=1,a3=1` diagnostic records. |
+| `0xADD360` | Global pointer to a playback/source object sampled by the recovered `02fd...` diagnostic. The object remained stable across the tested folder transitions. |
+| source object `+0x230` | Scalar playback state, not a pointer. Observed as `NULL` in Roots, `0x2EB64` for Evil Has No Boundaries, later `0x5BA40`, and `0x1AA` for Sleep Part I. The last value exactly matches local database `begin_time=426`, suggesting cue/timing boundary state. |
 
 A single Now Playing -> Folder View swipe was logged as callback arguments
 `a2=1, a3=1`. Invoking `0x4E4640` during screen-on without first removing the
@@ -98,6 +100,11 @@ This shows that the target callback does not own the synchronous Folder View
 retarget and has no usable playback path before the original callback. The
 next investigation must locate the source fields and deferred owner used by
 `0x4E4B80`, rather than invoke it again as if it were an observational getter.
+
+The later safe pointer diagnostic (`eba4b0c9...`) confirmed that the explorer,
+current view, matching Folder View, state, and list pointers remain unchanged
+even while source-object field `+0x230` changes with playback. Original
+`0x4E5FA0` still returns zero without a synchronous explorer update.
 
 ## MIPS patching warning
 
