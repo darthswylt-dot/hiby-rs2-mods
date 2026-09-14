@@ -48,6 +48,10 @@ and enters the last child of a subtree.
 | `0x4E8480` | Actual Now Playing media-item/widget refresh. Its four native callers are collect-button, screen-on, full panel activation, and internal view-group catch-up paths; none is a universal track-change callback. It has no direct Folder View helper calls. |
 | `0x4EA500` | Null-guard adapter: loads global controller `0xB8BACC` and tail-calls `0x4E8480(controller, item)`. Its sole direct caller is the successful `vg_listview_add_m3u` collect path, not a general track-change callback. |
 | `0x42AC00` / property 24 setter branch | Copies the `0xA88`-byte current media-item record into global buffer `0xADD468`. Its field `+0x4` is the known UTF-16 playback path at `0xADD46C`. |
+| `0x42B180` | Stages a selected media item through `0x428B40` and enqueues playback-worker event 9. This is the asynchronous bridge used by the normal Next/autoplay selection path. |
+| `0x42CAC0` | Selected-item dispatcher. Uses a synchronous same-backing-file fast path or stages a general transition through `0x42B180`. |
+| `0x42CBD4` / copy at `0x42CBDC` | Direct property-24 commit for the same-backing-file/cue-compatible fast path. Followed through `0x42CA00 -> 0x42BDE0 -> 0x42BBE0` by source finalization. |
+| `0x42CD54` / copy at `0x42CD5C` | General event-9 property-24 commit. Copies the staged `0xA88`-byte item into `0xADD468` before decoder/open dispatch; primary cross-file/cross-folder diagnostic hook. |
 | `0xB8BACC` | Global pointer to the current `playing_plane`; cleared by stock teardown code. |
 
 Power diagnostics on the hardware produced:

@@ -100,14 +100,16 @@ There are three statically direct property-24 setter calls:
 - `0x533C68`, a virtual method of `vg_listview_record_operation` that copies
   its selected item before continuing playback/list handling.
 
-These three direct calls do not yet account for automatic Next/autoplay.
-Dynamic-property calls to `0x42AB20` or an earlier playback-owner copy must
-still be traced.
+These three direct calls do not account for automatic Next/autoplay.  A full
+audit of all 69 direct setter calls found no additional property-24 value and
+no file-backed indirect pointer to `0x42AB20`.  The missing transitions bypass
+the setter: the playback worker copies directly into `0xADD468` at
+`0x42CBD4` (same-backing-file fast path) or `0x42CD54` (general event-9 commit).
+See [playback-media-commit-static-trace.md](playback-media-commit-static-trace.md).
 
 ## Consequence
 
 Do not build the next folder-follow diagnostic around any `0x4E8480` call.
-The next static target is the write lifecycle of property 24 / `0xADD468` and
-the code that commits a newly selected item during automatic Next/autoplay.
-That commit point should be correlated with `source+0x28` and `source+0x230`;
-only then is there a defensible passive timing hook for folder-follow state.
+The next passive diagnostic should wrap the two proven direct copies into
+property 24, with `0x42CD54` as the primary cross-file/cross-folder hook, and
+correlate them with `source+0x28` and `source+0x230`.

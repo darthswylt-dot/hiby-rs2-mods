@@ -146,6 +146,25 @@ def jal_xrefs(elf: Elf32, target: int, context: int) -> None:
     print(f"\n# {len(matches)} xrefs to 0x{target:X}")
 
 
+def branch_xrefs(elf: Elf32, target: int, context: int) -> None:
+    matches = []
+    for start, end in elf.executable_ranges():
+        for pc in range(start, end & ~3, 4):
+            word = elf.word(pc)
+            op = word >> 26
+            destination = None
+            if op == 2:
+                destination = ((pc + 4) & 0xF0000000) | ((word & 0x03FFFFFF) << 2)
+            elif op in (1, 4, 5, 6, 7):
+                destination = pc + 4 + sx16(word & 0xFFFF) * 4
+            if destination == target:
+                matches.append(pc)
+    for pc in matches:
+        print(f"\n# control-flow xref at 0x{pc:X}")
+        dump(elf, max(pc - context * 4, 0), pc + (context + 2) * 4)
+    print(f"\n# {len(matches)} direct control-flow xrefs to 0x{target:X}")
+
+
 def table(elf: Elf32, base: int, count: int) -> None:
     for index in range(count):
         print(f"{index:3d}: 0x{elf.word(base + index * 4):08X}")
@@ -227,6 +246,30 @@ def abs_xrefs(elf: Elf32, address: int, context: int) -> None:
     print(f"\n# {len(matches)} statically resolved references to 0x{address:X}")
 
 
+def address_xrefs(elf: Elf32, address: int, context: int) -> None:
+    """Find instructions that form or dereference an absolute address."""
+    matches = []
+    memory_ops = {32, 33, 35, 36, 37, 40, 41, 43, 49, 57}
+    for start, end in elf.executable_ranges():
+        for pc in range(start + 4, end & ~3, 4):
+            word = elf.word(pc)
+            op = word >> 26
+            if op in memory_ops:
+                base = (word >> 21) & 31
+                found = resolve_base_backwards(elf, pc, base, sx16(word & 0xFFFF))
+            elif op in (8, 9):
+                source = (word >> 21) & 31
+                found = resolve_base_backwards(elf, pc, source, sx16(word & 0xFFFF))
+            else:
+                continue
+            if found == address:
+                matches.append(pc)
+    for pc in matches:
+        print(f"\n# address xref at 0x{pc:X}")
+        dump(elf, max(pc - context * 4, 0), pc + (context + 1) * 4)
+    print(f"\n# {len(matches)} statically resolved address constructions/references to 0x{address:X}")
+
+
 def cstring(elf: Elf32, address: int, limit: int) -> None:
     off = elf.va_to_off(address)
     raw = elf.data[off:off + limit].split(b"\0", 1)[0]
@@ -297,6 +340,51 @@ def property_xrefs(elf: Elf32, dispatcher: int, prop: int, context: int) -> None
     print(f"\n# {len(matches)} direct property {prop} calls through 0x{dispatcher:X}")
 
 
+def locally_resolved_call_constant(elf: Elf32, pc: int, reg: int):
+    """Resolve a small constant argument set immediately around a direct call.
+
+    MIPS delay slots may initialize a call argument, so inspect the slot first.
+    Otherwise walk backward only within the straight-line call setup and stop at
+    another call, which would clobber caller-saved argument registers.
+    """
+    value = direct_small_constant(elf.word(pc + 4), reg)
+    if value is not None:
+        return value, pc + 4
+    for back in range(1, 17):
+        candidate_pc = pc - back * 4
+        candidate = elf.word(candidate_pc)
+        value = direct_small_constant(candidate, reg)
+        if value is not None:
+            return value, candidate_pc
+        if candidate >> 26 == 3:
+            break
+    return None, None
+
+
+def property_call_summary(elf: Elf32, dispatcher: int) -> None:
+    matches = []
+    for start, end in elf.executable_ranges():
+        for pc in range(start, (end & ~3) - 4, 4):
+            word = elf.word(pc)
+            if word >> 26 != 3:
+                continue
+            dest = ((pc + 4) & 0xF0000000) | ((word & 0x03FFFFFF) << 2)
+            if dest != dispatcher:
+                continue
+            value, definition = locally_resolved_call_constant(elf, pc, 4)
+            matches.append((pc, value, definition))
+    for pc, value, definition in matches:
+        if value is None:
+            print(f"0x{pc:08X}  property=unknown")
+        else:
+            print(f"0x{pc:08X}  property={value:3d}  definition=0x{definition:08X}")
+    unknown = sum(value is None for _, value, _ in matches)
+    print(
+        f"\n# {len(matches)} calls through 0x{dispatcher:X}; "
+        f"{unknown} not resolved by the local straight-line scan"
+    )
+
+
 def parse_int(value: str) -> int:
     return int(value, 0)
 
@@ -311,6 +399,9 @@ def main() -> None:
     p_jal = sub.add_parser("jal-xrefs")
     p_jal.add_argument("target", type=parse_int)
     p_jal.add_argument("--context", type=int, default=8)
+    p_branch = sub.add_parser("branch-xrefs")
+    p_branch.add_argument("target", type=parse_int)
+    p_branch.add_argument("--context", type=int, default=8)
     p_table = sub.add_parser("table")
     p_table.add_argument("base", type=parse_int)
     p_table.add_argument("count", type=parse_int)
@@ -322,6 +413,9 @@ def main() -> None:
     p_abs = sub.add_parser("abs-xrefs")
     p_abs.add_argument("address", type=parse_int)
     p_abs.add_argument("--context", type=int, default=8)
+    p_addr = sub.add_parser("address-xrefs")
+    p_addr.add_argument("address", type=parse_int)
+    p_addr.add_argument("--context", type=int, default=8)
     p_cstr = sub.add_parser("cstr")
     p_cstr.add_argument("address", type=parse_int)
     p_cstr.add_argument("--limit", type=int, default=512)
@@ -335,12 +429,16 @@ def main() -> None:
     p_prop.add_argument("dispatcher", type=parse_int)
     p_prop.add_argument("property", type=parse_int)
     p_prop.add_argument("--context", type=int, default=8)
+    p_prop_summary = sub.add_parser("property-summary")
+    p_prop_summary.add_argument("dispatcher", type=parse_int)
     args = parser.parse_args()
     elf = Elf32(args.elf)
     if args.command == "dump":
         dump(elf, args.start, args.end)
     elif args.command == "jal-xrefs":
         jal_xrefs(elf, args.target, args.context)
+    elif args.command == "branch-xrefs":
+        branch_xrefs(elf, args.target, args.context)
     elif args.command == "table":
         table(elf, args.base, args.count)
     elif args.command == "word-xrefs":
@@ -349,6 +447,8 @@ def main() -> None:
         mem_imm_xrefs(elf, args.immediate, args.context)
     elif args.command == "abs-xrefs":
         abs_xrefs(elf, args.address, args.context)
+    elif args.command == "address-xrefs":
+        address_xrefs(elf, args.address, args.context)
     elif args.command == "cstr":
         cstring(elf, args.address, args.limit)
     elif args.command == "u16str":
@@ -357,6 +457,8 @@ def main() -> None:
         imm_xrefs(elf, args.immediate, args.context)
     elif args.command == "property-xrefs":
         property_xrefs(elf, args.dispatcher, args.property, args.context)
+    elif args.command == "property-summary":
+        property_call_summary(elf, args.dispatcher)
 
 
 if __name__ == "__main__":

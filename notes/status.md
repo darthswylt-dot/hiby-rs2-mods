@@ -260,19 +260,17 @@ See [folderfollow-safe-pointer-diag.md](folderfollow-safe-pointer-diag.md).
 
 ## Remaining work
 
-1. Trace the write lifecycle of property 24 / global current-media buffer
-   `0xADD468` and identify the commit path used by ordinary Next/autoplay. The
-   four native `0x4E8480` callers are collect-button, screen-on, full panel
-   activation, and internal view-group catch-up paths; none is a universal
-   track-change hook.
-2. Build a passive diagnostic only around the proven Next/autoplay commit
-   point, recording property 24, `source+0x28`, `source+0x230`, and the inactive
-   Folder View before and after the original operation.
-3. Use that timing evidence to decide whether to stage the path for page
+1. Use the confirmed commit timing to design a passive path handoff from the
+   playback worker to the UI owner. Physical Next used general commit
+   `0x42CD5C`; natural cue autoplay used same-file commit `0x42CBDC`. On the
+   general cross-folder path, property 24 becomes current while
+   `source+0x28` still names the preceding file. See
+   [playback-commit-safe-diag.md](playback-commit-safe-diag.md).
+2. Decide whether to stage the selected property-24 path for later page
    activation or retarget the inactive view using the complete stock
    `0x4919E0` ownership/preparation sequence.
-4. Trace the state transitions around the sole property-31 consumer at
+3. Trace the state transitions around the sole property-31 consumer at
    `0x4E4B80` and determine why it sometimes has no resolvable media ID.
-5. Add a byte-level patch manifest for the confirmed full-navigation and wake
+4. Add a byte-level patch manifest for the confirmed full-navigation and wake
    fixes.
-6. Remove `/etc/init.d/S99adb` after device testing is complete.
+5. Remove `/etc/init.d/S99adb` after device testing is complete.

@@ -18,6 +18,7 @@ testing.
 | Successful dispatcher FD9 telemetry build; not a functional candidate | `6c274509946c57a642a5ae7f7a42910e6bc8abe28fba8155c973bb6a56c08912` |
 | Recovered post-FD9 source-state diagnostic; not hardware-classified | `02fd1dd13db7aac1e6d150ec1866b93f57022c1d668b114720a36b7f232e5f87` |
 | Successful crash-resistant two-phase pointer diagnostic | `eba4b0c99ae0f0436a038d9db242b62176c9120bc79d64b6da40564288cf3a01` |
+| Successful passive playback-commit timing diagnostic | `d78e7805cf630af004f43317be8ee9ce3fcbcc78eb6fd42a0a7d18179653629e` |
 
 ## Local artifact inventory
 
@@ -44,6 +45,7 @@ which is 7,109,624 bytes.
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_dispatch_fd9_diag_test` | `6c274509946c57a642a5ae7f7a42910e6bc8abe28fba8155c973bb6a56c08912` |
 | `hiby_player_02fd.bin` | `02fd1dd13db7aac1e6d150ec1866b93f57022c1d668b114720a36b7f232e5f87` |
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_safe_pointer_diag_test` | `eba4b0c99ae0f0436a038d9db242b62176c9120bc79d64b6da40564288cf3a01` |
+| `hiby_player_1.4_sortfix_fullnav_wake_playback_commit_diag_test` | `d78e7805cf630af004f43317be8ee9ce3fcbcc78eb6fd42a0a7d18179653629e` |
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_test` | `7e202a5f1e176138410da8ab7e79c5281e0741a3ef668212de29d07fb33fd23d` |
 | `hiby_player_1.4_sortfix_fullnav_wake_swipediag` | `27ef241000b88143ef9b8282739c3b58b97912f3a1ae5941e7e3e810a41f54f6` |
 | `hiby_player_1.4_sortfix_fullnav_wakefix_test` | `c0492d90058d0b2ccc20b5763cf77e54a965a144048e87300c5ed1714abd6dba` |
@@ -62,6 +64,7 @@ locally as `target_b_full.bin` only for analysis.
 | --- | --- |
 | `rs2_folderfollow_dispatch_diag.bin` / `target_b_full.bin` | `a76aefceaed2a8100afc066261755032a2137ef71d5ca4f7e125a0ce0d408dc2` |
 | `rs2_folderfollow_safe_pointer_diag.bin` / `rs2_safe_complete_roots_slayers_sleep.bin` | `dc4272a9d4778cc447b1e37081ae853a68e6cac7ca09dd88eac392d5c36cff6c` |
+| `rs2_playback_commit_diag.bin` / `rs2_playback_commit_diag_complete_roots_evil_antichrist_die.bin` | `6cda1e5bcf835854eeee2ea2fcfd85a132fe7ddf4cf3d5b59f5265560cb8a6da` |
 
 Historical failed artifacts no longer present locally:
 
