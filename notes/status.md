@@ -260,13 +260,14 @@ See [folderfollow-safe-pointer-diag.md](folderfollow-safe-pointer-diag.md).
 
 ## Remaining work
 
-1. Classify the event selectors and payload lifetime at the four native
-   `0x4E8480` Now Playing refresh calls. `0x4EA500` is only a null-guard adapter
-   used by the successful `vg_listview_add_m3u` collect path and is not a
-   general track-change hook.
-2. Build a passive diagnostic only around a refresh path proven to run for
-   ordinary Next/autoplay, recording source path/cue state, its media-item
-   payload, and the inactive Folder View before and after the stock refresh.
+1. Trace the write lifecycle of property 24 / global current-media buffer
+   `0xADD468` and identify the commit path used by ordinary Next/autoplay. The
+   four native `0x4E8480` callers are collect-button, screen-on, full panel
+   activation, and internal view-group catch-up paths; none is a universal
+   track-change hook.
+2. Build a passive diagnostic only around the proven Next/autoplay commit
+   point, recording property 24, `source+0x28`, `source+0x230`, and the inactive
+   Folder View before and after the original operation.
 3. Use that timing evidence to decide whether to stage the path for page
    activation or retarget the inactive view using the complete stock
    `0x4919E0` ownership/preparation sequence.

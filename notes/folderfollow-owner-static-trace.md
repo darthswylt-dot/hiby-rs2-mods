@@ -50,17 +50,20 @@ immediately before the `add_success` message. It is not a general playback
 metadata-delivery callback and will not reliably run on Next or autoplay.
 
 `0x4E8480` itself has four other direct callers inside the broader Now Playing
-event handler. None of its direct callees is a known Folder View navigation or
-lookup helper. See [4ea500-static-trace.md](4ea500-static-trace.md).
+worker. They were subsequently classified as collect-button, screen-on, full
+panel activation, and internal view-group catch-up paths. None is a universal
+track-change callback, and none of `0x4E8480`'s direct callees is a known Folder
+View navigation or lookup helper. See [4ea500-static-trace.md](4ea500-static-trace.md)
+and [playing-plane-refresh-callers-static-trace.md](playing-plane-refresh-callers-static-trace.md).
 
 ## Consequence for the next diagnostic
 
-Do not add another wrapper around `0x4E5FA0`, and do not wrap `0x4A7A70` as a
-track-change probe. First classify the event selectors and payload lifetime at
-the four native `0x4E8480` calls (`0x4E9590`, `0x4E9680`, `0x4E9830`, and
-`0x4E9A2C`). A passive diagnostic should target only a call path proven to run
-for ordinary Next/autoplay transitions and should record `source+0x28`,
-`source+0x230`, the media-item payload, and inactive Folder View state.
+Do not add another wrapper around `0x4E5FA0`, `0x4A7A70`, or the four native
+`0x4E8480` calls as a track-change probe. Trace the write lifecycle of property
+24 / global media-item buffer `0xADD468` and locate the commit path used by
+ordinary Next/autoplay. A passive diagnostic should target only that proven
+path and record `source+0x28`, `source+0x230`, the media item, and inactive
+Folder View state.
 
 Only after that timing is confirmed should an inactive-view retarget be
 attempted. Stock `0x4919E0` must be called with the same view preparation and

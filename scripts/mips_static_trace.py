@@ -151,6 +151,17 @@ def table(elf: Elf32, base: int, count: int) -> None:
         print(f"{index:3d}: 0x{elf.word(base + index * 4):08X}")
 
 
+def word_xrefs(elf: Elf32, value: int) -> None:
+    matches = []
+    for vaddr, offset, filesz, _, flags in elf.loads:
+        for relative in range(0, filesz & ~3, 4):
+            if elf.u32(offset + relative) == value:
+                matches.append((vaddr + relative, flags))
+    for address, flags in matches:
+        print(f"0x{address:08X}  segment_flags=0x{flags:X}")
+    print(f"\n# {len(matches)} file-backed aligned words equal 0x{value:08X}")
+
+
 def mem_imm_xrefs(elf: Elf32, immediate: int, context: int) -> None:
     wanted = immediate & 0xFFFF
     matches = []
@@ -303,6 +314,8 @@ def main() -> None:
     p_table = sub.add_parser("table")
     p_table.add_argument("base", type=parse_int)
     p_table.add_argument("count", type=parse_int)
+    p_word = sub.add_parser("word-xrefs")
+    p_word.add_argument("value", type=parse_int)
     p_mem = sub.add_parser("mem-imm-xrefs")
     p_mem.add_argument("immediate", type=parse_int)
     p_mem.add_argument("--context", type=int, default=8)
@@ -330,6 +343,8 @@ def main() -> None:
         jal_xrefs(elf, args.target, args.context)
     elif args.command == "table":
         table(elf, args.base, args.count)
+    elif args.command == "word-xrefs":
+        word_xrefs(elf, args.value)
     elif args.command == "mem-imm-xrefs":
         mem_imm_xrefs(elf, args.immediate, args.context)
     elif args.command == "abs-xrefs":

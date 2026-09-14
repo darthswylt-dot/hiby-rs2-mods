@@ -45,8 +45,9 @@ and enters the last child of a subtree.
 | `0x4E949C` | Calls the display-state helper. |
 | `0x4E94A4` | Original screen-off branch that bypasses ordinary UI event processing. |
 | `0x4E7580` | Stock progress/time refresh; `force=1` is required for the verified wake fix. |
-| `0x4E8480` | Actual Now Playing media-item/widget refresh. It has four direct callers in the main Now Playing event handler and no direct Folder View helper calls. |
+| `0x4E8480` | Actual Now Playing media-item/widget refresh. Its four native callers are collect-button, screen-on, full panel activation, and internal view-group catch-up paths; none is a universal track-change callback. It has no direct Folder View helper calls. |
 | `0x4EA500` | Null-guard adapter: loads global controller `0xB8BACC` and tail-calls `0x4E8480(controller, item)`. Its sole direct caller is the successful `vg_listview_add_m3u` collect path, not a general track-change callback. |
+| `0x42AC00` / property 24 setter branch | Copies the `0xA88`-byte current media-item record into global buffer `0xADD468`. Its field `+0x4` is the known UTF-16 playback path at `0xADD46C`. |
 | `0xB8BACC` | Global pointer to the current `playing_plane`; cleared by stock teardown code. |
 
 Power diagnostics on the hardware produced:

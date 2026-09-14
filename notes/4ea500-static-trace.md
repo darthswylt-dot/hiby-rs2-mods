@@ -86,8 +86,11 @@ Do not use `0x4A7A70 -> 0x4EA500` as the next general folder-follow timing
 probe: it would normally remain silent during the Roots -> Slayer -> Sleep
 transition test and could produce a misleading empty log.
 
-The next static step is to classify the four native `0x4E8480` call paths and
-the event selector leading to each one. A passive runtime hook should only be
-placed after identifying a path that is demonstrably executed for ordinary
-Next/autoplay transitions. Until then, `0x4EA500` is useful as documentation of
-the collect UI path, not as a folder-follow owner candidate.
+The four native `0x4E8480` call paths were subsequently classified as collect
+button, screen-on, full panel activation, and internal view-group catch-up.
+None is a universal playback track-change callback. See
+[playing-plane-refresh-callers-static-trace.md](playing-plane-refresh-callers-static-trace.md).
+
+Until a genuine Next/autoplay commit point is identified, `0x4EA500` is useful
+as documentation of the collect UI path, not as a folder-follow owner
+candidate.
