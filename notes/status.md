@@ -258,19 +258,42 @@ Complete log SHA-256:
 
 See [folderfollow-safe-pointer-diag.md](folderfollow-safe-pointer-diag.md).
 
+## Prepared passive UI-timer diagnostic
+
+Static tracing recovered the three callback slots installed by `0x4E2C40`.
+`0x4E2920` is the stock close/cleanup callback, not a recurring activation
+callback; this explains why its correct current-path -> build sequence cannot
+follow a later folder transition while Folder View remains open. The third
+callback, `0x4E24C0`, is invoked by generic timed dispatch at `0x47C620` after
+the constructor configures mode 2 and interval 200.
+
+Artifact SHA-256:
+`32c916ee3762568b06fe05279360b8d2b8f7de5e3ae47be37511e1c44baa3e8a`.
+
+The new diagnostic wraps only this periodic callback candidate. It executes stock code
+first, directly snapshots the proven property-24 path at `0xADD46C`, compares
+it offline with the existing Folder View path, and writes fixed FD9 records.
+It calls no path resolver, builder, destructor, or retarget helper. See
+[folderfollow-ui-timer-static-trace.md](folderfollow-ui-timer-static-trace.md).
+
+Hardware result: **safe but diagnostically negative**. The patched process and
+its FD9 descriptor remained alive during the full Roots control and physical
+Next transition to Slayer, but both FD position and log size stayed exactly
+zero. The user confirmed the ordinary stale Roots view and working volume.
+Thus `0x4E24C0` is not invoked in the target Files route and is not the live
+UI-owner. The empty log has SHA-256 `e3b0c442...b855`.
+
 ## Remaining work
 
-1. Use the confirmed commit timing to design a passive path handoff from the
-   playback worker to the UI owner. Physical Next used general commit
-   `0x42CD5C`; natural cue autoplay used same-file commit `0x42CBDC`. On the
-   general cross-folder path, property 24 becomes current while
-   `source+0x28` still names the preceding file. See
-   [playback-commit-safe-diag.md](playback-commit-safe-diag.md).
-2. Decide whether to stage the selected property-24 path for later page
-   activation or retarget the inactive view using the complete stock
-   `0x4919E0` ownership/preparation sequence.
-3. Trace the state transitions around the sole property-31 consumer at
+1. Identify the live Folder View owner/event callback that remains scheduled
+   during the target Files route; `0x4E24C0` is now excluded by hardware.
+2. Stage the property-24 path at commit `0x42CD5C` and `0x42CBDC`, then consume
+   the staged change only from a hardware-confirmed UI owner; do not rebuild or
+   retarget from the playback worker.
+3. Determine the smallest stock UI-owner sequence that updates an already
+   existing Folder View without destroying its stack or losing input.
+4. Trace the state transitions around the sole property-31 consumer at
    `0x4E4B80` and determine why it sometimes has no resolvable media ID.
-4. Add a byte-level patch manifest for the confirmed full-navigation and wake
+5. Add a byte-level patch manifest for the confirmed full-navigation and wake
    fixes.
-5. Remove `/etc/init.d/S99adb` after device testing is complete.
+6. Remove `/etc/init.d/S99adb` after device testing is complete.

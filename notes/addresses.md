@@ -75,6 +75,11 @@ affect the reproduced short-Power scenario.
 | `0x4E5680` | Returns the current explorer view through an output pointer. |
 | `0x438BE0` | Counts views matching a view-type string. |
 | `0x4E57E0` | Finds the last view matching a view-type string. |
+| `0x4E2C40` | Constructs the `vg_main_category_hiby` generic container and installs callbacks `0x4E2A40`, `0x4E2920`, and `0x4E24C0` into generic fields `+0x70/+0x74/+0x78`. |
+| `0x4E2920` | Main-category close/cleanup callback. Before releasing private state it runs the stock current-path -> Folder View build -> widget-dispatch sequence. It is not a recurring activation callback. |
+| `0x4E24C0` | Third main-category callback installed at generic object `+0x78`. Generic timed dispatch can call this slot, but hardware produced zero invocations throughout the target Roots -> Slayer Files route; it is not the live folder-follow owner. |
+| `0x47C620` | Generic timed dispatch: invokes object callback `+0x78` as `(object, object+0x54)` when the configured interval expires. |
+| `0x47D0A0` | Configures generic object run mode/timing. Mode 2 stores its third argument at object `+0x34`; `0x4E2D04` supplies 200 for the main-category container. This alone does not prove that the container is scheduled in the target Files route. |
 | `0x4916A0` | Performs the current-view preparation used by stock `0x491E80`. |
 | `0x4919E0` | Retargets an existing explorer view in stock navigation paths. The `c637...` experiment did not make folder-follow work safely. |
 | `0x4BAA68` | Return site in the common callback dispatcher observed for all three `a2=1,a3=1` diagnostic records. |
