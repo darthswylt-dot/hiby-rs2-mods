@@ -72,7 +72,10 @@ affect the reproduced short-Power scenario.
 | `0x4919E0` | Retargets an existing explorer view in stock navigation paths. The `c637...` experiment did not make folder-follow work safely. |
 | `0x4BAA68` | Return site in the common callback dispatcher observed for all three `a2=1,a3=1` diagnostic records. |
 | `0xADD360` | Global pointer to a playback/source object sampled by the recovered `02fd...` diagnostic. The object remained stable across the tested folder transitions. |
-| source object `+0x230` | Scalar playback state, not a pointer. Observed as `NULL` in Roots, `0x2EB64` for Evil Has No Boundaries, later `0x5BA40`, and `0x1AA` for Sleep Part I. The last value exactly matches local database `begin_time=426`, suggesting cue/timing boundary state. |
+| source object `+0x28` / property 32 | Inline 260-code-unit UTF-16 playback-path buffer. Normal source finalization copies global path buffer `0xADD46C` here. |
+| source object `+0x230` / property 31 | Absolute backing-file playback position in milliseconds, captured during source finalization. It is selected from live `current_time` for reuse/special-source transitions or the media row's cue `begin_time` for a newly selected backing file. It is not a pointer or continuously updated counter. |
+| `0xADD368 + 0x20` | Music-player absolute current decoder position in milliseconds; populated by event `0x500`. |
+| `0xADD368 + 0x51C` | Selected media/cue start offset in the backing file. Added before seeks and subtracted when reporting cue-relative time. |
 
 A single Now Playing -> Folder View swipe was logged as callback arguments
 `a2=1, a3=1`. Invoking `0x4E4640` during screen-on without first removing the
@@ -105,6 +108,12 @@ The later safe pointer diagnostic (`eba4b0c9...`) confirmed that the explorer,
 current view, matching Folder View, state, and list pointers remain unchanged
 even while source-object field `+0x230` changes with playback. Original
 `0x4E5FA0` still returns zero without a synchronous explorer update.
+
+Static tracing subsequently identified property 31 as
+`source_backing_file_position_ms` and property 32 as the neighboring inline
+UTF-16 backing-file path. `0x4E4B80` consumes both to resolve a media/cue row;
+it remains unsuitable as a passive telemetry getter. See
+[source-object-cue-path-static-trace.md](source-object-cue-path-static-trace.md).
 
 ## MIPS patching warning
 

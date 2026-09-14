@@ -38,6 +38,10 @@ Its crash-resistant two-phase successor is documented in
 The successor completed a full Roots -> Slayer -> Sleep hardware run and
 identified source-object field `+0x230` as changing scalar cue/timing state
 while the sampled Folder View and explorer state remained stale.
+Static tracing has now identified it precisely as an absolute millisecond
+position in the backing audio file and identified the adjacent inline UTF-16
+playback path at `source+0x28`. See
+[notes/source-object-cue-path-static-trace.md](notes/source-object-cue-path-static-trace.md).
 
 ## Repository policy
 

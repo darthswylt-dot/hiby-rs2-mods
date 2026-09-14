@@ -260,10 +260,10 @@ See [folderfollow-safe-pointer-diag.md](folderfollow-safe-pointer-diag.md).
 
 ## Remaining work
 
-1. Trace source-object field `+0x230` statically and determine its exact
-   cue/timing semantics and its consumers.
-2. Use that result to identify the source fields and state transitions used
-   inside `0x4E4B80` without consuming transition state.
+1. Capture the now-identified inline path at source `+0x28` across the same
+   Roots -> Slayer -> Sleep transitions without calling `0x4E4B80`.
+2. Trace the state transitions around the sole property-31 consumer at
+   `0x4E4B80` and determine why it sometimes has no resolvable media ID.
 3. Identify the owner of the deferred Folder View activation after
    `0x4E5FA0`; do not try more stack rebuild/retarget permutations first.
 4. Add a byte-level patch manifest for the confirmed full-navigation and wake
