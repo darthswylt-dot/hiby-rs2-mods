@@ -260,12 +260,14 @@ See [folderfollow-safe-pointer-diag.md](folderfollow-safe-pointer-diag.md).
 
 ## Remaining work
 
-1. Capture the now-identified inline path at source `+0x28` across the same
-   Roots -> Slayer -> Sleep transitions without calling `0x4E4B80`.
-2. Trace the state transitions around the sole property-31 consumer at
+1. Build a passive diagnostic around the single `0x4A7A70 -> 0x4EA500`
+   Now Playing metadata-delivery call, recording source path/cue state and the
+   inactive Folder View before and after the stock refresh.
+2. Use that timing evidence to decide whether to stage the path for page
+   activation or retarget the inactive view using the complete stock
+   `0x4919E0` ownership/preparation sequence.
+3. Trace the state transitions around the sole property-31 consumer at
    `0x4E4B80` and determine why it sometimes has no resolvable media ID.
-3. Identify the owner of the deferred Folder View activation after
-   `0x4E5FA0`; do not try more stack rebuild/retarget permutations first.
 4. Add a byte-level patch manifest for the confirmed full-navigation and wake
    fixes.
 5. Remove `/etc/init.d/S99adb` after device testing is complete.

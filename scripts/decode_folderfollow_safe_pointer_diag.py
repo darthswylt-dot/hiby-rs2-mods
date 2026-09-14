@@ -9,7 +9,10 @@ from pathlib import Path
 
 
 MAGIC = b"FFSP"
-RECORD_SIZE = 0x100
+POINTER_RECORD_SIZE = 0x100
+PATH_RECORD_SIZE = 0x320
+PATH_OFFSET = 0x100
+PATH_BYTES = 0x208
 
 STAGES = {
     0x0001: "target",
@@ -42,19 +45,33 @@ def ptr(value: int) -> str:
     return "NULL" if value == 0 else f"0x{value:08x}"
 
 
+def utf16_path(record: bytes) -> str:
+    raw = record[PATH_OFFSET:PATH_OFFSET + PATH_BYTES]
+    end = next(
+        (offset for offset in range(0, len(raw), 2) if raw[offset:offset + 2] == b"\0\0"),
+        len(raw),
+    )
+    return raw[:end].decode("utf-16le", errors="replace")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("log", type=Path)
     args = parser.parse_args()
     data = args.log.read_bytes()
-    if len(data) % RECORD_SIZE:
+    if len(data) < 12 or data[:4] != MAGIC:
+        raise SystemExit("log does not start with an FFSP record")
+    record_size = u32(data, 0x08)
+    if record_size not in (POINTER_RECORD_SIZE, PATH_RECORD_SIZE):
+        raise SystemExit(f"unsupported FFSP record size: {record_size:#x}")
+    if len(data) % record_size:
         raise SystemExit(
-            f"truncated log: {len(data)} bytes is not a multiple of {RECORD_SIZE}"
+            f"truncated log: {len(data)} bytes is not a multiple of {record_size}"
         )
 
-    print(f"records={len(data) // RECORD_SIZE} bytes={len(data)}")
-    for index in range(len(data) // RECORD_SIZE):
-        record = data[index * RECORD_SIZE:(index + 1) * RECORD_SIZE]
+    print(f"records={len(data) // record_size} bytes={len(data)} record_size={record_size:#x}")
+    for index in range(len(data) // record_size):
+        record = data[index * record_size:(index + 1) * record_size]
         if record[:4] != MAGIC:
             raise SystemExit(f"bad magic in record {index}: {record[:4]!r}")
         phase = u32(record, 0x0C)
@@ -101,6 +118,8 @@ def main() -> None:
             f"state:{ptr(u32(record, 0xA0))} head:{ptr(u32(record, 0xA4))} "
             f"tail:{ptr(u32(record, 0xA8))}"
         )
+        if record_size == PATH_RECORD_SIZE:
+            print(f"  playback_path={utf16_path(record)!r}")
 
 
 if __name__ == "__main__":

@@ -42,6 +42,9 @@ Static tracing has now identified it precisely as an absolute millisecond
 position in the backing audio file and identified the adjacent inline UTF-16
 playback path at `source+0x28`. See
 [notes/source-object-cue-path-static-trace.md](notes/source-object-cue-path-static-trace.md).
+The corresponding bounded, two-phase hardware telemetry candidate is
+documented in
+[notes/folderfollow-safe-path-diag.md](notes/folderfollow-safe-path-diag.md).
 
 ## Repository policy
 
