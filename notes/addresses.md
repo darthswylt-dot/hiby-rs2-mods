@@ -40,7 +40,7 @@ and enters the last child of a subtree.
 | `0x468D40` | Reads backlight/display state. |
 | `0x46AA40` | Late-resume function investigated during early wake experiments. |
 | `0x469F40` | Resume helper called from the late-resume path. |
-| `0x4E90C0` | 100 ms periodic callback for the Now Playing (`playing_plane`) UI. |
+| `0x4E90C0` | 100 ms periodic callback for the Now Playing (`playing_plane`) UI. At `0x4E9160-0x4E9198` it compares the current view's media identity with the playing item and dispatches event 5 with value 0 on mismatch. |
 | `0x4E93E0` | Main `playing_plane` event handler region. |
 | `0x4E949C` | Calls the display-state helper. |
 | `0x4E94A4` | Original screen-off branch that bypasses ordinary UI event processing. |
@@ -75,6 +75,8 @@ affect the reproduced short-Power scenario.
 | `0x4E5680` | Returns the current explorer view through an output pointer. |
 | `0x438BE0` | Counts views matching a view-type string. |
 | `0x4E57E0` | Finds the last view matching a view-type string. |
+| `0x4C0620` / event 5 | Generic internal-view event dispatcher. Jump-table entry 5 stores its argument directly at internal view `+0x5A4`; stock activation paths pass 1, while one playing-plane mismatch path passes 0. Hardware showed `+0x5A4` remained 1 across Roots -> Slayer despite the disappearing highlight, so it enables the selection-matching path rather than storing the highlighted row. It does not retarget the folder. |
+| internal view `+0x5A0` | Current list row/index used by renderer and item access paths. A direct live read after Roots -> Slayer found value 3 while `+0x5A4` remained 1. |
 | `0x4E2C40` | Constructs the `vg_main_category_hiby` generic container and installs callbacks `0x4E2A40`, `0x4E2920`, and `0x4E24C0` into generic fields `+0x70/+0x74/+0x78`. |
 | `0x4E2920` | Main-category close/cleanup callback. Before releasing private state it runs the stock current-path -> Folder View build -> widget-dispatch sequence. It is not a recurring activation callback. |
 | `0x4E24C0` | Third main-category callback installed at generic object `+0x78`. Generic timed dispatch can call this slot, but hardware produced zero invocations throughout the target Roots -> Slayer Files route; it is not the live folder-follow owner. |

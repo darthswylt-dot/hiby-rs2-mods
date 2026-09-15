@@ -283,13 +283,52 @@ zero. The user confirmed the ordinary stale Roots view and working volume.
 Thus `0x4E24C0` is not invoked in the target Files route and is not the live
 UI-owner. The empty log has SHA-256 `e3b0c442...b855`.
 
+## Prepared live playing-plane timer diagnostic
+
+Static tracing found a separate 100 ms callback, `0x4E90C0`, whose
+`playing_plane` owner remains live while the stale Folder View is visible. It
+already compares the current explorer view's media identity with the playing
+item. On mismatch it dispatches event 5 with value 0 through `0x4C0620`.
+
+Event 5 has now been decoded completely: jump-table entry `0x4C06DC` stores the
+argument at internal view `+0x5A4`. Stock list setup/activation paths pass 1;
+one mismatch path passes 0. It participates in selection matching and is not a
+folder retarget command.
+
+Prepared artifact SHA-256:
+`4927297b4ceebe3b7f8d4bb8854c632e2083d5212aa9f02c9182c9f213acf3fe`.
+
+The passive wrapper calls original `0x4E90C0` first, then logs only a compact
+256-byte snapshot of the same identity fields, the current-view pointers, and
+`+0x5A4` state. It makes no navigation or view mutation. Static verification
+found 362 changed bytes, confined to the two callback-pointer instructions and
+the RX-padding wrapper; all 12 control-transfer delay slots are verified. See
+[folderfollow-playing-timer-static-trace.md](folderfollow-playing-timer-static-trace.md).
+
+Hardware result: **safe and diagnostically positive for ownership**. The timer
+logged continuously while the user started Roots, returned to its highlighted
+Folder View, and advanced with physical Next to Slayer. The context matched
+global `0xB8BACC`, and the explorer/current-view/internal-list pointers stayed
+live and stable. The patched process remained healthy and volume input worked.
+
+The result also corrected the selection interpretation. `+0x5A4` changed
+`1 -> 0` during initial playback/UI setup and returned to 1 with the highlighted
+Roots Folder View, but it stayed 1 across the later Roots -> Slayer transition
+even though the Roots highlight disappeared. Direct memory showed neighboring
+row/index `+0x5A0=3`. Thus the stale list loses its highlight because none of
+its rows matches the new playback item, not because the timer clears `+0x5A4`
+at the crossing.
+
+Completed 1912-record snapshot SHA-256:
+`41904b62da9cd6d2f20340e4dea0545daf1a880e4fd7d957124ef6ee04685cb9`.
+
 ## Remaining work
 
-1. Identify the live Folder View owner/event callback that remains scheduled
-   during the target Files route; `0x4E24C0` is now excluded by hardware.
+1. Trace the smallest stock action, callable from live `0x4E90C0`, that updates
+   the existing Folder View's path/list while preserving its stack and input.
 2. Stage the property-24 path at commit `0x42CD5C` and `0x42CBDC`, then consume
-   the staged change only from a hardware-confirmed UI owner; do not rebuild or
-   retarget from the playback worker.
+   the staged change only from this hardware-confirmed UI owner; do not rebuild
+   or retarget from the playback worker.
 3. Determine the smallest stock UI-owner sequence that updates an already
    existing Folder View without destroying its stack or losing input.
 4. Trace the state transitions around the sole property-31 consumer at

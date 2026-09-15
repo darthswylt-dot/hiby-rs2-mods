@@ -47,6 +47,7 @@ which is 7,109,624 bytes.
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_safe_pointer_diag_test` | `eba4b0c99ae0f0436a038d9db242b62176c9120bc79d64b6da40564288cf3a01` |
 | `hiby_player_1.4_sortfix_fullnav_wake_playback_commit_diag_test` | `d78e7805cf630af004f43317be8ee9ce3fcbcc78eb6fd42a0a7d18179653629e` |
 | `hiby_player_1.4_sortfix_fullnav_wake_ui_timer_diag_test` | `32c916ee3762568b06fe05279360b8d2b8f7de5e3ae47be37511e1c44baa3e8a` |
+| `hiby_player_1.4_sortfix_fullnav_wake_playing_timer_diag_test` | `4927297b4ceebe3b7f8d4bb8854c632e2083d5212aa9f02c9182c9f213acf3fe` |
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_test` | `7e202a5f1e176138410da8ab7e79c5281e0741a3ef668212de29d07fb33fd23d` |
 | `hiby_player_1.4_sortfix_fullnav_wake_swipediag` | `27ef241000b88143ef9b8282739c3b58b97912f3a1ae5941e7e3e810a41f54f6` |
 | `hiby_player_1.4_sortfix_fullnav_wakefix_test` | `c0492d90058d0b2ccc20b5763cf77e54a965a144048e87300c5ed1714abd6dba` |
@@ -67,6 +68,7 @@ locally as `target_b_full.bin` only for analysis.
 | `rs2_folderfollow_safe_pointer_diag.bin` / `rs2_safe_complete_roots_slayers_sleep.bin` | `dc4272a9d4778cc447b1e37081ae853a68e6cac7ca09dd88eac392d5c36cff6c` |
 | `rs2_playback_commit_diag.bin` / `rs2_playback_commit_diag_complete_roots_evil_antichrist_die.bin` | `6cda1e5bcf835854eeee2ea2fcfd85a132fe7ddf4cf3d5b59f5265560cb8a6da` |
 | `rs2_folderfollow_ui_timer_diag.bin` (zero-invocation hardware run) | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+| `rs2_playing_timer_diag_complete_roots_evil.bin` (1912-record snapshot) | `41904b62da9cd6d2f20340e4dea0545daf1a880e4fd7d957124ef6ee04685cb9` |
 
 Historical failed artifacts no longer present locally:
 
