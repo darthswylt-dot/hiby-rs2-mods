@@ -103,6 +103,7 @@ Exact one-shot commands and hardware results are recorded per experiment:
 - [rebuild-before-callback test](folderfollow-rebuild-before-callback-test.md)
 - [preserve-stack retarget test](folderfollow-preserve-stack-retarget-test.md)
 - [dispatcher FD9 diagnostic](folderfollow-dispatch-fd9-diag.md)
+- [live playing-path diagnostic](folderfollow-playing-path-static-trace.md)
 
 The FD9 diagnostic uses
 [`scripts/rs2_folderfollow_diag_launcher.sh`](../scripts/rs2_folderfollow_diag_launcher.sh)

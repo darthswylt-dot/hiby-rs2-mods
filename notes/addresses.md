@@ -83,13 +83,22 @@ affect the reproduced short-Power scenario.
 | `0x47C620` | Generic timed dispatch: invokes object callback `+0x78` as `(object, object+0x54)` when the configured interval expires. |
 | `0x47D0A0` | Configures generic object run mode/timing. Mode 2 stores its third argument at object `+0x34`; `0x4E2D04` supplies 200 for the main-category container. This alone does not prove that the container is scheduled in the target Files route. |
 | `0x4916A0` | Performs the current-view preparation used by stock `0x491E80`. |
-| `0x4919E0` | Retargets an existing explorer view in stock navigation paths. The `c637...` experiment did not make folder-follow work safely. |
+| `0x4919E0` | Reconciles the depth of an existing explorer stack for ancestor/descendant navigation. It compares `\\` counts and makes no path/list replacement at equal depth, so it cannot handle flat sibling transitions. The `c637...` hardware run did not reach this call because preceding `0x4E4B80` returned `-1`. |
+| `0x495A40` | Locked stock explorer-view cleanup. Uses controller virtual callbacks `+0x274/+0x278`, collects matching `vg_listview_explorer` views, and removes them through ordinary view API `0x43B240`. |
+| `0x495D40` | Complete stock storage-root open transaction: locked cleanup through `0x495A40`, setup, then `0x491E80` creation. Its only direct callers pass `a:\\*`, `b:\\*`, or `c:\\*`; nested-path use is not yet hardware-proven. |
+| `0xB8BAC8` | `lg_activity_main` registration/status slot. Live path telemetry read value 1; `0x4E5900` uses it as a registration guard, so it is not a live activity-object pointer. |
 | `0x4BAA68` | Return site in the common callback dispatcher observed for all three `a2=1,a3=1` diagnostic records. |
 | `0xADD360` | Global pointer to a playback/source object sampled by the recovered `02fd...` diagnostic. The object remained stable across the tested folder transitions. |
 | source object `+0x28` / property 32 | Inline 260-code-unit UTF-16 playback-path buffer. Normal source finalization copies global path buffer `0xADD46C` here. |
 | source object `+0x230` / property 31 | Absolute backing-file playback position in milliseconds, captured during source finalization. It is selected from live `current_time` for reuse/special-source transitions or the media row's cue `begin_time` for a newly selected backing file. It is not a pointer or continuously updated counter. |
 | `0xADD368 + 0x20` | Music-player absolute current decoder position in milliseconds; populated by event `0x500`. |
 | `0xADD368 + 0x51C` | Selected media/cue start offset in the backing file. Added before seeks and subtracted when reporting cue-relative time. |
+
+Live `0x4E90C0` path telemetry proved the Folder View target-path transform:
+copy property-24 file path `0xADD46C`, remove the last filename component, and
+append `*`, producing a path ending in `\\*`. The explorer pointer and its
+lock/unlock callbacks `+0x274=0x437D20`, `+0x278=0x437DA0` stayed stable across
+Roots -> nested Slayer -> flat Sleep.
 
 A single Now Playing -> Folder View swipe was logged as callback arguments
 `a2=1, a3=1`. Invoking `0x4E4640` during screen-on without first removing the
@@ -101,9 +110,11 @@ confirms that `0x4E4B80` path lookup and `0x4E4640` path construction both work.
 In that build the original `0x4E5FA0` callback ran before stack destruction and
 reconstruction. Candidate `5faa8c07...` reversed the ordering and failed with
 unsolicited navigation, overlapping views, loss of input, and a crash/reboot.
-Candidate `c637effa...` preserved the stack and used the stock `0x4919E0`
-retarget path, but still showed the old folder and temporarily lost physical
-button response.
+Candidate `c637effa...` intended to preserve the stack and use `0x4919E0`, but
+later telemetry proved that preceding `0x4E4B80` returned `-1`; its wrapper
+therefore skipped the retarget call. It still showed the old folder and
+temporarily lost physical-button response, but that result cannot be
+attributed to `0x4919E0`.
 
 The later FD9 diagnostic (`6c274509...`) sampled the stable failure without
 retargeting or rebuilding views. In all three records, pre-callback `0x4E4B80`

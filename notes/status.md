@@ -167,10 +167,18 @@ SHA-256:
 c637effab37ff202c172a3f32a75f0d7cfbf309eec13ab8c5ecd1a89de1adfcc
 ```
 
-This candidate avoided `0x4E4B20` and `0x4E4640` and instead followed the stock
-existing-view sequence around `0x4919E0`. Hardware still returned Folder View
-to the folder where playback began rather than the current track's folder, and
-physical buttons were temporarily unresponsive. Status: **failed; discard**.
+This candidate avoided `0x4E4B20` and `0x4E4640` and intended to follow the
+stock existing-view sequence around `0x4919E0`. Later FD9 telemetry proved
+that its preceding `0x4E4B80` call returned `-1` in the target gesture state,
+so the wrapper skipped directly to original `0x4E5FA0` and never reached
+`0x4919E0`. Hardware still returned Folder View to the old folder and physical
+buttons were temporarily unresponsive. Status: **failed; discard**, but not a
+hardware test of `0x4919E0`.
+
+Static analysis then showed that `0x4919E0` reconciles only differing path
+depths and does nothing for equal-depth siblings. It cannot solve the required
+`01Flat -> 03Flat` transition. See
+[folderfollow-existing-view-contract.md](folderfollow-existing-view-contract.md).
 
 See [folderfollow-preserve-stack-retarget-test.md](folderfollow-preserve-stack-retarget-test.md).
 
@@ -322,15 +330,45 @@ at the crossing.
 Completed 1912-record snapshot SHA-256:
 `41904b62da9cd6d2f20340e4dea0545daf1a880e4fd7d957124ef6ee04685cb9`.
 
+## Successful live path-contract diagnostic
+
+Static analysis ruled out `0x4919E0` as a general sibling retarget and found
+the complete stock storage-open transaction at `0x495D40`. It performs locked
+explorer cleanup through `0x495A40` and then creates the requested explorer
+view. Stock uses it only for drive roots, so nested playback-folder use remains
+unproven.
+
+Artifact SHA-256:
+`599cc5e2143aae7633da967f3ea819d0683d2b9d5b184fd799930e07d1c9dc01`.
+
+The passive successor wrapped the already proven `0x4E90C0` timer and recorded
+the committed property-24 file path, last Folder View wildcard path, explorer
+lock/list fields, and activity-registration status. It performs no navigation
+mutation.
+See [folderfollow-playing-path-static-trace.md](folderfollow-playing-path-static-trace.md).
+
+Hardware completed Roots -> nested Slayer -> flat Sleep safely. The 3,177
+complete records prove that the timer sees each new full file path while the
+last Folder View remains on Roots. The required target is exactly the parent
+directory of property 24 followed by `\\*`. The explorer pointer and stock
+lock/unlock callbacks remained stable. Log SHA-256:
+`46da98a2aa21048d0a0920b999ffd56cc242b92a490560d7fdc5dd2ec81daf67`.
+That hash identifies the immediate 3,177-record analysis snapshot. The closed
+post-stop log has 5,484 complete records and SHA-256
+`0a2bb3912b1cd6283b4b909b1325c5e17bbdfdd6b0d2a334194a077330088986`.
+The device was then rebooted successfully to `/usr/bin/hiby_player`.
+
 ## Remaining work
 
-1. Trace the smallest stock action, callable from live `0x4E90C0`, that updates
-   the existing Folder View's path/list while preserving its stack and input.
+1. Build a narrowly gated functional diagnostic around complete stock
+   `0x495D40`: derive the parent `\\*` path in private storage and invoke it
+   only once per changed property-24 path when Folder View is stale.
 2. Stage the property-24 path at commit `0x42CD5C` and `0x42CBDC`, then consume
    the staged change only from this hardware-confirmed UI owner; do not rebuild
    or retarget from the playback worker.
-3. Determine the smallest stock UI-owner sequence that updates an already
-   existing Folder View without destroying its stack or losing input.
+3. Identify a confirmed UI-queue or complete stock navigation transaction that
+   can replace an unrelated open Folder View. Do not use `0x4919E0` as a
+   general retarget or invoke activity initialization from the 100 ms timer.
 4. Trace the state transitions around the sole property-31 consumer at
    `0x4E4B80` and determine why it sometimes has no resolvable media ID.
 5. Add a byte-level patch manifest for the confirmed full-navigation and wake

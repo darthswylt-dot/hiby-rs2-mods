@@ -123,14 +123,19 @@ and was used to select the hook for the next test.
 - Artifact:
   `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_preserve_stack_retarget_test`
 - SHA-256: `c637effab37ff202c172a3f32a75f0d7cfbf309eec13ab8c5ecd1a89de1adfcc`
-- Change: avoided stack destruction/building and used the stock current-view
-  preparation, view lookup, and `0x4919E0` existing-view retarget sequence.
+- Intended change: avoid stack destruction/building and use the stock
+  current-view preparation, view lookup, and `0x4919E0` existing-view sequence.
+- Corrected execution result: the wrapper first called `0x4E4B80` and skipped
+  directly to original `0x4E5FA0` when it returned `-1`. Later FD9 telemetry
+  proved that exact return value and an empty path in the target gesture state,
+  so the hardware run never reached `0x4919E0`.
 - Hardware result: Folder View still showed the folder where playback began
   instead of the current track's folder. Physical buttons were temporarily
   unresponsive.
-- Lesson: the existence of a stock retarget helper does not mean it is safe or
-  effective from this callback. Locate the owner and timing of the deferred
-  Folder View transition before trying another retarget.
+- Lesson: this run does not test `0x4919E0`. Static analysis independently
+  shows that helper only reconciles ancestor/descendant depth and does nothing
+  for equal-depth siblings such as `01Flat -> 03Flat`, so it is not a complete
+  folder-follow primitive. See `folderfollow-existing-view-contract.md`.
 
 ## Temporary ADB ordering
 
