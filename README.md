@@ -13,14 +13,14 @@ The following fixes have been confirmed on hardware:
 | Folder traversal | `Next`, autoplay, and `Previous` traverse nested sibling directories in the expected order. |
 | Wake refresh | After a track changes while the screen is off, waking on Pause shows the current track, time, and progress bar. |
 
-Folder-follow is not fixed yet. Rebuilding the explorer stack on either side of
-the stock callback caused navigation corruption, and reusing the stock
-existing-view retarget path still left Folder View on the folder where playback
-started. A later FD9 telemetry test reproduced the stale-folder state without
-corrupting the UI: before the callback, `0x4E4B80` returned no playback path,
-and original `0x4E5FA0` did not immediately change the sampled explorer state.
-The next step is to identify and observe the underlying state fields rather
-than trying another stack-lifetime permutation.
+Folder-follow is not fixed yet. Passive hardware telemetry proved that the
+live UI timer sees the committed full playback path while Folder View remains
+stale. Static tracing then recovered the complete stock nested restoration
+contract: property 11 carries a one-shot full path, `0x495B80` rebuilds every
+explorer level, and `0x495D40` performs locked cleanup and consumes that path.
+A narrowly gated functional candidate is prepared but not yet hardware-run;
+see
+[notes/folderfollow-saved-path-rebuild-test.md](notes/folderfollow-saved-path-rebuild-test.md).
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered

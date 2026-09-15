@@ -12,14 +12,30 @@ replace equal-depth sibling folders in any case. A better stock candidate is
 `0x495D40` first calls `0x495A40`. That helper acquires the explorer's virtual
 lock through `+0x274`, walks the view list, collects every
 `vg_listview_explorer`, removes them through the ordinary `0x43B240` API, and
-releases the lock through `+0x278`. `0x495D40` then performs setup and calls
-the generic creator `0x491E80` for the requested explorer path. This is a
-complete stock UI transaction rather than the raw `0x4E4B20`/`0x4E4640`
-permutation used by failed patches.
+releases the lock through `+0x278`.
+
+Further tracing corrected the remainder of the contract. For a valid supplied
+path, `0x495D40` calls `0x495B80`, which reads UTF-16 property 11 through
+`0x425360`. It scans that saved full path at every backslash, forms successive
+prefixes ending in `*`, and calls `0x491E80` once for each level. If this
+restoration succeeds, the supplied `a:\\*`/`b:\\*`/`c:\\*` argument is not
+opened. `0x495D40` then clears property 11 through setter `0x424F60`. The
+supplied path is only the fallback when the saved path is absent, invalid, or
+cannot be restored.
+
+The setter's property-11 case copies at most 512 UTF-16 code units (1024
+bytes) into its private field. There is only one stock non-empty write:
+callback `0x4BD100` gets the selected explorer item through `0x4E5560` and
+saves the full path at `selected_item+0x3DD8`. Consequently the safest nested
+folder-follow candidate is not a direct nested-path call. It is: save the
+committed property-24 full file path as property 11, then invoke the complete
+`0x495D40` transaction with the matching storage root as fallback.
 
 Its three direct callers are all in the storage-choice callback at
-`0x49D3A0`; no stock caller passes a nested playback folder. The helper's
-safety and path contract therefore remain unproven for folder-follow.
+`0x49D3A0`; they pass `a:\\*`, `b:\\*`, or `c:\\*`. Stock nevertheless uses
+the property-11 restoration branch to reconstruct nested explorer stacks, so
+the hierarchy-building path is statically confirmed even though the proposed
+timer-triggered use remains hardware-unproven.
 
 ## Artifact
 
@@ -126,9 +142,10 @@ pointer.
 
 The data now supports a narrowly gated functional diagnostic using the proven
 timer owner and the complete stock `0x495D40` transaction. It should derive
-the `\\*` target in private storage, run only when the target differs from the
-last Folder View path, and suppress repeated attempts until property 24
-changes again.
+the `\\*` target in private storage for the stale-view comparison, save the
+unchanged full property-24 file path in property 11, and supply only its drive
+root as the `0x495D40` fallback. It must run only while Folder View is the
+current view and only when its path differs from the derived target.
 
 Post-test cleanup succeeded: the one-shot flag was absent and the rebooted
 device ran `/usr/bin/hiby_player`. The device-side final log was retained.

@@ -334,9 +334,10 @@ Completed 1912-record snapshot SHA-256:
 
 Static analysis ruled out `0x4919E0` as a general sibling retarget and found
 the complete stock storage-open transaction at `0x495D40`. It performs locked
-explorer cleanup through `0x495A40` and then creates the requested explorer
-view. Stock uses it only for drive roots, so nested playback-folder use remains
-unproven.
+explorer cleanup through `0x495A40`, restores a nested hierarchy from one-shot
+UTF-16 property 11 through `0x495B80`, clears that property, and opens its
+supplied drive root only as fallback. Stock callback `0x4BD100` is the sole
+non-empty property-11 writer and saves `selected_item+0x3DD8`.
 
 Artifact SHA-256:
 `599cc5e2143aae7633da967f3ea819d0683d2b9d5b184fd799930e07d1c9dc01`.
@@ -360,17 +361,22 @@ The device was then rebooted successfully to `/usr/bin/hiby_player`.
 
 ## Remaining work
 
-1. Build a narrowly gated functional diagnostic around complete stock
-   `0x495D40`: derive the parent `\\*` path in private storage and invoke it
-   only once per changed property-24 path when Folder View is stale.
-2. Stage the property-24 path at commit `0x42CD5C` and `0x42CBDC`, then consume
+1. Replace the `current_view == last vg_listview_explorer` gate used by the
+   safe partial `4c43e0a4...` test with a validated classification that also
+   recognizes deep Folder View screens. Hardware proved that the equality gate
+   suppresses a Slayer -> Sleep transition until one Back action.
+2. Trace and schedule the ordinary activation that consumes the retained
+   property-11 path after `0x495D40` selects the first root component. Do not
+   force the remaining hierarchy synchronously from the 100 ms timer. See
+   [folderfollow-saved-path-rebuild-test.md](folderfollow-saved-path-rebuild-test.md).
+3. Stage the property-24 path at commit `0x42CD5C` and `0x42CBDC`, then consume
    the staged change only from this hardware-confirmed UI owner; do not rebuild
    or retarget from the playback worker.
-3. Identify a confirmed UI-queue or complete stock navigation transaction that
+4. Identify a confirmed UI-queue or complete stock navigation transaction that
    can replace an unrelated open Folder View. Do not use `0x4919E0` as a
    general retarget or invoke activity initialization from the 100 ms timer.
-4. Trace the state transitions around the sole property-31 consumer at
+5. Trace the state transitions around the sole property-31 consumer at
    `0x4E4B80` and determine why it sometimes has no resolvable media ID.
-5. Add a byte-level patch manifest for the confirmed full-navigation and wake
+6. Add a byte-level patch manifest for the confirmed full-navigation and wake
    fixes.
-6. Remove `/etc/init.d/S99adb` after device testing is complete.
+7. Remove `/etc/init.d/S99adb` after device testing is complete.

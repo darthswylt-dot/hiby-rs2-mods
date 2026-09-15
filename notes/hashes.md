@@ -19,7 +19,8 @@ testing.
 | Recovered post-FD9 source-state diagnostic; not hardware-classified | `02fd1dd13db7aac1e6d150ec1866b93f57022c1d668b114720a36b7f232e5f87` |
 | Successful crash-resistant two-phase pointer diagnostic | `eba4b0c99ae0f0436a038d9db242b62176c9120bc79d64b6da40564288cf3a01` |
 | Successful passive playback-commit timing diagnostic | `d78e7805cf630af004f43317be8ee9ce3fcbcc78eb6fd42a0a7d18179653629e` |
-| Prepared passive live path-contract diagnostic; not yet hardware-run | `599cc5e2143aae7633da967f3ea819d0683d2b9d5b184fd799930e07d1c9dc01` |
+| Successful passive live path-contract diagnostic | `599cc5e2143aae7633da967f3ea819d0683d2b9d5b184fd799930e07d1c9dc01` |
+| Safe partial property-11 Folder View rebuild test; root selection only | `4c43e0a4853f94f9b0577b8fffd1d2ca9ae97dca1dc3d1f033c006565e7fddd6` |
 
 ## Local artifact inventory
 
@@ -50,6 +51,7 @@ which is 7,109,624 bytes.
 | `hiby_player_1.4_sortfix_fullnav_wake_ui_timer_diag_test` | `32c916ee3762568b06fe05279360b8d2b8f7de5e3ae47be37511e1c44baa3e8a` |
 | `hiby_player_1.4_sortfix_fullnav_wake_playing_timer_diag_test` | `4927297b4ceebe3b7f8d4bb8854c632e2083d5212aa9f02c9182c9f213acf3fe` |
 | `hiby_player_1.4_sortfix_fullnav_wake_playing_path_diag_test` | `599cc5e2143aae7633da967f3ea819d0683d2b9d5b184fd799930e07d1c9dc01` |
+| `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_saved_path_rebuild_test` | `4c43e0a4853f94f9b0577b8fffd1d2ca9ae97dca1dc3d1f033c006565e7fddd6` |
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_test` | `7e202a5f1e176138410da8ab7e79c5281e0741a3ef668212de29d07fb33fd23d` |
 | `hiby_player_1.4_sortfix_fullnav_wake_swipediag` | `27ef241000b88143ef9b8282739c3b58b97912f3a1ae5941e7e3e810a41f54f6` |
 | `hiby_player_1.4_sortfix_fullnav_wakefix_test` | `c0492d90058d0b2ccc20b5763cf77e54a965a144048e87300c5ed1714abd6dba` |
