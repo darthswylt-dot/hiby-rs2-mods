@@ -364,9 +364,19 @@ The device was then rebooted successfully to `/usr/bin/hiby_player`.
 1. Replace the `current_view == last vg_listview_explorer` gate used by the
    safe partial `4c43e0a4...` test with a validated classification that also
    recognizes deep Folder View screens. Hardware proved that the equality gate
-   suppresses a Slayer -> Sleep transition until one Back action.
-2. Trace and schedule the ordinary activation that consumes the retained
-   property-11 path after `0x495D40` selects the first root component. Do not
+   suppresses a Slayer -> Sleep transition until one Back action. The first
+   passive active-vs-last view diagnostic unexpectedly exited before any view
+   became active; do not reinstall it. See
+   [folderfollow-view-depth-diag.md](folderfollow-view-depth-diag.md). The
+   prior successful playing-path diagnostic already records both view pointers;
+   reusing it during manual deep navigation was the lower-risk next measurement.
+   That run confirmed two explorer objects alternate by depth: at the deep
+   Show No Mercy release track list, `current_view=0x00ef171c` while
+   `last_view=0x0122219c`; after one Back both equal `0x0122219c`. See the
+   completed result in [folderfollow-view-depth-diag.md](folderfollow-view-depth-diag.md).
+2. Trace and schedule the ordinary activation that completes descent after
+   `0x495D40` selects the first root component. `0x495D40` clears property 11,
+   so that activation cannot consume a retained property-11 path. Do not
    force the remaining hierarchy synchronously from the 100 ms timer. See
    [folderfollow-saved-path-rebuild-test.md](folderfollow-saved-path-rebuild-test.md).
 3. Stage the property-24 path at commit `0x42CD5C` and `0x42CBDC`, then consume

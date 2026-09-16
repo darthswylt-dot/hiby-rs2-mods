@@ -88,9 +88,11 @@ the one-shot flag was absent.
 ## Interpretation
 
 The stock property-11 transaction is safe on this UI owner, but one synchronous
-`0x495D40` call advances only to the card root and selects the first saved-path
-component. The following ordinary activation consumes the retained path and
-completes the descent. A second limitation is now hardware-proven: in a deep
+`0x495D40` call visibly advances only to the card root and selects the first
+saved-path component. The following ordinary activation completes the descent.
+It does **not** consume a retained property-11 path: `0x495D40` clears that
+property before returning. The deeper state that activation uses is still to
+be identified. A second limitation is hardware-proven: in a deep
 `Show no mercy` screen, the current view is not the same pointer returned as
 the last `vg_listview_explorer`, so the conservative equality gate suppresses
 the rebuild. One Back action exposes an eligible explorer view and the pending
@@ -98,9 +100,12 @@ Sleep target is then handled.
 
 The next candidate should preserve the successful property-11 transaction but
 replace the pointer-equality gate with a statically and passively validated
-classification of deep Folder View screens. It must also schedule, rather than
-synchronously force, the ordinary activation that completes descent from the
-selected root component.
+classification of deep Folder View screens. The first read-only view-depth
+diagnostic unexpectedly exited, but a repeat run of the previously successful
+playing-path logger confirmed the pointer mismatch during deep navigation;
+see [view-depth results](folderfollow-view-depth-diag.md). The ordinary
+activation that completes descent should be traced and scheduled, not
+synchronously forced from the timer.
 
 ## Original intended hardware sequence
 

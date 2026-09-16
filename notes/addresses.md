@@ -85,9 +85,11 @@ affect the reproduced short-Power scenario.
 | `0x4916A0` | Performs the current-view preparation used by stock `0x491E80`. |
 | `0x4919E0` | Reconciles the depth of an existing explorer stack for ancestor/descendant navigation. It compares `\\` counts and makes no path/list replacement at equal depth, so it cannot handle flat sibling transitions. The `c637...` hardware run did not reach this call because preceding `0x4E4B80` returned `-1`. |
 | `0x495A40` | Locked stock explorer-view cleanup. Uses controller virtual callbacks `+0x274/+0x278`, collects matching `vg_listview_explorer` views, and removes them through ordinary view API `0x43B240`. |
+| `0x4E5560` / `0x4E5680` | Resolves the active/current view from the controller's ordered view list; `0x4E5680` is a thin wrapper. The active view's type-name pointer is at `view+0x0`. |
+| `0x4E57E0` | Scans controller views by type name and overwrites its output on every match; returns the last matching view, which need not equal the active one. |
 | `0x495B80` | Restores an explorer hierarchy from saved UTF-16 property 11. For each backslash in the saved full path it constructs a prefix ending in `*` and calls `0x491E80`; returns 1 after at least one successful level. |
 | `0x495D40` | Complete stock storage-open transaction. It removes explorer views through locked `0x495A40`, restores the saved property-11 hierarchy through `0x495B80`, clears property 11, and uses its supplied `a:\\*`/`b:\\*`/`c:\\*` path only as fallback. |
-| property 11 | One-shot UTF-16 explorer restoration path (512 code units / 1024 bytes). Stock callback `0x4BD100` saves `selected_item+0x3DD8`; `0x495D40` consumes and clears it. |
+| property 11 | One-shot UTF-16 explorer restoration path (512 code units / 1024 bytes). Stock `sub_back_iv_close` callback `0x4BD100` saves `selected_item+0x3DD8`; `0x495D40` consumes and clears it. |
 | `0xB8BAC8` | `lg_activity_main` registration/status slot. Live path telemetry read value 1; `0x4E5900` uses it as a registration guard, so it is not a live activity-object pointer. |
 | `0x4BAA68` | Return site in the common callback dispatcher observed for all three `a2=1,a3=1` diagnostic records. |
 | `0xADD360` | Global pointer to a playback/source object sampled by the recovered `02fd...` diagnostic. The object remained stable across the tested folder transitions. |

@@ -25,8 +25,10 @@ cannot be restored.
 
 The setter's property-11 case copies at most 512 UTF-16 code units (1024
 bytes) into its private field. There is only one stock non-empty write:
-callback `0x4BD100` gets the selected explorer item through `0x4E5560` and
-saves the full path at `selected_item+0x3DD8`. Consequently the safest nested
+callback `0x4BD100`, registered under `sub_back_iv_close`, gets the selected
+explorer item through `0x4E5560` and saves the full path at
+`selected_item+0x3DD8`. This is a close-path save, not the ordinary folder-open
+callback. Consequently the safest nested
 folder-follow candidate is not a direct nested-path call. It is: save the
 committed property-24 full file path as property 11, then invoke the complete
 `0x495D40` transaction with the matching storage root as fallback.
