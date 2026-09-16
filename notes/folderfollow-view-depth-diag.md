@@ -19,8 +19,9 @@ Static tracing gives a narrower interpretation than the previous test note:
 - `0x4E57E0` scans the same list by view-type name and overwrites its output
   for each match. It returns the **last matching** explorer view, which need
   not be the active one.
-- The view's type-name pointer is at `view+0x0`; stock `0x43A0C0` compares this
-  name against requested view types.
+- The active view and last-matching view returned from the `controller+0x298`
+  list have their narrow type name inline at object offset zero. This was
+  initially misread as a pointer; see the correction below.
 - `0x4BD100`, the sole non-empty property-11 writer, is registered under UI
   element `sub_back_iv_close` in metadata around `0xAA5574`. It saves a path
   on a close action; it is not the ordinary folder-activation callback.
@@ -125,13 +126,32 @@ That run did **not** include manual navigation to the deep Slayer Folder View,
 so it cannot settle whether active and last diverge there.
 
 Relative to that proven logger, this failed build added dereferencing the
-active view's type pointer at `view+0`, copying/comparing its narrow type name,
-reading `view+0x40`, and copying its `+0x3DD8` path when the type matches. It
-also copied the last view's type name and read its `+0x40`. All record regions
-fit the allocated stack frame, and stock `0x43A0C0` independently confirms
-`view+0` as the type-name pointer. Those checks rule out an obvious static
-offset overlap, not a runtime lifetime/race or another failure mode. The first
-non-null active view remains only a hypothesis for the exit point.
+first word at `view+0` as though it were a pointer to a narrow type name,
+then copying/comparing from that fabricated pointer. It also read `view+0x40`
+and conditionally copied the active view's `+0x3DD8` path. The initial audit
+incorrectly applied the object layout seen in stock `0x43A0C0` to a
+**different** controller list. The corrected interpretation below identifies
+the invalid type-name dereference as the leading crash explanation.
+
+## Static root-cause correction
+
+`0x4E5560` returns `lw v0,+0x8(node)` from the ordered list at
+`controller+0x298`. `0x4E57E0` traverses that same list, loads the same
+`node+0x8` value into `s0`, then passes `s0` **directly** as `strncmp`'s first
+string argument at `0x4E5840-0x4E5848`. The returned object thus begins with
+an inline type-name string. In contrast, `0x43A0C0` traverses the distinct
+list at `controller+0x34` and dereferences its entry at `+0` before `strcmp`.
+That unrelated layout was the source of the mistaken pointer assumption.
+
+The failed wrapper's `lw s4,0(s2)` at both active- and last-view paths loaded
+the first four ASCII bytes of the inline name (for `vg_listview_explorer`,
+little-endian `0x6c5f6776`) and treated them as an address for `strncpy` and
+`strcmp`. This is an invalid userspace address, so the first non-null view
+would fault before a complete record could be written. The 315-record failed
+log ends at 53.916982880 s with null views. In the later successful run on
+the same route, the first non-null view appeared at 54.184615010 s. The
+timing and control flow strongly support this root cause, although no crash
+PC was recovered from the failed boot. Keep the failed binary blacklisted.
 
 For the next hardware observation, prefer the *previously successful*
 `playing_path_diag` build and its existing decoder. Navigate manually from
@@ -180,3 +200,74 @@ Next implementation work should classify the active explorer by the stock
 view-list/type contract and obtain the active view's path, with lifetime and
 reentrancy protected. Do not replace the equality gate with an unguarded
 dereference based only on the failed `VDEP` build.
+
+## Corrected candidate: offline preparation
+
+`scripts/build_folderfollow_view_depth_diag_v2.py` preserves the failed
+wrapper's control flow and record layout but replaces its two erroneous
+`lw s4,0(view)` instructions at `0x988108` and `0x988198` with
+`move s4,view`. The existing bounded narrow-string copy/compare then reads the
+inline type name from the same address as stock `0x4E57E0`, though its exact
+`strcmp` differs from stock's prefix match. It also replaces two
+unneeded `view+0x40` reads at `0x988110` and `0x9881A0` with zero values, so
+the corrected logger does not dereference that optional field on a non-explorer
+active view. No other wrapper instruction changes. The separately generated
+artifact is:
+
+```text
+artifacts/hiby_player_1.4_sortfix_fullnav_wake_view_depth_diag_v2_test
+SHA-256 a943596abe82468142af3a8af00651782a6960e98b62e01b49a18b9c3fb42c42
+size    7,133,528 bytes
+```
+
+`scripts/verify_folderfollow_view_depth_diag_v2.py` confirms exact source
+normalization, byte scope, and precisely those four instruction substitutions.
+The 20 verified control transfers are unchanged. At this preparation stage,
+that established only a static correction, not hardware safety. The subsequent
+explicitly requested hardware run is recorded below.
+
+## Corrected v2 hardware run
+
+The user explicitly requested installation on 2026-09-16. The one-shot v2
+launcher was `scripts/rs2_folderfollow_view_depth_diag_v2_launcher.sh`. The
+process remained alive while the user left the DAC screen, opened the SD-card
+root, started Roots in Russia, and navigated to the track list inside
+`1987 USA Discovery Systems...` without changing the playing track. It did not
+repeat the first-view crash. The process was stopped deliberately after the
+decisive sample; the launcher rebooted to stock `/usr/bin/hiby_player`
+(`0fedb30f...`), and the one-shot flag is absent.
+
+Closed log:
+
+```text
+artifacts/rs2_folderfollow_view_depth_diag_v2_final.bin
+size:    4,558,400 bytes (2,590 complete records)
+SHA-256: 842dcb2c4401f01d05bd70358c56164f964f00381dc9cbe38b1278bb10b51986
+```
+
+The first active main-explorer view appeared at record 773, and the first
+Folder View at record 806. Both type names decoded correctly, directly
+confirming the inline-string correction. Important transitions:
+
+| Record | Active view type and path | Last matching explorer type and path |
+| --- | --- | --- |
+| 806 | `vg_listview_explorer`, `a:\\*` | Same view and path |
+| 1629 | `vg_listview_explorer##1`, path not copied | Same view, Roots wildcard path |
+| 2200 | `vg_listview_explorer`, `a:\\Slayer - Discography\\Albums\\*` | `vg_listview_explorer##1`, Slayer root wildcard path |
+| 2201 | `vg_listview_explorer##1`, path not copied | Same view, Show No Mercy wildcard path |
+| 2266 | `vg_listview_explorer`, `a:\\Slayer - Discography\\Albums\\1983 - Show No Mercy\\1987 USA Discovery Systems, Metal Blade 71034-2\\*` | `vg_listview_explorer##1`, `a:\\Slayer - Discography\\Albums\\1983 - Show No Mercy\\*` |
+
+The record 2266 state persisted through the end of the log. With Roots still
+playing, the visible deep track-list view is a distinct explorer object whose
+own path is one level deeper than the path returned by the last-match helper.
+This conclusively invalidates both pointer equality and last-view path as a
+general proxy for the active Folder View.
+
+The v2 logger used exact `strcmp` for its optional active-path copy. That
+correctly copied the unsuffixed `vg_listview_explorer` objects but did not
+copy the path of `vg_listview_explorer##1` objects. Stock `0x4E57E0` uses a
+prefix-length `strncmp`, so both names count as explorer. A future active-view
+classifier must follow that stock prefix contract; it must not demand exact
+name equality. The `state_+40=0` values printed by the shared decoder are
+placeholders in v2 because those two optional reads were removed, not observed
+state. No new functional patch was installed in this run.

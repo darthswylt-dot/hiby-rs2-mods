@@ -374,6 +374,16 @@ The device was then rebooted successfully to `/usr/bin/hiby_player`.
    Show No Mercy release track list, `current_view=0x00ef171c` while
    `last_view=0x0122219c`; after one Back both equal `0x0122219c`. See the
    completed result in [folderfollow-view-depth-diag.md](folderfollow-view-depth-diag.md).
+   Subsequent static audit found the failed diagnostic's concrete type-layout
+   error: the `controller+0x298` view has an inline type string at `view+0`,
+   but the wrapper treated its first four characters as a pointer. A v2
+   artifact correcting those two loads and removing two unnecessary `+0x40`
+   reads was built, statically verified, and then hardware-tested. It remained
+   healthy through root, Roots playback, and deep Slayer navigation. Record
+   2266 proves active path `...Show No Mercy\\1987 USA Discovery Systems...\\*`
+   while the last explorer path remains parent `...Show No Mercy\\*`.
+   Its exact-name comparison did not copy paths for suffixed
+   `vg_listview_explorer##1` views; stock uses a prefix match instead.
 2. Trace and schedule the ordinary activation that completes descent after
    `0x495D40` selects the first root component. `0x495D40` clears property 11,
    so that activation cannot consume a retained property-11 path. Do not

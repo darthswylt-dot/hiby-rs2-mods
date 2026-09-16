@@ -22,6 +22,7 @@ testing.
 | Successful passive live path-contract diagnostic | `599cc5e2143aae7633da967f3ea819d0683d2b9d5b184fd799930e07d1c9dc01` |
 | Safe partial property-11 Folder View rebuild test; root selection only | `4c43e0a4853f94f9b0577b8fffd1d2ca9ae97dca1dc3d1f033c006565e7fddd6` |
 | Failed passive active-vs-last Folder View depth diagnostic; unexpected process exit | `d1c3f979dcc78d30d6ba5a76e25c4d11c06a3af3390972ac3a1d2741f20f4adf` |
+| Corrected view-depth diagnostic v2; successful passive hardware run | `a943596abe82468142af3a8af00651782a6960e98b62e01b49a18b9c3fb42c42` |
 
 ## Local artifact inventory
 
@@ -54,6 +55,7 @@ which is 7,109,624 bytes.
 | `hiby_player_1.4_sortfix_fullnav_wake_playing_path_diag_test` | `599cc5e2143aae7633da967f3ea819d0683d2b9d5b184fd799930e07d1c9dc01` |
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_saved_path_rebuild_test` | `4c43e0a4853f94f9b0577b8fffd1d2ca9ae97dca1dc3d1f033c006565e7fddd6` |
 | `hiby_player_1.4_sortfix_fullnav_wake_view_depth_diag_test` | `d1c3f979dcc78d30d6ba5a76e25c4d11c06a3af3390972ac3a1d2741f20f4adf` |
+| `hiby_player_1.4_sortfix_fullnav_wake_view_depth_diag_v2_test` | `a943596abe82468142af3a8af00651782a6960e98b62e01b49a18b9c3fb42c42` |
 | `hiby_player_1.4_sortfix_fullnav_wake_folderfollow_test` | `7e202a5f1e176138410da8ab7e79c5281e0741a3ef668212de29d07fb33fd23d` |
 | `hiby_player_1.4_sortfix_fullnav_wake_swipediag` | `27ef241000b88143ef9b8282739c3b58b97912f3a1ae5941e7e3e810a41f54f6` |
 | `hiby_player_1.4_sortfix_fullnav_wakefix_test` | `c0492d90058d0b2ccc20b5763cf77e54a965a144048e87300c5ed1714abd6dba` |
@@ -79,6 +81,7 @@ locally as `target_b_full.bin` only for analysis.
 | `rs2_folderfollow_playing_path_diag_final.bin` (5484 complete records; closed after stock reboot) | `0a2bb3912b1cd6283b4b909b1325c5e17bbdfdd6b0d2a334194a077330088986` |
 | `rs2_folderfollow_view_depth_diag_failed_boot.bin` (315 complete records; unexpected exit) | `efbb68987801cf57e7bde69f4c5eee2855751f66e6a8ea163ba778b86017b3fc` |
 | `rs2_folderfollow_playing_path_diag_deep_navigation_final.bin` (2069 complete records; deep navigation and Back, closed after stock reboot) | `ec1383753a0862a3fcd7bc0dbdcf93452d19559a5e85718414f24e0bfbaef18b` |
+| `rs2_folderfollow_view_depth_diag_v2_final.bin` (2590 complete records; active-vs-last paths, closed after stock reboot) | `842dcb2c4401f01d05bd70358c56164f964f00381dc9cbe38b1278bb10b51986` |
 
 Historical failed artifacts no longer present locally:
 
