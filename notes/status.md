@@ -361,7 +361,22 @@ The device was then rebooted successfully to `/usr/bin/hiby_player`.
 
 ## Remaining work
 
-1. Replace the `current_view == last vg_listview_explorer` gate used by the
+Hardware-tested 2026-09-29: [active-view rebuild candidate](folderfollow-active-view-rebuild-test.md),
+SHA-256 `6e872416...`, successfully followed Roots -> Slayer -> Sleep,
+including Sleep directly from the deep Slayer list without Back. It recognizes both
+explorer names by the stock prefix, compares the active path, and records every
+attempted target to avoid timer loops when the stock transaction leaves the
+active screen at the root. Instruction-level mock tests passed; full automatic
+descent remains unresolved. Opening the selected folders showed the playing
+track highlighted, and volume worked throughout. Stock `0fed...` was restored
+and its live executable hash verified after the intentional end of the test.
+
+An additional observed defect needs investigation: within Slayer, the highlight
+moves beyond the visible rows without scrolling the list. This has not been
+compared with stock/baseline behavior and is not yet a proven new regression.
+
+1. Completed in the partial candidate above: replace the
+   `current_view == last vg_listview_explorer` gate used by the
    safe partial `4c43e0a4...` test with a validated classification that also
    recognizes deep Folder View screens. Hardware proved that the equality gate
    suppresses a Slayer -> Sleep transition until one Back action. The first

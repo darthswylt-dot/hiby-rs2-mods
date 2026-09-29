@@ -32,6 +32,7 @@ PROPERTY_GET = 0x425360
 STOCK_STORAGE_OPEN = 0x495D40
 PLAYBACK_PATH = 0xADD46C
 EXPLORER_VIEW_TYPE = 0x922704
+STRNCMP_PLT = 0xA5BA40
 
 FRAME_SIZE = 0x800
 TARGET_OFFSET = 0x40
@@ -92,7 +93,7 @@ def jal(target: int) -> int:
     return j_type(0x03, target)
 
 
-def build_wrapper() -> bytes:
+def build_wrapper(*, active_type_gate: bool = False) -> bytes:
     words: list[int] = []
     labels: dict[str, int] = {}
     fixups: list[tuple[int, str, int, int, int]] = []
@@ -129,7 +130,7 @@ def build_wrapper() -> bytes:
     branch(0x04, S0, ZERO, "done")
     emit(0)
 
-    # Mutate only while the active view is also the last Folder View.
+    # Resolve the active view on the proven live UI owner.
     emit(sw(ZERO, 0x20, SP))
     emit(move(A0, S0))
     emit(addiu(A1, SP, 0x20))
@@ -139,19 +140,35 @@ def build_wrapper() -> bytes:
     branch(0x04, S1, ZERO, "done")
     emit(0)
 
-    emit(sw(ZERO, 0x24, SP))
-    emit(lui(S2, EXPLORER_VIEW_TYPE >> 16))
-    emit(addiu(S2, S2, EXPLORER_VIEW_TYPE & 0xFFFF))
-    emit(move(A0, S0))
-    emit(move(A1, S2))
-    emit(addiu(A2, SP, 0x24))
-    emit(jal(FIND_LAST_VIEW_BY_TYPE))
-    emit(0)
-    emit(lw(S2, 0x24, SP))
-    branch(0x04, S2, ZERO, "done")
-    emit(0)
-    branch(0x05, S1, S2, "done")
-    emit(0)
+    if active_type_gate:
+        # 0x4E57E0 uses the same inline type-name prefix contract. Its view
+        # names include both the base type and suffixed "##1" variants.
+        emit(lui(S2, EXPLORER_VIEW_TYPE >> 16))
+        emit(addiu(S2, S2, EXPLORER_VIEW_TYPE & 0xFFFF))
+        emit(move(A0, S1))
+        emit(move(A1, S2))
+        emit(addiu(A2, ZERO, 20))  # len("vg_listview_explorer")
+        emit(jal(STRNCMP_PLT))
+        emit(0)
+        branch(0x05, V0, ZERO, "done")
+        emit(0)
+        emit(move(S2, S1))  # retain the active view for path comparison
+    else:
+        # Historical conservative gate, retained byte-for-byte for the
+        # successfully tested 4c43... artifact.
+        emit(sw(ZERO, 0x24, SP))
+        emit(lui(S2, EXPLORER_VIEW_TYPE >> 16))
+        emit(addiu(S2, S2, EXPLORER_VIEW_TYPE & 0xFFFF))
+        emit(move(A0, S0))
+        emit(move(A1, S2))
+        emit(addiu(A2, SP, 0x24))
+        emit(jal(FIND_LAST_VIEW_BY_TYPE))
+        emit(0)
+        emit(lw(S2, 0x24, SP))
+        branch(0x04, S2, ZERO, "done")
+        emit(0)
+        branch(0x05, S1, S2, "done")
+        emit(0)
 
     # Copy committed property 24 and derive its parent wildcard path.
     # addiu sign-extends the low half, so bias the high half when bit 15 is set.
@@ -205,7 +222,7 @@ def build_wrapper() -> bytes:
     branch(0x04, V0, ZERO, "done")
     emit(0)
 
-    # No-op while the Folder View already matches the playing folder.
+    # No-op while the gated Folder View already matches playback.
     emit(addiu(A0, S2, 0x3DD8))
     emit(move(A1, S1))
     emit(jal(WIDE_COMPARE))
@@ -236,25 +253,27 @@ def build_wrapper() -> bytes:
     emit(jal(STOCK_STORAGE_OPEN))
     emit(0)
 
-    # Never dereference the old view pointer after 0x495D40. Resolve the new
-    # last explorer and retain TARGET as property 11 only if rebuild failed.
-    emit(sw(ZERO, 0x24, SP))
-    emit(lui(S2, EXPLORER_VIEW_TYPE >> 16))
-    emit(addiu(S2, S2, EXPLORER_VIEW_TYPE & 0xFFFF))
-    emit(move(A0, S0))
-    emit(move(A1, S2))
-    emit(addiu(A2, SP, 0x24))
-    emit(jal(FIND_LAST_VIEW_BY_TYPE))
-    emit(0)
-    emit(lw(S2, 0x24, SP))
-    branch(0x04, S2, ZERO, "mark_failed")
-    emit(0)
-    emit(addiu(A0, S2, 0x3DD8))
-    emit(addiu(A1, SP, TARGET_OFFSET))
-    emit(jal(WIDE_COMPARE))
-    emit(0)
-    branch(0x04, V0, ZERO, "done")
-    emit(0)
+    # Never dereference the old view after 0x495D40. In active-view mode,
+    # record every attempted target: a matching last view does not mean that
+    # the active root screen reached the target, and must not permit a loop.
+    if not active_type_gate:
+        emit(sw(ZERO, 0x24, SP))
+        emit(lui(S2, EXPLORER_VIEW_TYPE >> 16))
+        emit(addiu(S2, S2, EXPLORER_VIEW_TYPE & 0xFFFF))
+        emit(move(A0, S0))
+        emit(move(A1, S2))
+        emit(addiu(A2, SP, 0x24))
+        emit(jal(FIND_LAST_VIEW_BY_TYPE))
+        emit(0)
+        emit(lw(S2, 0x24, SP))
+        branch(0x04, S2, ZERO, "mark_failed")
+        emit(0)
+        emit(addiu(A0, S2, 0x3DD8))
+        emit(addiu(A1, SP, TARGET_OFFSET))
+        emit(jal(WIDE_COMPARE))
+        emit(0)
+        branch(0x04, V0, ZERO, "done")
+        emit(0)
     label("mark_failed")
     emit(addiu(A0, ZERO, 11))
     emit(addiu(A1, SP, TARGET_OFFSET))

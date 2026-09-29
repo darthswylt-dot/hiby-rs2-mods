@@ -26,6 +26,11 @@ testing.
 
 ## Local artifact inventory
 
+Hardware-tested active-view rebuild candidate (successful partial folder follow;
+automatic descent and selection scrolling unresolved):
+`hiby_player_1.4_sortfix_fullnav_wake_active_view_rebuild_test`, SHA-256
+`6e872416963504c8a1823442c143cefbf081d197f0e25b711281bc4060058a50`.
+
 All listed local files are 7,133,528 bytes except the firmware 1.3 sortfix,
 which is 7,109,624 bytes.
 
