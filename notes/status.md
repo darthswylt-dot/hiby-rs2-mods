@@ -544,3 +544,242 @@ to `0fedb30f...`, with no test flag. Final closed log
 local/device hashes agree. All ten fills pass, 65/65 events drained, 7,729
 status records, zero loss flags and no framing errors. Stock is running;
 diagnostic files/backups remain preserved and unarmed. No commit or push.
+
+### Files input-to-scroll route traced (2026-09-30)
+
+Local investigation after FILL connected the explorer table callback
+`0x49B000` to the input-state branch `0x496940` -> `0x4BA500` -> `0x8B43C0`
+(relative content-y request `0x30002`). These handlers also mutate gesture and
+scrollbar state; they are not safe drop-in playback-timer helpers. The generic
+setter's return zero does not prove an offset change, and its clamp can become
+negative for a smaller-than-viewport raw extent. A new read-only checker
+validates 83 anchors plus explorer/resource names and passes 15 cases executing the
+actual setter instructions with a mocked parent invalidation call.
+
+The explicit stock setter -> `0x490D00` -> gated `0x499C20` pairing is the
+redraw/refill lead. Runtime flags, safe view lifetime/dispatch, and a coherent
+current row identity remain prerequisites. See
+[manual scroll route](folderfollow-manual-scroll-route.md). No firmware or
+device state changed; stock remains as verified at test shutdown. No new
+commit or push in this research step.
+
+The next static pass traced C+0x3C back to the selected `viewgroup` resource's
++0x0C through `0x43AD00`/`0x8B4120`; the actual flags are still unmeasured.
+Raw extent C+0x20 is initialized only with mode bit 4, so its captured zero
+does not alone establish a bug. The conditional redraw chain is now bound:
+parent dirty rectangle -> `0x8B1420` -> `0x8B4660`/`0x8B3FA0` ->
+C+0x48=`0x439EC0` -> `0x438200` -> widget+0x154=`0x4908A0` -> gated
+`0x499C20`. Runtime widget selection, +0x8C rearming and owner/locking remain
+unproven; no callback coverage is inferred from FILL. The redraw high bit
+preserves tested low-bit setter behavior. No build or device operation.
+
+### Queued rendering and deferred row refresh (2026-09-30)
+
+The UI loop `0x43C980` calls both the queued-event dispatcher `0x454200`
+(table entry 0x1001 -> `0x451CA0` -> render pass) and timer pump `0x473560`.
+Explorer-bound `0x49B460` can arm ID 20 with interval 100 through `0x499240`;
+explorer movement `0x49B000` cancels that timer. Callback `0x49A1A0` resolves
+the selected view anew, checks V+0x70 bit 0, calls `0x499C20`, and removes
+itself. It ignores registered data and does not require V+0x8C. This is a
+separate route from the initialization/render-completion callback, not proof
+that every manual scroll in FILL executed it. Actual OS thread, lifetime and
+lock coverage remain unverified; ID 20 must not be repurposed.
+
+The new read-only dispatch checker passes 42 anchors and eight executions of
+the original callback/helper instructions with external calls mocked. See
+[refresh dispatch](folderfollow-refresh-dispatch.md). No build, installation,
+device call, commit or push in this step.
+
+### Offscreen-highlight diagnosis refined (2026-09-30)
+
+Closed SCRL reanalysis finds cue 5 at y=0 in 197 consecutive samples spanning
+25.079197579 seconds before manual movement. All 821 deep Slayer samples
+have the same sampled address/geometry/cache-summary tuple; this is not a
+generation or atomicity proof. FILL is verified independently, not joined
+to the SCRL timeline. A new hash-gated read-only report reproduces the result.
+
+The leading hypothesis is a missing/ineffective reveal request, not a short
+refresh delay. The exact cause remains open: existing logs contain neither
+setter requests/results nor callback coverage. Row refresh calculates its
+first row from the existing y; invoking it alone is not a demonstrated fix.
+The [diagnosis and probe-site audit](folderfollow-scroll-diagnosis.md) specifies
+the discriminating passive measurements and preserves build/install gates.
+No firmware or device state was changed.
+
+### MOVE v2 diagnostic built locally (2026-09-30)
+
+Artifact `hiby_player_1.4_sortfix_fullnav_wake_move_diag_test`, SHA-256
+`15cf4457e829692a52482c0b64a8b478f426f014b7cb31099ed6325a496c3f07`,
+is built and exactly reproduced/verified. It records scoped original
+content-y setter transactions (old/requested/returned y, flags/result/caller),
+original row-refresh inputs and MSNP current-view/playback snapshots. Producers
+use a bounded BSS buffer; the existing UI callback exports status and up to
+eight events per invocation. Position/size and absent-parent setter calls are
+excluded from event capture but retain original execution. No automatic
+scrolling/folder following is added.
+
+All 59 tests pass, including actual-source setter comparisons and logging
+failure paths. The launcher syntax is checked. Scope is 1,246 changed bytes
+against golden, 1,736 code bytes in the existing cave, and 98,368 bytes of
+appended BSS. Hardware is untested; no device connection, installation,
+arming, commit or push occurred. See [MOVE diagnostic](folderfollow-move-diag.md)
+for the format, limitations and prepared Roots/Slayer/manual-scroll/Sleep run.
+
+### MOVE v2 installed; initial startup verified (2026-09-30)
+
+User explicitly authorized installation. Live stock PID 117 was hash-checked,
+battery reported 100%/Full, and the test flag/MOVE log were absent. Previous
+FILL executable and launcher were saved and hash-verified in
+`artifacts/move_diag_install_backup_20260930/`. New files were staged,
+hash-checked, syntax-checked and renamed into the existing test paths.
+Stock remains unchanged (`0fedb30f...`). After one armed reboot, live PID 123
+matches MOVE `15cf4457...`; FD9 points to its dedicated log, and the one-shot
+flag is gone.
+
+The 623,328-byte startup snapshot has matching local/device SHA-256
+`b0c08a2318b28e84b322963d5d6e8baff4abf7d0448b445432202e0574ec9ef8`.
+Strict decoding accepts 453 snapshots and 453 statuses, reserved=drained=0,
+zero reported losses and no setter/refresh events yet. Startup/logging is
+verified; playback/highlight/volume and the actual event probes await user
+navigation through DAC -> Music -> Files -> SD-card1 -> Roots in Russia.
+Test remains running. No commit or push performed. See
+[MOVE diagnostic](folderfollow-move-diag.md) for deployment and limitations.
+
+Roots playback/highlight/volume subsequently passed per user. Live PID 123
+still matches the candidate. `artifacts/move_diag_roots_20260930.bin`
+(2,513,056 bytes, SHA-256 `dcf7102022af84a43386f7591226cb4843ac53395c0b8b63405e367e231a6fa2`)
+has 1,826 snapshots/statuses and five refresh events, all five drained and
+zero reported losses; strict decoding accepts the exported prefix. Observed
+refresh input flags C+0x3C are 2, y=0, pitch=80 and height=260. Final sampled
+folder/playback identifies Roots. No scoped setter event yet: that probe and
+offscreen/manual-scroll behavior remain to be tested. Deep Slayer is next;
+test process remains running, no commit or push performed.
+
+Deep Slayer entry also passed playback/highlight/volume per user. Snapshot
+`artifacts/move_diag_slayer_entry_20260930.bin` (4,429,984 bytes, SHA-256
+`7b771676016310d36eeca0b9a515d6be0e87e9607bdac61a12b9fc2903e73048`)
+is accepted with 3,218 snapshot/status pairs, three setter transactions and
+18 refresh inputs; all 21 events are drained and reported loss flags are zero.
+Setters from `0x491DF4` request absolute y=0 and return y=0/result=0 with
+flags=2. This validates zero-request capture, not scrolling. Final sample
+identifies the deep Show No Mercy release, cue 0/0, cache count 13 and y=0.
+Live PID 123/hash/FD9 remain verified. Physical Next, offscreen and manual
+scroll checkpoints are next. No commit or push performed.
+
+Slayer physical Next highlight/volume checks subsequently passed per user.
+`artifacts/move_diag_slayer_next_20260930.bin` (6,004,128 bytes, SHA-256
+`135dbe26c70b5866230f867edf6ed631242a6590217e1e9e76d85e71c8a2dc0b`)
+extends the entry prefix, with 4,362 snapshot/status pairs and unchanged
+21/21 event counts, zero reported losses. The 1,144 new snapshots show cue
+brackets 0/0, 1/1 and 2/2 with sampled y=0; no new scoped setter/refresh
+events were captured in this interval. This does not cover excluded calls
+or direct writes. Offscreen reproduction and positive manual movement are
+next. Live diagnostic PID 123/hash/FD9 remain verified; no commit or push.
+
+### MOVE offscreen reproduced; run interrupted by reboot (2026-09-30)
+
+User reports stationary list after highlight left the screen, with volume
+working. An offscreen device copy completed (7,973,184 bytes, SHA-256
+`e181b61124075c46c6b9be3cc6ebe6ad2c48d8639014991de4545fd632a63222`),
+but USB disappeared before transfer. On reconnection, low uptime and stock
+PID 118 showed a reboot. No reboot/signal/rearming command was issued by
+this agent at this stage; the cause is unknown.
+
+The persistent log was recovered as `artifacts/move_diag_recovered_20260930.bin`
+with the same hash as the pre-reboot copy. Its prefix is accepted: 5,793
+snapshot/status pairs, unchanged 21/21 events, zero reported losses. New cue
+2/3/4 samples retain y=0; 468 cue-4 samples span 59.744035839 seconds without
+a new captured scoped setter/refresh event. Nonzero manual scrolling remains
+untested; absence conclusions retain the diagnostic scope limitations.
+Stock live/hash and absent flag are verified. Current-boot dmesg reports an
+unclean FAT unmount, not a prior-boot cause. Run is not rearmed; manual/Sleep
+tests are pending. Files/logs remain preserved; no commit or push performed.
+
+User subsequently confirmed spontaneous reboot. Treat MOVE as an unexpected
+runtime failure and hold it from further device runs. A local read-only
+review and exact artifact verification still pass, as do all 59 tests;
+the root cause is not established. Last exported refresh is associated with
+tick 2,656; snapshots continue to tick 5,793 (401.216096573 seconds after
+the associated snapshot). Settled counters and clean framing do not rule
+out an unexported fault or watchdog/reset outside this telemetry. No new
+device connection, rearm, install, firmware edit, commit or push during this
+audit. A future run needs process-exit/crash/reset evidence capture first.
+
+### MOVE reboot investigation resumed locally (2026-09-30)
+
+Two independent audits found no demonstrated hot-probe ABI/stack/control-flow
+or snapshot/drain/ELF-layout error. The collection procedure has a new
+memory-pressure candidate: five `/tmp` copies on recorded tmpfs, not removed
+by the agent, total 21,543,680 bytes (20.545654 MiB) if retained. The last
+copy completed just before reboot discovery. No saved RAM/RSS/OOM or child
+exit status proves the mechanism, so the cause remains open.
+
+A hash-gated read-only report verifies all checkpoints as exact byte prefixes
+of the recovered log. The longest gap occurs at startup, not at the end;
+final intervals remain approximately 128 ms. Three report tests bring the
+suite to 62 passing tests; firmware/launcher hashes are unchanged. See
+[MOVE reboot analysis](folderfollow-move-reboot-analysis.md) for the reviewed
+facts, limitations and requirements for persistent exit/kernel/memory evidence
+and a non-accumulating checkpoint procedure. No ADB/device access, firmware
+edit, replacement launcher/build, install, rearm, commit or push in this step.
+
+### Evidence-retention launcher prepared locally (2026-09-30)
+
+Following the next user continuation, separate draft
+`scripts/rs2_folderfollow_move_evidence_launcher.sh` was created, SHA-256
+`1cdfed5423da735895993ae18755526cf0395b2c88ad82c138d29ba803f24f6e`.
+It pins the unchanged MOVE candidate, creates fresh card-backed run files,
+captures child stdout/stderr/raw wait status and three memory/kernel state
+attempts, flushes the minimal exit marker before final probes, and keeps
+one-shot recovery. Only a guaranteed prelaunch refusal falls back directly
+to stock; uncertain supervisor failures always request reboot, not a second
+player. It makes no tmpfs log copies and adds no timeout/retry.
+
+All 21 new isolated mock-shell tests pass, as do all 83 repository tests,
+shell syntax and whitespace checks. Two reviews addressed phase/FD/PID/wait
+evidence issues. Hardware/BusyBox behavior is untested. Free-space admission
+is not a growth cap; hard resets, unavailable storage or blocking sync can
+still lose evidence. Host checkpoint collection still needs revision. See
+[evidence launcher](folderfollow-move-evidence-launcher.md). No ADB/device
+access, firmware change, installation, rearm, commit or push in this step.
+
+### Direct-to-host checkpoint collection prepared locally (2026-09-30)
+
+Following the user's go-ahead, `scripts/capture_move_checkpoint.py` replaces
+the accumulating device `/tmp` checkpoint approach with a bounded read-only
+ADB exec-out stream into a fresh host directory. Pre/post probes retain
+memory/status and verify boot/PID/starttime/live MOVE hash/FD9/dev/inode.
+The initial size freezes the prefix byte limit. stdout/stderr bounds apply
+while reading, with no local text pipeline or device-side file copy.
+
+Raw bytes and unsuccessful/partial evidence are retained; complete records
+are strictly decoded without dropping valid unsettled events. Transfer and
+after-probe failures do not suppress independent received-byte analysis.
+Successful checkpoint acceptance requires exact transport, source coherence,
+no partial record and an accepted loss-accounted prefix. No automatic retries
+or device changes. Twenty-three new mock/local-subprocess tests pass; all
+106 repository tests pass. Firmware and launcher hashes remain unchanged.
+See [collector scope and limits](folderfollow-move-checkpoint-collector.md).
+No ADB connection, deployment, rearm, commit or push; real BusyBox/head/stat/
+exec-out support and hardware behavior await scoped verification.
+
+### Read-only device compatibility check failed (2026-09-30)
+
+Following the user's `check` command, actual RS2 gates were tested without
+installation/rearm/MOVE launch/device-side copies/signals/reboot. exec-out
+is rejected (`error: closed`); shell -T is rejected (PTY required); stat is
+absent even as a BusyBox applet. Legacy shell loses remote exit status and
+alters explicit CR/LF controls (10 bytes become 16). A matching 1376-byte
+closed-log prefix contained no CR/LF, so it is not arbitrary binary safety.
+Current collector is incompatible and remains held from live use.
+
+Supported read-only commands, card mount/free-space parsing and memory were
+recorded. Small negative sh -n control worked; full launcher syntax request
+was refused as too long, so full syntax/runtime remain unverified. Boot ID,
+stock PID 118/start ticks 418/hash 0fed..., absent test flag, installed old
+launcher/candidate and persistent log hashes stayed unchanged. Post-reboot
+stock memory is not evidence proving the earlier MOVE reboot cause.
+See [complete device observations](folderfollow-move-device-compatibility.md).
+Next gate is a separately authorized legacy-safe bounded transport/metadata
+design, not installation or a weakening of source identity checks. No
+functional script change, firmware change, commit or push in this step.

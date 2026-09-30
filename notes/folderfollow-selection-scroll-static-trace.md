@@ -1,5 +1,10 @@
 # Selection versus scrolling: initial static trace
 
+Later follow-up: the completed [FILL test](folderfollow-fill-diag.md) and
+[Files input-to-scroll route](folderfollow-manual-scroll-route.md) add measured
+insertion order and instruction-level offset-setter checks. The dated sections
+below retain the conclusions and limitations available at each earlier stage.
+
 Date: 2026-09-29. This is static research following the successful partial
 `6e872416...` hardware run. No new binary was built or installed, and no device
 state was changed during this investigation.
