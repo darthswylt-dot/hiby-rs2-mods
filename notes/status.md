@@ -375,6 +375,32 @@ An additional observed defect needs investigation: within Slayer, the highlight
 moves beyond the visible rows without scrolling the list. This has not been
 compared with stock/baseline behavior and is not yet a proven new regression.
 
+The [initial selection/scroll trace](folderfollow-selection-scroll-static-trace.md)
+corrects `internal+0x5A0` to a working enumeration index, not a proven persistent
+playback selection. The traced `view+0x2A0C` rectangle controls redraw, while
+the rendering path reads separate content offsets. No safe ensure-visible
+operation or scrolling patch has yet been validated; no new build was installed.
+Follow-up tracing identified stock playback-location helper `0x490E20`: it
+resolves a view, obtains a database position from playback metadata, changes
+vertical content offset via `0x8B43C0`, then refreshes via `0x490D00` and
+`0x499C20`. Its lookup has a cue-aware SQL branch. This is a promising existing
+path, not yet approved for periodic use: state gates, database cost, match
+failure, active-view lifetime and manual-scroll policy need validation first.
+Explorer-specific follow-up found type 2 and an empty constructor lookup key
+at `view+0x3824`; the helper's recognized-key SQL route therefore cannot yet be
+assumed valid for Files. Saved-database tests confirm cue-aware row positions
+but also prove that a missing path returns zero, indistinguishable from row 0.
+Slayer's 13 tracks share one FLAC path; Sleep Part I is row 1 because `covers`
+precedes it. A read-only checker preserves these findings. No timer call or
+new device build has been added.
+The Files row path is now traced through `0x4327C0` and cache reader
+`0x4994E0`, with folder-table fallback through `0x6F7CA0`/`0x6F2D20`.
+The saved manager mapping resolves deep Slayer to `list_tb_5` and Sleep to
+`list_tb_6`; these numbers are not runtime constants. The offline checker
+validates all 20 entries and distinguishes missing folder/path/cue from row 0.
+Date-sort SQL uses a different order, so rowid rank is not a universal scroll
+target. Active cache/sort telemetry remains the next safe measurement.
+
 1. Completed in the partial candidate above: replace the
    `current_view == last vg_listview_explorer` gate used by the
    safe partial `4c43e0a4...` test with a validated classification that also
@@ -415,3 +441,106 @@ compared with stock/baseline behavior and is not yet a proven new regression.
 6. Add a byte-level patch manifest for the confirmed full-navigation and wake
    fixes.
 7. Remove `/etc/init.d/S99adb` after device testing is complete.
+
+### Passive scrolling telemetry completed (2026-09-29)
+
+SCRL candidate `5ae6d8195c1f7061cbc9cd0b6ed64e6fd3a623c7945a3218d84473f93777520e`
+is built on normalized golden, without active-view folder-follow rebuilding.
+Eleven offline instruction/mock/decoder tests pass. Exact bytes and patch scope
+are checked separately. The user-authorized hardware run is complete; stock
+recovery was verified via live executable hash `0fedb30f...` and absent test flag.
+See [folderfollow-scroll-diag.md](folderfollow-scroll-diag.md) for limitations,
+record format and hardware results. The dedicated one-shot launcher preserved
+stock, and the final log contains 2,868 complete records.
+Additional ELF audit confirms the five imported function entry points. Short
+log writes are not retried and can invalidate framing; clock failure produces
+zero timestamps. These known diagnostic limitations are documented, not fixed
+in firmware. The artifact hash remains unchanged.
+
+Post-run audit confirms cue advancement without viewport movement, followed
+by successful manual scrolling. Stock bottom adjustment uses
+`*(*(view+0x3B68)+0x1B8)+0x9C`, not the recorded raw `viewport+0x20`.
+The Files lookup key stays empty. The raw database sort selector's address
+chain is confirmed but its value `0x00BDA6C9` is unexplained. Do not derive
+list order or scroll bounds from these two v1 labels. Read-only checker
+`check_scroll_diag_findings.py` validates ten code anchors and the final log.
+
+### Folder-fill diagnostic built, not installed (2026-09-30)
+
+FILL v1 candidate `7e01a34b98584359a3b98312ae040d77feb93a75fe4bdbc4604913da32f1925d`
+is ready for a separately authorized hardware test. It instruments the actual
+mode-zero folder SQL producer: BEGIN, post-append ROW, raw terminal step result
+and END. Producer hooks only populate a bounded append-only BSS buffer; the
+original UI timer drains records to FD9. No scrolling or active-view rebuilding
+is introduced. Buffer capacity is 512 events per process; loss invalidates the
+offline mapping. Extra mapped memory is 304,028 bytes including alignment.
+
+18 new instruction/mock/decoder tests and nine existing cache/fill model tests
+pass; exact artifact/ELF/patch-scope verification passes. Current read-only
+regression checker validates **67** stock anchors and 2,868 prior SCRL records
+(the earlier ten-anchor statement above describes an earlier checker revision).
+Runtime memory ordering, loader acceptance and device stability are untested.
+See [folderfollow-fill-diag.md](folderfollow-fill-diag.md) for the artifact,
+reproduction, capture limitations and one-shot test procedure. No device
+installation, commit or push was performed in this build step.
+
+### FILL v1 installed; initial startup verified (2026-09-30)
+
+Following the user's explicit installation request, the new candidate and
+dedicated one-shot launcher were deployed with verified backups in
+`artifacts/fill_diag_install_backup_20260930/`. After one reboot, live PID 123
+matches `7e01a34b...`, FD9 points to the FILL log, and the one-shot flag is absent.
+Stock remains unchanged. The 10,144-byte startup snapshot decodes as 317 valid
+status records with zero reservations and zero loss flags; no folder producer
+sessions have run yet. Playback/highlight/volume and row capture await the
+interactive Roots test. No commit or push was performed.
+
+Roots stage subsequently passed: user confirmed playback, file highlight and
+volume. The 63,536-byte snapshot `artifacts/fill_diag_roots_20260930.bin`
+contains two accepted fills (card root: three rows; Roots: covers then FLAC),
+11/11 events drained, raw terminal 101 for both, and no reported losses.
+The diagnostic executable is still running with the expected hash. Deep Slayer
+navigation and cue-row capture are the next interactive stage.
+
+Slayer entry subsequently passed: user confirmed playback/highlight/volume.
+The 108,576-byte Slayer snapshot contains six accepted fills and 40/40 events
+drained, with no reported loss. The deep release list has 13 rows sharing one
+FLAC path, cue 0..12 matching insertion indices 0..12 in this captured order.
+All query offsets remain zero. Track switching and manual scrolling are next;
+the test process is left running, with no commit or push.
+
+Physical Next in Slayer also passed highlight/volume checks per user. The
+148,608-byte snapshot retains the same six accepted fills and 40/40 events,
+with zero loss flags; no new captured fill accompanied this switching interval.
+Offscreen-highlight behavior and manual scrolling remain to be checked in
+this FILL run.
+
+Offscreen behavior is now reproduced in FILL: user reports the highlight left
+the screen, the list did not follow, and volume still works. Snapshot
+`artifacts/fill_diag_slayer_offscreen_20260930.bin` (176,032 bytes) still has
+six accepted fills and 40/40 events with zero loss flags. No new captured fill
+occurred. Manual scrolling is the next check; no viewport state is inferred
+from FILL records themselves.
+
+Manual scrolling also passed: user sees the highlighted composition again and
+volume works. The 207,712-byte snapshot retains six accepted fills, 40/40 events
+and zero loss flags. No new captured fill or nonzero query offset appeared;
+cache-window refill remains untested with this small list. Sleep Part 1 is next.
+
+Sleep Part 1 also passed playback/highlight/volume per user. The settled
+244,560-byte snapshot `artifacts/fill_diag_sleep_20260930.bin` contains ten
+accepted fills and 65/65 events with zero loss flags. Sleep's covers is row 0;
+cue 0..5 map to rows 1..6, unlike Slayer's observed cue=row ordering. All query
+offsets remain zero. Interactive stages are complete and saved, but the test
+process is still running; explicit shutdown/recovery authorization is pending.
+The offscreen-highlight defect remains, and no persistent-map or scrolling
+fix is validated by this run. No commit or push performed.
+
+FILL test shutdown was then explicitly authorized and completed. Test PID 123
+received SIGTERM; the one-shot launcher rebooted. Live stock PID 121 now hashes
+to `0fedb30f...`, with no test flag. Final closed log
+`artifacts/fill_diag_final_20260930.bin` is 285,808 bytes, SHA-256
+`7cd4a63322fc2c32d141572a7725d6c00a44b0b506972d00537deb6d257ff0fe`;
+local/device hashes agree. All ten fills pass, 65/65 events drained, 7,729
+status records, zero loss flags and no framing errors. Stock is running;
+diagnostic files/backups remain preserved and unarmed. No commit or push.

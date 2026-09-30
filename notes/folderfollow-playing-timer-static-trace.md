@@ -61,8 +61,11 @@ confirmed that the Roots item was no longer highlighted and volume input still
 worked. A direct live read after the transition found `+0x5A0=3` and
 `+0x5A4=1`.
 
-This refines the interpretation: `+0x5A0` is the list row/index used throughout
-the renderer, while `+0x5A4` enables the current-item/selection-matching path.
+This refines the interpretation: `+0x5A0` is a working list row/index used
+throughout processing and rendering, while `+0x5A4` enables the
+current-item/selection-matching path. Later static tracing found loop-counter
+writes to `+0x5A0`: it is not a proven persistent selected-playback index.
+See [selection/scroll trace](folderfollow-selection-scroll-static-trace.md).
 The highlight disappears naturally because no row in the stale Roots list
 matches the new playback item; it is not caused by a `+0x5A4: 1 -> 0` write at
 the folder crossing. Event 5 is therefore not a folder-follow command.
