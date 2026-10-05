@@ -12,8 +12,10 @@ state was changed during this investigation.
 ## Observation and corrected field interpretation
 
 Within Slayer, playback changes move the visible highlight until it leaves the
-screen, but the list does not follow it. Whether stock/golden behaves the same
-way remains untested; this is not yet a proven regression of folder follow.
+screen, but the list does not follow it. The subsequent 2026-10-01 bare-stock
+comparison reproduced the same stationary viewport with correct highlight and
+working volume; this behavior does not require folder-follow changes. See
+[stock comparison](folderfollow-scroll-diagnosis.md#unmodified-stock-comparison-2026-10-01).
 
 The earlier description of internal-list `+0x5A0` as a current row/index was too
 easy to interpret as the selected playback row. It is demonstrably also a
@@ -267,6 +269,9 @@ compares the supplied UTF-16 folder wildcard with each view's `+0x3DD8`, under
 controller list locking. Unlike `0x4E5320`, it resolves by path, not type name.
 The selected view then feeds `0x4994E0`:
 
+- Its ABI is `(a0=view, a1=output_descriptor, a2=absolute_index)`, whereas
+  `0x4327C0` is `(a0=folder_wildcard, a1=absolute_index, a2=output_descriptor)`.
+  These argument orders must not be interchanged.
 - Let `P=*(view+0x3B68)`. When `index % P[+0x1D4] + P[+0x1DC] == index`,
   the reader tries list object `view+0x64`, method `+0x2C`, at the modulo index.
 - Otherwise (or if that lookup fails), it calls `0x48CFA0(view+0x68, index)`.
@@ -671,6 +676,23 @@ instrumentation build and separately authorized hardware run are required for
 that measurement; neither occurred in this diagnostic pass.
 
 ## Next safe investigation
+
+Update (2026-10-05): the MOVE runs now establish the observed manual setter
+route and absence of its calls during the measured Next progression. A local
+[one-shot reveal model](folderfollow-reveal-model.md) implements policy and
+bounds on owned snapshots only; no live adapter or scroll-fix ELF exists yet.
+The next integration prerequisite is generation ownership/serialization, not
+another repetition of the same manual-scroll test.
+
+The metadata count distinction is now confirmed: constructor 0x4A08E0 binds
+P+0x400/404/408/40C to setters 0x4A07E0/0800/0820/0840, which store
+P+0x1E0 (total), +0x1DC (start), +0x1E4 (requested length), +0x1D4 (capacity).
+The count query call is at **0x495140** (argument setup is 0x49513C). Its
+result is passed to +0x400 at 0x49514C..158, before fill 0x49519C. Only after
+fill does 0x4951A4 read actual L+0x0C. The old `cache_count` diagnostic name
+therefore denotes raw total, not ready/populated rows. Wire format is unchanged.
+
+The older investigation sequence below is retained for history:
 
 1. Identify the writers of the actual active view's `C+0x18`, starting from
    ordinary manual scroll and activation paths. Trace their bounds and locking.

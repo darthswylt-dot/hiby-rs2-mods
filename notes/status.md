@@ -662,7 +662,8 @@ is accepted with 3,218 snapshot/status pairs, three setter transactions and
 18 refresh inputs; all 21 events are drained and reported loss flags are zero.
 Setters from `0x491DF4` request absolute y=0 and return y=0/result=0 with
 flags=2. This validates zero-request capture, not scrolling. Final sample
-identifies the deep Show No Mercy release, cue 0/0, cache count 13 and y=0.
+identifies the deep Show No Mercy release, cue 0/0, sampled total folder count
+13 (`cache_count` wire field, clarified on 2026-10-05) and y=0.
 Live PID 123/hash/FD9 remain verified. Physical Next, offscreen and manual
 scroll checkpoints are next. No commit or push performed.
 
@@ -783,3 +784,168 @@ See [complete device observations](folderfollow-move-device-compatibility.md).
 Next gate is a separately authorized legacy-safe bounded transport/metadata
 design, not installation or a weakening of source identity checks. No
 functional script change, firmware change, commit or push in this step.
+
+### Bare-stock scrolling comparison (2026-10-01)
+
+After migrating the project and ignored evidence to the current computer,
+read-only device checks found stock PID 116, original `0fedb30f...` executable,
+and no one-shot flag. Roots, nested Slayer releases, and Sleep are on the card.
+The installed but inactive MOVE candidate remains `15cf4457...`; it was not
+rearmed, started, replaced or signalled.
+
+The requested Show No Mercy test was completed: physical Next advanced beyond
+the visible rows without scrolling; manual scrolling revealed the highlighted
+playing track and volume worked. This reproduces the symptom on unmodified
+firmware, independently of the earlier golden-plus-probe runs. See
+[stock baseline](folderfollow-scroll-diagnosis.md#unmodified-stock-comparison-2026-10-01).
+
+The next local work prepares an explicitly framed ASCII transport and strict
+identity checks for the legacy ADB environment. Initial read-only controls
+confirmed `od -An -v -tx1 -N`, numeric colour-free `ls -Lndi`, `test -ef` for
+both equal and different files, and mountinfo. Kernel fdinfo has no `mnt_id`;
+that limitation must be handled explicitly, not silently dropped. No new
+firmware or launcher installation is implied by these transport checks.
+
+### Legacy transport passes stock-only byte controls (2026-10-01)
+
+The legacy collector now uses a bounded ASCII hex envelope with explicit
+nonce/completion/remote status, a separately held read FD and strict
+pathname/player FD9/mount/process gates. The original native protocol and
+strict record acceptance are retained. Encoded and decoded partial evidence
+survive failed transfers; there are no device copies or automatic retries.
+
+Actual stock controls passed all 256 byte values plus explicit CR/LF/NUL/FF,
+an intentional remote exit status 37, and a 64-KiB closed-log prefix compared
+with the known local recovery. Paired probes preserve the same stock PID 116,
+boot/starttime, absent flag and installed/log hashes. Evidence is under
+`artifacts/legacy_compatibility_20261001/`. See
+[protocol, exact controls and limits](folderfollow-move-legacy-collector.md).
+
+This removes the demonstrated byte-transport blocker, not the unexplained
+MOVE reboot or missing auto-scroll. Full device launcher syntax/runtime and
+a supervised live MOVE collection remain unvalidated. No device file write,
+firmware installation, rearm, signal, reboot, commit or push in this step.
+
+Final local validation: all 161 tests pass without skips (55 new tests),
+all 62 Python scripts compile, and whitespace checks pass. The MOVE tests
+now locate the preserved imported reference instead of silently skipping
+six ELF-dependent cases due to the old workstation path. Firmware and
+evidence-launcher hashes are unchanged.
+
+### Full launcher syntax and read-only prerequisites pass (2026-10-01)
+
+Following the user's request to check, the exact 6,535-byte evidence launcher
+passed device `sh -n` with matching SHA-256, explicit remote status 0 and no
+diagnostics. Compression plus stdout-only uudecode fits the old ADB command
+limit (3,769 bytes). A nonexecuting valid control and rejected invalid control
+passed first. No launcher source was installed, sourced or executed.
+
+Required commands, direct rw card mount, 5,928,296 KiB free, executable/access
+checks and selected safe BusyBox runtime primitives passed. A bounded host
+backup of the current 817-byte installed launcher verifies as `522f0b1b...`;
+the older migrated backup is a different version and remains preserved.
+Paired probes preserve stock PID 116/boot/starttime, absent test flag and all
+installed/log hashes. Evidence: `artifacts/move_launcher_preflight_20261001/`.
+See [preflight scope, controls and remaining decision](folderfollow-move-launcher-preflight.md).
+
+No device output file write, firmware/launcher replacement, flag creation,
+signal, reboot, live MOVE run, commit or push occurred. Full launch/recovery,
+output growth and the earlier spontaneous reboot remain unvalidated; an
+actual one-shot run requires separate authorization.
+
+### Launcher preflight final local validation (2026-10-02)
+
+The interrupted final validation was rerun: all 183 repository tests pass
+without skips, including 22 new preflight tests; all 64 Python scripts
+compile and whitespace checks pass. Independent review verified the raw
+device controls and exact installed-launcher backup without claiming a live
+launch. No new device call, installation, flag write or reboot was made in
+this continuation. The read-only check is complete; actual one-shot launch
+and its known reboot risk remain a separate user decision.
+
+### Authorized first supervised MOVE run (2026-10-02)
+
+The user explicitly approved installation and testing. Fresh preflight passed;
+the exact launcher `1cdfed54...` replaced backed-up `522f0b1b...` through a
+verified same-filesystem staging rename. Candidate `15cf4457...` is unchanged.
+One-shot boot launched PID 141/start700 in a fresh card run. The legacy host
+collector accepted a 341,248-byte live prefix; the later closed log contains
+1,503 snapshots and 16 settled/loss-free events (3 setters, 13 refresh).
+
+Next advanced cue 0→5 while scroll_y remained zero. All instrumented setters
+were earlier absolute zero-to-zero calls; none occurred during that cue
+progression. User confirmed offscreen highlight/working volume, then clarified
+that manual scrolling was not performed. A manual positive control remains
+missing; no auto-scroll fix or probe-failure conclusion is justified yet.
+
+An identity-guarded SIGTERM ended only the diagnostic child at uptime 207.68
+(about 200.68 seconds after child start, exceeding the intended 180-second
+window by 20.68 seconds). Supervisor recorded raw wait 255 and recovery intent;
+stock PID 119/hash 0fed... returned after reboot, flag absent. All 21 closed-run
+files were pulled and verified against device SHA-256. Old logs are intact;
+new launcher stays installed, unarmed. No spontaneous reboot was observed,
+but the prior cause/general stability remains unproven. No second run/rearm.
+See [full run evidence and remaining control](folderfollow-move-supervised-run-20261002.md).
+
+### Manual-only positive scroll control obtained (2026-10-02)
+
+The user explicitly approved a second short run and confirmed down/up manual
+scrolling with playback not started. Unchanged launcher/candidate booted
+PID 142/start 665 in a fresh run; the flag was consumed. Strict closed decode
+accepts 753 snapshots and 96 events with no loss: 79 nonzero relative setters
+all move the matching Show No Mercy Files viewport. Requests come from
+0x4BA67C/0x4BA5FC, with new_y=old_y+request and trajectory 0→385→−28→0.
+Four timer-20 refreshes follow changing offsets. Cue is 0 and playback empty,
+not an active first track. The whole 21-file run was hash-verified after pull.
+
+Together with the first run's cue 0→5 / unchanged y / absent setter calls,
+this supports a missing reveal request on the measured Next path. The setter
+and its instrumentation work in Files. However, raw extent remains zero and
+flags are 0x2, so automatic target bounds must not rely on that field or on an
+assumed generic clamp. Safe row identity, UI-thread/lifetime and one-shot
+playback-change policy remain necessary for a patch.
+
+After user completion, an identity-guarded SIGTERM at uptime 111.14 ended
+the child (~104.49 seconds after start). Wait status 255/SIGTERM evidence and
+recovery intent were retained; stock PID 115/start 361/hash 0fed... returned,
+flag absent. No spontaneous reboot, new firmware patch, third run or rearm.
+See [manual control and comparison](folderfollow-move-manual-control-20261002.md).
+
+### Local one-shot reveal model and ownership audit (2026-10-05)
+
+Implemented `scripts/folderfollow_reveal_model.py`: a host-only executable
+policy over immutable, coherent snapshots, not a firmware patch. It confirms
+a new exact path/cue identity, resolves its unique row in a completed bounded
+folder fill, computes a minimal checked/clamped target, and consumes each
+transition once. Manual input (including an ongoing gesture), navigation,
+generation changes, invalid geometry and expired readiness cancel the action.
+Inactive/mismatching-folder changes do not cause delayed snap-back on return.
+Final snapshot revalidation is explicit but is not a synchronization primitive.
+Folder navigation/descent and a live adapter are not implemented here.
+
+Corrected telemetry interpretation: historical `cache_count` is P+0x1E0,
+the total folder count published before fill, not actual primary-list count
+L+0x0C or evidence of completion. Existing wire names/layouts and diagnostic
+firmware bytes are unchanged. Property-24 getter copies the full 0xA88-byte
+descriptor; it must never receive a path-sized output buffer.
+
+The bounded static audit found a real Files fill worker and its T+0x10 mutex.
+It also established that private-worker teardown destroys that mutex and T
+before removing V from the controller registry. A raw active-view lookup plus
+worker lock is therefore not an established lifetime-safe adapter. List
+reset, binding changes, raw-pointer writes and all manual-intent paths still
+need a common ownership/invalidation contract. The narrow offset setter's
+invalidation callees are arithmetic-only, but the entire refresh transaction
+and safe acquisition of the owner remain separate prerequisites.
+
+Validation: **249 repository tests pass, no skips**, including **56 new model
+tests and 10 static contract tests**. All **67 Python scripts compile**;
+whitespace checks pass (Git only warns about existing LF/CRLF conversion).
+The static tests require the exact preserved reference hash and fail rather
+than silently skip if it is absent or different.
+
+No device access, new firmware build, installation, rearm, reboot, commit or
+push in this step. Last verified stock recovery remains the 2026-10-02 result,
+not a fresh assertion about the live device. See the
+[model and limits](folderfollow-reveal-model.md) and
+[worker/lifetime findings](folderfollow-reveal-ownership.md).

@@ -62,6 +62,13 @@ change from golden. No installation, commit or push was performed.
 
 ## Record and limitations
 
+Count-field correction (2026-10-05): the historical `cache_count` wire field
+reads P+0x1E0, the **total folder count**, published before population. Actual
+primary-list population is L+0x0C. Neither count proves successful completion.
+The v1 field name and binary layout stay unchanged for saved-log compatibility;
+earlier references to cache count 13/7 mean this raw total, not a ready cache.
+See [the reveal model and integration limits](folderfollow-reveal-model.md).
+
 Fixed-size 0x540-byte SCRL v1 records go to FD 9. The launcher must provide this
 descriptor to a new diagnostic log before any device test. The wrapper records
 active inline view name, explorer wildcard and lookup key, viewport offset and

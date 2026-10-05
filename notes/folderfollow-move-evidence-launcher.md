@@ -1,5 +1,17 @@
 # MOVE evidence-retention launcher: local draft
 
+Update 2026-10-02: with explicit user authorization, this exact unchanged
+launcher was installed and completed its [first supervised run](folderfollow-move-supervised-run-20261002.md).
+Live capture, retained exit evidence and controlled return to stock succeeded.
+It remains installed but unarmed. This one short run does not establish
+general crash/recovery safety or resolve the previous spontaneous reboot.
+
+Update 2026-10-01: [full-source read-only device preflight](folderfollow-move-launcher-preflight.md)
+passed, including exact hash/length, syntax-only controls, prerequisites,
+selected shell primitives and a verified backup of the installed launcher.
+The draft itself remains unchanged, uninstalled and unexecuted; full live
+supervision/recovery and the prior reboot cause are still unvalidated.
+
 Later read-only device checks (2026-09-30) found the host collector
 incompatible. A small negative sh -n control worked, but the full launcher
 syntax request exceeded the legacy command limit; full device syntax/runtime
@@ -113,7 +125,9 @@ The existing tmpfs-checkpoint issue is not repaired by installing a launcher
 alone: the host collection procedure must also stop accumulating RAM copies
 and record memory before/after any capture. A subsequent local-only step
 prepared the [direct-to-host checkpoint collector](folderfollow-move-checkpoint-collector.md).
-It has not been device-validated; the old copy procedure must not be reused.
+The native collector failed device compatibility; a later
+[legacy transport](folderfollow-move-legacy-collector.md) passed stock-only
+byte controls, not a live MOVE capture. The old copy procedure must not be reused.
 
 Power loss, a kernel reset, supervisor SIGKILL or card/flush failure may leave
 incomplete or non-durable evidence. Neither missing EXIT nor raw status 137

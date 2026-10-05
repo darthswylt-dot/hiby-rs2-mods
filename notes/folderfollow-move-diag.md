@@ -1,5 +1,10 @@
 # MOVE v2 passive scrolling diagnostic
 
+Field clarification (2026-10-05): historical `cache_count` means the sampled
+total folder count at P+0x1E0, not actual cache population or fill completion.
+The saved wire layout/name is unchanged. See the
+[verified metadata distinction](folderfollow-reveal-model.md).
+
 Built locally on 2026-09-30 following the
 [offscreen-highlight diagnosis](folderfollow-scroll-diagnosis.md).
 Hardware status: **TEST INTERRUPTED BY REBOOT; STOCK VERIFIED; CAUSE UNKNOWN**.

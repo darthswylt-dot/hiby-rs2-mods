@@ -110,9 +110,9 @@ No spontaneous crash or input loss was observed during the run.
 
 Separate defect observed in Slayer: the highlight advances beyond the visible
 rows, but the list does not scroll to keep it on screen. Its origin is not yet
-classified: no stock/baseline comparison was performed, so this is not a proven
-regression introduced by this candidate. Selection and viewport following must
-be traced separately.
+classified at the time of this run. The later 2026-10-01 original-stock
+comparison reproduced the same symptom, so it is not specific to this
+candidate. Selection and viewport following must be traced separately.
 
 After the completed test, PID 123 was intentionally stopped following sync.
 The one-shot launcher rebooted the device. `/usr/bin/hiby_player` then ran as

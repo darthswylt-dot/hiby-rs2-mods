@@ -1,5 +1,10 @@
 # MOVE checkpoint collector: direct device-to-host draft
 
+Update 2026-10-01: the separate [legacy-safe protocol](folderfollow-move-legacy-collector.md)
+reuses this script's capture/record-validation logic and passed stock-only
+byte controls. The default native exec-out/stat protocol described below
+still fails on RS2; no live MOVE capture has been validated.
+
 Current result (2026-09-30): **read-only device compatibility FAILED**.
 RS2 rejects exec-out and non-PTY shell, has no stat applet, and its legacy
 PTY shell alters newline bytes and loses remote exit status. This draft is

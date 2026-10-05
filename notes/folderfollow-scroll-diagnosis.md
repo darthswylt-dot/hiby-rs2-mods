@@ -1,16 +1,41 @@
-# Offscreen highlight: diagnosis and missing measurement
+# Offscreen highlight: diagnosis and measured scroll path
+
+Update 2026-10-02: the [paired MOVE controls](folderfollow-move-manual-control-20261002.md)
+close the previously missing positive setter observation. Next advanced
+cue 0→5 without a setter or y change; manual-only input produced 79 nonzero
+relative setters, every one moving the matching Files viewport, with clean
+final accounting. This directly supports a missing reveal request on the
+observed Next path, not a rejected nonzero request. Safe row targeting and
+patch placement remain implementation work; no fix is installed.
 
 2026-09-30. Read-only analysis of closed local captures and source code.
 No new firmware, deployment, device access, commit or push.
 
 ## Finding
 
-The defect is a persistent mismatch between playback/highlight and viewport
+### Unmodified-stock comparison (2026-10-01)
+
+The user reproduced the same visible behavior on the original firmware 1.4
+executable, SHA-256 `0fedb30f91937eafb5baaf3c75422cdbde04a62fe8bac8eca3c7a88bb761da0e`,
+verified live as PID 116 before the test; the one-shot test flag was absent.
+Starting at the top of the Show No Mercy list and advancing with physical Next
+to a track below the visible rows did not scroll the list. Manually scrolling
+revealed the highlighted playing track; volume remained responsive.
+
+This closes the previously missing bare-stock comparison: the symptom does
+not require the sorting/traversal/wake changes or folder-follow instrumentation.
+It does not identify the exact missing request or prove the absence of every
+offset-setter call. The earlier MOVE reboot and full live collector/launcher
+validation remain separate unresolved issues; later stock-only byte controls
+for the [legacy transport](folderfollow-move-legacy-collector.md) passed.
+
+At the original 2026-09-30 analysis, the defect was a persistent mismatch between playback/highlight and viewport
 position, not simply a brief visual delay. The strongest current hypothesis
 is a missing or ineffective request to reveal the playing row. The exact
-cause is still unresolved: neither existing capture records the original
-offset-setter calls or their requested values, so absence of a call cannot
-yet be distinguished from a rejected/no-op/overwritten change.
+cause was unresolved: neither then-existing capture recorded the original
+offset-setter calls or requested values. The subsequent MOVE comparison above
+now distinguishes absence of an observed Next-path request from a rejected
+nonzero request, with the stated scope limits.
 
 ## New quantitative check of SCRL
 

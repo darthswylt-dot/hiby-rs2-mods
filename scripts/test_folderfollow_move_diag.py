@@ -9,7 +9,12 @@ from test_folderfollow_scroll_diag import Probe as SnapshotProbe
 from mips_static_trace import Elf32, sx16
 from verify_folderfollow_move_diag import verify
 
-SOURCE=Path(__file__).resolve().parents[2]/'hiby_player_02fd.bin'
+ROOT=Path(__file__).resolve().parents[1]
+# Keep the original workstation layout usable, and find the hash-verified
+# reference in its preserved import location on the current workstation.
+SOURCES=(ROOT/'artifacts/import-20261001/hiby_player_02fd.bin',
+         ROOT.parent/'hiby_player_02fd.bin')
+SOURCE=next((path for path in SOURCES if path.is_file()), SOURCES[0])
 BUFFER=0xBD4000
 
 

@@ -9,6 +9,9 @@ import build_folderfollow_view_depth_diag as b
 STRNCMP = 0xA5BA40
 SIZE = 0x540
 FRAME = 0x600
+# Historical wire name: cache_count reads P+0x1E0, the total folder count
+# published BEFORE fill, not populated cache rows or a completion flag.
+# Keep the v1 field name/layout unchanged so existing SCRL/MOVE logs decode.
 FIELDS = {
     'controller': 0x20, 'view': 0x24, 'internal': 0x28, 'viewport': 0x2C,
     'cache_owner': 0x30, 'explorer_valid': 0x34, 'type': 0x38, 'pitch': 0x3C,

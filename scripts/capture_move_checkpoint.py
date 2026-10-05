@@ -220,8 +220,31 @@ class Adb:
                     stderr_overlong=overlong[1], reader_errors=read_errors)
 
 
-def capture(transport, serial, pid, run, output, max_bytes=32 * 1024 * 1024, timeout=30):
+class NativeProtocol:
+    """Original raw exec-out/stat protocol; retained for compatible devices."""
+    disk_multiplier = 2
+
+    probe_script = staticmethod(probe_script)
+    parse_probe = staticmethod(parse_probe)
+    coherent = staticmethod(coherent)
+
+    @staticmethod
+    def stream_script(pid, log, size, before):
+        return f'exec head -c {size} {shlex.quote(log)} 2>/dev/null'
+
+    limits = [
+        'Pre/post identities do not make append-stream capture or object snapshots atomic.',
+        'Host SHA-256 is not a separate device hash verification of the streamed prefix.',
+        'Raw/partial evidence remains saved on failed captures; no retry or device mutation.',
+        'Reads still incur device I/O, page cache and small ADB/head/probe process costs.',
+        'Remote BusyBox/head/stat/exec-out support has not been device-validated.',
+    ]
+
+
+def capture(transport, serial, pid, run, output, max_bytes=32 * 1024 * 1024, timeout=30,
+            protocol=None):
     validate(serial, pid, run, max_bytes, timeout)
+    protocol = NativeProtocol() if protocol is None else protocol
     output = Path(output)
     # Refuse any existing output before asking the device anything.
     output.mkdir(parents=True, exist_ok=False)
@@ -229,28 +252,29 @@ def capture(transport, serial, pid, run, output, max_bytes=32 * 1024 * 1024, tim
     report = dict(capture_accepted=False, source_coherent=False, errors=[],
                   remote_log=log, byte_budget=max_bytes, per_command_timeout=timeout)
     try:
-        if shutil.disk_usage(output).free < 2 * max_bytes + 4 * 1024 * 1024:
+        if shutil.disk_usage(output).free < protocol.disk_multiplier * max_bytes + 4 * 1024 * 1024:
             raise ValueError('insufficient host free space for raw+prefix evidence')
-        script = probe_script(pid, log)
+        script = protocol.probe_script(pid, log)
         result = transport.probe(script, output / 'before.txt', timeout)
         report['before_transport'] = result
         if (result['returncode'] != 0 or result['timed_out'] or result.get('overlong')
                 or result.get('stderr_overlong') or result.get('reader_errors')):
             raise ValueError('before probe failed')
-        before = parse_probe((output / 'before.txt').read_bytes(), pid, log)
+        before = protocol.parse_probe((output / 'before.txt').read_bytes(), pid, log)
         report['before'] = before
         size = before['size']
         if not 0 < size <= max_bytes:
             raise ValueError('remote size empty or exceeds host byte budget')
-        # head -c must be supported by the device. Failure/short stdout is an
-        # unsuccessful capture, not a reason to retry or change the device.
-        stream_script = f'exec head -c {size} {shlex.quote(log)} 2>/dev/null'
+        # The selected bounded read must be supported by the device. Failure
+        # or short stdout is not a reason to retry or change the device.
+        stream_script = protocol.stream_script(pid, log, size, before)
         stream_ok = False
         try:
             result = transport.stream(stream_script, output / 'raw.bin', size, timeout)
             report['stream_transport'] = result
             stream_ok = (result['returncode'] == 0 and not result['timed_out']
                          and not result['overlong'] and not result.get('stderr_overlong')
+                         and result.get('encoding_valid', True)
                          and not result['reader_errors'] and result['bytes'] == size)
         except Exception as exc:
             report['errors'].append('transfer exception: ' + str(exc))
@@ -262,9 +286,9 @@ def capture(transport, serial, pid, run, output, max_bytes=32 * 1024 * 1024, tim
             if (post_result['returncode'] == 0 and not post_result['timed_out']
                     and not post_result.get('overlong') and not post_result.get('stderr_overlong')
                     and not post_result.get('reader_errors')):
-                after = parse_probe((output / 'after.txt').read_bytes(), pid, log)
+                after = protocol.parse_probe((output / 'after.txt').read_bytes(), pid, log)
                 report['after'] = after
-                report['source_coherent'] = coherent(before, after)
+                report['source_coherent'] = protocol.coherent(before, after)
         except Exception as exc:
             report['errors'].append('after evidence: ' + str(exc))
         if not (output / 'raw.bin').exists():
@@ -290,13 +314,7 @@ def capture(transport, serial, pid, run, output, max_bytes=32 * 1024 * 1024, tim
         report['capture_accepted'] = not report['errors']
     except Exception as exc:
         report['errors'].append(str(exc))
-    report['limits'] = [
-        'Pre/post identities do not make append-stream capture or object snapshots atomic.',
-        'Host SHA-256 is not a separate device hash verification of the streamed prefix.',
-        'Raw/partial evidence remains saved on failed captures; no retry or device mutation.',
-        'Reads still incur device I/O, page cache and small ADB/head/probe process costs.',
-        'Remote BusyBox/head/stat/exec-out support has not been device-validated.',
-    ]
+    report['limits'] = protocol.limits
     (output / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
     return report
 

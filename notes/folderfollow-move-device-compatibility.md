@@ -1,5 +1,10 @@
 # MOVE host collector: RS2 read-only compatibility check
 
+Update 2026-10-01: a separate [legacy-safe collector](folderfollow-move-legacy-collector.md)
+passed bounded byte/closed-file controls on stock. The native route below
+remains incompatible. A later [launcher syntax/preflight check](folderfollow-move-launcher-preflight.md)
+also passed; full launcher execution and live MOVE validation remain pending.
+
 2026-09-30, following the user's `check` command. **Compatibility failed;
 do not deploy/rearm MOVE using the current collector.** No installation,
 launcher execution, player signal, reboot, flag write, device-side copy or
