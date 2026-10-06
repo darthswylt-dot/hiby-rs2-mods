@@ -107,3 +107,8 @@ or a controller registry lock alone does not meet these conditions.
 The structural tests in `test_folderfollow_reveal_static_contract.py` pin the
 reference hash, metadata/getter/timer anchors and three teardown guards.
 They deliberately do not assert runtime concurrency or hardware safety.
+
+The [2026-10-06 follow-up](folderfollow-reveal-dispatch.md) establishes a
+serial activity-chain lead, narrows reset-call scope, and distinguishes touch
+start, kinetic movement and completion callbacks. It does not override the
+lifetime limits above or authorize the unsafe resolver-to-worker-lock shortcut.

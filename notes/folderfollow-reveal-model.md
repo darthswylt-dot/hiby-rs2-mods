@@ -9,6 +9,11 @@ Local validation: 56 model tests plus 10 hash-gated static contract tests;
 the full repository suite passes 249 tests without skips. All 67 Python
 scripts compile. Tests do not implement or validate a live firmware adapter.
 
+2026-10-06 continuation: the [216-byte MIPS geometry core](folderfollow-reveal-mips-core.md)
+now implements the scalar calculation in emitted instruction bytes. The
+[UI/gesture follow-up](folderfollow-reveal-dispatch.md) records concrete serial
+activity and gesture bindings; a safe live adapter is still not established.
+
 ## Implemented behavior
 
 Inputs are immutable, owned snapshots, with externally established playback

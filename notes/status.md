@@ -949,3 +949,43 @@ push in this step. Last verified stock recovery remains the 2026-10-02 result,
 not a fresh assertion about the live device. See the
 [model and limits](folderfollow-reveal-model.md) and
 [worker/lifetime findings](folderfollow-reveal-ownership.md).
+
+### Scalar MIPS reveal core and UI/gesture dispatch (2026-10-06)
+
+Resumed from clean, pushed `bc2d56e`. Implemented
+`scripts/folderfollow_reveal_mips.py`: 216 bytes of position-independent
+MIPS32/O32 geometry code, not a patched ELF. It reads only the fifth scalar
+stack argument, writes no memory, makes no external call and rejects invalid
+rows, dimensions, overflow and manual overscroll. Seven instruction-execution
+tests compare it with the model across over 20,000 cases, preserve the stated
+ABI, check four relocation bases and enforce an instruction allowlist.
+Independent review found no current arithmetic/ABI defect; its proposed
+allowlist strengthening was applied. Hardware/pipeline/caller behavior is not
+validated, and no live object adapter is included.
+
+The bounded follow-up established a synchronous music activity chain:
+init -> event/timer loop -> teardown, with the controller transition after
+activity return. Timer dispatch itself does not acquire a mutex or make
+removal a callback-completion barrier. The general Files-capable list reset
+was then resolved as queued event 0x11A: 0x454200 -> table 0x926C4C/50 ->
+0x452400 -> 0x491240. Music loop 0x43C980 dispatches this queue at 0x43C9A4,
+before timer pump 0x43C9E4, establishing this particular route's serial
+ordering. This does not prove every invocation's thread, both path-special
+reset callers or background-refill serialization.
+
+Gesture dispatch now distinguishes initial hit/contact (event4/0x49B460),
+movement (event9/0x49B000, including synthetic inertia), release/settling
+(event10/0x49B1A0), row activation (event7/0x49E560), and animation completion
+(event100/0x49E7E0). The release handler may start inertia, and abort paths
+do not establish event100 delivery. No existing scalar field is yet a proven
+whole-interaction `manual_active` input. Five new static tests pin timer,
+activity-transition, gesture-binding and queued-reset anchors without claiming
+global thread safety.
+
+Validation: **261 tests pass, no skips**; all **69 Python scripts compile**;
+whitespace checks pass. New work is local and uncommitted in this step.
+No device access, firmware image build, installation, rearm, reboot or push.
+The safe owner/completion/cancellation adapter remains the next integration
+gate, not another repetition of the old manual-scroll hardware test. See
+[MIPS core](folderfollow-reveal-mips-core.md) and
+[dispatch findings and precise remaining paths](folderfollow-reveal-dispatch.md).

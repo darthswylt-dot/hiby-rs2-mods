@@ -244,6 +244,110 @@ class RevealStaticContractTests(unittest.TestCase):
             (0x02002021, 'addu a0,s0,zero'),
         ])
 
+    def test_timer_pump_calls_synchronously_then_reloads_mutable_timer_count(self):
+        self.instructions(0x47361C, [
+            (0x8E190008, 'lw t9,+0x8(s0)'),
+            (0x13200009, 'beq t9,zero,0x473648'),
+            (0xAE00FFFC, 'sw zero,-0x4(s0)'),
+            (0x8E04FFF4, 'lw a0,-0xc(s0)'),
+            (0x0320F809, 'jalr ra,t9'),
+            (0x8E050004, 'lw a1,+0x4(s0)'),
+            (0x8EA39B74, 'lw v1,-0x648c(s5)'),
+            (0x10760005, 'beq v1,s6,0x473650'),
+            (0x26310001, 'addiu s1,s1,1'),
+            (0x1000FFE9, 'beq zero,zero,0x4735E8'),
+            (0x0060B021, 'addu s6,v1,zero'),
+        ])
+        # Bounded direct-call scan, NOT proof of a caller-held lock or of the
+        # absence of locking inside an arbitrary registered callback.
+        links = []
+        for pc in range(0x473560, 0x473690, 4):
+            word = self.elf.word(pc)
+            if word >> 26 == 3 or (word >> 26 == 0 and word & 63 == 9):
+                links.append((pc, word))
+        self.assertEqual(links, [(0x47358C, 0x0C119A58),
+                                 (0x47362C, 0x0320F809)])
+
+    def test_music_activity_orders_init_loop_then_teardown_in_one_invocation(self):
+        # This is a serial call chain, not proof that all possible callers
+        # execute on one unique thread or that every Files destructor uses it.
+        self.instructions(0x4E3DEC, [
+            (0x8C990254, 'lw t9,+0x254(a0)'),
+            (0x0320F809, 'jalr ra,t9'),
+            (0x00808021, 'addu s0,a0,zero'),
+            (0x8E19025C, 'lw t9,+0x25c(s0)'),
+            (0x0320F809, 'jalr ra,t9'),
+            (0x02002021, 'addu a0,s0,zero'),
+            (0x8E190258, 'lw t9,+0x258(s0)'),
+            (0x0320F809, 'jalr ra,t9'),
+            (0x02002021, 'addu a0,s0,zero'),
+        ])
+
+    def test_controller_transition_follows_activity_callback_return(self):
+        self.instructions(0x43D054, [
+            (0x8E44F208, 'lw a0,-0xdf8(s2)'),
+            (0x00002821, 'addu a1,zero,zero'),
+            (0x00003021, 'addu a2,zero,zero'),
+            (0x8C990260, 'lw t9,+0x260(a0)'),
+            (0x0320F809, 'jalr ra,t9'),
+            (0xAC800134, 'sw zero,+0x134(a0)'),
+            (0x1440001B, 'bne v0,zero,0x43D0DC'),
+            (0x8EE2F214, 'lw v0,-0xdec(s7)'),
+            (0x14400019, 'bne v0,zero,0x43D0DC'),
+            (0x8E02F20C, 'lw v0,-0xdf4(s0)'),
+            (0xAE00F20C, 'sw zero,-0xdf4(s0)'),
+            (0xAEC2F208, 'sw v0,-0xdf8(s6)'),
+        ])
+
+    def test_explorer_gesture_callbacks_are_bound_to_distinct_resource_slots(self):
+        expected = (0x49B000, 0x49B1A0, 0x49E560, 0x49B460,
+                    0, 0x49E7E0, 0, 0)
+        self.assertEqual(tuple(self.elf.word(0xA98B74 + i * 4)
+                               for i in range(8)), expected)
+        # Binder table slot -> resource callback slot. Event meanings require
+        # the separately inspected dispatcher; none is a generic active flag.
+        for pc, table_slot, resource_slot in (
+                (0x43C0B8, 0x4C, 0x164), (0x43C0C4, 0x44, 0x15C),
+                (0x43C0D0, 0x48, 0x160), (0x43C0DC, 0x40, 0x158),
+                (0x43C0E8, 0x54, 0x16C), (0x43C0F4, 0x50, 0x168)):
+            self.instructions(pc, [
+                (0x8E050000 | table_slot, f'lw a1,+{table_slot:#x}(s0)'),
+                (0x8C4400D0, 'lw a0,+0xd0(v0)'),
+                (0xAC850000 | resource_slot, f'sw a1,+{resource_slot:#x}(a0)'),
+            ])
+
+    def test_general_list_reset_is_queued_before_timer_in_music_loop(self):
+        # General Files-capable reset is event 0x11A in the dispatch table,
+        # not a direct jal to 0x452400. This proves the inspected UI route,
+        # not absence of other indirect invocations or background mutations.
+        self.assertEqual(self.elf.word(0x926C4C), 0x11A)
+        self.assertEqual(self.elf.word(0x926C50), 0x452400)
+        self.instructions(0x45425C, [
+            (0x24846B94, 'addiu a0,a0,27540'),
+            (0x8FA6001C, 'lw a2,+0x1c(sp)'),
+        ])
+        self.instructions(0x45428C, [
+            (0x000318C0, 'sll v1,v1,3'),
+            (0x00832021, 'addu a0,a0,v1'),
+            (0x8C990004, 'lw t9,+0x4(a0)'),
+            (0x1320FFE6, 'beq t9,zero,0x454234'),
+            (0x02202021, 'addu a0,s1,zero'),
+            (0x0320F809, 'jalr ra,t9'),
+            (0x27A50018, 'addiu a1,sp,24'),
+        ])
+        self.instructions(0x43C9A4, [
+            (0x0C115080, 'jal 0x454200'),
+            (0x02002021, 'addu a0,s0,zero'),
+        ])
+        self.instructions(0x43C9E4, [
+            (0x0C11CD58, 'jal 0x473560'),
+            (0x00000000, 'nop'),
+        ])
+        self.instructions(0x45259C, [
+            (0x0C124490, 'jal 0x491240'),
+            (0x8E050008, 'lw a1,+0x8(s0)'),
+        ])
+
 
 if __name__ == '__main__':
     unittest.main()
