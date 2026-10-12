@@ -989,3 +989,208 @@ The safe owner/completion/cancellation adapter remains the next integration
 gate, not another repetition of the old manual-scroll hardware test. See
 [MIPS core](folderfollow-reveal-mips-core.md) and
 [dispatch findings and precise remaining paths](folderfollow-reveal-dispatch.md).
+
+### Copied-row publication protocol and narrowed integration contracts (2026-10-07)
+
+Resumed from clean, pushed `5d9ce6a`. Added host-only
+`scripts/folderfollow_reveal_publication.py`: one validated, bounded whole
+fill per externally verified content generation. It copies exact path/cue
+identities, checks every append, separately requires terminal 101 and matching
+end/actual/total counts, and publishes immutable `CompletedRows` only after
+completion. Reentry, incomplete/error events, duplicates and reported loss
+invalidate the generation. Non-reused tickets reject late old events without
+relabeling them as a new view, and exhaustion never wraps. A new activation
+requires a strictly increasing content epoch, including across view changes.
+
+This protocol consumes serialized, already-owned inputs. It is **not** a
+thread-safe mailbox, MIPS hook, epoch acquisition mechanism or installable
+firmware. The event bridge must invalidate before every relevant mutation,
+report uncertainty and retain the target through the UI operation. Existing
+historical FILL logs and live diagnostic formats/builders are unchanged.
+
+The static pass closed several narrower questions:
+
+- Normal stationary release clears G+0 before callbacks; a completed long
+  press can release with neither event 10 nor 100. G is recognized software
+  contact, separate from capture/animation. Orphan input, physical-input lag
+  and H/G lifetime remain explicit limits; no live reader was installed.
+- Both path-special reset conditions and the normal dialog-completion route
+  are mapped. Their dialog mutex is not the Files worker mutex. Ordinary
+  Files scopes can still undergo destroy/recreate in the containing operation.
+  The raw descriptor rewrite uses substring guards and cannot be excluded
+  for every Files path solely by type.
+- The worker post-fill callback invokes P+0x410 and rebinds P+0x1BC under
+  T+0x10. Render-side binding occurs before enqueue locking. Post-fill/wake-up
+  also occurs without a verified successful complete query; stock append and
+  terminal results are discarded at known points. This motivated the separate
+  copied-row publication protocol instead of trusting a completion flag.
+- The property-24 getter uses the real B+0x44 mutex. Two synchronous
+  Next/Previous callers share its bracket, but the separate general event-9
+  commit is not established to share it. Stable repeated reads remain a
+  filter, not proof of a coherent copied identity.
+
+Validation: **311 repository tests pass, no skips**, including 128 reveal
+tests (22 new publication-policy tests and 43 total static-contract tests).
+All **74 Python scripts compile**; whitespace checks pass. Tests exercise
+all one-row event permutations, the 512-row bound, cancellation at every
+fill stage, stale events, loss, reused epochs and pre-action cancellation.
+They do not emulate stock concurrency or establish device safety.
+
+No device access, firmware image build, installation, rearm, reboot, commit
+or push in this step. Changes remain local. The next live-integration gate
+is the owner/generation/invalidation event bridge, coherent playback
+publication and retained UI target; no additional manual-scroll test is
+requested. Last verified device state is still the October 2 recovery,
+not a fresh live assertion. See [contact](folderfollow-reveal-contact.md),
+[scope](folderfollow-reveal-scope.md), [publication](folderfollow-reveal-publication.md)
+and the updated [dispatch constraints](folderfollow-reveal-dispatch.md).
+
+### Passive MIPS event bridge built and verified (2026-10-08)
+
+Connected selected Files fill, playback-copy, recognized-contact,
+close/reset and current-refresh sites to a single private copied-event
+buffer in a real ELF. The timer exports only private records and calls its
+stock callback once. Added a strict decoder, deterministic builder/verifier
+and separate RX/BSS layout helper. No setter, view lookup, additional query,
+folder rebuild or stock-object retention was added. The reveal policy and
+geometry core are **not enabled**; this is diagnostic capture, not the fix.
+
+Built and verified local Git-ignored artifact:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_reveal_bridge_capture_20261008.bin`
+(7,146,848 bytes), SHA-256
+`7cc98a67a32dabce3b4d22b50b8dc847f5462d99d70d0ee04254a0ec272439a9`.
+Baseline is normalized golden sorting/fullnav/wake, without folder-follow.
+The old cave is untouched; a new RX load contains 3,424 code bytes and the
+existing RW load gains 606,272 private buffer bytes plus alignment padding.
+Loader acceptance, heap placement and runtime overhead remain untested.
+
+Validation: **394 tests pass, no skips**, including 83 new bridge tests;
+all **82 Python files under `scripts/` compile**. Instruction-level tests
+exercise original calls exactly once, volatile/HI/LO preservation, delayed
+branches, invalidated playback sources, short key packets, queue loss,
+bounded copying and export. Three tests decode bytes emitted by the actual
+new hook/timer instructions, including a complete producer window. This
+does not emulate concurrency or establish stock-object lifetime safety.
+
+Remaining gates are retained UI ownership/generations, full invalidation
+coverage, coherent playback and whole-folder completion, then active
+cancellation/reveal dispatch. A separate launch/recovery review is also
+needed for the new ELF layout. No device access, installation, launch,
+rearm, reboot, commit or push in this step; changes are local. See
+[bridge format, artifact, validation and limits](folderfollow-reveal-bridge.md).
+
+### Bridge launch prepared; read-only device preflight passed (2026-10-08)
+
+Prepared a separate boot-only bridge launcher with a new candidate path,
+one-shot flag and evidence directory, exact SHA/size admission checks and
+a device-side best-effort 45-second TERM / 5-second KILL / 5-second recovery
+reboot schedule. Signals require matching parent/child PID, start token and
+live executable hash; the watchdog performs no card writes. There is no
+direct stock fallback after any possible diagnostic launch and no retry.
+Shell timing, check-to-signal races, I/O and reboot failures remain limits.
+
+Read-only preflight passed on the connected RS2. Full launcher source
+(5,769 bytes, SHA-256
+`850691851dbf5cabbd244bae222e958e70885386e35ac6d425bd35f35342e32b`)
+passed device syntax checking without execution, plus selected shell and
+process-identity controls. Preserved an exact 6,535-byte backup of the
+currently installed `1cdfed...` launcher in
+`artifacts/reveal_bridge_preflight_20261008/installed_launcher.bin`.
+
+Before/after: stock PID 116/start ticks 353, parent 105, boot
+`29694ad6-f042-4245-8213-ecc0d3329140`, original `0fed...` live/on-disk hash;
+both old and new flags absent, new candidate pathname absent, installed
+launcher and old MOVE candidate unchanged. Card and data mounts were rw,
+with 5,925,016/19,236 KiB free respectively. These current observations
+replace the October 2 recovery only as the latest read-only device check,
+not as a new diagnostic run or validation of memory headroom.
+
+Validation: **449 tests pass, no skips**, including 24 launcher and 31
+preflight tests; all **85 Python files under `scripts/` compile**. No
+device-file writes, installation, arm, player signal, launch, reboot,
+commit or push occurred. Next separately authorized action is staging and
+one short loader/capture smoke test, initially without user interaction;
+autoscroll remains disabled. See
+[launch preparation, exact artifacts, evidence and execution checklist](folderfollow-reveal-launch-preparation.md).
+
+### First bridge loader/timer/recovery smoke completed (2026-10-08)
+
+With explicit user authorization, installed the exact bridge candidate
+`7cc98a67...` at its separate `/data/hiby_player_reveal_bridge_7cc98a67` path
+and the checked `85069185...` launcher at `/ui_data/player`, preserving a
+fresh hash-verified old launcher backup. Armed only the new one-shot flag
+and requested one boot-path test; no manual launch over stock or host
+player signal was used.
+
+Test boot `0753d7d3-2b0f-4490-895b-15cf7daeb675`, child PID 143/start 720,
+confirmed the exact live ELF, private FD9 log and consumed flag. New RX
+`0xC70000..0xC71000`, extended BSS and heap at `0xC71000` were observed
+without overlap. The supervisor retained raw wait status 255, stdout
+explicitly reported SIGTERM, and recovery status was 0/reboot_requested=1.
+This agrees with the configured watchdog stop; an exact duration was not
+measured from the evidence.
+
+Recovery boot `c057dbc2-0cd2-4616-a6b0-5267f5862f92` runs original stock
+PID 120/start 367/hash `0fed...`; no diagnostic child and both flags absent.
+The installed new launcher/candidate remain **unarmed**. Original executable,
+stock wrapper and old MOVE candidate hashes are unchanged.
+
+All 9 closed run files (15,391 bytes) were copied directly to the host with
+matching before/after remote and local size/hash checks. `bridge.bin` is
+9,344 bytes, SHA-256
+`947937251cdf94b620157b4112e71f712bf1832d71592773d02a4e79bf8d19a8`.
+Strict decode accepts 292 intact RBST statuses, all counters/loss flags zero,
+but **zero RBRG events**. This validates loader/timer/export/recovery only,
+not Files/playback/contact hooks, volume behavior or autoscroll. Player
+stderr contains 145 bytes of device warnings without a matched stock
+baseline; supervisor/wait error files are empty.
+
+No second run, rearm, firmware source change, commit or push. Existing
+449-test validation remains the source baseline; the narrow hardware result
+and limits are in [the smoke report](folderfollow-reveal-smoke-20261008.md).
+Next separately authorized step is a bounded interactive event capture.
+
+### First nonempty bridge event capture; scrolling/volume still pending (2026-10-12)
+
+Read-only installation recheck passed; no reinstall/source change required.
+A premature first run captured only timer statuses; the user confirmed no
+actions occurred. The user now requires **instructions, then stop and await
+explicit readiness before every launch**, and a stop after launch until the
+user reports the outcome. Folder positioning alone is not readiness.
+
+After a fresh `готов`, a separate unchanged 45-second run captured 139 events
+and 296 statuses with an accepted prefix, no decode errors, no loss flags,
+and final reserved=drained=139. Five completed Files windows include Show
+No Mercy's 13 CUE entries; three accepted playback-copy pairs observe CUE
+0 -> 1 -> 2. There are also 82 touch, 13 refresh and one view-close records.
+These establish narrow capture coverage, not active autoscroll or complete
+UI lifetime/identity guarantees.
+
+The user did not have time for manual scrolling or volume; both remain
+untested in this run. Nine closed files (98,586 bytes) have verified local
+and before/after remote hashes. Recovery boot
+`2eda0476-9c57-4fae-a509-255a6e1b13c7` runs stock PID 120/start 368/hash
+`0fed...`; both flags absent and installed hashes unchanged. No rearm,
+timer extension, firmware change, commit or push. See
+[interactive result, evidence and readiness protocol](folderfollow-reveal-interactive-20261012.md).
+
+### Manual scroll/highlight/volume follow-up passed (2026-10-12)
+
+A separate explicit readiness confirmation authorized one unchanged short
+run focused on scrolling and volume, without Next. The assistant stopped
+after launch until the user's report. The user explicitly confirmed manual
+down/up scrolling, preserved highlight and normal volume adjustment.
+
+Capture is intact: 268 events and 304 statuses, accepted prefix/no errors,
+final reserved=drained=268, no loss flags. Five completed Files windows,
+one playback-copy pair for CUE 0, 206 touch and 22 refresh observations;
+refresh offsets include 0 -> 270 -> 533 -> 328 -> 0 and 0 -> 214 -> 0.
+Nine closed files (175,024 bytes) passed remote pre/post and local size/hash
+checks. Visual highlight/volume correctness comes from the user's report,
+not the trace alone; following Next and active autoscroll are not established.
+
+Latest stock recovery boot `985e1da1-643c-4f86-ab44-1a76edbf537b`,
+PID 120/start 369/hash `0fed...`, both flags absent and all installed hashes
+unchanged. Candidate remains installed but unarmed; autoscroll is disabled.
+No firmware/timer change, extra run, commit or push. See the follow-up section
+of [the October 12 report](folderfollow-reveal-interactive-20261012.md).

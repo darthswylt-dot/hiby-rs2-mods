@@ -50,7 +50,7 @@ Six direct call sites to 0x491240 were found:
 | 0x45259C | Enumeration excluding Bluetooth/Wi-Fi views; can include Files |
 | 0x4A2D18 | Exact Bluetooth view branch |
 | 0x4A5ED4 | Exact Wi-Fi view branch |
-| 0x4ACE0C / 0x4ACE20 | Path-special branches inside 0x4ACBC0; scope not fully closed |
+| 0x4ACE0C / 0x4ACE20 | Prefix `recent` / `music_search_`; see the October 7 scope follow-up below |
 | 0x532AC4 | Exact record-operation view |
 
 String verification matters: 0x926674 is `vg_listview_bt`, 0x926684 is
@@ -65,13 +65,18 @@ the queue it checks 0x8B1F60 and returns while that animation state is zero.
 The music loop calls this dispatcher at **0x43C9A4**, before pumping timers
 at **0x43C9E4**. Thus this specific queued-reset route and timer callbacks
 are sequential in that invocation; it is no longer an unknown independent
-worker path. This does not close every indirect invocation, the two
-path-special reset callers, or the already-known background fill worker.
+worker path. This does not close every indirect invocation or the background
+fill worker. The two path-special callers were subsequently narrowed in the
+October 7 follow-up linked below.
 
 An additional raw-descriptor path at 0x499E30/48/50 fetches an element and
-copies a path/terminator directly, bypassing list-method mutation hooks. Its
-applicability to Files was not established in the completed pass; do not yet
-claim it is a Files mutation, and do not claim global mutator-hook completeness.
+copies a path/terminator directly, bypassing list-method mutation hooks.
+The [2026-10-07 scope follow-up](folderfollow-reveal-scope.md) resolves its
+string guards: they are substring searches, not a type-based exclusion of
+Files. Ordinary paths without the search markers bypass it, but even a local
+folder name containing a marker can match. Do not claim global mutator-hook
+completeness from the list-method hooks alone. The follow-up also resolves
+the two path-special reset branches and their dialog-completion route.
 
 ## Gesture bindings: beginning is not completion
 
@@ -117,18 +122,64 @@ adapter prerequisite, not permission to sample them from an arbitrary timer.
 Do not reuse V+0x7C/+0x80/+0x84 or U+0xD8/+0xF0 as a generic active flag:
 they describe direction/movement branches and can be cleared before the full
 interaction ends. The host model's explicit `manual_active` input remains
-abstract. Full physical release/cancel ordering, no-animation completion,
-captured-object destruction and all navigation cancellation still need proof.
+abstract. The [2026-10-07 contact follow-up](folderfollow-reveal-contact.md)
+now resolves normal no-animation release, including long-press release with
+no event 10 or 100. It identifies a separate software-recognized contact
+state, not an instantaneous physical sensor reading. Lost/orphan input,
+owner lifetime and navigation cancellation remain distinct prerequisites.
+
+## Playback reader bracket: concrete but not universal
+
+2026-10-07 inspection also resolves the getter's +0x48/+0x4C callbacks.
+Player base is B=0xADD368. Constructor 0x42BACC..AE8 installs
++0x48=0x428B00 and +0x4C=0x428BE0. These lock/unlock *(B+0x44), the
+mutex at global 0xADD3AC, through 0x466DA0/0x466DC0. This is a real mutex,
+not an unspecified callback pair.
+
+Next/Previous wrappers bracket their synchronous call to 0x42CAC0 at
+0x42E004..024 and 0x42E188..1A8, respectively. That is positive evidence
+for the same-file commit path at 0x42CBDC in those invocations. It does not
+extend across the asynchronous enqueue into the separate event-9 handler.
+
+In the event-9 route, the staged-item mutex B+0xBB4 has already been released
+at 0x42E40C..410 before the call to 0x42CC60 at 0x42E42C. The latter copies
+the stack-staged item into 0xADD468 at 0x42CD5C. The worker's outer completion
+mutex is B+0x0C (0x42E220..224), not the getter's B+0x44. These exact anchors
+do not establish common locking for the general copy and property getter.
+Consequently, repeated equal property-24 samples still cannot be promoted
+from a stability filter to an atomic path/cue snapshot proof.
+
+The previously measured [commit-hook staging route](playback-commit-safe-diag.md)
+remains a more suitable source to investigate for owned copies. A future
+publication mechanism must cover public-setter/clear paths as well as both
+direct commits, and define cross-thread publication and invalidation; the
+existing passive logger by itself is not that adapter.
 
 ## Next precise integration gates
 
-1. Complete outer ownership of the two path-special reset callers and scope
-   rebinding, using the now-established queued 0x11A reset route as one UI
-   serialization anchor. Do not discard the background refill worker or
-   extrapolate the single invocation's ordering into a global lifetime proof.
-2. Resolve the physical release/cancel source below events 4/5/6/10, including
-   a touch that never starts animation. An event-100-only latch could stick.
-3. Only after ownership/completion/cancellation are established, attach the
-   existing one-shot policy and the now-tested arithmetic core. No guessed
-   field, added global lock, active-cache scan or live setter is introduced by
-   this pass. Static anchors and a safe scalar component are the result.
+1. Use the now-mapped queued/dialog reset routes and worker post-fill route
+   to define a retained UI-owner/generation boundary, including explicit
+   close-by-name and scope changes. The [publication follow-up](folderfollow-reveal-publication.md)
+   shows that P+0x1BC rebinding also runs on the fill worker under T+0x10;
+   a callback after fill is not by itself a successful complete-row certificate.
+   The host-only `RowPublication` protocol now validates copied producer events;
+   the [October 8 passive bridge](folderfollow-reveal-bridge.md) now captures
+   selected producer/playback/contact events in an offline-verified ELF.
+   It does not provide the retained owner, generation or complete invalidation
+   coverage required to feed that protocol as authoritative live inputs.
+2. Combine recognized contact and animation servicing at an owned UI boundary,
+   with cancellation on owner replacement/input uncertainty. Normal release
+   no longer needs to be inferred from event 100. Do not retain raw G/A/K
+   pointers between callbacks or treat capture-object destruction as release.
+3. Publish coherent copied playback and row identities, including all relevant
+   invalidation paths, before attaching the existing one-shot policy and MIPS
+   arithmetic core. No guessed field, new global lock, active-cache scan or
+   live setter is introduced by these audits. No installable adapter yet.
+
+At the original audit boundary the passive bridge had not been installed or
+hardware-tested. Its separate RX load and private BSS required a new bounded
+launch/recovery review; existing diagnostic launchers were not approval for
+the new hash/size. The subsequent [October 8 smoke](folderfollow-reveal-smoke-20261008.md)
+and [October 12 interactive runs](folderfollow-reveal-interactive-20261012.md)
+now provide bounded loader/capture/recovery evidence with the separately
+reviewed launcher. They do not close the active-autoscroll gates above.

@@ -130,6 +130,74 @@ class RevealStaticContractTests(unittest.TestCase):
             (0x27BD0030, 'addiu sp,sp,48'),
         ])
 
+    def test_playback_constructor_binds_real_property_mutex_callbacks(self):
+        # Global player base is ADD368, so +44 is ADD3AC. This is distinct
+        # from the worker-lifetime mutex at +0C and staged-item mutex +BB4.
+        self.instructions(0x42BACC, [
+            (0x3C020043, 'lui v0,0x43'),
+            (0x24428B00, 'addiu v0,v0,-29952'),
+            (0xAE020048, 'sw v0,+0x48(s0)'),
+            (0x3C020043, 'lui v0,0x43'),
+            (0x24428BE0, 'addiu v0,v0,-29728'),
+            (0x24040032, 'addiu a0,zero,50'),
+            (0x0C114118, 'jal 0x450460'),
+            (0xAE02004C, 'sw v0,+0x4c(s0)'),
+        ])
+        for pc, call, target in ((0x428B00, 0x0C119B68, 0x466DA0),
+                                 (0x428BE0, 0x0C119B70, 0x466DC0)):
+            self.instructions(pc, [
+                (0x3C0200AE, 'lui v0,0xAE'),
+                (0x8C44D3AC, 'lw a0,-0x2c54(v0)'),
+                (0x27BDFFE0, 'addiu sp,sp,-32'),
+                (0xAFBF001C, 'sw ra,+0x1c(sp)'),
+                (call, f'jal 0x{target:X}'),
+            ])
+
+    def test_next_previous_fast_commit_callers_use_property_mutex_bracket(self):
+        # A positive result for these two synchronous callers, NOT evidence
+        # that the later asynchronous event-9 copy uses the same bracket.
+        expected = [
+            (0x8E190048, 'lw t9,+0x48(s0)'),
+            (0x0320F809, 'jalr ra,t9'),
+            (0, 'nop'),
+            (0x8FA50AA4, 'lw a1,+0xaa4(sp)'),
+            (0x0C10B2B0, 'jal 0x42CAC0'),
+            (0x02402021, 'addu a0,s2,zero'),
+            (0x8E19004C, 'lw t9,+0x4c(s0)'),
+            (0x0320F809, 'jalr ra,t9'),
+            (0, 'nop'),
+        ]
+        self.instructions(0x42E004, expected)
+        self.instructions(0x42E188, expected)
+
+    def test_general_commit_leaves_staging_mutex_before_copying_current_item(self):
+        self.instructions(0x42E40C, [
+            (0x0C119B70, 'jal 0x466DC0'),
+            (0x8E040BB4, 'lw a0,+0xbb4(s0)'),
+            (0x0C108E60, 'jal 0x423980'),
+            (0x24040032, 'addiu a0,zero,50'),
+            (0x1040012C, 'beq v0,zero,0x42E8D0'),
+            (0x24020001, 'addiu v0,zero,1'),
+            (0x8E040BA4, 'lw a0,+0xba4(s0)'),
+            (0x27A50018, 'addiu a1,sp,24'),
+            (0x0C10B318, 'jal 0x42CC60'),
+            (0x03C03021, 'addu a2,fp,zero'),
+        ])
+        self.instructions(0x42CD50, [
+            (0x3C1400AE, 'lui s4,0xAE'),
+            (0x2684D468, 'addiu a0,s4,-11160'),
+            (0x02202821, 'addu a1,s1,zero'),
+            (0x0C296D10, 'jal 0xA5B440'),
+            (0x24060A88, 'addiu a2,zero,2696'),
+        ])
+        # The worker's outer completion barrier is +0C, not property +44.
+        self.instructions(0x42E220, [
+            (0x0C119B68, 'jal 0x466DA0'),
+            (0x8E04000C, 'lw a0,+0xc(s0)'),
+            (0x0C119B70, 'jal 0x466DC0'),
+            (0x8E040008, 'lw a0,+0x8(s0)'),
+        ])
+
     def test_timer10_registration_preserves_original_callback_and_context(self):
         self.instructions(0x4EAEBC, [
             (0x3C06004F, 'lui a2,0x4F'),
