@@ -1194,3 +1194,133 @@ PID 120/start 369/hash `0fed...`, both flags absent and all installed hashes
 unchanged. Candidate remains installed but unarmed; autoscroll is disabled.
 No firmware/timer change, extra run, commit or push. See the follow-up section
 of [the October 12 report](folderfollow-reveal-interactive-20261012.md).
+
+### Host cancellation coordinator and narrowed live boundaries (2026-10-13)
+
+Added host-only playback publication and a coordinator joining it to the
+existing copied-row publication and reveal policy. Mutation BEGIN withdraws
+authority and advances a non-reused revision; only its matching END can
+publish. Actual clear is separate from a transient in-flight gap. Overlapping
+writers, duplicate/late completion, loss and exhaustion fail closed. View,
+content and gesture events revoke one-use proposals even after same-value
+writes or A-to-B-to-A changes; stale/copy/foreign handles do not confer owner
+authority. No live hook, firmware mailbox or setter invocation is implemented.
+
+Independent review found a cancellation hole after an owner/content reset:
+an unobserved track publication followed by a complete manual gesture could
+become eligible at the first observation. Interaction changes now consume
+that publication, and an in-flight fence handles gestures/lifecycle changes
+between playback BEGIN and END. Twelve event-order regression cases ensure
+that a gesture wholly before a later track change does not disable that new
+transition, while overlapping or later gestures consume it.
+
+The static follow-up pins two previously uncovered playback clear mechanisms,
+the initialization extent, a potential scalar cue setter (without identified
+direct property-17 use), and a general-copy caller whose source aliases the
+current descriptor. It also resolves both deferred and synchronous object
+close consumers: the latter includes Files navigation, and the timer does not
+inherit the preceding controller lock. These are concrete integration limits,
+not proof of complete writer coverage, runtime thread identity or retained UI
+lifetime. See [playback boundary](folderfollow-reveal-playback-boundary.md) and
+[UI owner boundary](folderfollow-reveal-ui-owner-boundary.md).
+
+Validation: **530 tests pass, no skips** (79.502 s), including 81 new
+coordinator/publication/static-contract tests. All **91 Python scripts compile**;
+tracked and new files pass whitespace checks. The tested coordinator remains
+an executable serialized-input contract, not an active firmware adapter.
+
+No device access, firmware image build, installation, arm, launch, reboot,
+commit or push occurred in this step. Changes remain local. The October 12
+stock recovery is historical evidence, not a fresh statement about the live
+device. Next work is coherent all-relevant-writer publication and lifecycle
+invalidation within a retained UI transaction; another manual-scroll control
+run is not requested. Details and the required readiness/launch protocol are
+in [the coordinator report](folderfollow-reveal-coordinator.md).
+
+### First firmware-connected mutation guard; active reveal still refused (2026-10-13)
+
+At the user's request to connect the logic safely, implemented a 280-byte
+MIPS atomic mutation guard and integrated it at nine original writer sites
+in a separate offline ELF. Its packed private word withdraws readiness before
+mutation, issues bounded non-reused tickets, accepts only matching completion,
+and permanently faults on overlap, mismatch, exhaustion or bounded LL/SC
+failure. READY is only instrumented-mutation completion, not a copied identity
+or UI authority. Stock operations still execute once after guard failure.
+No UI setter, pointer lookup, extra stock read or timer work was introduced.
+
+Further static inspection found two more descriptor copies inside the general
+commit (`42CF84`, `42D398`), beyond the old bridge's three. All five known
+copies, preparation path clear, scalar cue store, full clear and initialization
+are guarded with exact original delay-slot semantics. Descriptor address
+escapes through the getter and indirect callbacks still require consumer
+classification. A general transition can clear and recopy its item; interpreting
+each mutation as a completed stop/new track would incorrectly reset policy.
+Refresh also has a render-callback route, so an arbitrary intra-refresh offset
+change is not yet admitted. These gates prevent enabling the full coordinator.
+
+Built and independently verified local ignored artifact:
+`artifacts/hiby_player_1.4_reveal_guard_stage_20261013.bin`, 7,145,148 bytes,
+SHA-256 `c8b6d9544bfccf98375efb871029e5fbb6d292e17f3a198f2eaa06578b12749d`.
+Added code is 1,724 bytes at BE0000; state is four bytes at BD4000 plus segment
+alignment padding. Only 49 original bytes differ from normalized golden,
+inside declared hooks and ELF fields. Separate RX/RW loads, deterministic
+rebuild, strict instruction/transfer inventory and original calls/results
+were checked. The old passive candidate/launcher were not changed.
+
+Validation: **558 tests pass, no skips** (85.920 s), all **96 Python scripts
+compile**, whitespace checks pass. Independent review exercised all nine
+hook variants and found no concrete preservation/relocation defect. Instruction
+interleavings test sticky fault/LL-SC behavior but do not prove the target CPU
+memory model, loader behavior, stock threading or object lifetime.
+
+This is **partial firmware integration, not an autoscroll fix or a proposed
+hardware test**. The builder refuses active reveal; logical-transition grouping,
+coherent copied publication and an owned UI action remain unfinished. No device
+access, install, arm, launch, reboot, commit or push. See
+[guard artifact, evidence and remaining contracts](folderfollow-reveal-guard-stage.md).
+
+### General track-change grouping connected offline (2026-10-14)
+
+Added entry/common-exit hooks around the stock general commit, beyond the nine
+raw mutation hooks. Preparation and all three general copies now remain under
+one unfinished scope until its matching normal completion. Its fixed original
+frame and non-reused ticket are checked; preparation additionally needs its
+current helper frame and saved return from the exact general caller. Explicit
+writer kind prevents preparation/copy return-address confusion, which a new
+regression test caught. Original calls, stores, stack, return value and HI/LO
+remain preserved even when instrumentation faults.
+
+Scope completion records exact success/failure (0/-1), not a coherent current
+identity. A foreign writer can begin after the exit check and outlive scope
+completion; an emitted-code test pins this allowed historical-READY case.
+No reader, UI setter, timer, installer or active-reveal path is attached.
+The host deferred-update API separately preserves the old policy baseline
+through intermediate unknown/clear/recopy state and accepts only a final owned
+value. Failed outcome consumes the transition; gesture/navigation cancellation
+still fences it, and later new successful changes remain eligible.
+
+Bounded static audits establish the complete normal general-function exit,
+classify concrete descriptor consumers, and narrow the non-render refresh
+route. They do not close indirect/alias writers, coherent copying or live UI
+ownership. The apparent playback-related refresh producer is PNG-resource
+completion, not a verified universal Next/autoplay trigger.
+
+New ignored local artifact:
+`artifacts/hiby_player_1.4_reveal_grouped_guard_stage_20261014.bin`, 7,146,352 bytes,
+SHA-256 `cce0d3ddb5fbee1284f1e47ed6976421b78a9f7b882caea8f363b9a9998a4e57`.
+Added code is 2,928 bytes at BE0000; private state is 20 bytes at BD4000 plus
+alignment padding. Only 65 original bytes differ from normalized golden,
+within eleven hook pairs and required ELF fields. The saved file passed the
+standalone verifier. The October 13 artifact still rebuilds byte-for-byte.
+
+Validation: **622 tests pass, no skips** (82.943 s); **100 Python scripts
+compile**, whitespace checks pass. This includes 16 grouped emitted-byte
+tests, 31 new static-contract tests and 17 new deferred-host-protocol tests.
+Independent host review also checked 7,776 short event sequences. These are
+offline checks, not hardware or whole-program concurrency certification.
+
+**Still partial integration; not a working autoscroll or proposed player test.**
+No device access, install, arm, launch, reboot, commit or push. The October 12
+device state is historical only. Next: coherent final identity/all-relevant
+writers, remaining logical routes, full-row/lifecycle publication and a retained
+non-render UI transaction. See [grouped build and exact limits](folderfollow-reveal-grouped-stage.md).

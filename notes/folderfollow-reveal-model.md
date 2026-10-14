@@ -16,6 +16,11 @@ activity and gesture bindings; a safe live adapter is still not established.
 
 ## Implemented behavior
 
+2026-10-13 follow-up: the [event coordinator](folderfollow-reveal-coordinator.md)
+now joins this policy to copied playback/row publications, invalidates on
+intervening events even when values return to their old state, and consumes
+one-use proposals. This remains host-only; it does not close the live gates.
+
 Inputs are immutable, owned snapshots, with externally established playback
 identity and non-reused view/content/manual-input generations. Those live
 contracts are prerequisites, not facts established by this Python model.

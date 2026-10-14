@@ -226,6 +226,25 @@ class RevealModel:
         self._pending: _Pending | None = None
         self._previous: tuple[ViewGeneration | None, int] | None = None
 
+    def cancel_pending(self) -> None:
+        """Consume outstanding work without erasing the playback baseline.
+
+        An event coordinator calls this immediately on an intervening change,
+        even if a later snapshot has the same values (for example A->B->A).
+        This is model cancellation, not a live synchronization primitive.
+        """
+        if self._candidate is not None:
+            self._candidate.view = None
+        self._pending = None
+
+    def reset_baseline(self, identity: Identity | None = None) -> None:
+        """Consume a clear/navigation/ineligible publication without reveal."""
+        valid = (type(identity) is Identity and identity.valid()
+                 and identity.folder() is not None)
+        self._committed = self._last_seen = identity if valid else None
+        self._candidate = self._pending = None
+        self._previous = None
+
     def observe(self, snapshot: Snapshot) -> Decision:
         context = (snapshot.view, snapshot.manual_epoch)
         interaction = self._previous is not None and context != self._previous
@@ -240,9 +259,7 @@ class RevealModel:
 
         # Cancel even before the second sample, not just after confirmation.
         if interaction or snapshot.manual_active is not False:
-            if self._candidate is not None:
-                self._candidate.view = None
-            self._pending = None
+            self.cancel_pending()
 
         if self._committed is None:
             self._committed = self._last_seen = identity

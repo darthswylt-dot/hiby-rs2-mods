@@ -13,21 +13,27 @@ The following fixes have been confirmed on hardware:
 | Folder traversal | `Next`, autoplay, and `Previous` traverse nested sibling directories in the expected order. |
 | Wake refresh | After a track changes while the screen is off, waking on Pause shows the current track, time, and progress bar. |
 
-Folder-follow is not fixed yet. Passive hardware telemetry proved that the
-live UI timer sees the committed full playback path while Folder View remains
-stale. Static tracing then recovered the complete stock nested restoration
-contract: property 11 carries a one-shot full path, `0x495B80` rebuilds every
-explorer level, and `0x495D40` performs locked cleanup and consumes that path.
-A narrowly gated functional candidate is prepared but not yet hardware-run;
-see
-[notes/folderfollow-saved-path-rebuild-test.md](notes/folderfollow-saved-path-rebuild-test.md).
+Folder-follow and automatic current-track scrolling are not fixed yet.
+The latest passive bridge test confirmed manual scrolling, preserved highlight
+and normal volume adjustment; autoscroll remained disabled. See the
+[October 12 hardware report](notes/folderfollow-reveal-interactive-20261012.md).
+The local [publication/cancellation coordinator](notes/folderfollow-reveal-coordinator.md)
+is host-only. A separate intermediate
+[MIPS mutation-guard build](notes/folderfollow-reveal-guard-stage.md) connects
+protection to nine known playback mutation sites. Its local
+[grouped successor](notes/folderfollow-reveal-grouped-stage.md) also brackets
+the general track-change operation, including preparation and repeated copies.
+Both refuse active reveal and have not been tested on the player.
+Live playback coherence, complete invalidation and retained UI ownership are
+still required before an active firmware candidate can be produced.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered
 firmware addresses,
 [notes/folderfollow-dispatch-fd9-diag.md](notes/folderfollow-dispatch-fd9-diag.md)
-for the latest hardware evidence, and [notes/adb.md](notes/adb.md) for the
-reversible test launcher and temporary ADB setup.
+for the earlier folder-restoration investigation, and
+[notes/adb.md](notes/adb.md) for the reversible test launcher and temporary ADB
+setup.
 
 A later local binary with SHA-256 prefix `02fd` was recovered after these notes
 were written. Byte-level archaeology proves that it is the golden `c825...`
