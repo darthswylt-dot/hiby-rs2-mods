@@ -144,6 +144,65 @@ class RevealUiOwnerContractTests(unittest.TestCase):
                 self.assertEqual(self.elf.data[offset:offset + len(encoded)],
                                  encoded)
 
+    def test_playlist_view_replacement_does_not_close_folder_explorer(self):
+        self.words(0x49E668, [0x02202021, 0x0C10EC90, 0x2645271C,
+                               0x02202021, 0x0C10E830, 0x2645271C,
+                               0x1440FFE1, 0x2645271C, 0x8E0400D4,
+                               0x0C1247A0, 0x27A60024])
+        offset = self.elf.va_to_off(0x92271C)
+        expected = b'vg_listview_m3ulist\0'
+        self.assertEqual(self.elf.data[offset:offset + len(expected)],
+                         expected)
+
+    def test_main_category_and_songlist_closures_are_not_folder_explorer(self):
+        self.words(0x49DF34, [0x3C050094, 0x02202021, 0x0C10EC90,
+                               0x24A51CE0, 0xAE000084, 0xAE0041E0])
+        self.words(0x49DFA0, [0x02202021, 0x0C10EC90, 0x26651CC4,
+                               0xAE000084, 0xAE0041E0])
+        for address, expected in (
+                (0x941CC4, b'vg_listview_main_category\0'),
+                (0x941CE0, b'vg_listview_main_songlist\0')):
+            offset = self.elf.va_to_off(address)
+            with self.subTest(address=f'{address:#x}'):
+                self.assertEqual(self.elf.data[offset:offset + len(expected)],
+                                 expected)
+
+    def test_unresolved_explorer_retarget_helper_is_not_owner_evidence(self):
+        # This body implements the same depth-derived explorer replacement,
+        # but the bounded reference scan found no direct caller or pointer
+        # literal. Its enclosing routine only stores this address in a local
+        # stack slot and does not reload that slot.
+        self.words(0x527920, [0x0C296D5C, 0x24A52124, 0x02002021,
+                               0x0C10EC90, 0x27A50260, 0x02002021,
+                               0x0C126890, 0x27A50018, 0x1440000B,
+                               0x24060040, 0x02002021, 0x27A50260,
+                               0x0C1247A0, 0x27A60018])
+        self.words(0x5279F4, [0x0C296D5C, 0x26452704,
+                               0x1000FFCB, 0x02002021])
+        self.words(0x527C98, [0x3C030052, 0x24637860])
+        self.assertEqual(self.elf.word(0x527CD4), 0xAFA3022C)
+        fmt_offset = self.elf.va_to_off(0x942124)
+        fmt = b'vg_listview_explorer##%d\0'
+        self.assertEqual(self.elf.data[fmt_offset:fmt_offset + len(fmt)], fmt)
+        self.assertEqual(self.direct_calls(0x527860), [])
+
+        pointer_literals = [
+            vaddr + relative
+            for vaddr, offset, filesz, _, _ in self.elf.loads
+            for relative in range(0, filesz & ~3, 4)
+            if self.elf.u32(offset + relative) == 0x527860
+        ]
+        self.assertEqual(pointer_literals, [])
+
+        local_reads = [
+            pc for start, end in self.elf.executable_ranges()
+            for pc in range(0x527C60, min(0x527F00, end & ~3), 4)
+            if (self.elf.word(pc) >> 26) in (32, 33, 35, 36, 37)
+            and ((self.elf.word(pc) >> 21) & 31) == 29
+            and (self.elf.word(pc) & 0xFFFF) == 0x22C
+        ]
+        self.assertEqual(local_reads, [])
+
     def test_controller_brackets_are_distinct_and_timer_does_not_inherit_138(self):
         self.words(0x439A40, [0xAE020138, 0x3C020043, 0x24427CC0,
                                0xAE02026C, 0x3C020043, 0x24427D40,

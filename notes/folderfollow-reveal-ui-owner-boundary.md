@@ -164,3 +164,28 @@ refresh is not established as equivalent. The added twelfth contract test
 pins the callback and caller inventory. The
 [intermediate firmware guard](folderfollow-reveal-guard-stage.md) changes
 neither refresh nor setter, and does not claim that this boundary is closed.
+
+### Bounded caller-relevance follow-up (2026-10-15)
+
+A focused census of the 17 direct `0x43B240` calls in `0x490000..0x49FFFF`
+separates several unrelated named widgets from the explorer path. For example,
+the close/check/recreate branch at `0x49E66C` uses
+`vg_listview_m3ulist`, while other statically resolved names include
+`vg_music_search_hiby`, `vg_tidal_search_hiby`,
+`vg_listview_main_category`, `vg_listview_main_songlist`, and
+`vg_listview_menu`. These are not Folder View teardown events. The known
+dynamic explorer navigation remains at `0x49E714`; other dynamic arguments in
+this range are not all resolved, so this is not a classification of the
+full 194-call census.
+
+An executable helper at `0x527860` also contains a depth-derived
+`vg_listview_explorer##%d` / root-name close, path check, and conditional
+recreate sequence. It is **not promoted to an observed lifecycle route**:
+bounded scans found no direct caller or pointer literal to the helper, and the
+only located address construction stores it at `0x527CD4` in a local stack
+slot of `0x527C60` with no local reload from that slot. Indirect
+escape/dispatch outside that routine is unresolved. The helper is therefore a
+reachability lead, not evidence of an owner callback or UI serialization. The
+added exact-source checks preserve both the unrelated M3U classification and
+this negative reachability boundary. No firmware or player operation was
+performed.

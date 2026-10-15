@@ -1455,3 +1455,15 @@ a root fallback only when restoration does not complete. Extended the exact
 contract to pin the callers, arguments, and ordering. UI-owner tests now pass
 14/14; thread ownership and full lifecycle coverage remain open. No device or
 firmware action.
+
+A bounded follow-up classified the 17 direct object-close calls in the
+`0x490000..0x49FFFF` range where names were statically recoverable. The branch
+at `0x49E66C` closes `vg_listview_m3ulist`, not Folder View; other recovered
+names include the music/Tidal search widgets, main category/song list, and
+menu. Dynamic call arguments remain unresolved, so this does not classify all
+194 direct calls. A second helper at `0x527860` contains the same depth-derived explorer
+close/check/recreate pattern, but no direct caller or pointer literal was
+found; its only bounded address construction is stored in a local slot at
+`0x527CD4` with no reload in the enclosing routine. Treat it as an unproven
+reachability lead, not an owner/lifecycle guarantee. Seventeen UI-owner contract
+tests pass. No firmware or player operation was performed.
