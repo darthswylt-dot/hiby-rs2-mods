@@ -100,6 +100,50 @@ class RevealUiOwnerContractTests(unittest.TestCase):
                                0x1440FFB7, 0x02202021, 0x27A50AA8,
                                0x0C1247A0, 0x27A60024])
 
+    def test_explorer_recreate_uses_path_depth_name_and_closes_first(self):
+        self.words(0x49E6D8, [0x27A30024, 0x24630002, 0x3844005C,
+                               0x94620000, 0x2C840001, 0x1440FFFB,
+                               0x00C43021, 0x24C6FFFF, 0x18C00012,
+                               0x00000000])
+        self.words(0x49E700, [0x3C050094, 0x27A40AA8, 0x0C296D5C,
+                               0x24A52124])
+        self.words(0x49E710, [0x02202021, 0x0C10EC90, 0x27A50AA8,
+                               0x02202021, 0x0C126890, 0x27A50024,
+                               0x1440FFB7, 0x02202021, 0x27A50AA8,
+                               0x0C1247A0, 0x27A60024])
+        self.words(0x49E744, [0x3C050092, 0x27A40AA8, 0x0C296D5C,
+                               0x24A52704, 0x1000FFEF, 0x02202021])
+        for address, expected in (
+                (0x942124, b'vg_listview_explorer##%d'),
+                (0x922704, b'vg_listview_explorer')):
+            offset = self.elf.va_to_off(address)
+            with self.subTest(address=f'{address:#x}'):
+                self.assertEqual(self.elf.data[offset:offset + len(expected) + 1],
+                                 expected + b'\0')
+
+    def test_storage_open_cleans_explorer_before_restore_or_fallback(self):
+        self.assertEqual(self.direct_calls(0x495D40),
+                         [0x49D4A8, 0x49D524, 0x49D560])
+        self.assertEqual(self.direct_calls(0x495A40), [0x495D60])
+        self.assertEqual(self.direct_calls(0x495B80), [0x495D78])
+        self.words(0x495D60, [0x0C125690, 0x00808021, 0x0C1BCB48,
+                               0x02202021, 0x04400010, 0x3C050092,
+                               0x0C1256E0, 0x02002021])
+        self.words(0x495D84, [0x00409021, 0x2404000B, 0x0C1093D8,
+                               0x24A50AB4, 0x1240000A])
+        self.words(0x495DC0, [0x3C050092, 0x02002021, 0x02203021,
+                               0x0C1247A0, 0x24A52704])
+        for call, delay, address, expected in (
+                (0x49D4A8, 0x26454504, 0x944504, 'b:\\*'),
+                (0x49D524, 0x26454510, 0x944510, 'c:\\*'),
+                (0x49D560, 0x264544F8, 0x9444F8, 'a:\\*')):
+            self.words(call, [0x0C125750, delay])
+            offset = self.elf.va_to_off(address)
+            encoded = expected.encode('utf-16le') + b'\0\0'
+            with self.subTest(call=f'{call:#x}'):
+                self.assertEqual(self.elf.data[offset:offset + len(encoded)],
+                                 encoded)
+
     def test_controller_brackets_are_distinct_and_timer_does_not_inherit_138(self):
         self.words(0x439A40, [0xAE020138, 0x3C020043, 0x24427CC0,
                                0xAE02026C, 0x3C020043, 0x24427D40,

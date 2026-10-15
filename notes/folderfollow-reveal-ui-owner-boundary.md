@@ -78,6 +78,29 @@ subsequent create at `0x49E734 -> 0x491E80`. This agrees with the established
 event-7 activation route and makes entry-time lifecycle invalidation
 necessary even within a single UI invocation.
 
+The generated identity is now resolved at the call site: row navigation scans
+the current UTF-16 path for backslashes, subtracts one from that count, and
+formats `vg_listview_explorer##%d` when the result is positive. For the root
+case it formats the unsuffixed `vg_listview_explorer`. Both paths synchronously
+close the selected name through `0x43B240`, then call `0x49A240` with the
+current path. Only when that helper returns zero does the route call
+`0x491E80` to create a replacement with that path; a nonzero result skips the
+create. This gives a precise path-depth-derived invalidation lead for the
+stock row-navigation route; it does not prove uniqueness of the suffix,
+thread serialization, coverage of other navigation/lifecycle paths, or
+retention safety for our own state.
+
+Storage switching has a separate stock lifecycle path. Exactly three direct
+calls to `0x495D40` were found, at `0x49D4A8`, `0x49D524`, and `0x49D560`,
+passing UTF-16 `b:\\*`, `c:\\*`, and `a:\\*`, respectively. The common
+transaction calls locked cleanup `0x495A40` first, then attempts saved-path
+hierarchy restoration through `0x495B80` and clears property 11. A successful
+restore returns without a fallback create; otherwise `0x491E80` creates the
+unsuffixed explorer using the supplied drive-root path. This is another
+concrete synchronous invalidation route, distinct from per-row navigation.
+It still does not establish a shared UI-thread/serialization contract for
+external state, nor does it cover every direct close-facade caller.
+
 For a dialog target, either consumer can invoke `0x47D060 -> 0x47CF80 ->
 D+0x6C`, with the final indirect call at `0x47D004`. The known `0x47C740`
 completion callback then waits for its worker and invokes D+0x74. Those

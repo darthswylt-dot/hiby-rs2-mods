@@ -1436,3 +1436,22 @@ and balance UI labels and neighboring code pointers; this is suggestive UI
 metadata, not proof of an event binding. Added a hash-gated neighborhood
 contract check. Seven exact-source tests pass; no firmware/device operation
 was made.
+
+Follow-up on the Files lifecycle boundary resolved the name passed by row
+navigation to `0x43B240`: it derives an explorer suffix from UTF-16 path depth
+(`vg_listview_explorer##%d`), or uses the unsuffixed explorer name at root,
+then closes that exact named object. After the path check at `0x49A240`, only
+the zero-result path creates a replacement through `0x491E80`. Added an
+exact-source contract for the name formats and ordering. This sharpens one
+synchronous invalidation point but does not establish serialization or
+complete lifecycle coverage. All 13 UI-owner contract tests pass. No player or
+firmware action.
+
+A second lifecycle route was classified: storage-root changes at three direct
+sites call `0x495D40` with UTF-16 `a:\\*`, `b:\\*`, or `c:\\*`. That
+transaction synchronously calls locked explorer cleanup `0x495A40`, attempts
+saved hierarchy restoration and clears property 11, then uses `0x491E80` for
+a root fallback only when restoration does not complete. Extended the exact
+contract to pin the callers, arguments, and ordering. UI-owner tests now pass
+14/14; thread ownership and full lifecycle coverage remain open. No device or
+firmware action.
