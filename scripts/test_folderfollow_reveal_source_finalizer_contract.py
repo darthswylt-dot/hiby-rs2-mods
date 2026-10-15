@@ -110,6 +110,67 @@ class SourceFinalizerContractTests(unittest.TestCase):
             24: [0x4B55E8, 0x531170, 0x533C68],
         })
 
+    def test_secondary_property_32_writer_clears_effective_source_path(self):
+        self.assertEqual(self.elf.word(0xAAE660), 0x00519140)
+        pointer_refs = []
+        for vaddr, offset, filesz, _, _ in self.elf.loads:
+            for relative in range(0, filesz & ~3, 4):
+                if self.elf.u32(offset + relative) == 0x00519140:
+                    pointer_refs.append(vaddr + relative)
+        self.assertEqual(pointer_refs, [0x00AAE660])
+
+        direct_control_refs = []
+        for start, end in self.elf.executable_ranges():
+            for pc in range(start, end & ~3, 4):
+                word = self.elf.word(pc)
+                op = word >> 26
+                if op in (2, 3):
+                    target = ((pc + 4) & 0xF0000000) | ((word & 0x03FFFFFF) << 2)
+                elif op in (1, 4, 5, 6, 7):
+                    immediate = word & 0xFFFF
+                    if immediate & 0x8000:
+                        immediate -= 0x10000
+                    target = pc + 4 + immediate * 4
+                else:
+                    continue
+                if target == 0x00519140:
+                    direct_control_refs.append(pc)
+        self.assertEqual(direct_control_refs, [])
+
+        self.instructions(0x519140,
+                          (0x8C820110, 'lw v0,+0x110(a0)'),
+                          (0x24030001, 'addiu v1,zero,1'),
+                          (0x10430021, 'beq v0,v1,0x5191D0'),
+                          (0x00000000, 'nop'))
+        self.instructions(0x5191A4,
+                          (0x3C050092, 'lui a1,0x92'),
+                          (0x24040020, 'addiu a0,zero,32'),
+                          (0x0C108AE8, 'jal 0x422BA0'),
+                          (0x24A50AB4, 'addiu a1,a1,2740'))
+        path = self.elf.va_to_off(0x920AB4)
+        self.assertEqual(self.elf.data[path:path + 4], b'\x00\x00\x00\x00')
+        self.assertEqual(self.elf.data[path + 4:path + 18],
+                         '#EXTINF'.encode('utf-16le'))
+
+    def test_secondary_writer_is_only_located_in_nearby_ui_metadata(self):
+        for address, label in (
+                (0xAAE610, b'pull_down_menu_iv_mseb'),
+                (0xAAE670, b'pull_down_menu_iv_lineout'),
+                (0xAAE6D0, b'pull_down_menu_iv_balance')):
+            offset = self.elf.va_to_off(address)
+            with self.subTest(address=f'{address:#x}'):
+                self.assertEqual(self.elf.data[offset:offset + len(label) + 1],
+                                 label + b'\0')
+        self.assertEqual({
+            address: self.elf.word(address)
+            for address in (0xAAE658, 0xAAE660, 0xAAE6B8, 0xAAE718)
+        }, {
+            0xAAE658: 0x005190A0,
+            0xAAE660: 0x00519140,
+            0xAAE6B8: 0x005191E0,
+            0xAAE718: 0x005192A0,
+        })
+
     def test_callback_offset_scan_separates_player_reads_from_other_objects(self):
         memory_ops = {32, 33, 35, 36, 37, 40, 41, 43, 49, 57}
         hits = []

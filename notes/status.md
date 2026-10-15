@@ -1417,6 +1417,22 @@ player callback remain open aliases. A binary-wide `+0xBA0` sweep finds the two
 player callback loads but no direct player-slot store; other same-offset
 operations belong to stack/pipeline contexts, without excluding bulk/alias
 writes. The writer/generation gate is therefore **not closed**; no snapshot is
-promoted to active authority. Five exact-source finalizer contract tests pass.
+promoted to active authority. Six exact-source finalizer contract tests pass.
 No firmware/device change was made. See
 [source-finalizer boundary](folderfollow-reveal-source-finalizer-boundary.md).
+
+Follow-up resolved the second property-32 direct call at `0x5191AC`: it passes
+`0x920AB4`, whose first UTF-16 code unit is NUL, so the effective source path
+is cleared rather than set to a backing-file path. The method entry is present
+as a function-pointer word at `0xAAE660`; no direct branch or `jal` to its
+entry was found, so the dynamic caller remains unknown. Added an exact-source
+contract check for this reset input. This narrows the known invalidation
+semantics but does not close the alias/generation gate or change the reveal
+disposition. No firmware/device operation was made.
+
+The follow-up ELF/GOT pass found no symbol/GP metadata or relocation that
+resolves the owner. `0x519140` is in a `.data` neighborhood with MSEB, lineout,
+and balance UI labels and neighboring code pointers; this is suggestive UI
+metadata, not proof of an event binding. Added a hash-gated neighborhood
+contract check. Seven exact-source tests pass; no firmware/device operation
+was made.

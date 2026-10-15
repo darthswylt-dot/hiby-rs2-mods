@@ -88,8 +88,9 @@ They do not analyze escaped pointer lifetimes, indirect callback targets,
 nonlocal aliases, or concurrency. Thus neither a private source epoch nor an
 optimistic descriptor revision can currently be certified as complete writer
 coverage. The new hash-gated source-finalizer contract pins the corrected
-`0xADD360` slot, constructor/teardown order, and the bounded property-call
-inventories; it does not promote those inventories into a complete alias proof.
+`0xADD360` slot, constructor/teardown order, bounded property-call inventories,
+and the empty-path reset input at `0x5191AC`; it does not promote those
+inventories into a complete alias proof.
 
 ## Existing playback-state message is not a retained source snapshot
 
@@ -109,10 +110,26 @@ The bounded direct-property audit also finds that property 31 has only the two
 writer call sites inside `0x42BBE0` (`0x42BC30` and `0x42BC50`, selected by its
 mode/offset branch). Property 32 has the finalizer call at `0x42BBFC` plus a
 second direct writer at `0x5191AC`, which passes a constant pointer rather
-than `0xADD46C`. Its meaning is not established here, so a future private
-path/position capture must treat this writer as an invalidation/reset event,
-not assume every path update is a track commit. This is a direct-call inventory,
-not proof against indirect calls into the setter.
+than `0xADD46C`. It passes `0x920AB4` (formed in the call delay slot); the first
+UTF-16 code unit there is NUL, so the effective source path is empty. The
+following data begins with UTF-16 `#EXTINF`, consistent with this pointer
+selecting an empty prefix before adjacent metadata, not a backing-file path.
+This is therefore a confirmed path-clear invalidation route, not evidence of a
+track commit. The call is in the method block beginning at `0x519140`, whose
+entry appears as a function-pointer word at `0xAAE660`; the bounded scan finds
+no direct `jal` or branch reference to the entry, so its dynamic owner and
+invocation circumstances remain unresolved. This remains a direct-call
+inventory, not proof against indirect calls into the setter or other aliases.
+
+A second bounded pass over the ELF tables found no `.symtab`, `.reginfo`, or
+`DT_MIPS_GP_VALUE`; the dynamic relocations do not describe `0xAAE660`, and the
+GOT contains no copy of this method pointer. The pointer sits in `.data` among
+nearby UI-label strings `pull_down_menu_iv_mseb`, `pull_down_menu_iv_lineout`,
+and `pull_down_menu_iv_balance`, with other method pointers at `0xAAE658`,
+`0xAAE6B8`, and `0xAAE718`. This makes a UI-control metadata association
+plausible, but the stripped image does not establish which control/event owns
+`0x519140` or when it is invoked. Treating this as an output-menu callback
+would still be an inference, not a resolved caller.
 
 For the general route, `0x42D6A8` is on the common successful epilogue; the
 bounded failure branches return `-1` through other epilogues. This makes the
