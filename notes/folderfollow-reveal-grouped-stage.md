@@ -1,5 +1,9 @@
 # Grouped playback guard: offline firmware stage
 
+Follow-up, 2026-10-15: a separate [fast-grouped successor](folderfollow-reveal-fast-grouped-stage.md)
+adds the synchronous same-file descriptor block and explicit scope-kind checks.
+This artifact remains unchanged; neither version enables active reveal.
+
 2026-10-14. The general track-change entry and common exit now bracket its
 preparation clear and repeated descriptor copies in emitted MIPS code. This
 is a successor to the [single-mutation guard](folderfollow-reveal-guard-stage.md),

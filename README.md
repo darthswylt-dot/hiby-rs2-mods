@@ -24,6 +24,8 @@ protection to nine known playback mutation sites. Its local
 [grouped successor](notes/folderfollow-reveal-grouped-stage.md) also brackets
 the general track-change operation, including preparation and repeated copies.
 Both refuse active reveal and have not been tested on the player.
+The [October 15 extension](notes/folderfollow-reveal-fast-grouped-stage.md)
+also groups the synchronous same-file block, separately from fallback paths.
 Live playback coherence, complete invalidation and retained UI ownership are
 still required before an active firmware candidate can be produced.
 

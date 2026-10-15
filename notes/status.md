@@ -1324,3 +1324,76 @@ No device access, install, arm, launch, reboot, commit or push. The October 12
 device state is historical only. Next: coherent final identity/all-relevant
 writers, remaining logical routes, full-row/lifecycle publication and a retained
 non-render UI transaction. See [grouped build and exact limits](folderfollow-reveal-grouped-stage.md).
+
+### Synchronous same-file grouping and player-lock audit (2026-10-15)
+
+Extended the offline guard with the narrow synchronous descriptor block in
+`42CAC0`: entry `42CBD4`, completion `42CC20`. The whole function cannot use
+the general-entry/exit contract because early returns have no frame and
+asynchronous fallbacks also return zero without executing the fast copy.
+The block has a fixed existing frame, optional descriptor callback and event
+posting; all bounded normal routes reach the chosen completion. The trailing
+backing-path copy is disjoint from the current descriptor.
+
+General and fast scopes now use explicit kinds as well as original frame and
+non-reused ticket. Wrong-kind inner copies, preparation in a fast scope, wrong
+exits, overlap and unrelated writers fail closed; original stock operations
+continue once. Fast completion preserves the arbitrary stock queue-result v0
+and records only synthetic block completion, not verified playback success.
+It must not be blindly converted to host `succeeded=True` or UI permission.
+
+The stock mutex audit resolved actual pthread imports, null-attribute init and
+discarded lock/unlock result handling. Getter/setter and all four direct
+same-file callers share B+44, but general commit has no established matching
+bracket, full clear follows its helper unlock, and initialization clears before
+mutex creation. Calling the getter inside already-locked hooks risks recursive
+acquisition without a recursive-mutex contract. No new getter/lock/read was
+added. Unknown descriptor callback/alias writers remain an independent gate.
+
+New ignored local artifact:
+`artifacts/hiby_player_1.4_reveal_fast_grouped_guard_stage_20261015.bin`,
+7,147,040 bytes, SHA-256
+`0c587656d2bd169b6763bebf8ddf0f1103f65275b46e1f43f6604718e7f23d72`.
+Added code: 3,616 bytes at BE0000; private state: 24 bytes at BD4000 plus
+alignment padding. Eighty original bytes differ inside thirteen hook pairs
+and required ELF fields. Standalone verification passed. Both October 13/14
+build modes still reproduce their earlier artifact hashes exactly.
+
+Validation: **658 tests pass, no skips** (99.516 s); **103 Python scripts
+compile**, whitespace checks pass. Thirty-six new tests cover emitted fast
+grouping (17), the exact fast-block contract (9), and stock mutex coverage (10).
+Independent review found no actionable preservation/grouping defect. These
+are offline checks, not target concurrency, loader or timing certification.
+
+Active reveal remains refused. Final identity copying, all-relevant-writer
+coverage and an owned full-row/UI transaction are not yet implemented.
+No device access, install, arm, launch, reboot, commit or push in this step;
+the previously recorded device state is historical. See
+[new build and remaining limits](folderfollow-reveal-fast-grouped-stage.md),
+[fast boundary](folderfollow-reveal-fast-boundary.md), and
+[player-lock audit](folderfollow-reveal-player-lock.md).
+
+### Shared source-finalizer boundary (2026-10-15)
+
+Static tracing found that the fast same-file and general cross-file routes
+both call `42CA00`, which finalizes source path/position and posts playback
+state. The general route reaches it in its normal-success epilogue after the
+open/setup work; the fast route reaches it after its descriptor copy and before
+its optional callback/event post. This is a useful shared timing point, but not
+a complete row or audible-playback certificate. A similar-looking `+BA0`
+callback assignment in the media pipeline belongs to another object and does
+not resolve the global player's callback. Source-object lifetime, descriptor
+alias coverage, and UI transaction ownership remain open. The playback-state
+message is not a substitute: it preserves a global path and player scalars,
+not source property 31's backing-file position, and its direct receiver belongs
+to the mutating recovery path. No firmware code/artifact or device operation
+was performed in this audit. The 116 targeted folder-follow contract checks
+passed. Property 31's direct setters are both in the source finalizer; property
+32 also has a separate direct constant-value writer that a future owned capture
+must fence as reset/invalidation. See
+[source-finalizer boundary](folderfollow-reveal-source-finalizer-boundary.md).
+Follow-up of the setter-input-copy candidate found that property 31/32 calls
+are sequential, the setter does not report whether a live source accepted them,
+and descriptor/source generations are not coherently fenced. Private copies are
+diagnostic-only, not safe reveal authority. The 116 targeted contract checks
+passed again; no firmware/device operation was made.

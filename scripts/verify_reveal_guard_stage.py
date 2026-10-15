@@ -8,13 +8,14 @@ from pathlib import Path
 import build_reveal_guard_stage as stage
 
 
-def verify(source, candidate, *, grouped=False):
+def verify(source, candidate, *, grouped=False, fast_grouped=False):
     golden, _ = stage.normalize_source(source)
-    expected, meta = stage.build(source, grouped=grouped)
+    expected, meta = stage.build(source, grouped=grouped, fast_grouped=fast_grouped)
+    hooks = stage.hook_inventory(grouped, fast_grouped)
     if candidate != expected:
         raise ValueError('candidate differs from deterministic guard-only build')
     spans = [(meta['memsize_offset'], 4), (meta['phdr_offset'], 32)]
-    spans.extend((pc - stage.BASE, 8) for pc, _, _ in stage.hook_inventory(grouped).values())
+    spans.extend((pc - stage.BASE, 8) for pc, _, _ in hooks.values())
     changes = [i for i, (x, y) in enumerate(zip(golden, candidate)) if x != y]
     if any(not any(start <= i < start + size for start, size in spans) for i in changes):
         raise ValueError('undeclared original-image change')
@@ -41,7 +42,7 @@ def verify(source, candidate, *, grouped=False):
             if max(load[2], other[2]) < min(load[2] + load[5], other[2] + other[5]):
                 raise ValueError('overlapping LOADs')
 
-    for pc, original_words, label in stage.hook_inventory(grouped).values():
+    for pc, original_words, label in hooks.values():
         linked = label in ('copy', 'zero')
         expected_pair = (stage.b.j_type(3 if linked else 2, meta['labels'][label]),
                          original_words[1] if linked else 0)
@@ -58,14 +59,16 @@ def verify(source, candidate, *, grouped=False):
             raise ValueError('unknown opcode')
         if op == 0 and word & 63 not in (0, 2, 8, 15, 16, 17, 18, 19, 33, 43):
             raise ValueError('unknown SPECIAL instruction')
-        if op == 35 and rs != 29 and not (grouped and rs == 8 and imm in (0, 4, 8, 12)):
+        private_loads = (0, 4, 8, 12, 20) if fast_grouped else (0, 4, 8, 12)
+        private_stores = (8, 12, 16, 20) if fast_grouped else (8, 12, 16)
+        if op == 35 and rs != 29 and not (grouped and rs == 8 and imm in private_loads):
             raise ValueError('non-stack additional read')
         if op in (48, 56) and (rs, imm) != (8, 0):
             raise ValueError('non-private atomic access')
         if op == 41 and word not in (0xA6000104, 0xA600144C):
             raise ValueError('unexpected halfword write')
         if (op == 43 and rs != 29 and word not in (0xAD0D0000, 0xAE120524)
-                and not (grouped and rs == 8 and imm in (8, 12, 16))):
+                and not (grouped and rs == 8 and imm in private_stores)):
             raise ValueError('non-stack/non-private extra write')
         if op in (4, 5):
             delta = imm - (0x10000 if imm & 0x8000 else 0)
@@ -81,7 +84,8 @@ def verify(source, candidate, *, grouped=False):
             if word != 0x03E00008 or words[i + 1] != 0:
                 raise ValueError('unexpected indirect return/delay')
     expected_tails = [0x429F00, 0x42AB98] + ([0x42CC68, 0x42D6EC] if grouped else [])
-    if sorted(calls) != [stage.MEMCPY, stage.MEMSET] or sorted(tails) != expected_tails:
+    expected_tails += [0x42CBDC, 0x42CB68] if fast_grouped else []
+    if sorted(calls) != [stage.MEMCPY, stage.MEMSET] or sorted(tails) != sorted(expected_tails):
         raise ValueError('external control-flow inventory changed')
     return dict(meta, sha256=hashlib.sha256(candidate).hexdigest(),
                 changed_original_bytes=len(changes), external_calls=calls,
@@ -93,8 +97,10 @@ def main():
     parser.add_argument('source', type=Path)
     parser.add_argument('candidate', type=Path)
     parser.add_argument('--grouped', action='store_true')
+    parser.add_argument('--fast-grouped', action='store_true')
     args = parser.parse_args()
-    print(verify(args.source.read_bytes(), args.candidate.read_bytes(), grouped=args.grouped))
+    print(verify(args.source.read_bytes(), args.candidate.read_bytes(),
+                 grouped=args.grouped or args.fast_grouped, fast_grouped=args.fast_grouped))
 
 
 if __name__ == '__main__':

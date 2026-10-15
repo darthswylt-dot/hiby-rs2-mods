@@ -99,14 +99,16 @@ class StageMachine(HookMachine):
         raise AssertionError('unbounded execution')
 
     def site(self, name):
-        pc, _, label = stage.hook_inventory(self.meta.get('grouped', False))[name]
+        pc, _, label = stage.hook_inventory(self.meta.get('grouped', False),
+                                           self.meta.get('fast_grouped', False))[name]
         word, delay = struct.unpack_from('<2I', self.image, pc - stage.BASE)
         target = ((pc + 4) & 0xF0000000) | ((word & 0x3FFFFFF) << 2)
         self.assert_target = target
         if word >> 26 == 3:
             self.r[31] = pc + 8
         self.plain(delay)
-        stop = {'prepare': 0x429F00, 'cue': 0x42AB98}.get(label, pc + 8)
+        stop = {'prepare': 0x429F00, 'cue': 0x42AB98,
+                'fast_scope_exit': 0x42CB68}.get(label, pc + 8)
         self.run_at(target, stop)
 
 
