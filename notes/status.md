@@ -1397,3 +1397,26 @@ are sequential, the setter does not report whether a live source accepted them,
 and descriptor/source generations are not coherently fenced. Private copies are
 diagnostic-only, not safe reveal authority. The 116 targeted contract checks
 passed again; no firmware/device operation was made.
+
+### Source and descriptor writer-generation recheck (2026-10-15)
+
+Corrected the source-pointer global in the new boundary note to `0xADD360`
+(`0xAE0000 + sign-extended 0xD360`), not `0xAED360`. Exact reference traces
+show constructor publication at `0x424018` and teardown clear at `0x422B6C`
+after destruction at `0x466A80`; no source-shared lock was identified. A
+private lifetime epoch could reject our own samples if invalidated before
+teardown, but cannot protect an in-flight stock setter from destruction.
+
+The bounded property scan still finds only two direct setter calls each for
+properties 31/32; property 24 has three direct callers, while property 17 has
+no resolved direct caller despite its store branch. Offset-only path/cue scans
+produce many colliding object references, including `+0x104` writes through
+`*(a0+0x50)` and `+0x524` writes through a method argument. Their bases cannot
+be proven equal to or distinct from B. Escaped D pointer-outs and the unresolved
+player callback remain open aliases. A binary-wide `+0xBA0` sweep finds the two
+player callback loads but no direct player-slot store; other same-offset
+operations belong to stack/pipeline contexts, without excluding bulk/alias
+writes. The writer/generation gate is therefore **not closed**; no snapshot is
+promoted to active authority. Five exact-source finalizer contract tests pass.
+No firmware/device change was made. See
+[source-finalizer boundary](folderfollow-reveal-source-finalizer-boundary.md).
