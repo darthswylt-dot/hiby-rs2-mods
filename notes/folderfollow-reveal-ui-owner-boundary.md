@@ -189,3 +189,78 @@ reachability lead, not evidence of an owner callback or UI serialization. The
 added exact-source checks preserve both the unrelated M3U classification and
 this negative reachability boundary. No firmware or player operation was
 performed.
+
+The same census exposed a separate generic list-owner cleanup path around
+`0x492A88..0x493218`. It walks eight 64-byte name slots beginning at owner
+`+0x3BA8`, resolves each through `0x4E5320`, and has synchronous named-close
+calls at `0x492B48`, `0x49302C`, `0x4930D8`, `0x493214`, and `0x4936FC`.
+One branch compares the slot name with the exact static
+`vg_listview_main_explorer` string at `0x9419E8` before the `0x492B48` close;
+other branches pass slot-derived names directly. This is a concrete
+name-driven invalidation path for the main explorer widget and a potential
+invalidation path for other names present in those slots. It does not prove
+that a depth-specific `vg_listview_explorer##%d` is among the slot contents,
+nor establish the caller's thread or serialization against all Files
+lifecycle routes. It must be included in future lifecycle coverage, but does
+not close the UI-owner gate. The new contract pins the slot layout, loop bound,
+name comparison, and dynamic close branch. No firmware/player operation.
+
+The storage-switch path adds a more specific invalidation route in
+`0x495A40`: while holding the controller mutex it walks view names and matches
+the `vg_listview_explorer` prefix, snapshots up to 30 names into local
+64-byte records, then releases the mutex before synchronously closing each
+snapshot through `0x43B240`. `0x495D40` invokes this cleanup before restoring
+the saved path and clearing the selected-item property. This covers the
+unsuffixed and suffixed explorer-name family in the storage-switch cleanup
+path. It does not establish that every Files lifecycle route uses this mutex
+or runs on the UI owner thread. The added exact-source test pins the lock,
+prefix, snapshot bound, unlock-before-close order, and close loop. Nineteen
+UI-owner contract tests pass; the UI-owner gate remains open. No
+firmware/player operation.
+
+A second generic cleanup route is used immediately before opening the main
+explorer at `0x49DDC8`. Its helper `0x495260` walks the controller's ordered
+view list at `owner+0x298` (the same list enumerated by `0x4E5560`), follows
+each entry's `+8` view object to its `+0xCC` named-list widget, copies the
+widget's first-word name into a local buffer, and synchronously closes that
+name through `0x43B240` before restarting from the list head. The following
+stock create uses the exact `vg_listview_main_explorer` name.
+
+The registration/destruction path resolves the list membership: a new view
+from `0x491E80` stores its supplied owner at view+`0xD4`, creates its named
+widget at view+`0xCC`, and calls `0x4E5280(owner,view)`. That helper inserts
+the view at node+8 of the same owner+`0x298` list under the owner+`0x2A4/+0x2A8`
+mutex. Closing the copied widget name synchronously reaches view destructor
+`0x493AC0`, which calls `0x4E54A0(view+0xD4,view)`; that removes the view from
+its parent's same list under the mutex. Therefore `0x495260` will close a
+Folder View created through `0x491E80` if it belongs to the same owner passed
+to the cleanup. The root-open callback and Files row-navigation callback both
+load their owner candidate from payload+`0x50`, but the static trace does not
+prove those two runtime pointers are always identical. Neither callback has a
+direct-JAL caller or a statically resolved address reference in the bounded
+scans, so its dispatch/owner source remains unresolved; this is not proof that
+either callback is dead code.
+
+The `0x495260` walk itself does not acquire that list mutex: its bounded body
+contains only string helpers and the synchronous close facade, with no
+indirect lock callback. It snapshots a name, closes it (whose destructor
+removes the entry under lock), then restarts from the list head, so it does
+not carry the just-closed node across the callback. This supports the
+single-owner synchronous lifecycle path, not safety against concurrent list
+mutation or a common UI-thread guarantee. The updated contract pins view
+registration, owner storage, name-widget linkage, destructor unlink, and the
+unlocked scan. Twenty-one UI-owner contract tests pass; the UI-owner gate
+remains open. No firmware/player operation.
+
+The remaining close-before-create helper `0x495060` was also caller-scoped.
+Its four direct `0x49D000` callers pass the fixed music-view names
+`vg_listview_albums_of_an_artist`, `vg_listview_albums_of_a_genre`,
+`vg_listview_songs_of_an_album`, and
+`vg_listview_songs_of_an_album_artist`; the other fixed direct caller names
+`vg_listview_songs_of_format`. These are not Folder View names. A syntactic
+call at `0x49D18C` remains in helper `0x49D0E0`, but the bounded direct-caller,
+address-construction, and aligned-pointer scans found no entry/reference to
+`0x49D0E0`. This is unresolved reachability, not proof of dead code, and its
+dynamic name is not classified. The exact-name contract preserves this
+distinction. Twenty-one UI-owner contract tests pass; the UI-owner gate
+remains open. No firmware/player operation.

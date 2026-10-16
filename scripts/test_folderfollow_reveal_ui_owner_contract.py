@@ -144,6 +144,146 @@ class RevealUiOwnerContractTests(unittest.TestCase):
                 self.assertEqual(self.elf.data[offset:offset + len(encoded)],
                                  encoded)
 
+    def test_storage_cleanup_copies_explorer_names_under_lock_then_closes(self):
+        self.words(0x495A40, [0x27BDF848, 0x00002821, 0x24060780,
+                               0xAFB507AC, 0x0080A821, 0x27A40018,
+                               0xAFBF07B4, 0xAFB607B0])
+        self.words(0x495A78, [0x8EB90274, 0x02A02021, 0x0320F809,
+                               0x26B60034])
+        self.words(0x495AAC, [0x0C296D38, 0x02602021, 0x8E030008,
+                               0x02602821, 0x00403021, 0x8C720000,
+                               0x02208021, 0x0C296E90, 0x02402021])
+        self.words(0x495AD0, [0x1440FFF4, 0x00142180, 0x27A20018,
+                               0x00442021, 0x02402821, 0x0C296FB8,
+                               0x26940001, 0x2A82001E, 0x1440FFEC,
+                               0x00000000])
+        self.words(0x495AF8, [0x8EB90278, 0x0320F809, 0x02A02021,
+                               0x00008021])
+        self.words(0x495B08, [0x00102980, 0x27A20018, 0x02A02021,
+                               0x00452821, 0x0C10EC90, 0x26100001,
+                               0x1614FFFA, 0x00102980])
+
+        prefix_offset = self.elf.va_to_off(0x922704)
+        prefix = b'vg_listview_explorer\0'
+        self.assertEqual(self.elf.data[prefix_offset:
+                                       prefix_offset + len(prefix)], prefix)
+
+    def test_main_explorer_open_closes_dynamic_view_names_first(self):
+        # This is the controller's ordered view list at +0x298, distinct from
+        # the storage cleanup list and +0x3BA8 name slots. The entry's view
+        # object supplies its named widget via +0xCC. Same-owner views created
+        # through 0x491E80 are included; callback-owner identity is unresolved.
+        self.words(0x495260, [0x27BDFF98, 0xAFB0005C, 0x00808021,
+                               0xAFB10060, 0x27A40018, 0x00002821,
+                               0x24060040, 0xAFBF0064, 0x0C296F18,
+                               0x26110298])
+        self.words(0x495298, [0x8E020298, 0x10510005, 0x27A40018,
+                               0x8C420008, 0x8C4200CC, 0x0C296FB8,
+                               0x8C450000, 0x83A20018, 0x14400005,
+                               0x8FBF0064])
+        self.words(0x4952D0, [0x02002021, 0x0C10EC90, 0x27A50018,
+                               0x83A20018, 0x1440FFEA, 0x27A40018])
+        self.assertIn(0x4952D4, self.direct_calls(0x43B240))
+        self.words(0x4E55A4, [0x8E830298, 0x00408821, 0x00009021,
+                               0x10730010, 0x8C700000, 0x1220000B,
+                               0x02202021, 0x8C620008])
+        # A newly constructed view stores its supplied owner at +0xD4,
+        # creates a named list widget at +0xCC, and registers itself in that
+        # owner's +0x298 list through 0x4E5280.
+        self.words(0x491FC0, [0xAE003BA0, 0xAE1000E0, 0x0C119A58,
+                               0xAE0300D4])
+        self.words(0x492908, [0x8FA417D0, 0x3C060049, 0x27A516E4,
+                               0x24C63AC0, 0x0C10EB40, 0x02003821,
+                               0x8FA417D0, 0xAE0200CC])
+        self.words(0x492A38, [0x8FA417D0, 0x0C1394A0, 0x02002821])
+        self.words(0x4E52C0, [0x8E1902A4, 0x0320F809, 0x02002021,
+                               0xAE320008, 0x8E02029C, 0x26030298,
+                               0xAE11029C, 0xAE230000, 0xAE220004,
+                               0xAC510000, 0x8E1902A8])
+
+        # Closing through 0x43B240 invokes the list-view destructor, which
+        # unlinks the view from its saved parent under the same mutex.
+        self.words(0x493C6C, [0x8E0400D4, 0x0C139528, 0x02002821])
+        self.assertEqual(self.direct_calls(0x4E54A0),
+                         [0x493C70, 0x493F70])
+        self.words(0x4E54C4, [0x8C9902A4, 0x0080A021, 0x00A09021,
+                               0x0320F809, 0x24930298, 0x8E900298,
+                               0x16130006, 0x8E110000, 0x10000011])
+        self.words(0x4E54F8, [0x8E040008, 0x0C296D80, 0x02402821,
+                               0x1440FFF9, 0x02002021, 0x8E020004,
+                               0x8E030000, 0xAC620004, 0xAC430000,
+                               0xAE000000, 0x0C119AA0, 0xAE000004,
+                               0x8E9902A8])
+
+        # Unlike insertion/removal, the 0x495260 walk itself has no mutex
+        # callback: its complete direct-call set contains only string helpers
+        # and the close facade, and there is no jalr in the body.
+        close_walk_calls = []
+        indirect_calls = []
+        for pc in range(0x495260, 0x4952F0, 4):
+            word = self.elf.word(pc)
+            if word >> 26 == 3:
+                target = (((pc + 4) & 0xF0000000)
+                          | ((word & 0x03FFFFFF) << 2))
+                close_walk_calls.append((pc, target))
+            elif word >> 26 == 0 and word & 0x3F == 9:
+                indirect_calls.append(pc)
+        self.assertEqual(close_walk_calls,
+                         [(0x495280, 0xA5BC60), (0x495290, 0xA5BC60),
+                          (0x4952AC, 0xA5BEE0), (0x4952D4, 0x43B240)])
+        self.assertEqual(indirect_calls, [])
+
+        # These sibling event handlers both read the controller candidate
+        # from callback payload +0x50; that structural match does not prove
+        # that their runtime owner pointers are identical.
+        self.words(0x49DCC0, [0x27BDFFD8, 0xAFBF0024, 0xAFB10020,
+                               0xAFB0001C, 0x8CB00050])
+        self.words(0x49E560, [0x27BDF500, 0xAFBF0AFC, 0xAFB40AF8,
+                               0xAFB30AF4, 0xAFB20AF0, 0xAFB10AEC,
+                               0xAFB00AE8, 0x8CB10050])
+        self.assertEqual(self.direct_calls(0x49DCC0), [])
+        self.assertEqual(self.direct_calls(0x49E560), [])
+        self.words(0x49DDB0, [0x0C125498, 0x02002021, 0x3C110094,
+                               0x3C060094, 0x02002021, 0x262519E8,
+                               0x0C1247A0, 0x24C62374])
+        self.assertIn(0x49DDB0, self.direct_calls(0x495260))
+        explorer_name = b'vg_listview_main_explorer\0'
+        name_offset = self.elf.va_to_off(0x9419E8)
+        self.assertEqual(self.elf.data[name_offset:
+                                       name_offset + len(explorer_name)],
+                         explorer_name)
+
+    def test_music_list_close_before_create_callers_are_name_scoped(self):
+        # The direct 0x49D000 caller family passes fixed music-list names to
+        # 0x495060. A third syntactic call sits in 0x49D0E0, whose reachability
+        # is unresolved and is not silently treated as covered.
+        self.assertEqual(self.direct_calls(0x495060),
+                         [0x49D070, 0x49D18C, 0x49D9BC])
+        self.assertEqual(self.direct_calls(0x49D000),
+                         [0x49E940, 0x49EAB8, 0x49F4B8, 0x4A0098])
+        for call, delay, address, expected in (
+                (0x49E940, 0x24C614F4, 0x9414F4,
+                 b'vg_listview_albums_of_an_artist'),
+                (0x49EAB8, 0x24C61AD4, 0x941AD4,
+                 b'vg_listview_albums_of_a_genre'),
+                (0x49F4B8, 0x24C61514, 0x941514,
+                 b'vg_listview_songs_of_an_album'),
+                (0x4A0098, 0x24C61AF4, 0x941AF4,
+                 b'vg_listview_songs_of_an_album_artist')):
+            with self.subTest(call=f'{call:#x}'):
+                self.assertEqual(self.elf.word(call), 0x0C127400)
+                self.assertEqual(self.elf.word(call + 4), delay)
+                offset = self.elf.va_to_off(address)
+                self.assertEqual(self.elf.data[
+                    offset:offset + len(expected) + 1], expected + b'\0')
+
+        self.words(0x49D9B0, [0x3C050094, 0x02202021, 0x24A51D10,
+                               0x0C125418, 0x27A60018])
+        expected = b'vg_listview_songs_of_format\0'
+        offset = self.elf.va_to_off(0x941D10)
+        self.assertEqual(self.elf.data[offset:offset + len(expected)],
+                         expected)
+
     def test_playlist_view_replacement_does_not_close_folder_explorer(self):
         self.words(0x49E668, [0x02202021, 0x0C10EC90, 0x2645271C,
                                0x02202021, 0x0C10E830, 0x2645271C,
@@ -166,6 +306,39 @@ class RevealUiOwnerContractTests(unittest.TestCase):
             with self.subTest(address=f'{address:#x}'):
                 self.assertEqual(self.elf.data[offset:offset + len(expected)],
                                  expected)
+
+    def test_listview_owner_has_named_slot_close_routes(self):
+        # Eight 64-byte name slots are addressed from owner +0x3BA8. The
+        # slot is resolved through 0x4E5320, and named slots are synchronously
+        # closed by the controller; this does not prove every slot's content.
+        self.words(0x492A88, [0x00129980, 0x26633BA8, 0x0203B821,
+                               0x02802021, 0x02E02821, 0x0C1394C8,
+                               0x27A61798])
+        self.words(0x493034, [0x26520001, 0x24020008, 0x1642FE93,
+                               0x00129980])
+        self.words(0x492B18, [0x92E40002, 0x24050003, 0x14450005,
+                               0x2484FFA1, 0x14800134, 0x26653BA8,
+                               0x92E40003, 0x2484FF94, 0x1480012F,
+                               0x24020001, 0xAE223DCC, 0x02802021,
+                               0x0C10EC90, 0x02E02821])
+        self.words(0x493114, [0x02E02021, 0x0C296D80, 0x02C02821,
+                               0x1000FE85, 0x00402021])
+        self.words(0x4931C0, [0x92E20000, 0x10800011, 0x2442FF8A,
+                               0x14400147, 0x00000000, 0x92E20001,
+                               0x24050001, 0x1085000B, 0x2442FF99,
+                               0x14400141, 0x00000000, 0x92E20002,
+                               0x24050003, 0x14850005, 0x2442FFA1,
+                               0x1440013C, 0x02802021, 0x92E20003,
+                               0x2442FF94, 0x14400137, 0x02802021,
+                               0x0C10EC90, 0x02E02821])
+        for pc in (0x49302C, 0x4930D8, 0x493214, 0x4936FC):
+            with self.subTest(pc=f'{pc:#x}'):
+                self.assertIn(pc, self.direct_calls(0x43B240))
+
+        offset = self.elf.va_to_off(0x9419E8)
+        expected = b'vg_listview_main_explorer\0'
+        self.assertEqual(self.elf.data[offset:offset + len(expected)],
+                         expected)
 
     def test_unresolved_explorer_retarget_helper_is_not_owner_evidence(self):
         # This body implements the same depth-derived explorer replacement,

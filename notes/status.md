@@ -1467,3 +1467,52 @@ found; its only bounded address construction is stored in a local slot at
 `0x527CD4` with no reload in the enclosing routine. Treat it as an unproven
 reachability lead, not an owner/lifecycle guarantee. Seventeen UI-owner contract
 tests pass. No firmware or player operation was performed.
+
+The same caller pass found a generic named-list cleanup path: it walks eight
+64-byte names from owner `+0x3BA8`, resolves them through `0x4E5320`, then
+synchronously closes named entries. One route matches the static
+`vg_listview_main_explorer`; other close branches pass slot-derived names.
+This adds a concrete main-explorer invalidation route and a possible route for
+other names present in the slots, but does not prove the per-depth explorer
+name is present or establish a common UI thread. Eighteen UI-owner contract
+tests pass; the UI-owner gate remains open. No firmware/player operation was
+performed.
+
+The storage-switch cleanup at `0x495A40` was then decoded and pinned: it scans
+view names under the controller mutex for the `vg_listview_explorer` prefix,
+copies up to 30 names into local 64-byte records, unlocks, and only then
+synchronously closes those names through `0x43B240`. `0x495D40` calls this
+before restoring the saved path and clearing the selected-item property. This
+concretely covers storage-switch invalidation for the explorer-name family,
+but not all Files lifecycle routes or their UI-thread ownership. Nineteen
+UI-owner contract tests pass; the UI-owner gate remains open. No
+firmware/player operation was performed.
+
+The main-explorer opening route at `0x49DDC8` adds another synchronous cleanup
+boundary. Before creating `vg_listview_main_explorer`, it calls `0x495260`,
+which walks the controller's ordered view list at `+0x298` (also enumerated by
+`0x4E5560`). The registration/destruction path resolves the list membership:
+`0x491E80` stores the supplied owner at view+`0xD4`, creates the named list
+widget at view+`0xCC`, and registers the view through `0x4E5280(owner,view)` in
+that same list under the owner mutex. `0x495260` copies each registered
+widget's name and synchronously closes it; destructor `0x493AC0` removes the
+view from its parent list through `0x4E54A0` under that mutex. Thus a Folder
+View created through `0x491E80` is covered when it shares the owner passed to
+this cleanup. The root-open and Files-row callbacks both load their owner
+candidate from payload+`0x50`, but pointer identity across those event contexts
+is not proven. Neither handler has a direct-JAL caller or a statically
+resolved address reference in the bounded scans, so their callback dispatch
+and owner source remain unresolved, not proven dead. The cleanup scan itself
+does not lock the list; it closes synchronously and restarts from the head,
+which does not protect against concurrent mutation. Twenty-one UI-owner
+contract tests pass; the UI-owner/thread gate remains open. No firmware/player
+operation was performed.
+
+Caller-scoping also resolved `0x495060`'s fixed-name branches: its four
+direct `0x49D000` callers name music album/song views, and its other fixed
+caller names `vg_listview_songs_of_format`. The remaining syntactic call at
+`0x49D18C` is inside `0x49D0E0`, for which bounded direct-caller,
+address-construction, and aligned-pointer scans found no reference; keep it
+unresolved rather than labeling it dead or an explorer route. Twenty-one
+UI-owner contract tests pass. The lifecycle/thread ownership gate remains
+open; no firmware/player operation was performed.
