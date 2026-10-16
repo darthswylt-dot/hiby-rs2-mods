@@ -172,7 +172,8 @@ class RevealUiOwnerContractTests(unittest.TestCase):
         # This is the controller's ordered view list at +0x298, distinct from
         # the storage cleanup list and +0x3BA8 name slots. The entry's view
         # object supplies its named widget via +0xCC. Same-owner views created
-        # through 0x491E80 are included; callback-owner identity is unresolved.
+        # through 0x491E80 are included. The callback's constructor owner is
+        # traced separately below; this loop does not retain arbitrary views.
         self.words(0x495260, [0x27BDFF98, 0xAFB0005C, 0x00808021,
                                0xAFB10060, 0x27A40018, 0x00002821,
                                0x24060040, 0xAFBF0064, 0x0C296F18,
@@ -233,9 +234,8 @@ class RevealUiOwnerContractTests(unittest.TestCase):
                           (0x4952AC, 0xA5BEE0), (0x4952D4, 0x43B240)])
         self.assertEqual(indirect_calls, [])
 
-        # These sibling event handlers both read the controller candidate
-        # from callback payload +0x50; that structural match does not prove
-        # that their runtime owner pointers are identical.
+        # Both handlers read the engine object's saved owner. They have data
+        # table bindings rather than direct JAL callers, as tested below.
         self.words(0x49DCC0, [0x27BDFFD8, 0xAFBF0024, 0xAFB10020,
                                0xAFB0001C, 0x8CB00050])
         self.words(0x49E560, [0x27BDF500, 0xAFBF0AFC, 0xAFB40AF8,
@@ -252,6 +252,106 @@ class RevealUiOwnerContractTests(unittest.TestCase):
         self.assertEqual(self.elf.data[name_offset:
                                        name_offset + len(explorer_name)],
                          explorer_name)
+
+    def test_navigation_callback_tables_preserve_constructor_owner(self):
+        # address-xrefs scans executable address forms, so its empty result
+        # cannot rule out these file-backed callback-table pointers.
+        for index, name, callback in (
+                (40, b'vg_listview_main_category', 0x49DCC0),
+                (1, b'vg_listview_main_explorer', 0x49D3A0),
+                (2, b'vg_listview_explorer', 0x49E560)):
+            table = 0xA98610 + index * 0x20C + 0x10C
+            with self.subTest(table=f'{table:#x}'):
+                offset = self.elf.va_to_off(table)
+                self.assertEqual(self.elf.data[offset:offset + len(name) + 1],
+                                 name + b'\0')
+                self.assertEqual(self.elf.word(table + 0x48), callback)
+        # The config lookup copies the callback record into the constructor's
+        # output; binding consumes output+0x10C and installs event 7 at R+160.
+        # It removes the ## suffix before matching the base config record.
+        self.assertEqual(self.elf.word(0x4A03B4), 0x00A09821)
+        self.assertEqual(self.elf.word(0x4A0440), 0x3C1400AA)
+        self.assertEqual(self.elf.word(0x4A0454), 0x26948610)
+        marker = self.elf.va_to_off(0x9225A0)
+        self.assertEqual(self.elf.data[marker:marker + 3], b'##\0')
+        self.words(0x4A040C, [0x3C050092, 0x27A4019C, 0x0C296C90,
+                               0x24A525A0, 0x10400005, 0x00408021,
+                               0x8FA40218, 0x0C296FB8, 0x00402821,
+                               0xA2000000])
+        self.words(0x4A06B8, [0x24060060, 0x02518821, 0x02308023,
+                               0x00108080, 0x02901021, 0x8C430104,
+                               0x2445010C, 0x2664010C])
+        self.words(0x4A06F8, [0x0C296D10, 0xAE620174])
+        self.words(0x492340, [0x8FA417D4, 0x8FA717D8, 0x27A514D8,
+                               0x0C1280E8, 0x27A6178C])
+        self.words(0x4928F4, [0x8FA417D0, 0x26450020, 0x27A615E4,
+                               0x0C10F008, 0x24070001])
+        self.words(0x43C0D0, [0x8E050048, 0x8C4400D0, 0xAC850160])
+
+        # U is stored in V+D4 and also in descriptor+34. 8B4120 copies that
+        # field into engine object O+50; O+4C is the 43B320 event callback.
+        self.words(0x491FBC, [0x8FA317D0, 0xAE003BA0, 0xAE1000E0,
+                               0x0C119A58, 0xAE0300D4])
+        self.words(0x43AD28, [0x00808821, 0x00A08021])
+        self.words(0x43AE44, [0x27A40018, 0xAFB1004C, 0xAFA20030,
+                               0x3C020044, 0x24429EC0, 0xAFA20044,
+                               0x3C020044, 0x2442B320, 0x0C22D048,
+                               0xAFA20048])
+        self.assertEqual(self.elf.word(0x8B4128), 0x00808821)
+        self.assertEqual(self.elf.word(0x8B4140), 0x00408021)
+        self.words(0x8B4194, [0x8E220030, 0xAE02004C, 0x8E220034,
+                               0xAE020050])
+        # 43B320 passes (U,O,R,msg) to 438EA0, which dispatches (O,R,msg).
+        # 43BB40's event-7 tail then passes (R,O,msg) to the table handler.
+        self.words(0x43B34C, [0x8C900050, 0x3C130092, 0x00809021,
+                               0x26642730, 0x0C296D38, 0x00A08821])
+        self.words(0x43B4F4, [0x02002021, 0x02402821, 0x02803021,
+                               0x0C10E3A8, 0x02203821])
+        self.words(0x438ED8, [0x00C0A821, 0x00809821, 0x00A0A021,
+                               0x10620004, 0x00E09021])
+        self.words(0x4390F4, [0x8EB90138, 0x13200018, 0x8FB70048,
+                               0x8FB60044, 0x8FB30038, 0x8FB10030,
+                               0x8FB0002C, 0x02802021, 0x02A02821,
+                               0x8FB4003C, 0x8FB50040, 0x02403021,
+                               0x8FB20034, 0x03200008, 0x27BD0050])
+        self.words(0x43BB54, [0x8CC20000, 0x24030007, 0x00808021,
+                               0x10430054, 0x8C920050])
+        self.words(0x43BCD8, [0x8CB90160, 0x00A02021, 0x02203021,
+                               0x1000FFBD, 0x02002821])
+        self.words(0x43BBDC, [0x8FBF002C, 0x8FB20028, 0x8FB10024,
+                               0x8FB00020, 0x03200008, 0x27BD0030])
+        # Storage restore/fallback and row navigation pass the inherited U
+        # back into creation, preserving it through the ordinary folder chain.
+        self.assertEqual(self.elf.word(0x49D3B4), 0x8CB10050)
+        for pc in (0x49D4A4, 0x49D520, 0x49D55C):
+            self.words(pc, [0x02202021, 0x0C125750])
+        self.assertEqual(self.elf.word(0x495B90), 0x0080B821)
+        self.words(0x495CD0, [0x02E02021, 0x27A50C18, 0x27A60418,
+                               0x24140001, 0x0C1247A0, 0x26730001])
+        self.words(0x495DC0, [0x3C050092, 0x02002021, 0x02203021,
+                               0x0C1247A0, 0x24A52704])
+
+    def test_navigation_input_returns_before_next_timer_in_music_loop(self):
+        # This is an ordering proof for the inspected loop invocation, not
+        # evidence that no other loop or indirect caller can run concurrently.
+        self.words(0x43C9E4, [0x0C11CD58, 0])
+        self.words(0x43CA1C, [0x8E040028, 0x27A50018, 0xAE02011C,
+                               0x8FA20024, 0x0C22C6A8, 0xAE020120,
+                               0x1000FFDB, 0])
+        self.assertEqual(self.elf.word(0x8B1ACC), 0x00803821)
+        self.words(0x8B1AE8, [0x8CE40008, 0x3C06008B, 0x02002821,
+                               0x0C22D330, 0x24C616A0])
+        self.words(0x8B4CE8, [0x00C08821, 0x10430041, 0x00E09021])
+        self.words(0x8B4DC8, [0x02402021, 0x0220C821, 0x0320F809,
+                               0x27A50018])
+        self.words(0x8B16C8, [0x8CA20000, 0x2442FFFC, 0x2C430007,
+                               0x00A08821, 0x1460001D, 0x8C940010])
+        self.words(0x8B1750, [0x3C03009F, 0x00021080, 0x24634740,
+                               0x00621021, 0x8C420000, 0x00400008, 0])
+        self.assertEqual(self.elf.word(0x9F4740 + (7 - 4) * 4), 0x8B176C)
+        self.words(0x8B176C, [0x8E840000, 0x10800025, 0,
+                               0x8C99004C, 0x13200022])
+        self.words(0x8B17F4, [0x0320F809, 0x27A50018])
 
     def test_music_list_close_before_create_callers_are_name_scoped(self):
         # The direct 0x49D000 caller family passes fixed music-list names to

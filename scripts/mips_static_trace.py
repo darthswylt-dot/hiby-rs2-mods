@@ -247,7 +247,7 @@ def abs_xrefs(elf: Elf32, address: int, context: int) -> None:
 
 
 def address_xrefs(elf: Elf32, address: int, context: int) -> None:
-    """Find instructions that form or dereference an absolute address."""
+    """Find executable address forms; data pointer literals need word-xrefs."""
     matches = []
     memory_ops = {32, 33, 35, 36, 37, 40, 41, 43, 49, 57}
     for start, end in elf.executable_ranges():
@@ -267,7 +267,8 @@ def address_xrefs(elf: Elf32, address: int, context: int) -> None:
     for pc in matches:
         print(f"\n# address xref at 0x{pc:X}")
         dump(elf, max(pc - context * 4, 0), pc + (context + 1) * 4)
-    print(f"\n# {len(matches)} statically resolved address constructions/references to 0x{address:X}")
+    print(f"\n# {len(matches)} executable address constructions/dereferences to 0x{address:X}")
+    print("# Data pointer literals are not scanned; use word-xrefs for those.")
 
 
 def cstring(elf: Elf32, address: int, limit: int) -> None:
@@ -413,7 +414,9 @@ def main() -> None:
     p_abs = sub.add_parser("abs-xrefs")
     p_abs.add_argument("address", type=parse_int)
     p_abs.add_argument("--context", type=int, default=8)
-    p_addr = sub.add_parser("address-xrefs")
+    p_addr = sub.add_parser(
+        "address-xrefs", help="scan executable address forms, not data pointer literals"
+    )
     p_addr.add_argument("address", type=parse_int)
     p_addr.add_argument("--context", type=int, default=8)
     p_cstr = sub.add_parser("cstr")

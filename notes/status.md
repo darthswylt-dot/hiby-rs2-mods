@@ -1498,13 +1498,11 @@ that same list under the owner mutex. `0x495260` copies each registered
 widget's name and synchronously closes it; destructor `0x493AC0` removes the
 view from its parent list through `0x4E54A0` under that mutex. Thus a Folder
 View created through `0x491E80` is covered when it shares the owner passed to
-this cleanup. The root-open and Files-row callbacks both load their owner
-candidate from payload+`0x50`, but pointer identity across those event contexts
-is not proven. Neither handler has a direct-JAL caller or a statically
-resolved address reference in the bounded scans, so their callback dispatch
-and owner source remain unresolved, not proven dead. The cleanup scan itself
-does not lock the list; it closes synchronously and restarts from the head,
-which does not protect against concurrent mutation. Twenty-one UI-owner
+this cleanup. The October 16 follow-up below resolves owner propagation for
+the ordinary constructor-bound callbacks and corrects the earlier missing
+static-reference claim. The cleanup scan itself does not lock the list; it
+closes synchronously and restarts from the head, which does not protect
+against concurrent mutation. Twenty-one UI-owner
 contract tests pass; the UI-owner/thread gate remains open. No firmware/player
 operation was performed.
 
@@ -1516,3 +1514,21 @@ address-construction, and aligned-pointer scans found no reference; keep it
 unresolved rather than labeling it dead or an explorer route. Twenty-one
 UI-owner contract tests pass. The lifecycle/thread ownership gate remains
 open; no firmware/player operation was performed.
+
+2026-10-16: Corrected the callback-reference conclusion. The handlers are
+stored in data tables: main-category `0xA9D944 -> 0x49DCC0`, main-explorer
+`0xA98970 -> 0x49D3A0`, and explorer `0xA98B7C -> 0x49E560`. The config
+lookup copies these tables into the constructor and binds event 7 to
+resource+`0x160`. `address-xrefs` only scans executable address forms;
+`word-xrefs` finds the data pointers. The tool's scope label now states this.
+
+Constructor and dispatch tracing proves `O+0x50 = V+0xD4 = supplied U` for
+ordinary `0x491E80` views: `0x43AD00` passes U through descriptor+`0x34`,
+`0x8B4120` stores it in O+`0x50`, and the event wrappers preserve O as the
+handler's second argument. Main-category, storage restore/fallback, and Files
+row navigation propagate U into subsequent view creation, so the standard
+chain's owner identity is resolved. The input route also runs synchronously
+through `0x43CA2C` and returns before the loop backedge to queued work and the
+next timer pump. Broader thread uniqueness, alternate entry/rebinding,
+unlocked-cleanup concurrency, and worker lifetime gates remain open.
+Twenty-three UI-owner contracts pass; no firmware/player operation.

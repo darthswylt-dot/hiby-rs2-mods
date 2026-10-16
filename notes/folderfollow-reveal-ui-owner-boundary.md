@@ -234,12 +234,10 @@ mutex. Closing the copied widget name synchronously reaches view destructor
 `0x493AC0`, which calls `0x4E54A0(view+0xD4,view)`; that removes the view from
 its parent's same list under the mutex. Therefore `0x495260` will close a
 Folder View created through `0x491E80` if it belongs to the same owner passed
-to the cleanup. The root-open callback and Files row-navigation callback both
-load their owner candidate from payload+`0x50`, but the static trace does not
-prove those two runtime pointers are always identical. Neither callback has a
-direct-JAL caller or a statically resolved address reference in the bounded
-scans, so its dispatch/owner source remains unresolved; this is not proof that
-either callback is dead code.
+to the cleanup. The October 16 follow-up below resolves the constructor's
+owner propagation through the ordinary navigation chain. The handlers have
+file-backed callback-table references even though they have no direct-JAL
+callers; an earlier claim of missing static references was incorrect.
 
 The `0x495260` walk itself does not acquire that list mutex: its bounded body
 contains only string helpers and the synchronous close facade, with no
@@ -264,3 +262,51 @@ address-construction, and aligned-pointer scans found no entry/reference to
 dynamic name is not classified. The exact-name contract preserves this
 distinction. Twenty-one UI-owner contract tests pass; the UI-owner gate
 remains open. No firmware/player operation.
+
+### Callback tables and owner propagation correction (2026-10-16)
+
+The `address-xrefs` command scans executable address constructions and
+dereferences; it does not inspect pointer values in data tables. `word-xrefs`
+does inspect file-backed data and finds these event-7 handler references:
+
+| Config index | Callback table name | Table VA | Slot +0x48 / handler |
+| --- | --- | --- | --- |
+| 40 | `vg_listview_main_category` | `0xA9D8FC` | `0xA9D944` / `0x49DCC0` |
+| 1 | `vg_listview_main_explorer` | `0xA98928` | `0xA98970` / `0x49D3A0` |
+| 2 | `vg_listview_explorer` | `0xA98B34` | `0xA98B7C` / `0x49E560` |
+
+Lookup `0x4A03A0` searches records at `0xA98610` with stride `0x20C`; it
+removes a `##` suffix before matching the base config. It copies the 0x60-byte
+callback table at record+`0x10C` into output+`0x10C`. Constructor `0x491E80`
+calls the lookup at `0x49234C` with output=`sp+0x14D8`, then calls binder
+`0x43C020` at `0x492900` with table=`sp+0x15E4`. The binder transfers
+table+`0x48` to resource R+`0x160`; `0x43BB40` selects it for event 7. These
+are positive registered invocation routes, including suffixed Folder Views.
+
+The callback's second argument is engine object O, not the native message.
+The constructor supplies the same U to the V+`0xD4` parent store and to
+`0x43AD00`. The latter writes U into descriptor+`0x34` at `0x43AE48`;
+`0x8B4120` copies that field into O+`0x50` at `0x8B419C..1A0` and installs
+event callback `0x43B320` in O+`0x4C`. That callback passes `(U,O,R,msg)` to
+`0x438EA0`, which calls R+`0x138` (`0x43BB40`) with `(O,R,msg)`. Event 7
+then calls the registered handler with `(R,O,msg)`. Consequently the handler's
+O+`0x50` and the view's V+`0xD4` contain the same supplied U on this path.
+
+The ordinary navigation chain preserves U: main-category activation creates
+main-explorer under U; its storage-selection handler `0x49D3A0` passes U to
+all three `0x495D40` calls; both saved-path restoration and root fallback pass
+U into `0x491E80`; Files activation `0x49E560` passes its inherited U into the
+next explorer creation. Thus cleanup `0x495260(U)` covers Folder Views created
+under U along this standard chain. This closes the owner-value uncertainty
+for that chain, while alternate creation/rebinding and lifetime retention
+still require their own coverage.
+
+There is also a concrete synchronous input route in the music loop:
+`0x43CA2C -> 0x8B1AA0 -> 0x8B4CC0 -> 0x8B16A0 -> O+0x4C`. Event 7 in
+table `0x9F4740` selects `0x8B176C`, which invokes O+`0x4C` at `0x8B17F4`.
+After that input call returns, `0x43CA34` branches to `0x43C9A4`; the next
+timer pump is at `0x43C9E4`. Navigation and timers are therefore sequential
+within this inspected loop invocation. This does not establish a unique
+thread for every loop/caller or protect the unlocked `0x495260` walk from all
+concurrent mutations. Twenty-three UI-owner contracts pass. No firmware or
+player operation was performed.
