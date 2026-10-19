@@ -1532,3 +1532,169 @@ through `0x43CA2C` and returns before the loop backedge to queued work and the
 next timer pump. Broader thread uniqueness, alternate entry/rebinding,
 unlocked-cleanup concurrency, and worker lifetime gates remain open.
 Twenty-three UI-owner contracts pass; no firmware/player operation.
+
+### Worker cancellation and last-use boundary (2026-10-16)
+
+The worker audit now distinguishes master jobs from separately copied work
+records. Shared cancellation disables master callbacks and clears work count,
+but does not revoke an already-borrowed work record; its callbacks can begin
+after cancellation returns. Private stop destroys/frees the wake semaphore
+before waiting for completion, leaving a separate stop-read/`sem_wait` window.
+Both are static interleaving counterexamples, not observed device failures.
+Normal startup has a conditional handshake before constructor return, but
+zero return also has a no-worker path and is not a success certificate.
+
+Ordinary Files prefill is confirmed NULL; its actual runtime worker mode
+remains unresolved. Constructor/render use shared mode for resource+`0x74==1`,
+whereas destruction uses any nonzero value; the adapter must not conflate
+them. Active reveal remains disabled. All 37 targeted contracts passed,
+including 13 new lifecycle checks; the new script compiles and whitespace
+checks pass. No firmware/artifact or device operation was performed.
+See [worker-lifecycle boundary](folderfollow-reveal-worker-lifecycle-boundary.md).
+
+The follow-up resolves fresh resource initialization: `lg_viewgroup` allocates
+`0x178` zeroed bytes, copies only a `0x20`-byte prototype header, and its
+constructor leaves mode `+0x74` zero. The inspected parser preserves the
+resource pointer; default zero selects the private worker while unchanged.
+Its unbounded name copy still needs valid terminated input evidence, so the
+factory default is not automatically certified for the full parser output.
+All five known direct setters to mode 1 are registered to other loaders,
+not ordinary explorer's `0x49E360`. This narrows the initial-mode gate but
+does not certify a reused/current resource or retain it through teardown.
+Old diagnostic formats omit the field, and standalone heap/data dumps lack
+base/capture provenance; no runtime value is inferred from them. Five new
+hash-gated contracts cover factory initialization, constructor writes, parser
+pointer registration, inspected attribute-helper fields and setter-to-loader
+scope. All 42 targeted checks passed (18 lifecycle, 18 original static and
+6 publication); compilation and whitespace checks passed. No device/firmware
+action; the changes remain local and uncommitted.
+
+The first authorized read-only device probe found original stock PID 124
+(`0fedb30f...`) and demonstrated bounded process-memory reading without
+stopping it. Both controller roots matched; repeated list/header reads found
+only `vg_listview_all`, no registered explorer. Folder View's mode was not
+read or inferred. Boot/start/hash/maps remained unchanged; evidence is saved
+locally in `artifacts/worker_mode_readonly_20261016_all.json`. No install,
+test launch, signal, device write or reboot. Further acquisition awaits the
+user opening Folder View and confirming readiness; use fresh addresses then.
+
+After the user opened Show No Mercy and confirmed readiness, a fresh read-only
+probe observed two registered explorer levels, including the USA-edition
+directory, both with resource mode 0. Each private-worker pointer's owner and
+marker matched the audited layout. All 18 object-memory reads (1,796 bytes
+per pass) matched on repetition; PID/start, boot, stock executable hash and
+full maps stayed unchanged. Evidence is saved locally in
+`artifacts/worker_mode_readonly_20261016_show_no_mercy.json`.
+
+Thus the target's observed mode is private, not merely a factory-default
+inference. This is run-specific sequential evidence, not a permanent mode
+invariant, proof of live pthread startup or a lifetime lease. The earlier
+private stop/wake-object limit still applies. No device mutation, install,
+test launch, stop, signal or reboot; active reveal remains disabled.
+
+### Two-phase host contents revocation (2026-10-16)
+
+Implemented `begin_contents_change` / `finish_contents_change` in the host
+coordinator. BEGIN removes rows/generation/proposals before mutation; END
+requires the exact outstanding handle and explicit outcome, then publishes
+only a fresh generation, not ready rows. Close/reopen and stale results cannot
+revive old authority. Overlap/protocol mixing/unknown outcome fail closed;
+tracks and gestures during the gap are consumed, while a later new transition
+still works. Capturing rows from inside the stock operation needs separate
+operation-bound staging and remains unimplemented.
+
+Pinned a nonnull pre-close lead at `0x493B0C` before the closing marker and
+earlier reset/scope/worker-refill boundaries. No hooks were emitted. Corrected
+the old `0x4919E0` equal-depth no-op assertion: `0x491E2C` goes into reset,
+not directly to return; valid-input reachability/semantics remain unproved.
+The helper bytes match preserved stock and `02fd` reference. The earlier
+historical status entry recording the no-op conclusion is superseded by this
+correction and `folderfollow-existing-view-contract.md`.
+
+Eighteen new lifecycle behavior tests and six source contracts passed; the
+349-test reveal-focused run plus the six new contracts gives 355 passing
+checks. Independent host review found no defect. These are local sequential
+model/static checks, not runtime ownership or hardware safety certification.
+No device access, firmware artifact, install, launch or reboot in this step;
+active reveal remains disabled and changes are uncommitted. See
+[coordinator](folderfollow-reveal-coordinator.md).
+
+### Operation-bound host row staging (2026-10-16)
+
+Implemented a persistent private row collector for one fill within the exact
+outstanding contents-change phase. Public generation/rows stay absent until
+matching successful END. Staging retains existing completeness/terminal/count
+checks and adds exact parent-folder matching; wildcard/nested/mixed-scope
+shapes are refused. Successful transfer reuses the ordinary validator and
+consumes the generation's single-fill allowance, without querying the device.
+
+Current promoted-job duplicate events now revoke rows and proposals, while
+canceled older phase/owner callbacks remain ignored. Explicit subsequent
+mutation invalidates staging, including after fill completion. Failed or
+poisoned staging cannot silently fall back to generation-only readiness;
+no-staging END compatibility is preserved. Original producer/query/destination
+provenance, complete mutation reporting, thread handoff and real UI ownership
+remain bridge obligations, not consequences of these host handles.
+
+All 143 focused host tests passed, including 26 new staging cases. Independent
+review found no readiness/handle bypass. Compilation and whitespace checks
+passed. No device access, firmware/artifact build, install, test launch or
+reboot; active reveal remains disabled and changes are still uncommitted.
+See [coordinator staging](folderfollow-reveal-coordinator.md).
+
+### Original fill/job provenance audit (completed 2026-10-19)
+
+Separated the initial synchronous Files loader (`config+0x104=0x49E360`)
+from the adjacent widget callback (`+0x16C=0x49CC80`) and NULL worker prefill.
+Pinned original query destination/window/scope arguments and producer frame
+carriers, plus both initial and later job ingress, master-to-work copying and
+callback dispatch. Corrected the earlier worker note's loader label.
+
+The worker carries original raw P/V words but Files resolves V/P anew by
+name; its query destination comes from that resolved V, whereas scope comes
+from the old copied job. A callback-time name or pointer match is therefore
+not an original-operation association or a retained lifetime. Current global
+query selectors are additional inputs, not frozen by the copied scope. No
+new host receipt registry was added merely to move that trust assumption.
+Native sidecar/copy association, invalidation, serialized delivery and actual
+UI ownership remain open; active reveal is disabled.
+
+Added 14 hash-gated provenance contracts. A 388-test reveal-focused run and
+seven later-added checks passed (395 distinct checks); the separate 165-test
+structural run is included in the 388, not counted twice. Independent review,
+compilation and whitespace checks passed. No device access, binary build,
+installation, launch, rearm or reboot. All changes remain local/uncommitted.
+See [original-provenance audit](folderfollow-reveal-provenance.md).
+
+### Native original-invocation transport (2026-10-19)
+
+Implemented a separate offline MIPS stage, not just another host model.
+Master/work elements gain a private four-byte tail while source template and
+all prefix copies remain 708 bytes. Native list copies carry the original
+invocation ID; separate non-reused borrow/query/producer receipts preserve its
+ancestry through actual callbacks. Unknown enqueue origins stay zero/unbound.
+No stock field is reused, pointer-keyed registry added, extra query/UI call
+made, or host ready-row publication enabled. Fault/exhaustion/uncertainty stops
+lineage while original instructions/query continue.
+
+Independent review caught the same-origin/different-work-copy case; exact job
+and original-frame checks plus regression tests were added. All 48 new focused
+tests pass, including actual native segmented-list growth/copy and hostile ABI
+tests. All 117 Python scripts compile; whitespace checks pass.
+
+Saved and verified local ignored intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_lineage_stage_v1_20261019.bin`,
+7,147,220 bytes, SHA-256
+`f31239aa544c55959e9f75686a421489c8ea6d91e1ef6d30b01955d8c75ec139`.
+Previous incomplete local output was renamed `.bin.disabled`, not overwritten.
+No device access, install, launch, rearm, signal or reboot. Native lifetime,
+complete writer/cancellation coverage, contents/playback generation association
+and owned UI action remain open. Changes remain local/uncommitted; see
+[native lineage stage](folderfollow-reveal-lineage-stage.md).
+
+Final regression for this stage: **806 repository tests pass, no skips**
+(134.251 s), including all 48 new lineage tests. Initial sandboxed execution
+failed on legacy temporary-directory write/cleanup permissions; a repeat with
+local test filesystem access passed, without changing tests or touching the
+player. Saved candidate hash remains `f31239aa...c75ec139`; all 117 Python
+scripts compile and tracked/new files pass whitespace checks.

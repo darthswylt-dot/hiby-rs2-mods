@@ -40,9 +40,10 @@ The callback table at 0x941664 pairs `vg_listview_explorer` (0x922704) with
 (`lg_list_thread`) locks T+0x10 at 0x48EC34, calls job+0x2C0 at 0x48EC54,
 and unlocks T+0x10 at 0x48EC84.
 
-Files constructor calls 0x48F360 at 0x492A30 with &V+0x3B84: the private
-worker is T=*(V+0x3B84). Creation at 0x48F4C8 uses 0x466BA0 and callback
-0x48EA80. Import relocation identifies 0xA5B9B0 as pthread_create; wrappers
+Files constructor's private branch calls 0x48F360 at 0x492A30 with
+&V+0x3B84: the private worker is T=*(V+0x3B84). Creation at 0x48F4C8
+uses 0x466BA0 and callback 0x48EA80. Import relocation identifies
+0xA5B9B0 as pthread_create; wrappers
 0x466DA0/0x466DC0 resolve to pthread_mutex_lock/unlock. Initialization through
 0x466D60 uses pthread_mutex_init with null attributes, not evidence of a
 recursive mutex. Therefore "all cache mutations happen on the UI thread"
@@ -61,9 +62,11 @@ lookup/setter/refresh transaction valid.
 View destruction 0x493AC0 sets V+0x44=1 at 0x493B10. For the private-worker
 branch, selected when (V+0xD0)+0x74 is zero, 0x493BF4 calls 0x48F520(T).
 
-That routine sets T+4 stop at 0x48F540 and wakes T+0x14. Lock/unlock of
-T+0x0C at 0x48F554/55C is a completion barrier: the worker holds that mutex
-from 0x48EAC4 to 0x48ECD4. This is NOT a literal pthread_join. It subsequently
+That routine sets T+4 stop at 0x48F540 and wakes T+0x14. Under functioning
+startup/lock synchronization, lock/unlock of T+0x0C at 0x48F554/55C is a
+completion barrier: the worker holds that mutex from 0x48EAC4 to 0x48ECD4.
+This is NOT a literal pthread_join or protection for the wake object freed
+before that wait; see the October 16 follow-up below. It subsequently
 destroys mutex T+0x10 at 0x48F598 and frees T at 0x48F5B8.
 
 Only later does teardown remove V from the controller registry through
@@ -75,8 +78,9 @@ returning. Neither a successful resolution nor a one-time V+0x44 check is a
 retention primitive. Do not simply acquire the mutex through that raw T.
 
 The alternate teardown branch uses shared worker controller+0x30 and calls
-0x48EE20 at 0x493CCC. Under T+0x10, this disables matching job callbacks
-+0x2C0/+0x2BC and removes/clears queue records, then unlocks at 0x48EF34.
+0x48EE20 at 0x493CCC. Under T+0x10, this disables matching master-job
+callbacks +0x2C0/+0x2BC and removes master records/clears the separate work-list count,
+then unlocks at 0x48EF34. It does not revoke an already-borrowed work copy.
 The later delay at 0x493CDC is not a private-worker join. Both ownership modes
 need separate gates; a private-worker-only design cannot silently accept both.
 
@@ -112,3 +116,13 @@ The [2026-10-06 follow-up](folderfollow-reveal-dispatch.md) establishes a
 serial activity-chain lead, narrows reset-call scope, and distinguishes touch
 start, kinetic movement and completion callbacks. It does not override the
 lifetime limits above or authorize the unsafe resolver-to-worker-lock shortcut.
+
+The [2026-10-16 worker-lifecycle follow-up](folderfollow-reveal-worker-lifecycle-boundary.md)
+pins the conditional startup handshake, the shared cancellation/work-copy
+window and private wake-object free before last use. It also distinguishes
+the NULL Files prefill from the separate widget callback and initial Files
+loader, and preserves the different create (`==1`) and destroy (`!=0`)
+resource-mode predicates. Its follow-up
+establishes fresh `lg_viewgroup` default mode zero and scopes all five direct
+mode setters to other registered loaders. Actual reused/current explorer
+mode remains unproved; neither branch is a universal lifetime lease.

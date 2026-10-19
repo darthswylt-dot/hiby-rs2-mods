@@ -28,6 +28,19 @@ class FillHandle:
 
 
 @dataclass(frozen=True, eq=False)
+class ContentChangeHandle:
+    view: ViewHandle
+    epoch: int
+
+
+@dataclass(frozen=True, eq=False)
+class StagedFillHandle:
+    change: ContentChangeHandle
+    generation: ViewGeneration
+    ticket: int
+
+
+@dataclass(frozen=True, eq=False)
 class RevealProposal:
     action: Action
     fence: int
@@ -53,8 +66,11 @@ def _folder(value):
 class RevealCoordinator:
     """Serialize model events, not real stock threads.
 
-    Call activate/replace_contents BEFORE scope/list mutation, using a handle
-    captured for that owner; never relabel a late worker job with current scope.
+    Revoke BEFORE scope/list mutation, using a handle captured for that owner;
+    never relabel a late worker job with current scope. For a whole change,
+    begin_contents_change removes the generation until verified completion
+    through finish_contents_change. activate/replace_contents remain the
+    single-boundary API over already-owned values, not a live loading window.
     For a single mutation with an owned pre-copy value, pair playback_begin
     BEFORE its writer/clear with playback_finish after coherent completion.
     For a proved whole logical update, use playback_update_begin/finish and
@@ -73,8 +89,13 @@ class RevealCoordinator:
         self._fatal = None
         self._model = RevealModel(max_wait_ticks)
         self._publication = RowPublication(ticket_limit=epoch_limit)
+        self._staging = RowPublication(ticket_limit=epoch_limit)
         self._playback = PlaybackPublication(ticket_limit=epoch_limit)
         self._view = self._generation = self._fill = None
+        self._contents_change = None
+        self._stage_started = False
+        self._stage_scope = self._stage_fill = self._stage_promoted = None
+        self._stage_error = None
         self._geometry = self._issued = None
         self._interaction = None  # Unknown is never idle.
         self._manual_epoch = 0
@@ -90,17 +111,32 @@ class RevealCoordinator:
 
     @property
     def error(self):
-        return self._fatal or self._playback.error or self._publication.error
+        return (self._fatal or self._playback.error or self._stage_error
+                or self._publication.error or self._staging.error)
 
     @property
     def manual_active(self):
         return self._interaction != (False, False, True)
+
+    @property
+    def contents_changing(self):
+        return self._contents_change is not None
+
+    def _discard_staging(self):
+        # Keep the collector instance: cancellation must not reset its
+        # non-reused ticket counter or last accepted private content epoch.
+        self._staging.activate(None)
+        self._stage_started = False
+        self._stage_scope = self._stage_fill = self._stage_promoted = None
+        self._stage_error = None
 
     def _disable(self, reason):
         if type(reason) is not str or not reason:
             reason = 'lost-or-uncertain-event'
         self._fatal = self._fatal or reason
         self._issued = self._view = self._generation = self._fill = None
+        self._contents_change = None
+        self._discard_staging()
         self._geometry = None
         self._playback_fence = None
         self._model.cancel_pending()
@@ -127,6 +163,8 @@ class RevealCoordinator:
             return None
         self._publication.activate(None)
         self._view = self._generation = self._fill = self._geometry = None
+        self._contents_change = None
+        self._discard_staging()
         self._baseline()
         if not _folder(folder):
             return None
@@ -136,12 +174,16 @@ class RevealCoordinator:
         return self._view
 
     def replace_contents(self, view, folder=None):
-        """Invalidate before rebind/refill/sort, never from a later callback."""
+        """Single owned boundary, not an in-flight stock-mutation protocol."""
         if self._view is None or view is not self._view:
+            return None
+        if self._contents_change is not None:
+            self.uncertain('mixed-contents-change-protocol')
             return None
         folder = self._generation.folder if folder is None else folder
         if not self._change():
             return None
+        self._discard_staging()
         self._fill = self._geometry = None
         self._baseline()
         if not _folder(folder):
@@ -152,12 +194,198 @@ class RevealCoordinator:
         self._publication.activate(self._generation)
         return self._generation
 
+    def begin_contents_change(self, view):
+        """Withdraw authority before stock reset/rebind/sort starts.
+
+        The handle is a model value, not a stock pointer or lifetime lease.
+        Nested mutation admission and event serialization are bridge duties;
+        overlapping BEGINs are not silently grouped or relabelled.
+        """
+        if self._view is None or view is not self._view:
+            return None
+        if self._contents_change is not None:
+            self.uncertain('overlapping-contents-change')
+            return None
+        if not self._change():
+            return None
+        self._discard_staging()
+        self._publication.activate(None)
+        self._generation = self._fill = self._geometry = None
+        self._baseline()
+        self._contents_change = ContentChangeHandle(view, self._serial)
+        return self._contents_change
+
+    def finish_contents_change(self, change, folder, *, succeeded):
+        """Publish a generation only after a verified whole change ends.
+
+        Stale or forged handles cannot finish or disturb a newer change.
+        Failure/invalid scope deactivates this host owner; unknown outcome
+        disables the instance. No callback return alone proves success.
+        Without staging, a successful generation needs its own full fill.
+        If staging was attempted, success requires its original complete,
+        unpoisoned receipt with the same scope; it cannot fall back to a new
+        generation with rows absent. The bridge must prove producer ownership.
+        """
+        if (self._contents_change is None or change is not self._contents_change
+                or change.view is not self._view or self._fatal):
+            return None
+        self._contents_change = None  # One-use even on rejection/exhaustion.
+        if not self._change():
+            return None
+        self._baseline()  # Do not catch up a track change during mutation.
+        if type(succeeded) is not bool:
+            self.uncertain('unknown-contents-change-outcome')
+            return None
+        if not succeeded or not _folder(folder):
+            self._discard_staging()
+            self._publication.activate(None)
+            self._view = self._generation = self._fill = self._geometry = None
+            return None
+        staged = None
+        if self._stage_started:
+            staged = self._staging.rows
+            if (self._stage_error or self._staging.error
+                    or self._stage_fill is None or staged is None
+                    or self._stage_fill.change is not change
+                    or staged.generation is not self._stage_fill.generation):
+                self.uncertain('unconfirmed-staged-rows')
+                return None
+            if folder != self._stage_scope:
+                self.uncertain('staged-scope-mismatch')
+                return None
+        self._generation = ViewGeneration(folder, self._view.epoch, self._serial)
+        self._publication.activate(self._generation)
+        if staged is not None:
+            if not self._promote_staged(staged):
+                self.uncertain('staged-row-transfer-failed')
+                return None
+            self._stage_promoted = self._generation
+        return self._generation
+
+    def _promote_staged(self, staged):
+        """Replay already checked facts, not synthetic evidence of a new SQL fill.
+
+        Only called from matching successful contents END. The private receipt
+        was produced by RowPublication after real model append/terminal/end
+        checks. Reusing the public validator consumes its one-fill allowance
+        and preserves its ticket bookkeeping. No UI callback is invoked.
+        """
+        count = len(staged.entries)  # Bounded to MAX_ROWS by the collector.
+        ticket = self._publication.begin(self._generation, total_count=count,
+                                         requested_count=count)
+        if ticket is None:
+            return False
+        self._fill = FillHandle(self._generation, ticket)
+        for ordinal, identity in enumerate(staged.entries):
+            if not self._publication.append(ticket, ordinal=ordinal,
+                                            identity=identity, result=ordinal,
+                                            list_count=ordinal + 1):
+                return False
+        return (self._publication.terminal(ticket, result=101, ordinal=count,
+                                           list_count=count)
+                and self._publication.finish(ticket, result=count,
+                                              list_count=count) is not None)
+
+    def begin_staged_fill(self, change, folder, **metadata):
+        """Capture one owned producer in its original contents-change phase.
+
+        The bridge must carry that phase from before producer mutation, never
+        obtain it later by view name, folder, pointer or current-generation
+        lookup. A private generation here is not exposed as UI authority.
+        """
+        if (self._contents_change is None or change is not self._contents_change
+                or change.view is not self._view or self._fatal):
+            return None
+        if self._stage_started:
+            self._poison_staging('repeated-staged-fill')
+            return None
+        self._stage_started = True  # Even a rejected first attempt is final.
+        if not _folder(folder):
+            self._poison_staging('invalid-staged-scope')
+            return None
+        self._stage_scope = folder
+        generation = ViewGeneration(folder, change.view.epoch, change.epoch)
+        if not self._staging.activate(generation):
+            self._poison_staging('invalid-staged-generation')
+            return None
+        ticket = self._staging.begin(generation, **metadata)
+        if ticket is None:
+            self._poison_staging(self._staging.error or 'invalid-staged-fill')
+            return None
+        self._stage_fill = StagedFillHandle(change, generation, ticket)
+        return self._stage_fill
+
+    def _current_stage(self, fill):
+        if self._fatal or self._stage_fill is None or fill is not self._stage_fill:
+            return False
+        if fill.change.view is not self._view:
+            return False
+        return (fill.change is self._contents_change
+                or (self._generation is not None
+                    and self._stage_promoted is self._generation))
+
+    def _poison_staging(self, reason):
+        self._stage_error = self._stage_error or reason
+        self._staging.lost_event()
+        if self._generation is not None and self._stage_promoted is self._generation:
+            # Extra events for the promoted current producer are not harmless
+            # stale events: revoke its public rows and any issued proposal.
+            self._publication.lost_event()
+            self._change()
+
+    def append_staged(self, fill, *, ordinal, identity, result, list_count):
+        if not self._current_stage(fill):
+            return False
+        if (type(identity) is not Identity or type(identity.path) is not str
+                or identity.folder() != self._stage_scope):
+            self._poison_staging('staged-row-scope-mismatch')
+            return False
+        ok = self._staging.append(fill.ticket, ordinal=ordinal, identity=identity,
+                                  result=result, list_count=list_count)
+        if not ok:
+            self._poison_staging(self._staging.error or 'invalid-staged-row')
+        return ok
+
+    def terminal_staged(self, fill, **metadata):
+        if not self._current_stage(fill):
+            return False
+        ok = self._staging.terminal(fill.ticket, **metadata)
+        if not ok:
+            self._poison_staging(self._staging.error or 'invalid-staged-terminal')
+        return ok
+
+    def finish_staged_fill(self, fill, **metadata):
+        """Keep completed rows private; return only accepted/rejected status."""
+        if not self._current_stage(fill):
+            return False
+        ok = self._staging.finish(fill.ticket, **metadata) is not None
+        if not ok:
+            self._poison_staging(self._staging.error or 'incomplete-staged-fill')
+        return ok
+
+    def invalidate_staged_fill(self, change):
+        """Bridge reports another mutation after collection began.
+
+        Applies also to the still-current promoted receipt. Old phases and
+        owners are ignored; mutation coverage is not discovered by this API.
+        """
+        pending = self._contents_change is not None and change is self._contents_change
+        promoted = (self._stage_fill is not None
+                    and change is self._stage_fill.change
+                    and self._current_stage(self._stage_fill))
+        if not self._stage_started or not (pending or promoted):
+            return False
+        self._poison_staging('staged-contents-mutated')
+        return True
+
     def close(self, view):
         if self._view is None or view is not self._view:
             return False
         self._change()
         self._publication.activate(None)
         self._view = self._generation = self._fill = self._geometry = None
+        self._contents_change = None
+        self._discard_staging()
         self._baseline()
         return True
 
@@ -239,6 +467,7 @@ class RevealCoordinator:
         if not ok:
             self._change()
         elif (self._playback.identity is None or self._view is None
+              or self._generation is None
               or self.manual_active or fence != self._serial or not succeeded):
             # Also consume any lifecycle/gesture change during publication,
             # even when its final scalar state returned to the original value.
@@ -282,6 +511,8 @@ class RevealCoordinator:
             return CoordinatorDecision('disabled-or-invalid-publication')
         if self._view is None or view is not self._view:
             return CoordinatorDecision('inactive-view')
+        if self._generation is None:
+            return CoordinatorDecision('await-contents-publication')
         if not self._playback.ready:
             return CoordinatorDecision('await-playback-publication')
         if type(geometry) is not Geometry:
@@ -304,6 +535,7 @@ class RevealCoordinator:
         issued, self._issued = self._issued, None
         if (issued is None or proposal is not issued or self.error
                 or self._view is None or view is not self._view
+                or self._generation is None or self._contents_change is not None
                 or not self._playback.ready or self.manual_active
                 or type(geometry) is not Geometry
                 or issued.fence != self._serial

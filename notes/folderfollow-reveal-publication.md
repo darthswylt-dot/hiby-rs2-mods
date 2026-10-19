@@ -117,6 +117,15 @@ introduced here. `test_folderfollow_reveal_publication_contract.py` pins
 the narrow original-instruction anchors with the required reference hash;
 it does not assert global concurrency safety or complete mutator coverage.
 
+The [2026-10-16 worker-lifecycle audit](folderfollow-reveal-worker-lifecycle-boundary.md)
+further limits cancellation: shared cancel modifies master records but only
+clears the count of separately copied work records, so a previously borrowed
+job can still reach post-fill after cancel returns. Private stop frees its wake
+object before completion wait, leaving a stop-check/use window. These are
+source-permitted interleavings, not observed Files failures; actual explorer
+worker mode remains unresolved. No publication may acquire authority merely
+because stock cancellation returned or a view name resolved again.
+
 ## Executable publication protocol (host only)
 
 `scripts/folderfollow_reveal_publication.py` now implements `RowPublication`,
@@ -155,6 +164,22 @@ a coherent-looking torn input, or all events missing from an unobserved fill.
 Those are precisely the remaining live-hook/ownership obligations. Returned
 snapshots cannot be revoked in caller memory: a UI action still needs current
 generation/rows revalidation and retention through setter/refresh.
+
+The [operation-bound staging extension](folderfollow-reveal-coordinator.md)
+now uses a separate private collector during an uncompleted contents change.
+Its copied rows remain hidden until the same operation's verified successful
+END, then pass through the ordinary validator under a fresh generation.
+This does not add completion authority to a stock callback return or admit a
+job by a newly resolved view name. Extra events for the promoted current job
+revoke readiness; events from a canceled older phase remain stale.
+
+The [original-provenance audit](folderfollow-reveal-provenance.md) now pins
+the distinct synchronous Files loader, both native job-copy ingress routes,
+and query-to-producer arguments. In the worker path the scope comes from the
+copied job, while destination comes from a newly resolved view; neither a
+name match nor the job's old raw P/V fields supplies a retained generation.
+The native association/copy handoff remains unimplemented, so these anchors
+do not authorize connecting staged rows by callback-time lookup.
 
 22 protocol tests cover publication ordering, all one-row event permutations,
 512 rows, invalid/malformed inputs, incomplete/duplicate/error endings,

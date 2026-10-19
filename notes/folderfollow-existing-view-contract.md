@@ -28,18 +28,22 @@ a1  UTF-16 path stored in the existing Folder View at view + 0x3DD8
 a2  target UTF-16 path
 ```
 
-The function counts `\\` separators in both paths and changes the existing
-view stack only when their depths differ:
+The function counts `\\` separators in both paths. The bounded paths include:
 
 - target shallower: ancestor reconciliation beginning near `0x491AA0`;
 - target deeper: descendant reconciliation beginning near `0x491D10`;
-- equal depth: branch reaches `0x491E2C` without replacing the path or list.
+- the comparison-false branch at `0x491D14` reaches `0x491E2C`, which jumps
+  into the common reset block at `0x491BA4`, **not directly to return**.
 
-It is consequently a depth reconciler for an already related navigation path,
-not a general Folder View retarget operation. In particular, it cannot update
-the required flat sibling transition `01Flat -> 03Flat`. A different-depth
-sibling transition is also unsafe because depth alone does not prove that one
-path is an ancestor of the other.
+2026-10-16 correction: the earlier assertion that equal depth is a proved
+path/list no-op was too strong. The branch above has a degenerate register
+state; its reachability and behavior under valid input need separate analysis.
+The entire helper body is identical in preserved stock `0fed...` and reference
+`02fd...`, so this is not a difference introduced by the later diagnostic.
+It proves neither a working flat-sibling replacement nor an observed runtime
+fault. Keep the helper classified as depth-sensitive navigation maintenance,
+not a verified general Folder View retarget transaction. Depth alone also
+does not establish an ancestor/descendant relationship.
 
 ## Stock call contexts
 

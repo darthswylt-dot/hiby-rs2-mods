@@ -132,10 +132,10 @@ and was used to select the hook for the next test.
 - Hardware result: Folder View still showed the folder where playback began
   instead of the current track's folder. Physical buttons were temporarily
   unresponsive.
-- Lesson: this run does not test `0x4919E0`. Static analysis independently
-  shows that helper only reconciles ancestor/descendant depth and does nothing
-  for equal-depth siblings such as `01Flat -> 03Flat`, so it is not a complete
-  folder-follow primitive. See `folderfollow-existing-view-contract.md`.
+- Lesson: this run does not test `0x4919E0`. No safe general sibling retarget
+  was established. The earlier equal-depth no-op claim was corrected after
+  inspecting the reset branch; this does not turn the failed run into evidence
+  of that helper's behavior. See `folderfollow-existing-view-contract.md`.
 
 ## Temporary ADB ordering
 

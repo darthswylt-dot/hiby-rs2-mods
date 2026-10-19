@@ -4,8 +4,10 @@ Prepared and run: 2026-09-15. Hardware status: **safe and successful**.
 
 ## Static result leading to this diagnostic
 
-The discarded `c637...` test never reached `0x4919E0`, and that helper cannot
-replace equal-depth sibling folders in any case. A better stock candidate is
+The discarded `c637...` test never reached `0x4919E0`; no safe general
+equal-depth sibling transaction was established for that helper. The earlier
+no-op assertion was corrected in `folderfollow-existing-view-contract.md`
+(2026-10-16). A separately investigated stock candidate is
 `0x495D40(explorer, path)`, used by the Files storage-selection callback for
 `a:\\*`, `b:\\*`, and `c:\\*`.
 
