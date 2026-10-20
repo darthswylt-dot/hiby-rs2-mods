@@ -42,7 +42,18 @@ MISSING_CONTRACTS = (
 )
 
 
-def assemble(state_address, code_base, *, capacity=1024):
+def assemble(state_address, code_base, *, capacity=1024,
+             producer_revision_address=None):
+    # Optional diagnostic extension; the default image remains byte-identical.
+    # A sampled producer revision is not an original-render epoch or a lease.
+    if producer_revision_address is not None:
+        if (type(producer_revision_address) is not int
+                or not 0 <= producer_revision_address <= 0xFFFFFFFC
+                or producer_revision_address % 4):
+            raise ValueError('producer revision must be an aligned unsigned-32 address')
+        if (state_address < producer_revision_address + 4
+                and producer_revision_address < state_address + core.memory_bytes(capacity)):
+            raise ValueError('producer revision must be outside lineage storage')
     kernel, entries = core.build_lineage(state_address, code_base, capacity=capacity)
     a = Asm(code_base + len(kernel))
     address_fixups = []
@@ -272,6 +283,9 @@ def assemble(state_address, code_base, *, capacity=1024):
     payload(HOOKS['producer'][0], job=8, destination=22)
     a.e(b.lw(8, FRAME + 0xAD8, 29), b.sw(8, core.OFFSET, 2),
         b.sw(17, core.REQUEST, 2), b.sw(16, core.STMT, 2))
+    if producer_revision_address is not None:
+        value(8, producer_revision_address)
+        a.e(0xF, b.lw(8, 0, 8), b.sw(8, 56, 2), 0xF)
     publish()
     a.e(b.sw(3, FRAME + 0x18, 29))
     a.jump('producer_done')
@@ -284,7 +298,12 @@ def assemble(state_address, code_base, *, capacity=1024):
         target = a.labels[name]
         a.w[index:index + 2] = [b.lui(reg, target >> 16), b.ori(reg, reg, target & 0xFFFF)]
     labels = dict(a.labels, **{'lineage_' + name: addr for name, addr in entries.items()})
-    return kernel + a.finish(), labels
+    result = kernel + a.finish()
+    if (producer_revision_address is not None
+            and code_base < producer_revision_address + 4
+            and producer_revision_address < code_base + len(result)):
+        raise ValueError('producer revision must be outside emitted code')
+    return result, labels
 
 
 def build(source, *, enable_reveal=False, capacity=1024):

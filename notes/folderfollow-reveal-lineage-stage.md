@@ -140,3 +140,13 @@ the 48 new checks. The first sandboxed run failed on legacy tests' temporary
 file/cleanup permissions, including fixtures beneath `artifacts/`; the repeat
 with local test filesystem access passed. No test used a real player transport.
 No source was changed to suppress those failures or skip tests.
+
+## Row-event follow-up (2026-10-19)
+
+A separate [provenance-bound row journal](folderfollow-reveal-lineage-rows-stage.md)
+now captures native append, SQL terminal, statement reset and producer END
+against these immutable producer receipts. Its strict offline decoder reports
+only an observed window, never ready rows or UI authority. This lineage-only
+emitter/output remain byte-identical. Later query-wrapper finalization,
+coherent acquisition, native lifetime and contents/playback generation binding
+remain unproved; neither stage was installed or launched in this step.

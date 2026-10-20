@@ -1698,3 +1698,71 @@ failed on legacy temporary-directory write/cleanup permissions; a repeat with
 local test filesystem access passed, without changing tests or touching the
 player. Saved candidate hash remains `f31239aa...c75ec139`; all 117 Python
 scripts compile and tracked/new files pass whitespace checks.
+
+### Provenance-bound native row journal (2026-10-19)
+
+Added a separate offline diagnostic stage that captures actual append results,
+SQL-step terminal, statement reset and producer END against the original
+immutable producer receipt. Native calls still run once with their real
+results preserved. Unsupported modes/unbound origins cannot supply row payload;
+association failure, allocation/retry loss or exhausted storage permanently fail
+closed. Captured-event ordering is separately checked by the decoder; omitted
+native hooks are not independently detected. Paths are bounded and
+truncated/malformed data is rejected.
+
+The strict offline decoder checks exact ancestry, job/frame geometry and event
+sequence, rather than grouping by reused native addresses. It marks only an
+observed bounded producer window complete: never a whole folder, host ready
+rows or permission to scroll. Reset `0x5C31C0` is distinct from the later
+uncaptured wrapper finalization `0x5C30E0`. No telemetry acquisition/export,
+contents-phase binding, retained owner or UI action was added.
+
+All 68 new focused tests pass; independent review found no actionable defect.
+Saved and deterministically verified ignored local intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_lineage_rows_stage_v1_20261019.bin`,
+7,149,012 bytes, SHA-256
+`408163fd6c2d529df2e04976b89e1b9c39f36dbba679dc5fb9520365bc133a81`.
+The preceding lineage-only output remains byte-identical. No device access,
+installation, launch, rearm, signal or reboot; automatic reveal is still off.
+Changes remain local/uncommitted. See
+[row journal stage](folderfollow-reveal-lineage-rows-stage.md).
+
+Full repository regression: **874 tests pass, no skips** (169.922 s), including
+the 68 new checks. All 126 Python scripts compile and tracked/new text files
+pass whitespace checks. The test run used local temporary-file access, without
+changing legacy tests or using any real player transport.
+
+### Known contents-boundary revision filter (2026-10-20)
+
+Added an offline MIPS diagnostic counter at eight known entry/attempt points:
+renderer, Files worker, reset, reconciliation, named reset, close/navigation
+attempt, postfill and panel binding. Each increments before native effects;
+ordinary nested entries are allowed. Overflow/retry loss/malformed state faults
+permanently, without changing the original call/replay/result behavior.
+
+Producer receipts freeze a start revision; row events mirror it and compare
+before additional native payload reads and before publication. The strict new
+decoder preserves observed historical completeness but rejects windows after
+a later known entry. It never reports current/settled contents or UI authority.
+An already-active writer or stale queued job beginning after reset remains
+unproved. Normal postfill/bind also invalidates the preceding window, so this
+negative-evidence stage is not a ready-row publication gate.
+
+All 58 new focused tests pass. Independent review found full-interval layout
+and native jump-region checks missing from the public composition helper;
+fixed with regression tests. The normal planned/saved layout was unaffected.
+Both previous default outputs remain byte-identical. Saved and
+deterministically verified ignored local intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_contents_revision_stage_v1_20261020.bin`,
+7,151,032 bytes, SHA-256
+`f4284cb5adf77111d9c114c4c8889c7cb95eefec5e50c757a21544e8568603ac`.
+No device access, install, launch, rearm, signal or reboot; autoscroll remains
+off. Exact original-invocation/contents-phase/owner association through normal
+completion still needs implementation. Changes remain local/uncommitted; see
+[contents revision stage](folderfollow-reveal-contents-revision-stage.md).
+
+Full repository regression: **932 tests pass, no skips** (170.376 s), including
+the 58 new checks. After the final helper-only jump-region argument check,
+all 58 focused tests were rerun and passed (6.077 s); the saved output remains
+byte-identical and verified. All 134 Python scripts compile; tracked/new text
+files pass whitespace checks. No test used a real player transport.
