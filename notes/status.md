@@ -1766,3 +1766,65 @@ the 58 new checks. After the final helper-only jump-region argument check,
 all 58 focused tests were rerun and passed (6.077 s); the saved output remains
 byte-identical and verified. All 134 Python scripts compile; tracked/new text
 files pass whitespace checks. No test used a real player transport.
+
+### Exact borrowed-dispatch observation (2026-10-20)
+
+Implemented a separate native diagnostic journal connecting actual worker fill,
+postfill, binder entry and return events to the immutable original BORROW ID.
+Native callback JALRs, RA and SP remain unchanged. Strict offline decoding
+requires the exact event chain, original callback targets, one matching query/
+producer/destination, original P/V consistency and historical row completeness.
+A zero callback result or native state 2 cannot stand in for binding evidence.
+
+Source audit found two branch-target hazards: missing-V/P paths enter the post
+epilogue directly at E4, and error return jumps to the normal flag store EC80.
+Custom replay covers those routes without skipping restored registers or the
+forced-state write. No added native query, getter, lock, export or UI action.
+
+All 60 new focused tests pass; independent review found no further actionable
+defect. Saved and deterministically verified ignored local intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_operation_stage_v1_20261020.bin`,
+7,153,904 bytes, SHA-256
+`be40cecaa6172376f98cd8403477d16f609884347774564d19b7a95f881a49f8`.
+The previous contents-revision output remains byte-identical.
+
+Callback association is diagnostic only: normal postfill/bind still revokes the
+base row window, and currentness/coherence/autoscroll remain false. Original
+contents-phase identity, already-active writers/stale-start exclusion, retained
+native ownership and host row publication remain open. No player access,
+install, launch, rearm, signal or reboot; changes are local/uncommitted. See
+[operation observation stage](folderfollow-reveal-operation-stage.md).
+
+Full repository regression: **992 tests pass, no skips** (193.246 s), including
+the 60 new checks. All 142 Python scripts compile; tracked/new text files pass
+whitespace checks. Both new saved-file verification and prior-artifact hash
+checks pass. No test used a real player transport.
+
+### Original renderer-entry frontier (2026-10-21)
+
+Added an offline filter that retains the exact returned revision of original
+guarded renderer entry, rather than taking a fresh stamp when a queued producer
+starts. Native SP+0x10 carries it to immutable RENDER+60; private lineage keeps
+the original association. The actual Files worker entry must be the single
+known boundary between original R and frozen producer R+1. Stale positive roots
+fault before extra native row payload reads; INITIAL/zero roots are unadmitted.
+Native callbacks still run; this does not stop stale stock list mutation.
+
+All 40 new focused tests pass; independent review found no actionable defect.
+Saved and deterministically verified ignored local intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_origin_frontier_stage_v1_20261021.bin`,
+7,154,204 bytes, SHA-256
+`c0db14bd8c1ec6df87eb4690ae55da8f6740e5c59faa9f14f51e6da168818601`.
+All four preceding default outputs remain byte-identical. No new job/list
+stride growth, UI action, native query, getter, lock, exporter or installer.
+
+Fresh rendering of an already-stale UI/request, already-active writers, missing
+aliases, retained owner lifetime and coherent capture remain unproved. Base
+postfill/bind revocation is not relaxed; currentness/autoscroll stay false.
+No device access, install, launch, rearm, signal or reboot. Changes remain
+local/uncommitted; see [origin frontier](folderfollow-reveal-origin-frontier-stage.md).
+
+Full repository regression: **1,032 tests pass, no skips** (181.294 s), including
+the 40 new checks. All 148 Python scripts compile; tracked/new text files pass
+whitespace checks. New saved-file verification and all prior output hashes
+remain valid. No test used a real player transport.

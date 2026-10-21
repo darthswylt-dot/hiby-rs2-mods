@@ -153,3 +153,13 @@ It cannot stamp current revision onto an old queued job or exempt a binding
 because its folder/address happens to match. Playback generation, full-row
 scope, coherent delivery and a retained UI setter/refresh transaction remain
 separate gates. Automatic reveal stays off; no physical test is requested.
+
+## Exact-dispatch observation follow-up (2026-10-20)
+
+The separate [operation journal](folderfollow-reveal-operation-stage.md) now
+links actual fill/postfill/bind entry and return observations to their original
+BORROW receipt, preserving native callback PCs and stacks. It distinguishes
+missing binding from a zero postfill return and handles conditional epilogues
+and the separate error tail. It deliberately does not exempt even an associated
+normal postfill/bind from this filter or publish a settled contents generation.
+The previous default image remains byte-identical; no device trial occurred.

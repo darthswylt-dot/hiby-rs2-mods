@@ -56,7 +56,8 @@ def memory_bytes(capacity=DEFAULT_CAPACITY):
 
 
 def assemble(lineage_address, lineage_entries, journal_address, code_base,
-             capacity=DEFAULT_CAPACITY, *, content_revision_address=None):
+             capacity=DEFAULT_CAPACITY, *, content_revision_address=None,
+             require_origin_frontier=False):
     """Return (little-endian code bytes, labels), without I/O or installation.
 
     The caller supplies distinct permanent zeroed RW journal storage and RX
@@ -65,6 +66,10 @@ def assemble(lineage_address, lineage_entries, journal_address, code_base,
     and invalidate labels are allocation/test helpers, never readiness APIs.
     """
     size = memory_bytes(capacity)
+    if type(require_origin_frontier) is not bool:
+        raise ValueError('origin frontier option must be an explicit boolean')
+    if require_origin_frontier and content_revision_address is None:
+        raise ValueError('origin frontier requires the producer revision extension')
     try:
         validate = lineage_entries['validate']
     except (KeyError, TypeError) as error:
@@ -102,6 +107,28 @@ def assemble(lineage_address, lineage_entries, journal_address, code_base,
         a.branch(5, 10, 0, 'capture_fault')
         a.e(SYNC)
 
+    def check_origin_frontier():
+        if not require_origin_frontier:
+            return
+        # validate(PRODUCER) already checked this immutable private root's
+        # index, publication and ancestry. No native pointer is followed.
+        a.e(b.lw(8, lineage.ORIGIN, 2), b.addiu(8, 8, -1),
+            (8 << 16) | (8 << 11) | (6 << 6))
+        a.absolute(9, lineage_address + lineage.HEADER)
+        a.e(b.r_type(8, 9, 8, 0x21), b.lw(9, lineage.KIND, 8),
+            b.addiu(10, 0, lineage.RENDER))
+        # INITIAL and zero/unbound renderer entries have no admitted frontier.
+        # Their stock callbacks continue, but no extra row payload is read.
+        a.branch(5, 9, 10, 'capture_done')
+        a.e(b.lw(9, 60, 8))
+        a.branch(4, 9, 0, 'capture_done')
+        a.e((9 << 16) | (10 << 11) | (31 << 6) | 2)
+        a.branch(5, 10, 0, 'capture_fault')
+        # The actual Files worker entry must be the single known boundary
+        # between the original renderer entry and this producer start.
+        a.e(b.addiu(9, 9, 1), b.lw(10, 0x40, 29))
+        a.branch(5, 9, 10, 'capture_fault')
+
     def fail_if_lineage_fault():
         a.absolute(8, lineage_address)
         a.e(b.lw(8, lineage.STATE, 8), (8 << 16) | (8 << 11) | (31 << 6) | 2)
@@ -138,6 +165,7 @@ def assemble(lineage_address, lineage_entries, journal_address, code_base,
         a.e(b.lw(8, field, 2))
         a.branch(5, 8, register, 'capture_fault')
     check_revision(load=True)
+    check_origin_frontier()
     a.branch(4, 19, 0, 'capture_fault')
     a.branch(4, 20, 0, 'capture_fault')
     a.e(b.i_type(12, 20, 8, 3))

@@ -30,14 +30,16 @@ MISSING_CONTRACTS = lineage.MISSING_CONTRACTS
 
 
 def assemble(buffer, journal, code_base, *, capacity=1024, row_capacity=1024,
-             content_revision_address=None):
+             content_revision_address=None, origin_entry_offset=None,
+             require_origin_frontier=False):
     original, labels = lineage.assemble(
         buffer, code_base, capacity=capacity,
-        producer_revision_address=content_revision_address)
+        producer_revision_address=content_revision_address, origin_entry_offset=origin_entry_offset)
     entries = {name: labels['lineage_' + name] for name in ('reserve', 'validate', 'invalidate')}
     capture, capture_labels = rows.assemble(
         buffer, entries, journal, code_base + len(original), capacity=row_capacity,
-        content_revision_address=content_revision_address)
+        content_revision_address=content_revision_address,
+        require_origin_frontier=require_origin_frontier)
     a = Asm(code_base + len(original) + len(capture))
 
     def save():

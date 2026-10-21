@@ -43,9 +43,12 @@ MISSING_CONTRACTS = (
 
 
 def assemble(state_address, code_base, *, capacity=1024,
-             producer_revision_address=None):
+             producer_revision_address=None, origin_entry_offset=None):
     # Optional diagnostic extension; the default image remains byte-identical.
     # A sampled producer revision is not an original-render epoch or a lease.
+    if (origin_entry_offset is not None
+            and (type(origin_entry_offset) is not int or origin_entry_offset != 0x10)):
+        raise ValueError('only the audited renderer entry carrier at SP10 is admitted')
     if producer_revision_address is not None:
         if (type(producer_revision_address) is not int
                 or not 0 <= producer_revision_address <= 0xFFFFFFFC
@@ -110,6 +113,10 @@ def assemble(state_address, code_base, *, capacity=1024,
     a.branch(4, 2, 0, 'render_done')
     a.e(b.lw(8, SAVE[2], 29), b.addiu(8, 8, 0x38A4))
     payload(HOOKS['render'][0], job=8)
+    if origin_entry_offset is not None:
+        # Exact ticket returned at THIS guarded renderer entry, not a later
+        # read of the current global counter or the native job template.
+        a.e(b.lw(8, FRAME + origin_entry_offset, 29), b.sw(8, 60, 2))
     publish()
     a.e(b.sw(3, FRAME + RENDER_TICKET, 29))
     a.label('render_done')

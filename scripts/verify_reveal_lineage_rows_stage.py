@@ -12,10 +12,14 @@ def verify(source, candidate, *, capacity=1024, row_capacity=1024):
     return verify_stage(source, candidate, stage, capacity=capacity, row_capacity=row_capacity)
 
 
-def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024):
+def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024,
+                 operation_capacity=None):
     """Shared structural inventory, still bound to an exact deterministic build."""
     golden, _ = stage.normalize_source(source)
-    expected, meta = stage.build(source, capacity=capacity, row_capacity=row_capacity)
+    build_options = dict(capacity=capacity, row_capacity=row_capacity)
+    if operation_capacity is not None:
+        build_options['operation_capacity'] = operation_capacity
+    expected, meta = stage.build(source, **build_options)
     if candidate != expected:
         raise ValueError('candidate differs from deterministic lineage/rows build')
     spans = [(meta['memsize_offset'], 4), (meta['phdr_offset'], 32)]
@@ -37,10 +41,15 @@ def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024):
         raise ValueError('unexpected added RX segment')
     journal_end = meta['row_buffer'] + meta['row_memory_bytes']
     memory_end = meta['buffer'] + meta['memory_bytes']
+    prefix_end = meta.get('operation_buffer', memory_end)
+    if 'operation_buffer' in meta:
+        if (meta['operation_memory_bytes'] != 16 + 64 * meta['operation_capacity']
+                or meta['operation_buffer'] + meta['operation_memory_bytes'] != memory_end):
+            raise ValueError('operation memory extent')
     if 'contents_revision_buffer' in meta:
         if (meta['contents_revision_buffer'] != journal_end
                 or meta['contents_revision_bytes'] != 16
-                or journal_end + 16 != memory_end):
+                or journal_end + 16 != prefix_end):
             raise ValueError('contents revision memory extent')
     elif journal_end != memory_end:
         raise ValueError('journal memory extent')
@@ -100,7 +109,8 @@ def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024):
                 if word != 0x0320F809 or pc != meta['labels']['row'] + 8:
                     raise ValueError('unexpected indirect append call')
                 indirect.append(pc)
-    expected_tails = [pc + 8 for name, (pc, _) in stage.HOOKS.items() if name not in stage.LINKED]
+    expected_tails = getattr(stage, 'NATIVE_TAILS',
+                             [pc + 8 for name, (pc, _) in stage.HOOKS.items() if name not in stage.LINKED])
     if (sorted(calls) != [0x5C31C0, 0x6F7CA0] or sorted(tails) != sorted(expected_tails)
             or len(indirect) != 1):
         raise ValueError('external control-flow inventory changed')
