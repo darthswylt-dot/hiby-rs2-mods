@@ -28,11 +28,13 @@ MISSING_CONTRACTS = (*previous.MISSING_CONTRACTS,
 
 
 def assemble(buffer, journal, revision_buffer, operation_buffer, code_base,
-             *, capacity=1024, row_capacity=1024, operation_capacity=1024):
+             *, capacity=1024, row_capacity=1024, operation_capacity=1024,
+             scope_state_address=None):
     original, labels = previous.assemble(
         buffer, journal, revision_buffer, operation_buffer, code_base,
         capacity=capacity, row_capacity=row_capacity, operation_capacity=operation_capacity,
-        origin_entry_offset=ENTRY_OFFSET, require_origin_frontier=True)
+        origin_entry_offset=ENTRY_OFFSET, require_origin_frontier=True,
+        scope_state_address=scope_state_address)
     a = Asm(code_base + len(original))
     a.label('contents_render_entry')
     # Allocate the native renderer frame FIRST. Storing its future SP10 from
@@ -47,6 +49,15 @@ def assemble(buffer, journal, revision_buffer, operation_buffer, code_base,
     # bump returns THIS successful reservation's historical ticket, even if
     # another entry already advanced the counter before the helper returned.
     # Failure returns zero, replacing any previous stack bytes with unbound.
+    if scope_state_address is not None:
+        # No native effects follow a scope entry until its active count is
+        # visible. Unpublished entries still count as active. Fault/active
+        # states make this origin permanently unadmitted, even after close.
+        a.absolute(8, scope_state_address)
+        a.e(0xF, b.lw(8, 0, 8), (8 << 16) | (8 << 11) | (16 << 6) | 2)
+        a.branch(4, 8, 0, 'contents_render_scope_quiet')
+        a.e(b.move(2, 0))
+        a.label('contents_render_scope_quiet')
     a.e(b.sw(2, FRAME + ENTRY_OFFSET, 29))
     a.e(b.lw(8, HI, 29), b.r_type(8, 0, 0, 0x11),
         b.lw(8, LO, 29), b.r_type(8, 0, 0, 0x13))

@@ -38,7 +38,7 @@ MISSING_CONTRACTS = (*previous.MISSING_CONTRACTS,
 
 
 def assemble(buffer, journal, revision_buffer, code_base, *, capacity=1024, row_capacity=1024,
-             origin_entry_offset=None, require_origin_frontier=False):
+             origin_entry_offset=None, require_origin_frontier=False, scope_state_address=None):
     if (type(code_base) is not int or not 0 <= code_base <= 0xFFFFFFFC
             or code_base % 4 or code_base >> 28 != BASE >> 28):
         raise ValueError('contents code must share the original native MIPS jump region')
@@ -57,7 +57,7 @@ def assemble(buffer, journal, revision_buffer, code_base, *, capacity=1024, row_
     original, labels = previous.assemble(
         buffer, journal, code_base, capacity=capacity, row_capacity=row_capacity,
         content_revision_address=revision_buffer, origin_entry_offset=origin_entry_offset,
-        require_origin_frontier=require_origin_frontier)
+        require_origin_frontier=require_origin_frontier, scope_state_address=scope_state_address)
     counter, entries = revision.build_revision(revision_buffer, code_base + len(original))
     a = Asm(code_base + len(original) + len(counter))
     for name, (pc, displaced) in BOUNDARIES.items():

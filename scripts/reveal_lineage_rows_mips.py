@@ -30,6 +30,12 @@ PRODUCER byte56 is its immutable start sample, and event byte60 mirrors it.
 The known-boundary counter must still equal that sample before additional
 native reads and before publication. Equality detects no already-active writer,
 stale-started job, missed hook or later mutation; it is never currentness.
+
+Optional scope_state_address additionally excludes observed open reset /
+reconcile invocations, including issued but unpublished entries. This requires
+the original-frontier filter. It is a check, not a lock: a new scope may begin
+between any check and the next read. Post-allocation overlap faults the journal;
+native stock callbacks are never suppressed. Other writers remain unproved.
 """
 
 from build_reveal_bridge_diag import Asm, b
@@ -57,7 +63,7 @@ def memory_bytes(capacity=DEFAULT_CAPACITY):
 
 def assemble(lineage_address, lineage_entries, journal_address, code_base,
              capacity=DEFAULT_CAPACITY, *, content_revision_address=None,
-             require_origin_frontier=False):
+             require_origin_frontier=False, scope_state_address=None):
     """Return (little-endian code bytes, labels), without I/O or installation.
 
     The caller supplies distinct permanent zeroed RW journal storage and RX
@@ -70,6 +76,8 @@ def assemble(lineage_address, lineage_entries, journal_address, code_base,
         raise ValueError('origin frontier option must be an explicit boolean')
     if require_origin_frontier and content_revision_address is None:
         raise ValueError('origin frontier requires the producer revision extension')
+    if scope_state_address is not None and not require_origin_frontier:
+        raise ValueError('native scope exclusion requires the original frontier')
     try:
         validate = lineage_entries['validate']
     except (KeyError, TypeError) as error:
@@ -90,8 +98,30 @@ def assemble(lineage_address, lineage_entries, journal_address, code_base,
         for start, length in ((lineage_address, lineage.HEADER), (journal_address, size)):
             if start < content_revision_address + 4 and content_revision_address < start + length:
                 raise ValueError('contents revision must be separate private storage')
+    if scope_state_address is not None:
+        if (type(scope_state_address) is not int or scope_state_address % 4
+                or not 0 <= scope_state_address <= 0xFFFFFFFC):
+            raise ValueError('scope state must be an aligned unsigned-32 address')
+        for start, length in ((lineage_address, lineage.HEADER), (journal_address, size),
+                              (content_revision_address, 4)):
+            if start < scope_state_address + 4 and scope_state_address < start + length:
+                raise ValueError('scope state must be separate private storage')
     call_frame = CALL_FRAME if content_revision_address is None else CALL_FRAME + 0x10
     a = Asm(code_base)
+
+    def check_scope(*, allocated=False):
+        if scope_state_address is None:
+            return
+        a.absolute(8, scope_state_address)
+        a.e(SYNC, b.lw(9, 0, 8), (9 << 16) | (10 << 11) | (31 << 6) | 2)
+        a.branch(5, 10, 0, 'capture_fault')
+        a.e((9 << 16) | (10 << 11) | (16 << 6) | 2,
+            b.i_type(12, 9, 11, 0xFFFF), b.r_type(11, 10, 11, 0x2B))
+        a.branch(5, 11, 0, 'capture_fault')
+        # Before allocation, active known scopes suppress this capture. After
+        # allocation, fail permanently rather than leave a healthy journal gap.
+        a.branch(5, 10, 0, 'capture_fault' if allocated else 'capture_done')
+        a.e(SYNC)
 
     def check_revision(load=False):
         if content_revision_address is None:
@@ -166,6 +196,9 @@ def assemble(lineage_address, lineage_entries, journal_address, code_base,
         a.branch(5, 8, register, 'capture_fault')
     check_revision(load=True)
     check_origin_frontier()
+    if scope_state_address is not None:
+        a.label('capture_scope_pre')
+    check_scope()
     a.branch(4, 19, 0, 'capture_fault')
     a.branch(4, 20, 0, 'capture_fault')
     a.e(b.i_type(12, 20, 8, 3))
@@ -185,6 +218,9 @@ def assemble(lineage_address, lineage_entries, journal_address, code_base,
     if content_revision_address is not None:
         a.e(b.lw(8, 0x40, 29), b.sw(8, RESERVED, 2))
     check_revision()
+    if scope_state_address is not None:
+        a.label('capture_scope_reserved')
+    check_scope(allocated=True)
     # First native object read after all lineage/frame/scalar checks.
     a.label('capture_count')
     a.e(b.lw(8, 0xC, 20), b.sw(8, COUNT, 2), b.addiu(8, 0, ROW))
@@ -204,6 +240,9 @@ def assemble(lineage_address, lineage_entries, journal_address, code_base,
     fail_if_lineage_fault()
     fail_if_journal_bad()
     check_revision()
+    if scope_state_address is not None:
+        a.label('capture_scope_publish')
+    check_scope(allocated=True)
     a.e(b.lw(2, 0x18, 29), SYNC)
     a.absolute(8, MAGIC)
     a.label('capture_magic_store')
@@ -264,4 +303,7 @@ def assemble(lineage_address, lineage_entries, journal_address, code_base,
             and code_base < content_revision_address + 4
             and content_revision_address < end):
         raise ValueError('contents revision must be outside emitted code')
+    if (scope_state_address is not None and code_base < scope_state_address + 4
+            and scope_state_address < end):
+        raise ValueError('scope state must be outside emitted code')
     return code, a.labels

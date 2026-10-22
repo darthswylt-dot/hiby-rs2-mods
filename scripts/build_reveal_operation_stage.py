@@ -39,7 +39,7 @@ NATIVE_TAILS = tuple(pc + 8 for name, (pc, _) in previous.HOOKS.items() if name 
 
 def assemble(buffer, journal, revision_buffer, operation_buffer, code_base,
              *, capacity=1024, row_capacity=1024, operation_capacity=1024,
-             origin_entry_offset=None, require_origin_frontier=False):
+             origin_entry_offset=None, require_origin_frontier=False, scope_state_address=None):
     if (type(code_base) is not int or code_base % 4 or code_base < 0
             or code_base >> 28 != BASE >> 28):
         raise ValueError('operation code must share the original native jump region')
@@ -55,7 +55,8 @@ def assemble(buffer, journal, revision_buffer, operation_buffer, code_base,
     original, labels = previous.assemble(buffer, journal, revision_buffer, code_base,
                                          capacity=capacity, row_capacity=row_capacity,
                                          origin_entry_offset=origin_entry_offset,
-                                         require_origin_frontier=require_origin_frontier)
+                                         require_origin_frontier=require_origin_frontier,
+                                         scope_state_address=scope_state_address)
     kernel, entries = operation.assemble(
         buffer, {'validate': labels['lineage_validate']}, operation_buffer,
         revision_buffer, code_base + len(original), capacity=operation_capacity)

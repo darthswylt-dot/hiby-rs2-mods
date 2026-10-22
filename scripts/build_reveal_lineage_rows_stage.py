@@ -31,7 +31,7 @@ MISSING_CONTRACTS = lineage.MISSING_CONTRACTS
 
 def assemble(buffer, journal, code_base, *, capacity=1024, row_capacity=1024,
              content_revision_address=None, origin_entry_offset=None,
-             require_origin_frontier=False):
+             require_origin_frontier=False, scope_state_address=None):
     original, labels = lineage.assemble(
         buffer, code_base, capacity=capacity,
         producer_revision_address=content_revision_address, origin_entry_offset=origin_entry_offset)
@@ -39,7 +39,7 @@ def assemble(buffer, journal, code_base, *, capacity=1024, row_capacity=1024,
     capture, capture_labels = rows.assemble(
         buffer, entries, journal, code_base + len(original), capacity=row_capacity,
         content_revision_address=content_revision_address,
-        require_origin_frontier=require_origin_frontier)
+        require_origin_frontier=require_origin_frontier, scope_state_address=scope_state_address)
     a = Asm(code_base + len(original) + len(capture))
 
     def save():

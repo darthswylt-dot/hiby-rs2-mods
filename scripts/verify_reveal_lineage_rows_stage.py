@@ -13,12 +13,16 @@ def verify(source, candidate, *, capacity=1024, row_capacity=1024):
 
 
 def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024,
-                 operation_capacity=None):
+                 operation_capacity=None, scope_capacity=None, birth_capacity=None):
     """Shared structural inventory, still bound to an exact deterministic build."""
     golden, _ = stage.normalize_source(source)
     build_options = dict(capacity=capacity, row_capacity=row_capacity)
     if operation_capacity is not None:
         build_options['operation_capacity'] = operation_capacity
+    if scope_capacity is not None:
+        build_options['scope_capacity'] = scope_capacity
+    if birth_capacity is not None:
+        build_options['birth_capacity'] = birth_capacity
     expected, meta = stage.build(source, **build_options)
     if candidate != expected:
         raise ValueError('candidate differs from deterministic lineage/rows build')
@@ -44,8 +48,18 @@ def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024,
     prefix_end = meta.get('operation_buffer', memory_end)
     if 'operation_buffer' in meta:
         if (meta['operation_memory_bytes'] != 16 + 64 * meta['operation_capacity']
-                or meta['operation_buffer'] + meta['operation_memory_bytes'] != memory_end):
+                or meta['operation_buffer'] + meta['operation_memory_bytes']
+                != meta.get('scope_buffer', memory_end)):
             raise ValueError('operation memory extent')
+    if 'scope_buffer' in meta:
+        if (meta['scope_memory_bytes'] != 16 + 32 * meta['scope_capacity']
+                or meta['scope_buffer'] + meta['scope_memory_bytes']
+                != meta.get('birth_buffer', memory_end)):
+            raise ValueError('native scope memory extent')
+    if 'birth_buffer' in meta:
+        if (meta['birth_memory_bytes'] != 16 + 64 * meta['birth_capacity']
+                or meta['birth_buffer'] + meta['birth_memory_bytes'] != memory_end):
+            raise ValueError('queue birth memory extent')
     if 'contents_revision_buffer' in meta:
         if (meta['contents_revision_buffer'] != journal_end
                 or meta['contents_revision_bytes'] != 16

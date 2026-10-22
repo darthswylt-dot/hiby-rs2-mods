@@ -1828,3 +1828,128 @@ Full repository regression: **1,032 tests pass, no skips** (181.294 s), includin
 the 40 new checks. All 148 Python scripts compile; tracked/new text files pass
 whitespace checks. New saved-file verification and all prior output hashes
 remain valid. No test used a real player transport.
+
+### Known in-flight reset/reconcile exclusion (2026-10-21)
+
+Added a private diagnostic scope guard for the exact reset/reconcile entries
+and three normal-return epilogues. Packed active count increments atomically
+with a non-reused ticket before publication, so issued-but-unpublished entries
+remain visible. Exact kind/ticket/native-frame binding and one-shot close claim
+prevent foreign/duplicate completion. Fault/exhaustion/retry loss is permanent.
+
+Native prologues run once before storing the ticket at audited native SP+14.
+Original renderer entry stays unadmitted if a known scope is open; closing it
+later cannot relabel that origin. Extra row payload capture is skipped while
+active before allocation, and faults on detected overlap after allocation.
+Completion bumps the existing revision before releasing active count. Actual
+native results/registers/RA survive and each original frame is popped once.
+Stock callbacks still run: this is not a writer lock or lifetime lease.
+
+The source audit also established that renderer a2 is a newly allocated cache
+canvas descriptor, not an immutable UI request. This new exclusion narrows
+known overlap only. Fresh UI/playback request identity, other writers/abnormal
+exits, native retained lifetime, coherent handoff and final UI action remain
+unproved. Normal postfill/bind revocation is unchanged; autoscroll stays off.
+
+All 90 new source/core/decoder/composition checks pass. Independent read-only
+reviews found no actionable defect. Previous default builders remain byte-
+identical. Saved and deterministically verified ignored local intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_native_scope_stage_v1_20261021.bin`,
+7,156,404 bytes, SHA-256
+`404827620fc6addba436c1911eb89b72b633562d84331de9e0097ede9469b0d5`.
+No device access, install, launch, rearm, signal or reboot. Changes are local /
+uncommitted; see [scope stage](folderfollow-reveal-native-scope-stage.md) and
+[source boundary](folderfollow-reveal-native-scope-boundary.md).
+
+Full repository regression: **1,122 tests pass, no skips** (168.446 s), including
+the 90 new checks. All 158 Python scripts compile; tracked/new text files pass
+whitespace checks. An earlier full run had a single failure in an unchanged
+25-ms mocked launcher watchdog test; all 24 launcher checks passed separately,
+then the complete suite passed without parallel focused-test load. Neither
+launcher nor tests were modified to hide it. The saved image remains verified;
+all checks used local fixtures only, with no real player transport.
+
+### Deferred request birth / fresh-callback counterexample (2026-10-21)
+
+Traced the request earlier than cache-canvas allocation: nonnull repaint
+`8B4280` makes a 16-byte rectangle copy and appends it to persistent C+34.
+Native reset `491240` removes named cache canvases but retains this queue,
+then appends a new nonnull repaint. Later rendering consumes the old entries
+before freeing them. Full redraw is a coalesced flag without request identity;
+its normal path also processes the pending queue after its full callback.
+
+Added pinned source contracts for the six generic queue append callers, three
+distinct paint borrowers, occupied metadata, destruction, native failure paths,
+callback/outer-frame bindings and unretained current-name widget resolution.
+No additional child-renderer stack word is available; callback/outer SP+14 are
+only bounded future carrier candidates, not implemented request identity.
+
+An instruction harness executes the actual reset/append/queue-borrow/cleanup
+instructions with explicit resource/SQL/geometry/callback stubs. Old and new
+marked repaint births differ in callback order but yield identical private
+scope/frontier/row/operation bytes in the existing composed widget fixture.
+Fresh renderer/producer stamps and scope quiet therefore cannot establish
+request birth. This does not claim stale rows, a real UI run, complete native
+scheduling or a retained owner; currentness/coherence/autoscroll stay false.
+
+All 36 new focused tests pass. Independent reviews found no actionable defect
+or overclaim. This follow-up changes tests/documentation only: no allocation
+growth, tail read, metadata reuse, new firmware build, device action or commit.
+The previous scope-stage changes remain local/uncommitted. See the
+[request engine audit and executable counterexample](folderfollow-reveal-request-engine-boundary.md),
+[callback frame audit](folderfollow-reveal-request-callback-boundary.md) and
+[independent queue safety audit](folderfollow-reveal-request-queue-safety.md).
+
+Full repository regression: **1,158 tests pass, no skips** (194.524 s). All 36
+focused tests also pass after tightening the fixture's C allocation to exact
+native size (6.242 s). All 161 Python scripts compile; tracked/new text files
+pass whitespace checks. The prior saved scope-stage binary remains unchanged
+and deterministically verified. No real player transport was used.
+
+### Prepublication queue-birth observations (2026-10-21)
+
+Implemented the first immutable diagnostic birth ID before native queue
+allocation, linked to ENQUEUE_BEGIN and actual append return through native
+invocation-local SP+14. Private receipts preserve exact ancestry and numeric
+engine/input/copy/metadata/frame binding without dereferencing those values.
+Null/full requests and C+44 early returns stay unobserved; loss/fault never
+suppresses stock queueing. No allocation size, native tail, metadata or generic
+append call/RA/delay/cleanup change. The final rectangle word remains in the
+original append delay slot, so ENQUEUE_BEGIN is not confirmed publication.
+
+The new journal distinguishes the prior old/new request-birth fixtures (birth
+revision 0 versus 2) while their complete prior capture prefix stays identical.
+It does not transport the ID through the native queue to the renderer or join
+it to rows. Request freshness, retained owner, coherence/currentness and UI
+authority remain false. Normal old row/frontier/scope refusals are unchanged.
+
+Independent review found and reproduced an impossible future scope-issued
+sample accepted by the combined parser; fixed and covered by a regression
+test. Earlier active samples after normal close remain valid historical data,
+not monotonic active-count claims. All 106 new focused checks pass: source,
+core, standalone/combined parsers and native producer/counterexample integration.
+
+Saved and deterministically verified ignored local intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_queue_birth_stage_v1_20261021.bin`,
+7,159,132 bytes, SHA-256
+`3f4d975087af7d31e2b60b6a0d6c5762585acd02658ed36cefb2152a78b79c7d`.
+Previous default builds remain byte-identical. No device access, install,
+launch, rearm, signal or reboot; changes remain local/uncommitted. See
+[queue birth stage](folderfollow-reveal-queue-birth-stage.md) and
+[source boundary](folderfollow-reveal-queue-birth-boundary.md).
+
+Full repository regression: **1,264 tests pass, no skips** (183.884 s), including
+the 106 new checks. All 171 Python scripts compile; tracked/new text files pass
+whitespace checks. An initial full run repeated the known unchanged 25-ms mock
+launcher watchdog failure; all 24 launcher tests passed separately (16.316 s),
+then the complete suite passed unchanged. Saved image verification remains
+valid. All tests used local fixtures; no real player transport was used.
+
+### Repository checkpoint (2026-10-22)
+
+The native-scope exclusion, deferred-request counterexample and prepublication
+queue-birth observation above are grouped in this source-only checkpoint.
+Latest full regression: 1,264 tests pass, no skips; all 171 Python scripts
+compile. Firmware intermediates, raw snapshots, logs and temporary fixtures
+remain excluded. Queue-consumer identity transport and active autoscroll are
+not implemented by this checkpoint. No player operation or deployment.
