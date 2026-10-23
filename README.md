@@ -57,6 +57,19 @@ actual paint BIRTH, then joins existing renderer/row ancestry by explicit IDs.
 This is historical invocation evidence, not coherent/current playback or a
 retained native record. The separate image widens action and paint elements
 to20/36 bytes; it remains offline, hardware UNTESTED and cannot scroll.
+The [paint-payload follow-up](notes/folderfollow-reveal-paint-payload-boundary.md)
+now isolates post-BIRTH rectangle tearing and current-index removal from
+historical ID ancestry. A known purge uses a different mutex; stable bytes,
+selected-entry removal and object lifetime need separate protection.
+A separate [host paint-queue coordinator](notes/folderfollow-reveal-paint-queue.md)
+now implements one retained FIFO claim, exact acknowledgement, owner-generation
+revocation and deferred accounting release. Its lock protects host values only;
+native cleanup/lifetime integration and active scrolling remain unimplemented.
+A separate [offline MIPS handoff prototype](notes/folderfollow-reveal-paint-handoff.md)
+now exercises owned queue-byte transfer and exact-head acknowledgement against
+the original list methods under148. Its distinct40-byte test format adds a
+publication nonce without changing LALI or saved builds. Failed native growth
+withdraws terminally; stock purge/lifecycle participation is still required.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered

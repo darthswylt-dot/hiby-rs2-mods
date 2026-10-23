@@ -124,7 +124,9 @@ class ActionLinkMachine(prior.RendererMachine):
             self.hostile_result(self.current_controller)
             return
         if target == 0x468D40:
-            # Visibility/readiness is a fixture, not a current-owner proof.
+            # Native 468D40 ignores a0 and tests global B896D0 == 0. These
+            # receiver checks only bound fixture arguments, not ownership,
+            # pointer validity or the native predicate's actual semantics.
             self.calls.append(target)
             if self.r[4] not in {CONTROLLER, NODE, *self.extra_engines}:
                 raise AssertionError('unexpected predicate receiver')

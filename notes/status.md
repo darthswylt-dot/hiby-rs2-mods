@@ -2232,3 +2232,160 @@ UNTESTED, active reveal/scrolling disabled. This closes the audited GENERAL
 invocation-ID gap, not coherent playback publication, universal Next/autoplay
 coverage, native retained ownership or an admitted UI transaction. See the
 [source/stage/verification report](folderfollow-reveal-action-link-stage.md).
+
+### Native paint payload and removal-ownership boundary (2026-10-23)
+
+Follow-up to committed notification-link stage e113d59. No firmware/builder,
+hook, BSS layout, native frame/allocation, snapshot format, installer or native
+runtime behavior change. Two host-decoder limitation strings now explicitly name the
+separate rectangle loads, current-index removal and known different-mutex
+purge; association/refusal algorithms and all authority flags are unchanged.
+One existing fixture comment clarifies468D40: it ignores a0, tests global
+B896D0==0 and does not validate the passed controller/engine.
+
+Added18 pinned-source and27 native-interleaving checks (45 total,4.859 s).
+The native getter unlocks before consumer engine/metadata reads; BIRTH records
+the rectangle address before allocation and four independent native loads.
+Explicit mutation before successive loads yields a mixed old/new rectangle,
+while historical SOURCE -> actual BIRTH remains structurally valid/deny-only.
+An actual native index0 removal between loads moves the next36-byte element
+over the selected address and produces each of the three torn prefixes.
+Identical addresses/fields and a change/restore interval do not supply a lease.
+
+The original consumer later removes whichever element is now index0. Both
+43C980 and43CA60 loops have direct consumer calls; their mutual exclusion and
+OS-thread identity remain unproved. A real known purge439780 ->4396C0 removes
+paint entries under controller+274/+278 ->mutex+13C, whereas getter/append/
+normal remove/destruction use+284/+288 ->mutex+148. The native fixture executes
+that purge and actual13C callbacks after selected-ID publication, both after
+unlock and in an explicitly injected interval while148 is held. It removes the
+sole element, the consumer observes zero engine, and BIRTH is skipped while
+the frozen delivery remains incomplete. This establishes the lock-protocol
+gap, not actual simultaneous-thread scheduling or the user's hardware defect.
+
+Tests keep scheduler, OS mutex/allocation services, bounded name comparison and
+registry cleanup as explicit substitutions. Suspended registers, HI/LO and
+diagnostic PC are restored around nested native calls on a separate stack.
+Empty/head-moved/null-engine/full/fault/retry/mismatched-metadata/engine paths
+preserve native behavior and every deny-only flag. Existing146 action-link
+checks pass (33.365 s); independent source/fixture/decoder/documentation review
+found no remaining actionable issue. The source census includes direct J/JAL,
+integer and coprocessor branch forms, not computed/runtime entries.
+
+A future handoff must separately establish stable acquisition, exact selected-
+entry claim/removal and engine/controller retention. Merely copying under148
+does not cover the known13C-only purge. An examined80-byte consumer-frame copy
+layout is explicitly NOT implemented; changing native BIRTH.INPUT requires a
+versioned owned-copy protocol, not relaxed old pointer bindings. Earlier
+extraction would also change ordering and in-flight cancellation visibility.
+See the [source and counterexample report](folderfollow-reveal-paint-payload-boundary.md).
+
+Full repository regression: **1,895 tests pass, no skips** (313.633 s).
+All221 Python scripts compile; tracked/new text files pass whitespace checks.
+The saved action-link, LPDI and renderer images are exactly reverified with
+unchanged d4306357..., a9a6f02f... and f42fac46... SHA-256 hashes. No new image
+or native read/capture policy. No legacy launcher/test timer, existing assertion
+or refusal was changed or weakened. Changes remain local/uncommitted; no
+device/network operation, commit or push. Active reveal/scrolling remains
+disabled and hardware UNTESTED.
+
+### Host head-retained paint queue and owner retirement (2026-10-23)
+
+Implemented `folderfollow_reveal_paint_queue.py`, a separate positive host
+protocol, not a firmware/native-lock adapter. A single host Lock serializes
+owner registration, enqueue, one exact retained-head claim, completion, purge,
+retirement, close and accounting release. Payloads copy already-owned builtin
+scalar/rectangle values before publication; this is not native acquisition
+coherence. Caller-supplied iteration/hash/equality or rendering/cleanup/I/O
+is never invoked under the queue lock.
+
+The active entry remains at the FIFO head until exact identity-bound claim
+acknowledgement. Another consumer cannot skip ahead or claim that same head.
+Completion removes only that entry; duplicate/foreign/reconstructed/stale
+tokens cannot remove a newer head. Purge retires matching owner generations,
+removes unclaimed entries and cancels, but retains, a claimed entry. Its later
+ack returns cancelled regardless of the caller's success outcome. Late old-
+generation producers cannot republish even for identical names/engine words.
+
+Owner accounting is releasable only after retirement and all references are
+acknowledged. This is host bookkeeping only, never native free/detach authority.
+A lost acknowledgement deliberately keeps the head and owner blocked, without
+timeout takeover. Pending/cancelled entries and registered owners are bounded;
+capacity rejection does not evict work or consume a ticket. Owner and entry
+IDs share one persistent monotonic bounded counter, never reset/reused. Close,
+uncertainty and exhaustion withdraw new work permanently but permit old exact
+claims to acknowledge cancellation/cleanup. Every native lifetime, payload,
+currentness, freshness and UI proof flag in returned snapshots stays false.
+
+The new source contracts pin a local13C ->148 order for the known purge;
+no reverse nested edge is found in the four classified148 bodies. Controller
+teardown completes148 destruction before acquiring13C; an existing13C-held
+459840 source call is documented without assuming arbitrary callback safety.
+Actual4395A0 frees name/engine queue/engine/entry without the paint-purge148
+protocol. Its56 encoded callers include50294C beyond the55 paired439780
+purge callers. Therefore a later registry lock cannot itself retain an engine
+already freed before selection. Detach/geometry change and destruction of
+controller mutex objects are separate lifecycle obligations.
+
+All95 new focused checks pass (1.128 s):47 basic,30 adversarial and18 pinned
+source/lifecycle checks. All1,296 bounded four-event model sequences, six
+purge/ack/close permutations, eight simultaneous host claimants, repeated
+host purge/ack and close/ack races, and an Event-held cancelled claim pass.
+Python-lock results are explicitly not native thread/lifetime evidence.
+Independent reviews found no actionable issue. The existing coordinator,
+raw decoders, firmware builders and LALI/BIRTH input bindings are not altered.
+See the [host protocol and integration report](folderfollow-reveal-paint-queue.md).
+
+Full repository regression: **1,990 tests pass, no skips** (321.386 s).
+All225 Python scripts compile; tracked/new text files pass whitespace checks.
+Saved action-link, LPDI and renderer images are exactly reverified against the
+pinned source with unchanged d4306357..., a9a6f02f... and f42fac46... hashes.
+No existing launcher/test timer, assertion or refusal was changed or weakened.
+No device/network operation, new image, commit or push; these changes remain
+local/uncommitted, scrolling disabled and hardware UNTESTED.
+
+### Offline MIPS publication/claim/ack handoff (2026-10-23)
+
+Added standalone `reveal_paint_handoff_mips.py`, not a firmware stage or an
+owner-lifetime adapter. Its five entries publish, claim, complete, cancel and
+close using actual controller148 callbacks and native segmented-list methods.
+A distinct40-byte record preserves the existing36-byte body/LALI and adds a
+non-reused nonce at0x24. Publication checks a separate logical pending limit;
+the original64 initial-capacity request rounds to70 and is not a hard cap.
+
+Claim copies36 bytes under148 and retains the head. Its private buffer is
+valid until exact completion, not forever. Acknowledgement checks the active
+nonce and bound list before header reads, reselects under148 and removes only
+the matching head. Stock current-index removal shifting B onto A's old address
+does not let A's late ack delete B. Cancel/close keep active accounting until
+ack and do not free objects or remove the unclaimed tail. Private numeric
+nonces are cooperative IDs, not host identity capabilities or native leases.
+
+Review found that native grow failure455A08 can null the block table even
+when count stays unchanged. Any raw append failure is now terminal, burns its
+nonce and cannot be retried as though nothing changed. Header/storage guards
+refuse cleanup from the lost-table state before native get; an old exact ack
+is admitted only if old storage remains valid. Mutex acquisition failure does
+not read state/list or unlock. Unlock failure denies success and publishes a
+monotonic terminal fault without inventing rollback or known lock ownership.
+
+All63 focused checks pass (4.943 s):25 basic instruction/ABI,21 adversarial and
+17 pinned-source contracts. Actual original list/mutex callback bodies execute
+with explicit bounded service substitutions. Tests include >70-slot growth,
+two genuine allocation failures, a held claim after table loss, stale/wrong
+ack, equal-address head replacement, malformed storage, no raw-engine/geometry
+dereference, and twelve60-event oracle sequences. Independent final reviews
+found no remaining actionable issue. Source/input coherence, controller/list/
+mutex lifetime, complete stock purge/removal participation and retirement
+continuations remain required. No existing LALI/BIRTH equality is relaxed.
+See the [offline handoff and remaining integration report](folderfollow-reveal-paint-handoff.md).
+
+Full repository regression: **2,053 tests pass, no skips** (321.134 s).
+All229 Python scripts compile; tracked/new text files pass whitespace checks.
+The standalone helper is4,640 code bytes,64 private state bytes and a128-byte
+frame excluding native/service frames and list storage. Saved action-link,
+LPDI and renderer images are exactly reverified with unchanged d4306357...,
+a9a6f02f... and f42fac46... hashes. No existing launcher/test timer, assertion
+or refusal was changed or weakened. No builder/image/installer/native runtime
+integration, device/network action, commit or push. Changes remain local/
+uncommitted; active scrolling disabled and hardware UNTESTED.

@@ -37,7 +37,7 @@ AUTHORITY_FLAGS = birth_decoder.AUTHORITY_FLAGS
 LIMITATIONS = (
     'Only explicit nonreused private IDs link SOURCE, DELIVERY, EXPLORER, PAINT, PAINT_DELIVERY and the actual LQBR BIRTH.',
     'Addresses verify inherited scalars only; address reuse, equal counters, current controller and LPDI dispatch intent never select a parent.',
-    'The native paint-list getter releases its bracket before subsequent native payload use; this ancestry does not establish a record lease or coherent payload.',
+    'The native paint-list getter releases its bracket before subsequent native payload use. Four rectangle words are loaded separately after BIRTH, so a historical link can coexist with changed or torn geometry. Later removal targets current index zero, not the selected receipt. A known purge path uses a different controller mutex, so the paint bracket alone is not established as universal exclusion; this ancestry establishes neither a record lease, coherent payload nor selected-entry removal ownership.',
     'The observed general action1 source is not a coherent media identity, a proof of playback success, or universal Next/autoplay coverage.',
     'Missing, unclassified, coalesced, removed, exhausted and failed paths remain unknown; no journal occupancy establishes complete coverage.',
     'Historical source-to-BIRTH observation does not establish freshness, current contents, current UI ownership or autoscroll authority.',

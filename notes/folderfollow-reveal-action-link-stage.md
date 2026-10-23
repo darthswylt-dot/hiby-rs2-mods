@@ -184,3 +184,8 @@ coherent playback/row publication. Complete invalidation/cancellation coverage,
 native retained ownership and an admitted UI transaction are still required
 before enabling automatic folder-follow or scrolling. No deployment or
 physical-test instruction is introduced by this stage.
+
+The following [paint-payload and removal audit](folderfollow-reveal-paint-payload-boundary.md)
+executes the remaining post-BIRTH four-word copy and a known purge outside
+the paint mutex protocol. It separates stable bytes, exact selected-entry
+removal and object lifetime without changing this diagnostic image or format.

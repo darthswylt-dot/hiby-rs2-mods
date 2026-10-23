@@ -90,7 +90,7 @@ def decode(data, *, capacity=1024, row_capacity=1024, operation_capacity=1024,
                   historical_notification_birth_associated=bool(notification_births),
                   historical_notification_renderer_associated=bool(notification_renderers))
     result['limitations'].append(
-        'A historical general action1 notification reaches an actual queued BIRTH and captured renderer/row ancestry only through explicit private IDs. The native paint-list borrow is not retained across later use; this adds no payload coherence, playback identity, currentness, complete coverage or UI authority. Independent LPDI CALL_INTENT observations remain unjoined.')
+        'A historical general action1 notification reaches an actual queued BIRTH and captured renderer/row ancestry only through explicit private IDs. The native paint-list borrow is not retained across later use; separately loaded rectangle words may change or tear after BIRTH, and later removal still targets current index zero rather than the selected receipt. A known purge path uses another controller mutex, so the paint bracket alone is not established as universal exclusion. This adds no payload coherence, selected-entry removal ownership, playback identity, currentness, complete coverage or UI authority. Independent LPDI CALL_INTENT observations remain unjoined.')
     result.update({flag: False for flag in action_link.AUTHORITY_FLAGS})
     return result
 
