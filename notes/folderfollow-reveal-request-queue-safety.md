@@ -160,3 +160,20 @@ approved implementation**. A future design would need, at minimum:
 These are necessary checks, not a claim that they suffice. The current safe
 outcome is to record the missing queued-cause identity and keep active reveal
 and scrolling disabled.
+
+## Separate explicit node-transport successor (2026-10-22)
+
+The subsequent [offline transport stage](folderfollow-reveal-queue-transport-stage.md)
+does not extend the rectangle described in the rejected unconditional design.
+It widens every generic `8B3CC0` node from 16 to 20 bytes, initializes its new
+word before publication and admits only explicit private producer ancestry.
+The inspected C+34 consumer reads that node word once under a bounded native
+constructor/type/live-borrow premise. A fresh invocation receipt then reaches
+the native paint callback entry, not outer/child rendering or row receipts.
+
+This is a real allocation-pressure change for six list uses, with no claim of
+identical allocation outcomes, universal alias coverage or native lifetime
+lease. Full/synthetic/unknown routes stay unbound. The original queue metadata,
+rectangles, call/delay/RA and cleanup are unchanged. These source guards do not
+waive any request freshness, retained-owner, coherent-capture or UI-action gate
+above. The separate candidate is local, offline and hardware UNTESTED.

@@ -1953,3 +1953,282 @@ Latest full regression: 1,264 tests pass, no skips; all 171 Python scripts
 compile. Firmware intermediates, raw snapshots, logs and temporary fixtures
 remain excluded. Queue-consumer identity transport and active autoscroll are
 not implemented by this checkpoint. No player operation or deployment.
+
+### Explicit queue birth to native callback transport (2026-10-22)
+
+A separate local diagnostic successor now transports an exact private birth
+through widened generic node+10, queue BORROW, helper SP+14 and native paint
+callback entry SP+14. Fresh invocation IDs preserve split/reentrant ancestry;
+addresses never serve as registry/join keys. Full/synthetic/unknown routes
+stay zero, and original rectangles, metadata, call/delay/RA and cleanup remain
+unchanged. The node allocation grows 16 -> 20 for all six inspected list uses:
+this changes memory pressure and possible allocation outcomes. It is not a
+passive private-only extension or an approved device candidate.
+
+130 new focused checks pass, including exact ABI/failure routes, original a3
+forwarding, address-reuse/ABA histories, callback splits, full-tail queued loop,
+consumer-before-RETURN causality, fault/exhaustion and strict combined decoding.
+The callback entry executes in the instruction harness, but its remaining
+lookup/widget body and selected native helpers are explicitly mocked. No
+callback-to-outer/renderer/row association or native live-borrow lease is proved.
+Original UI/playback cause, complete writer coverage, coherent capture,
+retained owner and active scrolling remain unimplemented gates.
+
+Saved and deterministically verified ignored local intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_queue_transport_stage_v1_20261022.bin`,
+7,162,704 bytes, SHA-256
+`754ea4f3b1a6351b4409f1229a84ac380d18365fa32ce91062489b08b2bedba6`.
+901232 private BSS bytes, 19280 separate RX bytes, 33 hook pairs and 242
+changed original bytes; no new external native call/RWX. Previous default
+images remain byte-identical. Changes are local/uncommitted; hardware UNTESTED.
+No device access, installation, launch, rearm, signal or reboot. See the
+[stage report](folderfollow-reveal-queue-transport-stage.md) and
+[source/frame premise](folderfollow-reveal-queue-transport-boundary.md).
+
+Full repository regression: **1,394 tests pass, no skips** (212.286 s), including
+the 130 new checks. All 181 Python scripts compile; tracked/new text files pass
+whitespace checks. Independent source/ABI and decoder reviews found no
+actionable issue. Previous default images retain their pinned hashes, and
+the new saved default image is exactly verified. No device/network operation,
+commit or push was performed.
+
+### Explicit queued birth to renderer/root/row identity (2026-10-22)
+
+Added two source observers at outer `438248` and renderer `49076C`, preserving
+the original `439F90`, `438740`, `490764` calls/delays/return PCs and the existing
+root observer `490758`. New LQRD OUTER binds an exact earlier CALLBACK; RENDER
+binds OUTER and the actual existing LNRG root from native R+14. Occupied R+10
+entry revision and R+14 root ID are never overwritten. A separate decoded
+mapping associates captured row/producer/window/operation IDs only via exact
+lineage origin IDs. Native addresses/names cannot repair missing ancestry.
+
+Duplicate root IDs are refused; separate callbacks with identical native
+addresses still yield distinct roots, and only the correct root receives
+its captured rows. Missing/duplicate/wrong RETURN remains incomplete. All old
+frontier/scope/window refusals and all currentness/ownership/UI false flags
+remain in force. Original UI/playback cause, native lease, coherent handoff,
+complete writer/cancellation coverage and active reveal are still unproved.
+
+The instruction fixture executes actual callback, outer/child call boundaries,
+child entry/list/getter/root/strcpy/new observer and native epilogues. Resource
+lookups, outer geometry/cache middle and renderer job/SQL suffix remain
+explicit fixtures, not a complete UI run. No device action occurred.
+
+Saved and deterministically verified ignored local intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_renderer_transport_stage_v1_20261022.bin`,
+7,166,664 bytes, SHA-256
+`f42fac46890dc2eadbeba88f90ce5b82857d3045752b974b15d04bef263d2244`.
+999552 private BSS bytes, 23240 separate RX bytes, 35 hook pairs and 259 changed
+original bytes. No RWX/new native call. The prior generic-node 20-byte extension
+is inherited unchanged; no further native allocation extension was added.
+Changes remain local/uncommitted, hardware UNTESTED, scrolling disabled. See
+[stage report](folderfollow-reveal-renderer-transport-stage.md) and
+[source/frame contract](folderfollow-reveal-renderer-transport-boundary.md).
+
+Full repository regression: **1,506 tests pass, no skips** (244.049 s), including
+112 new renderer-association checks. All 191 Python scripts compile; tracked
+and new text files pass whitespace checks. Independent reviews found no
+actionable source/ABI/core/decoder issue. Previous default hashes remain intact,
+the saved new default image is exactly verified, and firmware artifacts remain
+ignored. No test or existing refusal was weakened. No player/network operation,
+commit or push was performed.
+
+### Host-only negative request-age assessment (2026-10-22)
+
+Added `decode_reveal_request_age.py`, a strict raw-snapshot decoder annotation,
+not a firmware/runtime/coordinator change. The existing renderer snapshot format
+and every prior receipt/window/operation/flag/reason remain unchanged. New
+`request_age_assessment` follows explicit canonical IDs, locates known global
+revision/scope interference before OUTER, extra increments beyond the one own
+renderer entry, and additional early-renderer increments. It never joins native
+addresses or trusts mutable timing summaries.
+
+Unknown entry zero and source-inconsistent positive marks cannot date an
+interval; saturation is not masked/wrapped. Scope-issued and REV are sampled
+separately and need not advance together. RETURN is a separate potentially
+later branch; final worker/postfill/bind +3 and unrelated later increments are
+not pre-render age evidence. A legitimate new request behind another paint can
+be conservatively refused by the global counter; that is not proof of changed
+contents for its specific owner. No-conflict cases remain unproven, never fresh.
+All assessment objects say deny; all UI/currentness/ownership flags stay false.
+
+59 new focused checks pass (1.335 s): 21 native integration/public API cases,
+28 adversarial cases and 10 source/emission contracts. All 195 Python scripts
+compile. No new builder, source hook, BSS field, allocation, firmware artifact,
+capture policy, player operation or UI action. Existing saved firmware hashes
+remain unchanged. Changes remain local/uncommitted. See the
+[assessment report](folderfollow-reveal-request-age.md) and
+[source/causality boundary](folderfollow-reveal-request-age-boundary.md).
+
+Full repository regression: **1,565 tests pass, no skips** (244.464 s), including
+59 new host-age checks. All 195 Python scripts compile; tracked/new text files
+pass whitespace checks. The saved renderer-stage image remains exactly
+verified with its unchanged `f42fac...` hash. No new firmware artifact, native
+behavior change, player operation, commit or push. The new diagnostics always
+deny action and do not waive any previous native/currentness/UI gate.
+
+### Playback-cause staging and ambiguity contracts (2026-10-22)
+
+Added 38 offline checks: 16 pinned original-source contracts, 12 actual
+original-instruction staged-selection/player-queue fixtures, and 10 explicitly
+unlinked host-model causality counterexamples. The source shows two channels:
+event9 carries only [9,0], while the selected A90-byte record travels through
+B+BB0. The worker selects count-1, copies A88 plus a separate transition,
+unlocks and later clears the entire staged list under a new mutex bracket.
+The native fixtures reproduce selection of B from queued A/B and discard of C
+appended between those brackets, without changing original firmware bytes.
+
+The final general callee is explicitly opaque in that fixture. Actual CC60
+also flushes the player event queue at42CD6C; repeat-empty deliveries are
+conditional on the fixture substitute retaining messages, not whole-player
+predictions. Producer record+A8C is not a proved spare field; enlarging the
+worker A88 copy would overwrite its live SP+AA0/AA4 event words. Neither a
+FIFO event assumption nor later element address/count can identify a selected
+record's original cause. BA0 and a universal playback-to-Files route remain
+unresolved; player event11 is not UI event140.
+
+Different modeled immutable playback parents produce identical later owned
+host publications and identical independently injected renderer snapshots/age
+reports. The source-shaped UI message is NOT delivered or claimed to be a
+native playback notification. The report adds one explanatory limitation:
+coverage of every playback publication by these UI clocks is not proved;
+matching intervals do not recover original cause. Algorithm/format/refusal
+gates are unchanged; all five authority flags remain false and decisions deny.
+
+All 38 focused checks pass (1.534 s). All 198 Python scripts compile;
+tracked/new text files pass whitespace checks. Independent source/ABI/model
+reviews found no remaining actionable issue. Existing saved renderer image
+is exactly verified with unchanged f42fac... SHA-256; no new artifact, hook,
+allocation, BSS layout, player access, UI action, network, commit or push.
+Changes remain local/uncommitted, hardware UNTESTED and scrolling disabled.
+See the [source/causality boundary](folderfollow-reveal-playback-cause-boundary.md).
+
+Full repository regression: **1,603 tests pass, no skips** (249.450 s),
+including all 38 new checks. All 198 Python scripts compile; tracked and new
+text files pass whitespace checks. The unchanged saved renderer-stage image
+remains exactly verified, SHA-256
+`f42fac46890dc2eadbeba88f90ce5b82857d3045752b974b15d04bef263d2244`.
+No firmware behavior, artifact, test/refusal gate or device state was changed;
+no commit/push/network operation was performed.
+
+### Passive optional-playback dispatch intent (2026-10-23)
+
+Added a separate offline builder/core/strict decoder and combined renderer
+decoder for two exact BA0 JALR sites,42CC0C and42D6A0. Original target/context
+loads and nonnull branches stay intact. Each wrapper replays the native delay,
+sets the original RA=site+8, privately records register-derived scalars, restores
+all volatile/HI/LO/SP and JR-t9 dispatches. The original callback returns directly
+to its original continuation. Capture failure/full/fault never vetoes dispatch.
+No native payload read, current-clock stamp, frame carrier, target dereference
+or retained observer frame across the callback was introduced.
+
+LPDI records are CALL_INTENT only, not callback entry/return, completed playback
+publication, coherent identity or a parent for paint. They have an independent
+nonreused ID namespace and no ancestry into BIRTH/renderer/rows. Strict combined
+decoding preserves the earlier age/window/operation evidence and refusals; all
+five authority flags stay false. Empty/partial/full history never proves coverage.
+
+Source tracing now distinguishes fast event11 -> actions0/5 (ignored by explorer
+490980) from GENERAL's separate action1 at42D614 -> explorer ->43C860/439900
+paint-request list. General action1 PRECEDES BA0; the new later LPDI record cannot
+become its parent by matching addresses, current state or reservation order.
+Action record ownership, selected delivery, fanout/name resolution and explicit
+notification-to-paint transport remain required. BA0 registration is unresolved.
+
+All 101 focused checks pass (13.707 s):19 core,30 standalone decode,20 combined
+decode,16 source and16 native-boundary/stage checks. Independent source/builder/
+ABI and decoder/fixture reviews found no actionable issue. The original JALR
+target-entry state is compared across every GPR and HI/LO; actual callback bodies,
+hardware instruction modes, scheduler and native lifetime are not proved.
+All 208 Python scripts compile; tracked/new text files pass whitespace checks.
+
+Saved and exactly verified ignored local intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_playback_dispatch_stage_v1_20261023.bin`,
+7,167,956 bytes, SHA-256
+`a9a6f02fd48a3b57e27e3bb19c9e8c2b8329b6602cc12988091dfbb98c2abe2c`.
+1,065,104 private BSS bytes (LPDI adds65,552),24,532 separate RX bytes,37hook
+pairs and275 changed normalized-original bytes. Two narrowly declared JR-t9
+tails; prior external-call/append/continuation inventories remain unchanged.
+Peak additional recording stack240bytes is released before callback entry.
+The prior16->20generic-node extension is inherited; no further native allocation
+extension or RWX mapping. Earlier renderer image remains exactly verified with
+its unchanged f42fac... hash. Previous builder defaults remain byte-identical.
+
+No installer/export policy, device/network access, launch/signal/reboot/rearm,
+UI action, commit or push. Changes are local/uncommitted, hardware UNTESTED,
+active reveal/scrolling disabled. See the
+[stage/source/verification report](folderfollow-reveal-playback-dispatch-stage.md).
+
+Full repository regression: **1,704 tests pass, no skips** (290.486 s).
+The first completed run had one failure in the unchanged legacy launcher
+normal-exit/no-delayed-signal fixture (1,704 tests,305.411 s); that fixture uses
+a25-ms mocked sleep. Its24 isolated checks passed (18.461 s), then the full
+suite passed without parallel test load. No launcher, timer, assertion or
+existing refusal was changed. All208 Python scripts compile; tracked/new text
+files pass whitespace checks. Both saved artifact hashes are exactly verified,
+with no installation/device/network action, commit or push.
+
+### Explicit GENERAL notification through two queues to BIRTH (2026-10-23)
+
+Added a separate passive offline stage carrying fresh nonreused SOURCE IDs
+from GENERAL's actual action1 call42D614 through the action worker, exact
+explorer callback, paint producer and selected paint-list delivery to the
+actual existing LQBR BIRTH. The new combined raw-snapshot decoder then joins
+existing renderer/root/row lineage only by that explicit BIRTH foreign key.
+The later optional BA0/LPDI CALL_INTENT journal remains independent; equal
+addresses, frames, payloads or local counters cannot select a parent.
+
+Action element width16->20 and paint width32->36 each add one initialized ID
+word; capacity requests and original native calls/delays/RAs remain unchanged.
+Native dynamic-stride append/index/remove moves the whole record. Unknown
+producers and every selected iteration clear/replace their carriers; exact
+source/native-return gates precede any caller-frame read. The selected paint
+tail is read once BEFORE the native getter unlock, then a fresh delivery ID
+is frozen in the exact consumer frame. No post-unlock tail reread/address
+registry is introduced. The old BIRTH recorder is invoked once, and its actual
+result/state and native BIRTH carrier are preserved by the private link helper.
+
+The six-kind96-byte LALI journal validates whole bounded ancestry and actual
+private LQBR BIRTH bindings. Allocation/publication are bounded, magic-last,
+nonwrapping and terminal on diagnostic loss. Overflowing frame/record extents
+are refused in both emitted capture and ancestor validation, matching strict
+host decoding. Same-address/same-fields ABA still cannot prove post-unlock
+native payload coherence or lifetime. Native borrowed-body loads are unchanged;
+all existing authority/lifetime/currentness flags stay false and decisions deny.
+
+All146 focused checks pass (28.566 s):27 core,45 standalone decode,23 combined
+decode,22 pinned source,21 native-path integration and8 build/verifier checks.
+The native fixture executes actual constructors, both segmented FIFOs, worker,
+fanout, explorer, paint getter/consumer and redraw/BIRTH path. Its full combined
+snapshot associates SOURCE1 -> BIRTH1 -> renderer2 -> lineage1 -> producer4/
+row-event1, while preserving old renderer/row structures and known-boundary
+refusals. Identical queued payloads survive both FIFO head-address reuse with
+distinct IDs. Under-lock tail capture, unknown routes, foreign callers, zero
+parents, native allocation failure, engine/metadata change after unlock,
+full/fault/failed-SC native liveness and GPR/HI/LO/nativeRA ABI are covered.
+Registry/name resolution, scheduler, mutex services and existing renderer/SQL
+jobs remain bounded fixtures, not whole-player concurrency or hardware proof.
+Independent reviews found no remaining actionable issue.
+
+Full repository regression: **1,850 tests pass, no skips** (297.274 s).
+All219 Python scripts compile; tracked/new text files pass whitespace checks.
+No legacy launcher/test timer, existing assertion or refusal was changed.
+
+Saved and exactly verified ignored local intermediate:
+`artifacts/hiby_player_1.4_sortfix_fullnav_wake_action_link_stage_v1_20261023.bin`,
+7,176,916 bytes, SHA-256
+`d4306357ec6b70153b15e98202dad1a7ad0615d02ea6bd9e0d53857844ab37a8`.
+1,163,424 private BSS bytes (LALI adds98,320),33,492 separate RX bytes,42hook
+pairs and310 changed normalized-original bytes. No RWX segment. The new private
+frame chain is at most464 bytes, or624 including the inherited BIRTH observer
+frame, excluding native/renderer/exception frames. The two native element
+extensions and extra capture time remain real allocation/stack/timing risks.
+Previous saved LPDI and renderer images are exactly reverified with unchanged
+a9a6f02f... and f42fac46... hashes; prior builder defaults remain byte-identical.
+
+No installer/runtime export policy, device/network access, launch/rearm/signal/
+reboot, UI action, commit or push. Changes remain local/uncommitted, hardware
+UNTESTED, active reveal/scrolling disabled. This closes the audited GENERAL
+invocation-ID gap, not coherent playback publication, universal Next/autoplay
+coverage, native retained ownership or an admitted UI transaction. See the
+[source/stage/verification report](folderfollow-reveal-action-link-stage.md).

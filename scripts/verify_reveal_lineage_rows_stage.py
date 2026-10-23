@@ -13,7 +13,9 @@ def verify(source, candidate, *, capacity=1024, row_capacity=1024):
 
 
 def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024,
-                 operation_capacity=None, scope_capacity=None, birth_capacity=None):
+                 operation_capacity=None, scope_capacity=None, birth_capacity=None,
+                 transport_capacity=None, renderer_capacity=None, playback_dispatch_capacity=None,
+                 action_link_capacity=None):
     """Shared structural inventory, still bound to an exact deterministic build."""
     golden, _ = stage.normalize_source(source)
     build_options = dict(capacity=capacity, row_capacity=row_capacity)
@@ -23,6 +25,14 @@ def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024,
         build_options['scope_capacity'] = scope_capacity
     if birth_capacity is not None:
         build_options['birth_capacity'] = birth_capacity
+    if transport_capacity is not None:
+        build_options['transport_capacity'] = transport_capacity
+    if renderer_capacity is not None:
+        build_options['renderer_capacity'] = renderer_capacity
+    if playback_dispatch_capacity is not None:
+        build_options['playback_dispatch_capacity'] = playback_dispatch_capacity
+    if action_link_capacity is not None:
+        build_options['action_link_capacity'] = action_link_capacity
     expected, meta = stage.build(source, **build_options)
     if candidate != expected:
         raise ValueError('candidate differs from deterministic lineage/rows build')
@@ -58,8 +68,28 @@ def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024,
             raise ValueError('native scope memory extent')
     if 'birth_buffer' in meta:
         if (meta['birth_memory_bytes'] != 16 + 64 * meta['birth_capacity']
-                or meta['birth_buffer'] + meta['birth_memory_bytes'] != memory_end):
+                or meta['birth_buffer'] + meta['birth_memory_bytes']
+                != meta.get('transport_buffer', memory_end)):
             raise ValueError('queue birth memory extent')
+    if 'transport_buffer' in meta:
+        if (meta['transport_memory_bytes'] != 16 + 64 * meta['transport_capacity']
+                or meta['transport_buffer'] + meta['transport_memory_bytes']
+                != meta.get('renderer_transport_buffer', memory_end)):
+            raise ValueError('queue transport memory extent')
+    if 'renderer_transport_buffer' in meta:
+        if (meta['renderer_transport_memory_bytes'] != 16 + 96 * meta['renderer_capacity']
+                or meta['renderer_transport_buffer'] + meta['renderer_transport_memory_bytes']
+                != meta.get('playback_dispatch_buffer', memory_end)):
+            raise ValueError('renderer transport memory extent')
+    if 'playback_dispatch_buffer' in meta:
+        if (meta['playback_dispatch_memory_bytes'] != 16 + 64 * meta['playback_dispatch_capacity']
+                or meta['playback_dispatch_buffer'] + meta['playback_dispatch_memory_bytes']
+                != meta.get('action_link_buffer', memory_end)):
+            raise ValueError('playback dispatch memory extent')
+    if 'action_link_buffer' in meta:
+        if (meta['action_link_memory_bytes'] != 16 + 96 * meta['action_link_capacity']
+                or meta['action_link_buffer'] + meta['action_link_memory_bytes'] != memory_end):
+            raise ValueError('action link memory extent')
     if 'contents_revision_buffer' in meta:
         if (meta['contents_revision_buffer'] != journal_end
                 or meta['contents_revision_bytes'] != 16
@@ -93,7 +123,9 @@ def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024,
 
     start, end = meta['code_base'], meta['code_base'] + meta['code_bytes']
     words = struct.unpack_from('<%dI' % (meta['code_bytes'] // 4), candidate, meta['code_offset'])
-    calls, tails, indirect = [], [], []
+    calls, tails, indirect, dispatch_tails = [], [], [], []
+    expected_dispatch_tails = {meta['labels'][name]
+                              for name in getattr(stage, 'INDIRECT_TAIL_LABELS', ())}
     for index, word in enumerate(words):
         pc, op = start + index * 4, word >> 26
         rs, imm = (word >> 21) & 31, word & 0xFFFF
@@ -118,7 +150,9 @@ def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024,
                 raise ValueError('unexpected indirect delay')
             if word & 63 == 8:
                 if word != 0x03E00008:
-                    raise ValueError('unexpected indirect return')
+                    if word != 0x03200008 or pc not in expected_dispatch_tails:
+                        raise ValueError('unexpected indirect return')
+                    dispatch_tails.append(pc)
             else:
                 if word != 0x0320F809 or pc != meta['labels']['row'] + 8:
                     raise ValueError('unexpected indirect append call')
@@ -126,12 +160,16 @@ def verify_stage(source, candidate, stage, *, capacity=1024, row_capacity=1024,
     expected_tails = getattr(stage, 'NATIVE_TAILS',
                              [pc + 8 for name, (pc, _) in stage.HOOKS.items() if name not in stage.LINKED])
     if (sorted(calls) != [0x5C31C0, 0x6F7CA0] or sorted(tails) != sorted(expected_tails)
-            or len(indirect) != 1):
+            or len(indirect) != 1 or set(dispatch_tails) != expected_dispatch_tails
+            or len(dispatch_tails) != len(expected_dispatch_tails)):
         raise ValueError('external control-flow inventory changed')
-    return dict(meta, sha256=hashlib.sha256(candidate).hexdigest(),
+    result = dict(meta, sha256=hashlib.sha256(candidate).hexdigest(),
                 changed_original_bytes=len(changes), external_calls=calls,
                 indirect_append_calls=indirect,
                 verification='offline raw row journal; no ready rows/native ownership; hardware UNTESTED')
+    if expected_dispatch_tails:
+        result['indirect_dispatch_tails'] = dispatch_tails
+    return result
 
 
 def main():

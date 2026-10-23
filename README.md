@@ -29,6 +29,35 @@ also groups the synchronous same-file block, separately from fallback paths.
 Live playback coherence, complete invalidation and retained UI ownership are
 still required before an active firmware candidate can be produced.
 
+A later [offline queue-identity diagnostic](notes/folderfollow-reveal-queue-transport-stage.md)
+now carries an explicit request-birth ID to the native paint callback entry,
+not yet to renderer rows. Its separate image widens generic nodes from 16 to
+20 bytes, changing memory pressure; it remains hardware UNTESTED and refuses
+active reveal. Prior build defaults are unchanged.
+Its [renderer successor](notes/folderfollow-reveal-renderer-transport-stage.md)
+now associates that exact ID with an existing renderer root and captured row
+events through private lineage IDs. This is historical diagnostic evidence,
+not current contents or scrolling authority; it is still local and hardware
+UNTESTED.
+The [host-only request-age report](notes/folderfollow-reveal-request-age.md)
+now explains known boundary conflicts without changing firmware. No-conflict
+histories remain unproven; this report never authorizes scrolling.
+The [playback-to-paint cause boundary](notes/folderfollow-reveal-playback-cause-boundary.md)
+now distinguishes queued player events from separately staged selected media.
+Local counterexamples show why event order or a later playback ticket cannot
+recover a missing original cause; that host-only step changes no firmware.
+The separate [passive playback-dispatch stage](notes/folderfollow-reveal-playback-dispatch-stage.md)
+now records the actual optional callback target as dispatch intent only.
+The general action1 paint route is distinct and occurs earlier; no causal ID
+is inferred from the new journal. This local image is hardware UNTESTED and
+still cannot scroll or authorize a UI action.
+Its [explicit notification-link successor](notes/folderfollow-reveal-action-link-stage.md)
+now carries GENERAL action1's original ID through both native queues to the
+actual paint BIRTH, then joins existing renderer/row ancestry by explicit IDs.
+This is historical invocation evidence, not coherent/current playback or a
+retained native record. The separate image widens action and paint elements
+to20/36 bytes; it remains offline, hardware UNTESTED and cannot scroll.
+
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered
 firmware addresses,
