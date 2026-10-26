@@ -26,6 +26,11 @@ return (0,status); the caller MUST quarantine the instance externally. An
 uncertain unlock does not permit further shared-state writes or an internal
 fault-latch promise. The unchanged default is only the prior facade fixture,
 not evidence that native raw mutex failures are handled.
+
+Optional expected_mutex_address pins that captured object in checked mode.
+A mismatched controller field denies before acquisition. The pin is a scalar
+binding, not evidence of initialized/retained mutex storage or safe lock order.
+Omitting the pin preserves both earlier instruction variants byte for byte.
 """
 
 from build_reveal_bridge_diag import Asm, b
@@ -54,13 +59,22 @@ def memory_bytes(owner_capacity=16):
 
 
 def assemble(state_address, controller_address, code_base, *, capacity=64,
-             owner_capacity=16, ticket_limit=MAX_TICKET, checked_mutex=False):
+             owner_capacity=16, ticket_limit=MAX_TICKET, checked_mutex=False,
+             expected_mutex_address=None):
     """Emit a standalone prototype; zero state initially and never reset/reuse it."""
     state_bytes = memory_bytes(owner_capacity)
     if type(checked_mutex) is not bool:
         raise ValueError('checked_mutex must be a bool')
     if checked_mutex and (type(code_base) is not int or code_base >> 28):
         raise ValueError('checked raw mutex calls must share the native jump region')
+    if expected_mutex_address is not None:
+        if not checked_mutex:
+            raise ValueError('a pinned mutex requires checked mode')
+        if (type(expected_mutex_address) is not int
+                or not 0 < expected_mutex_address <= 0xFFFFFFFC
+                or expected_mutex_address % 4
+                or expected_mutex_address + MUTEX_BYTES > 0x100000000):
+            raise ValueError('pinned mutex must have a nonwrapping aligned extent')
     for name, value in (('capacity', capacity), ('ticket_limit', ticket_limit)):
         if type(value) is not int or not 1 <= value <= MAX_TICKET:
             raise ValueError(name + ' must be a positive signed word')
@@ -73,6 +87,12 @@ def assemble(state_address, controller_address, code_base, *, capacity=64,
     if max(state_address, controller_address) < min(
             state_address + state_bytes, controller_address + CONTROLLER_BYTES):
         raise ValueError('private state and controller overlap')
+    if expected_mutex_address is not None:
+        for name, address, size in (('state', state_address, state_bytes),
+                                    ('controller', controller_address, CONTROLLER_BYTES)):
+            if max(expected_mutex_address, address) < min(
+                    expected_mutex_address + MUTEX_BYTES, address + size):
+                raise ValueError('pinned mutex overlaps ' + name)
     a = Asm(code_base)
 
     def equal(register, value, failed):
@@ -140,6 +160,8 @@ def assemble(state_address, controller_address, code_base, *, capacity=64,
             # not a proof of allocation lifetime, mutex initialization or a
             # complete native/service stack bound.
             a.e(b.lw(15, 0x148, 4))
+            if expected_mutex_address is not None:
+                equal(15, expected_mutex_address, 'early_denied')
             a.branch(4, 15, 0, 'early_denied')
             a.e(b.i_type(12, 15, 8, 3))
             a.branch(5, 8, 0, 'early_denied')
@@ -512,4 +534,8 @@ def assemble(state_address, controller_address, code_base, *, capacity=64,
                         (controller_address, CONTROLLER_BYTES)):
         if max(start, code_base) < min(start + size, end):
             raise ValueError('code overlaps private state/controller')
+    if expected_mutex_address is not None and max(
+            expected_mutex_address, code_base) < min(
+                expected_mutex_address + MUTEX_BYTES, end):
+        raise ValueError('code overlaps pinned mutex')
     return result, a.labels

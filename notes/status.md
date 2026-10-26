@@ -2500,3 +2500,206 @@ installation, device/network operation, commit or push. The subsequent user
 request authorizes publishing these text-only offline prototypes/tests/reports;
 no binaries, logs or installation steps are included. Active folder-follow/
 scrolling stays disabled and hardware UNTESTED.
+
+### Passive raw registry-lock/publication receipts (2026-10-26)
+
+Follow-up to committedf79ca66. A separate offline MIPS prototype observes
+the actual13C mutex argument before pthread_mutex_lock and its actual return
+before native466DA0 forces zero. Four local instruction-fetch overrides
+bracket native4389E0:438A00 begins fresh frame readiness and snapshots actual
+callbackT9/S0;466DA8 checks the raw argument and transitionsARMED->ENTERED;
+466DB0 captures rawV0 and transitionsENTERED->CAPTURED before replaying the
+forced zero;438A58 completes the native final link store FIRST and consumes
+the capture once before shared observation. Exact two-frame return PCs and
+pinned controller/mutex bindings constrain the bounded route.
+
+Only a captured zero permits journal reads/writes. Raw nonzero, missing or
+invalid capture never even inspects a corrupt journal or writes shared fault.
+The16-byte header and40-byte historical records store raw mutex, node/engine
+scalars, native frame/caller and publication site. Dense prefix/schema and an
+all-zero target prevent count rollback, skipped holes or dirty-slot reuse.
+Fault is terminal and can be set only under the current proven local guard;
+capacity saturation drops observation without changing native registration.
+The journal is not an owner ticket, native lease, release or cleanup receipt.
+
+Original registry/callback/wrapper instructions execute in the bounded
+fixture. Raw failures still produce the original unchecked native node writes;
+native allocation failure still bypasses unlock. The observer preserves these
+defects, not repairs them. Existing44/40-byte cores, builders, decoders, saved
+images and launcher/timers/assertions are unchanged. No owner generation is
+issued from this stage and no producer adopts a latest-by-raw-pointer owner.
+
+All four redirects are a coherent-fixture premise, not arbitrary partial-
+installation safety. The192-byte extra bridge frame applies even to unrelated
+calls of the global466DA0 wrapper; complete stack/timing coverage is unproved.
+Stable genuine ABI/callback/stack/controller/mutex fields, valid initialized
+ordinary13C guard, resolved imports, allocator guard discipline and retained
+native storage remain caller premises. Bounds/return PCs do not authenticate
+forged stacks or prove lifetime. Raw nonzero can still own a robust/unknown
+mutex; earlier publication does not certify later unlock. Actual admission,
+generation transport, cleanup continuations and native/UI authority stay gated.
+See [raw registry receipt and remaining integration limits](folderfollow-reveal-registry-receipt.md).
+
+Serial focused verification: **178 tests pass, no skips** (8.908 s), comprising
+54 new registry checks (19 instruction/native/ABI,25 adversarial,10 pinned
+source) and124 previous retirement/checked-paint-mutex checks. Tests preserve
+native results/links/allGPRs/HI/LO/rawserviceSP/RA/arguments, validate final link
+store before observation and magic before count publication, deny unverified
+shared access, and cover trueFFFFFFFF error, possibly-held nonzero acquire,
+raw unlock errors, stale/consumed/duplicate carriers, changed pre/post service
+context and malformed/rolled-back/partial journal state. An intentionally
+unsupported partial-redirect counterexample demonstrates why missing all three
+freshness/capture hooks is not protected by the publication observer alone.
+
+Independent source and implementation/fixture/adversarial/documentation reviews
+found no actionable issue within the explicit coherent-hook/guard/lifetime
+premises. Emission is2,196 code bytes,656 state bytes and192 bytes per bridge
+frame, excluding native/library costs. All240 Python scripts compile and
+changed/new text passes whitespace checks. No installable image, device,
+network, commit or push operation; changes remain local/uncommitted, active
+scrolling disabled and hardware UNTESTED.
+
+Fresh serial full regression: **2,231 tests pass, no skips** (278.390 s).
+All240 Python scripts compile; changed/new text passes whitespace checks.
+Saved action-link, playback-dispatch and renderer-transport images are exactly
+reverified against02fd with unchangedd4306357...,a9a6f02f...,f42fac46... hashes,
+capture-only/scrollingFalse/hardwareUNTESTED. Existing44/40-byte implementations,
+builders, decoders and launcher/timers/assertions remain unchanged fromf79ca66.
+No device/network operation, firmware installation, commit or push. Changes
+remain local/uncommitted; actual owner issuance and active scrolling stay gated.
+
+### Offline receipt-bound historical owner issuance (2026-10-26)
+
+An opt-in local composition now calls checked44-byte open_owner only after
+fresh raw13C=0, route checks and complete passive receipt journal validation,
+capacity and empty-target preflight. The callback receives an owned36-byte
+snapshot of this exact native invocation, not a latest journal row or lookup
+by engine/node/name. A separate48-byte immutable binding records the returned
+logical owner ticket and its receipt sequence. Equal native engine scalars
+produce distinct generations; no producer API or native generation carrier
+is installed. Both old native registration callers still ignore its status.
+
+New expected_mutex_address optionally pins the checked kernel's actual U+148
+snapshot before raw acquisition. Equal/overlapping13C/148 objects are rejected
+at composition, and a late actual-pointer mismatch denies before attempting
+self-lock. Both old kernel modes without the pin remain byte-identical:
+10,824/12,120 bytes; passive receiptdefaultNone also remains2,196 bytes with
+unchanged labels. The optional callback and checked pin are not enabled in any
+existing firmware builder. Composition checks complete cross-component RX/data/
+controller/mutex extents, not merely entrypoints.
+
+Binding schema/capacity/empty-slot checks precede owner allocation. Tickets and
+receipt sequences are strictly increasing, not necessarily dense. Old pointer-
+like fields are historical scalars, never followed. Raw148 errors suppress
+positive binding and save exact status/quarantine only in the13C-protected
+binding journal. An owner row may already have been minted on unlock error:
+no readback, rollback, retire/close, retry or guessed unlock follows. Quarantine
+stops this issuer only, not direct users of the44-byte API; full-instance
+external quarantine/cooperative user coverage remains an integration gate.
+Native13C release is still masked, so a binding is not a release/lifetime/free
+receipt. The passive receipt can succeed while owner issuance is denied.
+
+13C->148 is a new bounded lock edge, not universal deadlock freedom. Existing
+source evidence finds no inverse nested edge in four examined paint sections
+and shows sequential paint release before teardown registry acquisition.
+All four redirects and genuine retained stable ABI/fields/initialized distinct
+ordinary mutexes/imports remain premises. Shared-wrapper stack coverage is
+unproved; simultaneous helper frames add192+192+160=544 bytes before native/
+library costs. Native architecture/results are preserved in the fixture, not
+timing, blocking, scheduling or progress. No producer-generation transport,
+cleanup continuation, native lease or UI/currentness authority is enabled.
+See [historical owner issuance and integration limits](folderfollow-reveal-registry-owner.md).
+
+Serial focused verification: **232 tests pass, no skips** (13.573 s), including
+54 new checks (21 basic/ABI/config,27 adversarial,6 pinned-source/emitted-CFG)
+plus178 preceding receipt/retirement checks. Coverage includes raw errors and
+ambiguous ownership, surviving orphan owner effects, no post-error owner-state
+access, narrow quarantine with no reattempt, journal validation before minting,
+non-dense owner history, actual late mutex changes, immutable owned snapshots,
+full native and callback ABI, unchanged golden modes, code/data aliases and
+bounded call-graph/lock-order evidence. All245 Python scripts compile and
+changed/new text passes whitespace checks.
+
+Fresh serial full regression: **2,285 tests pass, no skips** (297.750 s).
+Independent source/adversarial and integration/ABI/extent/documentation reviews
+found no actionable issue within the stated premises. Composed code is16,216
+bytes (12,248 kernel+1,680 issuer+2,288 opt-in receipt); default private state
+is656 receipt+784 bindings+328 owner bytes. Saved action-link, playback-dispatch
+and renderer-transport images are exactly reverified against02fd with unchanged
+d4306357...,a9a6f02f...,f42fac46... hashes, scrollingFalse/hardwareUNTESTED.
+Existing firmware builders/decoders,40-byte core, launcher/timers/assertions
+are unchanged; the44-byte extension is explicit opt-in with old emissions
+preserved. No device/network operation, installation, commit or push; changes
+remain local/uncommitted, actual producer integration and active scrolling gated.
+
+### Offline explicit captured-carrier publication (2026-10-26)
+
+A separate MIPS entry accepts U, owned36 and the exact creation-captured
+(binding sequence, owner) pair. The instruction fixture retains that pair from
+actual issuer registers at binding_committed, not by later engine/node/name/
+latest-row lookup. Under pinned raw13C the adapter validates the complete
+historical binding schema and exact pair, then invokes the actual checked/
+pinned44-byte publish kernel under distinct148. It does not access owner state
+directly or open/remint a generation. Retired same-engine identities cannot
+adopt a replacement; an older live pair remains valid independently of later
+equal-engine registrations. Pair validation does not authenticate its capture:
+genuine creation-time retention and cooperative caller transport remain premises.
+
+The composed guard rejects source/frame aliases into full receipt/binding/owner
+state, controller, mutexes and native/generated RX before memory copy/frame
+save/raw calls. The full creation prefix and receipt extent are explicit
+descriptors; standalone omissions retain their nonaliasing caller premises.
+The payload is snapshotted before raw services. An occupied next unissued
+binding slot detects count rollback/dirty tails; full valid tables can still
+publish an existing live owner. Positive nonce plus append index1 is success,
+not raw failure. Zero/zero is ordinary denial without remint/retry/quarantine;
+inner zero/nonzero status latches exact binding quarantine while13C is held.
+That status may be raw148 or append failure, not necessarily pthread error.
+Raw13C release error may follow successful append, returns zero/status and
+performs no later shared access/write. Full-instance external isolation remains
+required; no rollback, repair, cleanup or guessed unlock is introduced.
+
+Pinned source contracts establish nine encoded native43C860 callers and the
+missing owner argument, unsafe in-place44-byte native frame extension, occupied
+engine/registry/callback layouts and constructor wrappers ignoring status.
+No native producer, callback, queue or object layout transports the pair yet.
+All such coverage, safe lifetime/free, checked cleanup and UI integration remain
+gated. The in-memory44-byte queue fixture is not an installable firmware.
+See [captured-carrier publication and native transport gaps](folderfollow-reveal-owner-carrier.md).
+
+Serial focused verification: **290 tests pass, no skips** (17.310 s):58 new
+checks (23 basic/ABI/extent,25 adversarial,10 pinned native-source contracts)
+plus232 preceding receipt/issuance/retirement/admission checks. All250 Python
+sources compile without file generation. Independent core/composition/source/
+fixture and documentation reviews found no remaining actionable issue within
+the stated caller premises; receipt-state aliases found in review were blocked
+explicitly and tested, including boundary and full-prefix overlaps.
+
+Default code is18,416 bytes (unchanged16,216 creation+2,200 adapter), SHA-256
+`b085c15d00bff87ebb8211a574b5921a12f20030de42e7c7e7bbe426dae74394`
+at the documented fixture addresses. Private state is unchanged at656 receipt+
+784 bindings+328 owners. The160-byte adapter nests the160-byte kernel plus
+native/library costs; aggregate stack and scheduling are not proven. No device/
+network action, firmware installation, commit or push; changes stay local,
+active scrolling disabled and hardware UNTESTED.
+
+Fresh serial full regression: **2,343 tests pass, no skips** (334.985 s).
+All250 Python sources compile;22 changed/new text paths pass whitespace checks.
+Saved action-link, playback-dispatch and renderer-transport images are exactly
+reverified against02fd with unchangedd4306357...,a9a6f02f...,f42fac46... hashes,
+respectively33,492/24,532/23,240 code bytes and310/275/259 changed original
+bytes. Each remains scrollingFalse/hardwareUNTESTED. Existing firmware builders/
+decoders,40-byte core and launcher/timers/assertions are unchanged fromf79ca66.
+No assertion or timer was weakened; no firmware image was built or modified.
+No device/network action, installation, commit or push; all changes remain local.
+
+### Text-only publication request (2026-10-26)
+
+The user subsequently explicitly requested commit and push of the verified
+offline receipt, historical owner issuance and captured-carrier publication
+work above. Independent scope/security review found exactly22 expected text
+files (7 Markdown+15 Python, including9 new test modules), no binaries, logs,
+keys, secrets or unrelated configuration. The preceding fresh2343-test serial
+regression and saved-image reverification remain the code verification record;
+only this publication annotation changed afterward. Publication does not enable
+native producer transport, cleanup, UI behavior or any player operation.

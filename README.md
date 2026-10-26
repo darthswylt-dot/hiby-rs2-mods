@@ -78,6 +78,16 @@ or scrolling authority; no firmware builder or player installation changes.
 An explicit [checked-mutex variant and admission audit](notes/folderfollow-reveal-paint-admission.md)
 now distinguish raw lock errors from the stock wrappers' forced-zero results.
 Creation/cleanup hooks remain gated; mutex-error recovery is a caller duty.
+A [passive registry-lock receipt prototype](notes/folderfollow-reveal-registry-receipt.md)
+now records raw acquisition before native status masking and links it to registry
+publication. It remains local-only and grants no owner-generation or cleanup authority.
+A separate [receipt-bound owner issuance prototype](notes/folderfollow-reveal-registry-owner.md)
+now records logical generations under checked distinct registry/paint guards.
+It is historical accounting only: no producer transport, native lease or installation.
+A separate [explicit captured-carrier publication adapter](notes/folderfollow-reveal-owner-carrier.md)
+now checks a creation-time pair before checked queue publication on the local
+instruction fixture. All nine native producer call paths remain unwired; no
+latest-by-pointer generation lookup, native lifetime or player installation.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered

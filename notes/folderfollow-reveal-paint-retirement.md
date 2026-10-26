@@ -142,3 +142,10 @@ installable image is produced. This verification preceded publication: no
 device/network operation, commit or push was part of it. The later user request
 authorizes committing/pushing these text-only prototypes and reports, not
 installing firmware. Hardware UNTESTED; active folder-follow/scrolling stays disabled.
+
+The later [registry-bound issuance prototype](folderfollow-reveal-registry-owner.md)
+adds an optional expected_mutex_address pin to checked mode: a changed U+148
+snapshot is denied before raw acquisition. Omitting the pin preserves both
+earlier instruction variants exactly. The new caller nests148 under captured
+13C and records historical logical issuance only, not native ownership/free
+or current producer authority.

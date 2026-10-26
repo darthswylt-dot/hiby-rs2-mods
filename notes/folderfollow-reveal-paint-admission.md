@@ -100,7 +100,7 @@ an observer must not silently claim to repair that native path.
 
 A preliminary positive-registration observer was discarded before testing or
 integration because it relied on the masked callback result. No replacement
-creation hook is emitted, installed or called by this step. Connecting admission
+positive-generation creation hook is emitted, installed or called by this step. Connecting admission
 still requires an actual13C receipt and checked148 use, an independently captured
 generation carrier, complete creation/user coverage and a failure continuation.
 
@@ -158,3 +158,9 @@ Test totals and the final repository regression are recorded in
 [status](status.md). No installable image is produced. Verification was local
 and preceded the user's separate authorization to commit/push these text-only
 changes. Hardware UNTESTED; scrolling stays disabled.
+
+The subsequent [passive raw13C receipt prototype](folderfollow-reveal-registry-receipt.md)
+now checks the actual mutex argument before the raw service and captures its
+result before masking, linking raw zero to native registry publication in a
+bounded local fixture. It preserves stock behavior/defects and issues no owner
+generation, lease or release certificate; no creation/cleanup authority is enabled.
