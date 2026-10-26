@@ -140,3 +140,8 @@ The verification above involved no device/network action, installable image,
 commit or push. The subsequent explicit user request authorizes publication of
 these text-only offline prototypes, tests and reports to GitHub, not installation
 or native producer integration. Active scrolling is disabled and hardware is UNTESTED.
+
+The [emitted creation-capture successor](folderfollow-reveal-creation-capture.md)
+replaces Python-only pair observation with a separate explicit wrapper and
+owned historical output. It preserves this composition's bytes and does not
+wire the native explorer path or certify masked registry release.

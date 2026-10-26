@@ -88,6 +88,14 @@ A separate [explicit captured-carrier publication adapter](notes/folderfollow-re
 now checks a creation-time pair before checked queue publication on the local
 instruction fixture. All nine native producer call paths remain unwired; no
 latest-by-pointer generation lookup, native lifetime or player installation.
+An [emitted per-invocation creation capture](notes/folderfollow-reveal-creation-capture.md)
+now retains the issuer event in an explicit owned output instead of a Python
+observer. Its flag is historical/release-unobserved; native explorer fanout
+still loses generation across name relookup and remains unwired.
+A separate opt-in [raw registry-release witness](notes/folderfollow-reveal-registry-release.md)
+now gates captured output on the actual same-invocation unlock result before
+native status masking. Default bytes stay unchanged; native queue/lifetime
+integration remains gated.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered

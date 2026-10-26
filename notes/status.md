@@ -2703,3 +2703,170 @@ keys, secrets or unrelated configuration. The preceding fresh2343-test serial
 regression and saved-image reverification remain the code verification record;
 only this publication annotation changed afterward. Publication does not enable
 native producer transport, cleanup, UI behavior or any player operation.
+
+### Offline emitted per-invocation creation capture (2026-10-26)
+
+Follow-up to committedf371c83. A new explicit register(U,descriptor20,out32)
+wrapper copies the descriptor into its private frame and executes actual
+4389E0 once. An opt-in issuer commit_callback receives the exact just-published
+binding pair and owned request; emitted sink instructions, not a Python event
+observer, retain it in that registration's private frame. The sink pins A1 to
+the actual issuer snapshot before any request read and pins requestNativeSP to
+actualsinkEntrySP+192receipt+192issuer, then wrapper=NativeSP+40. Exact wrapper
+continuation, controller/engine, armed state and empty capture are checked.
+An identical copied request or another valid armed same-engine frame cannot
+replace this invocation. Scalar scope checks are not hostile-stack authentication.
+
+Only native0 plus a fresh captured pair and independently owned write-once
+out32 zero both before and after registration permit MAGIC-last export. NativeV0
+and outaddress/zero are returned separately; preflight denial isFFFFFFFF/0
+without entering native registration. There is no remint/retry/cleanup or latest
+binding lookup. An earlier native node, owner or binding may already exist on
+capture/export denial. The flags say HISTORICAL_RELEASE_UNOBSERVED: even raw13C
+unlock error can export history because native wrappers discard its result.
+This is not checked release, admission, a lease or permission to continue after
+raw error. Full-instance external isolation and owned/mapped/coherent separate
+input/output/nested stack remain premises. The sink saves its192-byte frame
+before validation; no invalid-stack denial-before-write claim is made.
+
+The local composer includes checked/pinned kernel, capture, opt-in issuer,
+receipt and explicit producer adapter. Wrapper/source/output bounds cover full
+states/controller/mutexes/native RX and exact full composed RX by a fixed-width
+second pass. Only the wrapper's own frame is preflight-proved, not all deeper
+native/library frames. Capture helper frames total160+192+192+192=736, plus
+native registration40=776; the alternative kernel path totals744 before further
+native/library costs. Aggregate stack availability, timing and progress are not
+proved. Issuer commit_callbackNone keeps all earlier bytes/labels unchanged.
+
+New source contracts expose the worker's earlier generation loss: only64-byte-
+stride names are copied under the native registry callback bracket, then after
+unlock4BAA20->43A0C0 and4BAA34->485DE0 find engine/resource again. Its strcpy/
+fanout bounds are not proved; name lookup even loads node+8 after unlocking.
+No current engine field or name equality can restore the selected generation.
+The fifth callback argument is already occupied. Explicit creation capture is
+a prerequisite only: no native explorer callback, worker, queue, object layout
+or cleanup/free route consumes it yet. Real raw-unlock observation, owned
+per-target pre-deferral context and retained native lifetime remain gates.
+See [emitted creation capture and remaining native transport gaps](folderfollow-reveal-creation-capture.md).
+
+Serial focused verification: **346 tests pass, no skips** (24.788 s):56 new
+checks (18 basic/ABI,27 adverse/config,11 pinned source), plus290 previous
+carrier/issuance/receipt/retirement/admission checks. Cases cover actual emitted
+capture and no Python pair observer, double output preflight, exact request and
+stack provenance, malformed/consumed/foreign contexts, full code/data aliases,
+raw error partial effects, ALL-GPR/HI/LO, same-engine replacement/retirement,
+and old byte-identity goldens. Independent implementation/composition/source/
+fixture/documentation reviews found no remaining issue within these premises;
+review-driven actual-depth and actual-request pins were added and tested.
+
+Default composition is22,676 bytes (12,248 kernel+4,232 capture+1,708 issuer+
+2,288 receipt+2,200 adapter), SHA-256
+`90be0fdb56fa349782d7a5b89009661ca26484ad1beed25fb8628ddfc2383da5`
+at the preceding documented fixture addresses. Private shared state remains656
+receipt+784 bindings+328 owners; each independently retained output needs32
+bytes. Old carrier18,416 and creation16,216 bytes retain their previous hashes.
+No firmware image, installation, device/network action, commit or push. Active
+scrolling stays disabled and hardware UNTESTED; changes are local/uncommitted.
+
+Fresh serial full regression: **2,399 tests pass, no skips** (374.412 s).
+All255 Python sources compile;10 changed/new text paths pass whitespace checks.
+Old18,416-byte explicit carrier and new22,676-byte capture compositions are
+exactly reverified against their documented hashes. Saved action-link, playback-
+dispatch and renderer-transport images are exactly reverified against02fd with
+unchangedd4306357...,a9a6f02f...,f42fac46... hashes, respectively33,492/24,532/
+23,240 code bytes and310/275/259 changed original bytes. All remain scrolling
+False/hardwareUNTESTED. Existing firmware builders/decoders,40-byte core and
+launcher/timers/assertions are unchanged fromf371c83. No assertion/timer was
+weakened, and no firmware image was built or modified. No device/network
+operation, installation, commit or push; all changes remain local/uncommitted.
+
+### Offline same-invocation raw13C release witness (2026-10-26)
+
+The creation-capture assembler/composer now accept an explicit opt-in
+checked_registry_release=True. DefaultFalse preserves all preceding22,676
+bytes/labels, return semantics and historical flag1. Checked mode adds three
+coherent local instruction-fetch redirects:438A60 observes actual T9 before
+the original JALR/delay-slot effect;466DC8 checks actual A0 before raw unlock;
+466DD0 captures actual V0 before native wrapper zeroing. All GPRs and HI/LO
+are restored around displaced effects; the raw service keeps original SP,
+pinned argument and RA466DD0. No firmware builder or native queue is changed.
+
+Fresh private wrapper state progresses ARMED->SELECTED->ENTERED->CAPTURED and
+is consumed once on native return. A separate status word preserves true
+FFFFFFFF error distinctly from missing witness. W1C437DB0/W3C438A68, native
+SP=W+40, wrapper=W+68 and exact wrapper native-return PC, saved raw/nativeSP,
+mutex and wrapperU bind the route. Actual callback/argument are observed before
+services, never guessed from later fields or clobbered registers. Release may
+be observed even without owner issuance, but positive output also requires
+the original fresh creation pair and all prior acquisition/issuance premises.
+
+Checked output with flag2 REGISTRY_RELEASE_OBSERVED requires actual same-call
+raw release0. Observed nonzero release returnsFFFFFFFF/exactstatus without
+output; missing/invalid witness returnsFFFFFFFF/0. Actualrelease0 with no pair
+or denied export returns0/0, not retry or continued-use permission. Native
+acquisition failure still permits original unchecked native links with no pair;
+allocation failure still omits unlock. No guessed unlock, retry, remint, close/
+retire, cleanup or repair is introduced. Prior node/binding/owner effects can
+survive failure; raw error requires full-instance external isolation.
+
+After actual raw unlock, observer/wrapper processing uses only retained private
+frames and successful exclusively owned output: no controller/journal/owner/
+binding access or shared quarantine write follows uncertain release. A nonzero
+service result can leave the mutex held or already released; no rollback or
+recovery is inferred. Seven coherent old+new redirects and genuine retained
+disjoint stack/route/service semantics remain premises, not arbitrary partial-
+activation or forged-stack authentication. Initial observer192-byte saves occur
+before validation. Global466DC0 callers also pay this save cost; four original
+direct raw-unlock sites bypass it. No universal native synchronization coverage,
+stack availability, scheduling/progress or native lifetime claim is made.
+
+The bounded raw-release path is160 wrapper+40 registration+32 facade+32 raw
+wrapper+192 observer=456 bytes before native/library costs, not simultaneously
+nested with the earlier776-byte capture or744-byte owner-kernel paths. No shared
+storage is added; the160-byte wrapper uses spare private slots. No native
+explorer queue/fanout/callback/object layout/cleanup path consumes the record.
+Pre-deferral per-target carrier retention, bounded snapshots and full lifetime/
+cleanup participation remain integration gates. See [raw registry-release
+witness and scope](folderfollow-reveal-registry-release.md).
+
+Serial focused verification: **401 tests pass, no skips** (28.782 s):55 new
+checks (20 native/emitted/ABI,23 adverse/config,12 pinned source), plus346 prior
+capture/carrier/issuance/receipt/retirement/admission checks. Coverage includes
+all3displaced architectural effects and rawSP/RA, forcedzero vs true error,
+actual T9/A0 late changes, exact return-chain/private-scalar corruption, replay
+without a second unlock, missing/stale hooks, either ambiguous release outcome,
+no shared late access, full RX/state boundaries, strict bool and old byte goldens.
+Independent source/core/fixture/documentation reviews found no remaining issue
+under the stated premises; no assertion or timer was weakened.
+
+Checked composition is25,716 bytes (12,248 kernel+7,272 capture/observers+1,708
+issuer+2,288 receipt+2,200 adapter), SHA-256
+`3c7b26a00fbd17bcd6c86719c21fa7ee5120ecaefcce1b4d9d6fb14332e6721c`
+at the preceding fixture addresses. Default22,676 retains90be0fdb...2383da5;
+private shared state656 receipt+784 bindings+328 owners and32 bytes per retained
+owned output are unchanged. No firmware image, player/network operation,
+installation, commit or push. Active scrolling disabled, hardwareUNTESTED;
+all changes remain local/uncommitted.
+
+Fresh serial full regression: **2,454 tests pass, no skips** (320.373 s).
+All258 Python sources compile;14 changed/new text paths pass whitespace checks.
+Old18,416/22,676 and checked25,716 compositions are exactly reverified against
+their documented hashes. Saved action-link, playback-dispatch and renderer-
+transport images are exactly reverified against02fd with unchangedd4306357...,
+a9a6f02f...,f42fac46... hashes, respectively33,492/24,532/23,240 code bytes and
+310/275/259 changed original bytes. Each stays scrollingFalse/hardwareUNTESTED.
+Existing firmware builders/decoders,40-byte core and launcher/timers/assertions
+are unchanged fromf371c83. No timer/assertion was weakened; no firmware image
+was built or modified. No device/network operation, installation, commit or
+push; all changes stay local/uncommitted, native explorer integration gated.
+
+### Text-only capture/release publication request (2026-10-26)
+
+The user subsequently explicitly requested commit and push of the verified
+emitted creation-capture and opt-in raw registry-release work above. Scope is
+exactly14 text files (5 Markdown+9 Python, including6 new test modules), with
+no binaries, journals, keys, secrets or unrelated configuration. The fresh
+2454-test serial regression and saved-image/hash reverification remain the code
+verification record; only this publication annotation changed afterward.
+Publication does not install firmware or enable native explorer transport,
+cleanup, lifetime or UI authority. Hardware remains UNTESTED.

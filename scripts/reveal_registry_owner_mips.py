@@ -18,6 +18,11 @@ guessed unlock or a positive binding. Owner effects may already have occurred.
 This flag does not gate direct users of the44-byte API: full-instance external
 quarantine and complete cooperative producer/lifecycle coverage remain gates.
 
+An opt-in commit_callback receives this actual event's owned36 request and
+exact just-committed sequence/owner pair. Its ALL-GPR/HI/LO preservation is a
+callee premise. None preserves preceding default bytes/labels; either mode
+leaves subsequent native13C release unobserved, not certified successful.
+
 Caller premises include genuine pinned native route/ABI, a fresh independently
 captured raw-zero13C receipt, stable controller/callback/mutex fields, retained
 controller/registry/node and initialized nonrobust mutex allocations, common
@@ -61,13 +66,17 @@ def memory_bytes(capacity=16):
 def assemble(binding_address, owner_address, controller_address,
              registry_mutex_address, paint_mutex_address, code_base,
              open_owner_entry, *, capacity=16, owner_capacity=16,
-             ticket_limit=MAX_TICKET):
+             ticket_limit=MAX_TICKET, commit_callback=None):
     """Emit an all-register-preserving callback; private binding state is zero.
 
     The owner-core entry must be the composed checked/pinned open_owner entry.
     The complete generated code extents are a composition-level check; a bare
     entry address cannot establish the callee's behavior or full RX extent.
     Neither table may be reset/recycled while any captured identity is visible.
+    Optional commit_callback=(entry, RX start, bytes) receives U, this owned36
+    snapshot, the just-committed binding sequence and owner. It must preserve
+    ALL GPRs and HI/LO and does not certify subsequent native13C release. None
+    emits exactly the preceding default bytes and labels.
     """
     binding_bytes = memory_bytes(capacity)
     owner_bytes = owner_core.memory_bytes(owner_capacity)
@@ -95,6 +104,24 @@ def assemble(binding_address, owner_address, controller_address,
             raise ValueError('open_owner entry overlaps ' + name)
     if NATIVE_RX[0] <= open_owner_entry < NATIVE_RX[1]:
         raise ValueError('open_owner entry overlaps the pinned native executable image')
+    callback_extent = None
+    if commit_callback is not None:
+        if (type(commit_callback) is not tuple or len(commit_callback) != 3
+                or any(type(value) is not int for value in commit_callback)):
+            raise ValueError('commit callback must be an (entry, RX start, bytes) tuple')
+        entry, start, size = commit_callback
+        if (start <= 0 or start % 4 or size <= 0 or size % 4
+                or start + size > 0x10000000 or entry % 4
+                or not start <= entry or entry + 4 > start + size):
+            raise ValueError('commit callback must lie in its nonwrapping native-region RX extent')
+        if max(start, NATIVE_RX[0]) < min(start + size, NATIVE_RX[1]):
+            raise ValueError('commit callback overlaps pinned native RX')
+        for name, address, extent_size in extents:
+            if max(start, address) < min(start + size, address + extent_size):
+                raise ValueError('commit callback overlaps ' + name)
+        if max(start, open_owner_entry) < min(start + size, open_owner_entry + 4):
+            raise ValueError('commit callback overlaps open_owner entry')
+        callback_extent = (start, start + size)
     a = Asm(code_base)
 
     def equal(register, value, failed):
@@ -235,6 +262,13 @@ def assemble(binding_address, owner_address, controller_address,
     # Zero-byte observation boundary for capturing this exact issuance pair.
     # This is not a native producer route or a latest-row lookup API.
     a.label('binding_committed')
+    if commit_callback is not None:
+        # An optional generated observer receives this invocation's private
+        # snapshot and exact just-published pair, never a later table lookup.
+        # It MUST preserve every GPR and HI/LO, including these arguments.
+        a.absolute(4, controller_address)
+        a.e(b.addiu(5, 29, SNAPSHOT), b.move(6, 20), b.move(7, 2))
+        a.jump(commit_callback[0], link=True)
     a.jump('restore')
     a.label('raw_error')
     # The pinned outer13C guard still protects binding storage.148 ownership
@@ -263,4 +297,7 @@ def assemble(binding_address, owner_address, controller_address,
             raise ValueError('callback overlaps ' + name)
     if code_base <= open_owner_entry < code_end:
         raise ValueError('callback overlaps open_owner entry')
+    if callback_extent is not None:
+        if max(code_base, callback_extent[0]) < min(code_end, callback_extent[1]):
+            raise ValueError('issuer code overlaps commit callback RX extent')
     return result, a.labels
