@@ -2389,3 +2389,114 @@ a9a6f02f... and f42fac46... hashes. No existing launcher/test timer, assertion
 or refusal was changed or weakened. No builder/image/installer/native runtime
 integration, device/network action, commit or push. Changes remain local/
 uncommitted; active scrolling disabled and hardware UNTESTED.
+
+### Offline MIPS generation retirement and cooperative purge (2026-10-23)
+
+Follow-up to committed faf635f. Added a separate44-byte protocol with the
+original36 body, publication nonce at36 and captured owner ticket at40; the
+old40 module, all builders/decoders, LALI/BIRTH equality and saved images are
+unchanged. Owner and publication tickets share a persistent nonwrapping
+serial. The bounded append-only owner table never reuses retired slots; full
+owner capacity is backpressure without ticket burn or eviction. Publication
+requires an issued live captured ticket and matching owned engine scalar;
+late producers cannot adopt a new equal-engine generation implicitly.
+
+Retire permanently revokes its generation and cancels its matching active
+claim before queue selection/removal. An existing active head's list binding,
+nonce and owner are checked before any purge mutation. Unclaimed matching
+rows are removed by the actual raw method under148; retained rows advance
+the index, removed rows recheck the same index. The active head/private copy
+and relative order of other owners survive. Raw remove must return0 and
+decrement count once. Unknown row owners, inconsistent engine/nonce, bad
+headers/methods or partial failures cause terminal withdrawal, not rollback.
+
+The local drained query requires retirement, no actual queued/active entry
+for that generation and no fault. Empty live owners do not qualify; fault
+suppresses positive drain even after a valid old cancelled acknowledgement.
+Close stays narrow: withdraw/cancel only; explicit retire/drain can follow
+close, but no destructor/free/detach/shutdown continuation is performed.
+Retire/drain never grant native allocation lifetime or release authority.
+
+All65 new focused checks pass (5.796 s):23 basic instruction/ABI,24 adversarial
+and18 pinned-source contracts. Actual original raw list and mutex callback
+bodies execute under bounded fixture services. Tests cover75-entry growth/
+segment boundaries, adjacent matches, preserved active and unmatched FIFO,
+same-engine generation ABA, late/duplicate acknowledgements, partial purge,
+raw remove/count fault injection, two actual native allocation failure paths,
+substituted mutex-wrapper failures, malformed owner state and full-state alias
+checks. These are not lower pthread-error tests: native466DA0/DC0 mask that
+status, so the default helper still requires a genuinely held guard. Ten70-event
+generation/retained-head oracle sequences pass. Independent reviews found no
+remaining actionable issue. Default emission is10,824 code bytes,328 private
+state bytes and a160-byte helper frame, excluding native callees/list storage.
+See the [retirement protocol and native integration limits](folderfollow-reveal-paint-retirement.md).
+
+On2026-10-26 the fresh serial full repository regression passes: **2,118 tests,
+no skips** (308.557 s). All233 Python scripts compile; tracked/new text files
+pass whitespace checks. The first run had one failure in the unchanged25-ms
+mock launcher normal-exit fixture; its24-test module passed separately and
+the fresh full rerun is clean. No timer/assertion/launcher code was weakened.
+An interrupted retry with no retrievable result is not counted as a pass.
+Saved action-link, LPDI and renderer images are exactly reverified against the
+pinned source with unchanged d4306357..., a9a6f02f... and f42fac46... hashes.
+The old40-byte handoff and launcher files remain unchanged from faf635f.
+No firmware/runtime installation, device/network action, commit or push;
+these changes remain local/uncommitted, scrolling disabled and hardware UNTESTED.
+
+### Native admission audit and checked raw mutex mode (2026-10-26)
+
+The source audit confirmed a prerequisite already noted in the earlier player
+lock study: native466DA0/DC0 overwrite pthread status with zero. Controller
+paint148 and registry13C both use them. Their zero is not an acquisition or
+release receipt; the older40/default44 tests substitute the wrapper result
+and cannot establish actual lower-error handling. Factory466D60 also ignores
+init status and destroy466DE0 ignores destroy status before freeing nonnull
+storage. No device failure is inferred from these source facts.
+
+The separate44-byte assembler now offers explicit `checked_mutex=True`.
+It snapshots controller+148 once, checks its bounded nonaliasing pointer
+extent, calls rawA5B960, and branches on the actual status BEFORE private/
+input/queue access. Release calls rawA5B830 with the same saved pointer.
+Either raw error denies the current result with v0=0/v1=exact raw status.
+An uncertain release permits only helper-frame writes, not a shared terminal
+fault store. Earlier effects are not rolled back; caller-side external
+quarantine is mandatory after any raw error. There is no automatic sticky
+withdrawal or proof of raw mutex initialization, ownership, lifetime or
+recovery. The default10,824-byte emission remains byte-identical (SHA-256
+b0b07d89... for the pinned fixture addresses); checked mode is opt-in only.
+
+Registry creation4389E0 publishes its final old-tail link at438A58, before
+unlock438A60. Construction alone is earlier and not admission: both direct
+callers ignore4389E0 status, and its allocation-failure edge bypasses unlock.
+A draft positive-admission observer relying on a callback-zero receipt was
+removed before testing/integration. No creation hook is installed or emitted.
+
+Deletion4395A0 and detach8B0760 still require fences before their first link
+mutations and a checked deferred-continuation protocol. Moreover both outer
+callers of inner shutdown43CB20 can unlink/free registry nodes BEFORE it;
+the43CB38 worker fence is not a whole-controller lifetime boundary. Bounded
+direct-call censuses do not establish coverage of computed callers/aliases.
+See [checked mode, source anchors and remaining admission gates](folderfollow-reveal-paint-admission.md).
+
+Serial focused verification: **124 tests pass, no skips** (8.732 s), comprising
+30 source contracts,9 original-facade executable counterexamples,65 previous
+retirement checks and20 checked-mode checks. All eight operations preserve
+callee-saved registers/HI/LO through hostile raw services; errors deny success,
+uncertain unlock is followed only by helper-frame reads/writes, and the same
+captured pointer is used for release. Tests cover nonzero acquire with possible
+ownership, failed release both held/released, surviving earlier effects,
+guarded state/source reads and unchanged default bytes. Independent source,
+implementation/test and documentation review found no actionable issue.
+Checked emission is12,120 code bytes; default state328/helper frame160 are
+unchanged, excluding nested native/library frames and list allocations.
+
+Fresh serial full regression: **2,177 tests pass, no skips** (320.672 s).
+All236 Python scripts compile; changed/new text has no whitespace errors.
+Saved action-link, playback-dispatch and renderer-transport images were
+exactly reverified against02fd with unchangedd4306357...,a9a6f02f... and
+f42fac46... hashes. The40-byte module, builders, decoders, launcher and its
+tests/timers/assertions are unchanged. This verification included no firmware
+installation, device/network operation, commit or push. The subsequent user
+request authorizes publishing these text-only offline prototypes/tests/reports;
+no binaries, logs or installation steps are included. Active folder-follow/
+scrolling stays disabled and hardware UNTESTED.

@@ -46,10 +46,17 @@ refuse a later acknowledgement before the native getter if that table has
 been lost; the active claim remains outstanding rather than reporting false
 cleanup. No queue repair, allocator rollback or forced release is invented.
 
-A failed mutex acquisition returns denial without reading queue/private state
-or attempting unlock. A failed unlock also denies success and publishes only
-a monotonic terminal fault; native effects may already have occurred and lock
-ownership is unknown. Denial is not rollback or permission to retry an effect.
+An injected nonzero callback result returns denial without reading queue/private
+state or attempting unlock. An injected unlock-callback failure also denies
+success and writes a terminal fault in this bounded fixture. These tests replace
+the466DA0/DC0 wrapper result: they do not demonstrate detection of actual
+pthread failures. The original wrappers force zero regardless of the lower
+result, as already recorded in the [player-lock audit](folderfollow-reveal-player-lock.md).
+The40-byte helper therefore requires a genuinely held, valid guard as a caller
+premise; its callback zero is not an acquisition certificate. Its post-unlock
+fault store is not a general synchronized failure-recovery protocol. Denial is
+not rollback or permission to retry an effect. The separate44-byte successor
+has an explicit [checked raw-service mode](folderfollow-reveal-paint-admission.md).
 
 ## What the guard does not establish
 
@@ -76,7 +83,10 @@ Object retirement also needs a checked continuation protocol:
 - Detach8B0760 must be fenced before link mutation, not merely the later
   engine+40 clear or attachment free.
 - Controller teardown43CB20 must be fenced before worker shutdown, not merely
-  before paint-queue or mutex destruction.
+  before paint-queue or mutex destruction. This inner fence is insufficient for
+  its outer callers: both can unlink/free registry nodes before43CB20. The
+  [admission/cleanup audit](folderfollow-reveal-paint-admission.md) records these
+  earlier mutation paths; whole-controller admission must close earlier still.
 
 An outstanding-use counter reaching zero would establish only local accounting
 quiescence until all native users and mutation paths are covered. Returning
@@ -126,3 +136,8 @@ it is not a target cache, scheduler, native concurrency or hardware test.
 No new installable firmware image is produced by this step. Changes remain
 local/uncommitted; no device/network operation, commit or push. Hardware
 UNTESTED; active folder-follow and scrolling remain disabled.
+
+The next [separate44-byte retirement prototype](folderfollow-reveal-paint-retirement.md)
+adds captured owner generations, revocation before cooperative purge and a
+local drained query. It leaves this40-byte implementation and all saved
+images unchanged; native cleanup/lifetime integration is still required.

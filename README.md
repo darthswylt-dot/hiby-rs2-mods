@@ -70,6 +70,14 @@ now exercises owned queue-byte transfer and exact-head acknowledgement against
 the original list methods under148. Its distinct40-byte test format adds a
 publication nonce without changing LALI or saved builds. Failed native growth
 withdraws terminally; stock purge/lifecycle participation is still required.
+Its separate [generation-retirement successor](notes/folderfollow-reveal-paint-retirement.md)
+now revokes captured owner tickets before cooperative queue purge, preserves
+an active head until acknowledgement and refuses late old-generation work.
+The44-byte offline format and local drained check still grant no native-free
+or scrolling authority; no firmware builder or player installation changes.
+An explicit [checked-mutex variant and admission audit](notes/folderfollow-reveal-paint-admission.md)
+now distinguish raw lock errors from the stock wrappers' forced-zero results.
+Creation/cleanup hooks remain gated; mutex-error recovery is a caller duty.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered
