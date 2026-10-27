@@ -96,6 +96,16 @@ A separate opt-in [raw registry-release witness](notes/folderfollow-reveal-regis
 now gates captured output on the actual same-invocation unlock result before
 native status masking. Default bytes stay unchanged; native queue/lifetime
 integration remains gated.
+A separate [owned deferred envelope prototype](notes/folderfollow-reveal-deferred-envelope.md)
+now copies checked capture and payload values through a typed native FIFO on
+the caller-exclusive fixture, consuming each owned work buffer before publication.
+It does not connect the original action queue, provide concurrency arbitration
+or grant native lifetime/UI authority.
+A separate [checked transport guard](notes/folderfollow-reveal-deferred-queue.md)
+now serializes cooperating accesses to that explicit typed FIFO with a distinct
+raw mutex, releases it before publication and fails closed on checked local
+postcondition faults. Native worker integration and whole-instance error
+isolation/lifetime remain separate gates.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered

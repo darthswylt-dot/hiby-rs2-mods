@@ -40,7 +40,7 @@ def assemble(binding_address, owner_address, controller_address,
              registry_mutex_address, paint_mutex_address, code_base,
              publish_entry, *, capacity=16, owner_capacity=16,
              ticket_limit=MAX_TICKET, protected_prefix=None,
-             receipt_extent=None):
+             receipt_extent=None, following_code_bytes=0):
     """Emit a standalone adapter; no new state is allocated or initialized.
 
     The composer must verify the actual checked/pinned publish entry, not merely
@@ -50,12 +50,18 @@ def assemble(binding_address, owner_address, controller_address,
     Optional receipt_extent=(start, bytes) excludes the full existing receipt
     journal from the independently owned source/frame. Without it that journal
     separation remains a caller premise, as does general native heap lifetime.
+    following_code_bytes extends this fragment's RX exclusion over an exactly
+    appended generated tail. Zero preserves all prior bytes and labels; the
+    composer must actually append that tail and validate its emitted entries.
     Neither existing append-only table may be reset while any carrier survives.
     """
     binding_bytes = bindings.memory_bytes(capacity)
     owner_bytes = owner_core.memory_bytes(owner_capacity)
     if type(ticket_limit) is not int or not 1 <= ticket_limit <= MAX_TICKET:
         raise ValueError('ticket limit must be a positive signed word')
+    if (type(following_code_bytes) is not int or following_code_bytes < 0
+            or following_code_bytes % 4):
+        raise ValueError('following code bytes must be a nonnegative aligned integer')
     extents = [('bindings', binding_address, binding_bytes),
                ('owner state', owner_address, owner_bytes),
                ('controller', controller_address, CONTROLLER_BYTES),
@@ -277,16 +283,17 @@ def assemble(binding_address, owner_address, controller_address,
     a.e(b.move(2, 0), b.move(3, 0), b.r_type(31, 0, 0, 8), 0)
 
     code_end = code_base + len(a.w) * 4
-    if code_end > 0x10000000:
+    protected_end = code_end + following_code_bytes
+    if protected_end > 0x10000000:
         raise ValueError('adapter leaves its native MIPS jump region')
-    if max(code_base, bindings.NATIVE_RX[0]) < min(code_end, bindings.NATIVE_RX[1]):
+    if max(code_base, bindings.NATIVE_RX[0]) < min(protected_end, bindings.NATIVE_RX[1]):
         raise ValueError('adapter overlaps pinned native RX')
     for name, address, size in extents:
-        if max(code_base, address) < min(code_end, address + size):
+        if max(code_base, address) < min(protected_end, address + size):
             raise ValueError('adapter overlaps ' + name)
-    if code_base <= publish_entry < code_end:
+    if code_base <= publish_entry < protected_end:
         raise ValueError('adapter overlaps publish entry')
     for index in code_end_fixups:
-        a.w[index] = b.lui(10, (code_end - 1) >> 16)
-        a.w[index + 1] = b.ori(10, 10, (code_end - 1) & 0xFFFF)
+        a.w[index] = b.lui(10, (protected_end - 1) >> 16)
+        a.w[index + 1] = b.ori(10, 10, (protected_end - 1) & 0xFFFF)
     return a.finish(), a.labels

@@ -20,8 +20,12 @@ import reveal_creation_capture_mips as capture
 def assemble(receipt_address, binding_address, owner_address, controller_address,
              registry_mutex_address, paint_mutex_address, code_base, *,
              capacity=16, owner_capacity=16, ticket_limit=owner.MAX_TICKET,
-             queue_capacity=64, checked_registry_release=False):
+             queue_capacity=64, checked_registry_release=False,
+             following_code_bytes=0):
     """Return local bytes/labels; all old composers and default bytes stay old."""
+    if (type(following_code_bytes) is not int or following_code_bytes < 0
+            or following_code_bytes % 4):
+        raise ValueError('following code bytes must be a nonnegative aligned integer')
     extents = [('receipt', receipt_address, receipt.memory_bytes(capacity)),
                ('bindings', binding_address, issuer.memory_bytes(capacity)),
                ('owners', owner_address, owner.memory_bytes(owner_capacity)),
@@ -71,16 +75,18 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
         paint_mutex_address, code_base + prefix_bytes, owner_labels['publish'],
         capacity=capacity, owner_capacity=owner_capacity, ticket_limit=ticket_limit,
         protected_prefix=(code_base, prefix_bytes),
-        receipt_extent=(receipt_address, receipt.memory_bytes(capacity)))
+        receipt_extent=(receipt_address, receipt.memory_bytes(capacity)),
+        following_code_bytes=following_code_bytes)
     total_bytes = prefix_bytes + len(adapter)
+    protected_bytes = total_bytes + following_code_bytes
     # A fixed-width RX guard changes only its literals. Reassemble with the
     # exact complete code extent, not just this fragment or a bare entrypoint.
     captured, final_labels = capture.assemble(
-        *capture_args, **capture_options, protected_code=(code_base, total_bytes))
+        *capture_args, **capture_options, protected_code=(code_base, protected_bytes))
     if len(captured) != len(provisional) or final_labels != capture_labels:
         raise ValueError('capture layout changed after full RX protection')
     code = kernel + captured + issue + observe + adapter
-    end = code_base + len(code)
+    end = code_base + protected_bytes
     if end > 0x10000000:
         raise ValueError('composed capture code leaves the native jump region')
     for name, start, size in extents:
@@ -106,4 +112,4 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
         owner_memory_bytes=owner.memory_bytes(owner_capacity),
         binding_memory_bytes=issuer.memory_bytes(capacity),
         receipt_memory_bytes=receipt.memory_bytes(capacity),
-        protected_code_extent=(code_base, len(code)))
+        protected_code_extent=(code_base, protected_bytes))

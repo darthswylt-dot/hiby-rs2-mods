@@ -142,3 +142,8 @@ remain unchanged fromf371c83. No firmware image was built or modified; no timer
 or assertion was weakened.
 No image/file installation, device/network action, commit or push; active
 scrolling disabled and hardware UNTESTED. All changes stay local.
+
+The [owned deferred-envelope successor](folderfollow-reveal-deferred-envelope.md)
+copies this checked capture with an owned payload before explicit deferral.
+It preserves default bytes and does not connect native explorer fanout or add
+queue arbitration, a native lease or UI authority.

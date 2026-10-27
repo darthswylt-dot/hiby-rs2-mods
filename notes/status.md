@@ -2870,3 +2870,194 @@ no binaries, journals, keys, secrets or unrelated configuration. The fresh
 verification record; only this publication annotation changed afterward.
 Publication does not install firmware or enable native explorer transport,
 cleanup, lifetime or UI authority. Hardware remains UNTESTED.
+
+### Offline owned pre-deferral envelope (2026-10-27)
+
+Local successor to committedacad6544. The new explicit68-byte envelope carries
+the exact checkedGCAP32 and owned36 payload as values before deferral, without
+storing a borrowed source pointer or resolving a later current owner by name.
+Emittedpack snapshots/validates both inputs, requires observed-release flag2,
+native result0, pinnedU, bounded positive sequences/owner and matching opaque
+engine values. It accepts only independent zero output, checks all17 words
+twice and publishes magic last. Schema checks are not capture authentication.
+
+Emitteddispatch snapshots an exclusively owned envelope and marks its magic
+CONSUMED before calling the actual checked producer with the saved pair and
+stack-owned payload. It never rereads that source after publication. One valid
+attempt consumes that buffer even on ordinary denial, full paint queue or raw
+error; no retry/guessed unlock/cleanup is introduced. Different READY clones
+can still publish distinct nonces: this is not global deduplication or an
+exactly-once delivery guarantee. Invalid schema is not consumed or dispatched.
+
+The fixture uses a separate typed nativeFIFO from456E60(capacity,68), real
+455DA0->455BC0 append,4557E0 borrowed-head access and455860 removal. Under
+explicit caller exclusivity it executes emittedpack into fresh owned work
+BEFORE removal, requires remove0, then dispatches only that private copy.
+Removal can immediately reuse the head address; its acknowledgement means
+transport extraction, not rendering, paint completion, exact nonce ack or
+native lifetime safety. It adds no shared queue guard, reservation, lock,
+concurrent pop arbitration, scheduler or automatic failure isolation. Invalid
+head/extraction failure requires external stop/isolation, not dispatch/retry.
+
+Preallocated ten-element native segments are crossed without growth; append
+is refused at actual allocatedQ+8 capacity. Native455980 growth retains its
+NULL-realloc delay-slot clobber and partial allocation effects; it is not
+transactional or repaired here. Nativeclear resets count only, not erasure,
+owner revocation or drain. The substituted remove error tests caller control
+flow only, not native remove failure/rollback safety.
+
+The composition appends4,508 envelope bytes to the25,716 checked-capture prefix,
+giving30,224 bytes. The preceding outerregister and explicitproducer RX-source/
+frame guards extend over the exact tail through zero-defaultfollowing_code_bytes;
+old instruction counts/labels/default bytes remain unchanged. New entries
+protect the full composition before any source access or frame save. This is
+not a universal inherited-entry certificate: observer save-before-validation
+stack premises and direct owner-kernel RX/heap/list/stack premises remain.
+Pack uses160 helper-stack bytes; dispatch nests160+160+160 before native/library
+costs. Mapping, full stack availability, coherent exclusive inputs, caller queue
+serialization and retained native storage remain explicit requirements.
+
+No original explorer queue/fanout/worker/callback is wired. The native16/20-byte
+stack payload, name-only snapshots, occupied fifth callback argument, unchecked
+T+10 status, whole-program lock audit, bounded capture allocation, controller/
+engine/resource retention and safe cleanup/free remain integration gates. Frozen
+generation values grant neither a native engine lease nor UI authority.
+See [owned deferred-envelope protocol](folderfollow-reveal-deferred-envelope.md).
+
+Serial focused verification: **460 tests pass, no skips** (43.273 s), comprising
+59 new checks (19 native FIFO/emitted/ABI,28 adverse/configuration and12 pinned
+source checks) plus401 prior capture/release/carrier/issuance/receipt/retirement/
+admission checks. Coverage includes stale generation at reused engine addresses,
+active old cancellation/exact ack versus new generation, all17 dirty output
+words before/after snapshot, full RX/state/frame boundaries, exact unsigned
+extent endpoints, source mutation after copying, local replay versus clones,
+ambiguous raw acquire/release outcomes, no late source/shared access, no-dispatch
+after extraction denial and unchanged default hashes. Independent core/source/
+composition reviews found no remaining issue under the stated premises.
+Fresh serial full regression: **2,513 tests pass, no skips** (369.167 s).
+All263 Python sources compile without writing files; all11 changed/new text
+paths (4 Markdown+7 Python) pass whitespace checks. No timer/assertion was
+weakened. Existing firmware builders/decoders,40-byte core and launcher remain
+unchanged fromacad6544.
+
+At the preceding fixture addresses the30,224-byte composition is exactly
+reverified with SHA-256
+`49687ac90583cc610cbca3bb1c12dc96c6bbed02fe4ba67ad64d2deaa8410df3`.
+Old18,416-byte carrier,22,676-byte default capture and25,716-byte checked capture
+retain their documented b085c15d...,90be0fdb...,3c7b26a0... hashes respectively.
+Saved action-link/playback-dispatch/renderer-transport images are exactly
+reverified against02fd with unchangedd4306357...,a9a6f02f...,f42fac46... hashes,
+33,492/24,532/23,240 code bytes and310/275/259 changed original bytes. All three
+remain autoscrollFalse/hardwareUNTESTED; no image was built or modified.
+
+Shared state remains656 receipt+784 bindings+328 owners; each envelope/work
+copy needs68 bytes plus separate FIFO storage. No new shared state/mutex, image
+builder, firmware image, device/network operation, installation, commit or push.
+Active scrolling remains disabled, hardwareUNTESTED; changes are local.
+
+### Offline checked-T transport synchronization (2026-10-27)
+
+The separate typed native68-byte FIFO now has emitted checked enqueue and
+pop/dispatch entries with one distinct pinned retained ordinary nonrobust raw
+mutexT. Stock workerT+10, original16/20-byte records and native worker callbacks
+are not reused or connected. Actual rawA5B960/A5B830 results gate access rather
+than status-erasing466DA0/466DC0. All cooperating access, including any future
+clear/destroy/rebind/cleanup, must use this same T; initialized mutex/import
+semantics, retained nonaliasing table/chunk/controller storage, adequate stacks
+and callers entering without T/R/P/unreviewed reverse locks remain premises.
+
+Enqueue first executes emittedpack into private68 before acquireT, retaining no
+source pointer. Under acquire0, fault is checked before header; header pins
+width68,chunk10,exact allocated count, bounded unsigned count and alignednonnull
+table, deliberately not uninitializedQ+4. Full refuses before native growth.
+Native APPEND must return the previous index and count must increase by1 under
+T. Success after release0 is(index+1,0), not a native raw status or paint nonce.
+
+Pop holds T over actualGET, head extent checks, emitted privatepack before
+REMOVE, actualREMOVE0 and count decrement1. Only actualrelease0 permits emitted
+dispatch through the existing R->P producer. No Q/fault/head/source access
+follows release. Private READY work is never exported as a retry handle; removal
+can already have taken effect before an uncertain release or publisher failure.
+Every confirmed acquire has one release, no guessed unlock or automatic retry.
+T is not held across R/P publication. Extraction FIFO does not order publication
+between concurrent drainers; strict later order requires a single ordered
+drainer or additional sequencing. Removal is not rendering/exact nonce ack.
+
+Confirmed-held schema/head/append/remove postcondition faults latch1/2/3/4 in
+one initially-zero4-byte word, never reset here. Future guarded queue operations
+deny before queue access, but already extracted private work is not revoked.
+Raw acquire errors return0/exactstatus without queue/fault access. Raw release
+errors return0/exactstatus without late shared writes/accesses or dispatch,
+even when append/remove already happened. Either ownership outcome requires
+external whole-instance isolation; this does not implement a cross-thread
+cancellation gate for other waiting/in-flight calls or promise rollback/free.
+
+The source-pinned audit adds14 checks for actual pthread import relocations,
+facade status erasure/ignored init status, capacity rounding/header/methods,
+copy/count/index order, borrowed GET, growth table clobber and spare-slot REMOVE.
+Precision: REMOVE traverses ceil(count/10) live chunks, not all unused allocated
+chunks, but moves spare slots in the final live chunk. Complete valid retained
+table and allocated chunks remain premises, not arbitrary corruption protection.
+See [checked transport protocol and limits](folderfollow-reveal-deferred-queue.md).
+
+The new fragment is3,976 bytes, after the30,224-byte envelope prefix, for34,200
+bytes total. At the preceding receipt/binding/owner/U/R/P/CODE fixture addresses,
+Q=01FF0000,T=01F20400,fault=01FE0000,slots40 gives SHA-256
+`27c7d0fbad229b65ca81d4b0f9caf3d0581f8ba8a6ba599cf77f574dcc6fdd8b`.
+Two-pass composition binds real emitted pack/dispatch and extends old outer RX
+guards over the exact tail. Zero-default envelopefollowing_code_bytes preserves
+the old30,224-byte golden; inherited internal-entry data/heap/initial-save and
+nested-stack premises, including separation from newQ/T/fault, remain unchanged.
+Pack path uses256+160 helper-stack bytes; dispatch256+160+160+160=736 before
+native/library costs, not a complete stack-availability or scheduling proof.
+
+Serial combined focused verification: **515 tests pass, no skips** (65.812 s),
+including55 new checks (13 emitted/native/ABI with blocking two-CPU case,
+28 adverse/configuration/boundary and14 pinned source) plus460 preceding
+envelope/capture/release/carrier/issuance/receipt/retirement/admission checks.
+The two-CPU fixture has independent SP/registers and shared retained memory and
+T/R/P substitute locks. CPU2 has no queue/fault access while CPU1 holds T;
+actual native extractions yield distinct private payloads and two unique paint
+nonces. These locks are test substitutes, not native scheduler/hardware proof.
+Coverage includes all fixed-state/native/generated RX source/frame starts/tails
+before any access, borrowed-head outer-frame/new-state aliases, exact unsigned
+extent endpoints and valid RX adjacency, strict descriptor/address/domain
+checks, capacities10/10240 emission boundaries, counter postconditions,
+raw status1/22/0x82/0xFFFFFFFF with either ambiguous ownership outcome, no late
+queue/source access, no T-held R/P publication, backpressure/loss, retired equal
+engine generations and distinct clone publications. One incorrectly chosen
+overflow address in the new test fixture was corrected to actually cross the
+jump-region boundary; no implementation or assertion/timer was weakened.
+Independent core/source/composition/documentation reviews found no remaining
+issue under the explicit premises. All268 Python sources compile without
+writing files;17 changed/new text paths (5 Markdown+12 Python) pass whitespace.
+Fresh serial full regression: **2,568 tests pass, no skips** (344.964 s).
+The34,200-byte synchronized composition is exactly reverified against27c7d0fb...
+at the explicit addresses above. Prior18,416/22,676/25,716/30,224-byte
+compositions retain b085c15d...,90be0fdb...,3c7b26a0...,49687ac9... respectively.
+Saved action-link/playback-dispatch/renderer-transport images are exactly
+reverified against02fd with unchangedd4306357...,a9a6f02f...,f42fac46... hashes,
+33,492/24,532/23,240 code bytes and310/275/259 changed original bytes. All retain
+autoscrollFalse/hardwareUNTESTED. Existing firmware builders/decoders,40-byte
+core and launcher/timers remain unchanged fromacad6544; no image was built or
+modified, no timer/assertion weakened. Changes remain local/uncommitted.
+
+Shared receipt656+bindings784+owners328 accounting stays unchanged; transport
+adds retained fault4 and mutex24 plus its separate native header56/table/chunks.
+No native engine/resource lease, fanout capture/allocation, cleanup/free, mutex
+init/destroy, native queue lifecycle, worker callback or UI wiring is added.
+No firmware image/device/network operation, install, commit or push; scrolling
+disabled, hardwareUNTESTED and changes local.
+
+### Text-only deferred transport publication request (2026-10-27)
+
+The user subsequently explicitly requested commit and push of the verified
+owned-envelope and checked-T queue work above. Scope is exactly17 text files
+(5 Markdown+12 Python, including6 new test modules), with no binaries, journals,
+keys, secrets or unrelated configuration. The515-test focused and2,568-test full
+serial regression,268-source compilation and saved-image/hash reverification
+remain the code verification record; only this publication annotation changed
+afterward. There are114 new tests relative toacad6544 (59 envelope+55 queue).
+Publication does not install firmware, replace the original worker queue,
+provide cross-thread error isolation/native lifetime or authorize UI operation.
+Hardware remains UNTESTED and active scrolling disabled.
