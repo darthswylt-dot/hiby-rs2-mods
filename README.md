@@ -106,6 +106,23 @@ now serializes cooperating accesses to that explicit typed FIFO with a distinct
 raw mutex, releases it before publication and fails closed on checked local
 postcondition faults. Native worker integration and whole-instance error
 isolation/lifetime remain separate gates.
+A separate [first-constructor capture](notes/folderfollow-reveal-constructor-capture.md)
+now preserves the genuine creation handoff and exact registration status from
+an explicit native-constructor fixture. Its unchanged native post-registration
+UI/error continuation is diagnostic only, not safe admission or a native lease.
+A separate [cooperative operation ledger](notes/folderfollow-reveal-retained-operations.md)
+now keeps extracted requests outstanding until exact paint acknowledgement,
+using a distinct token-bearing FIFO72. Closing admission and emptying the FIFO
+alone cannot prove quiescence. This local accounting still requires an externally
+retained engine/resource/callback bundle and grants no native-free or UI authority.
+An optional [one-shot cleanup intent](notes/folderfollow-reveal-cleanup-intent.md)
+now records that exact captured bundle only after closed admission and checked
+quiescence. It calls no native teardown: the original deletion re-resolves by
+name, and explorer teardown mutates objects before reaching the delete calls.
+A [read-only registry comparison](notes/folderfollow-reveal-registry-identity.md)
+now checks the exact historical binding against the current guarded native ring.
+Reused node/engine addresses can still match an older capture; this observation
+does not authorize unlinking, freeing or reassigning a generation.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered

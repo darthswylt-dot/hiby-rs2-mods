@@ -3061,3 +3061,355 @@ afterward. There are114 new tests relative toacad6544 (59 envelope+55 queue).
 Publication does not install firmware, replace the original worker queue,
 provide cross-thread error isolation/native lifetime or authorize UI operation.
 Hardware remains UNTESTED and active scrolling disabled.
+
+### Offline first-constructor creation handoff (2026-10-27)
+
+Local successor to committedf02b5fe. The explicit construct(U,request12,out48)
+wrapper executes actual43AD00 once and preserves that invocation's creation
+capture plus exact registration V0/V1 before native continuation discards them.
+It does not redirect explorer492918 to the new API, replace any native worker,
+retain objects or provide admission/error isolation. Request12 carries native
+A1 mutable descriptor104, A2 callback and A3 context; these are not spare native
+registers or an extension of the inner20-byte registration descriptor.
+
+The wrapper guards dynamic/fixed extents before saves/descriptor access, checks
+all12 output words zero before input reads and again after actual native return,
+and requires NUL within descriptor's first64 bytes before native calls. Native
+descriptor reads reach+64 and its+5C write is preserved. The guarded pointer is
+retained, not reread from a later modified request. Coherent exclusive request/
+descriptor/output, valid retained native resources/context and full stacks are
+still premises. This bound is the new explicit input subset, not a native name
+length guarantee for legacy callers. A dirty late output suppresses all export.
+
+One coherent local registration-call override at43AE8C preserves the original
+delayA1=constructorSP+50 and RA43AE94. The bridge validates native136 frame and
+savedRA+84==emittednative_return BEFORE reading outer256 frame; legacy calls
+tail-forward to original4389E0 without a new bridge frame or outer-context read.
+Only a pinnedU/freshARMED bound route calls the actual checked register entry.
+Private tag moves ENTERED->RETURNED; duplicate/reentrant bound entry invalidates
+export, not reuses the old capture. ActualregisterV0/V1 and privateGCAP survive
+native postwork. Scalar route/tag tests do not authenticate fabricated stacks.
+
+Matching success exports exactGCAP32 only for flag2/native0, bounded sequences/
+owner, exact privatecapture pointer and captured engine==actual constructorV0.
+Otherwise output has CNFL and zero first32 body; its tail preserves actual
+engine, actual observed registerV0/V1 and witness flags0missing/1seen/3matched.
+Missing witness is distinct from observed zero. RegisterV1 can be a historical
+private-stack scalar, not a future dereferenceable handle. NativeV0 is preserved;
+V1 is exportedout48 or0. Body/tail precede magic; no emitted calls or native/
+shared-object reads follow actual constructor return. No Python table/issuer
+observation supplies a positive pair. GCAP can enter emitted pack and checked
+68-byte transport/44-byte paint path; CNFL cannot substitute for a generation.
+The recorded words are actual checked-register entry returns, not recovered raw
+acquisition status: observed0/0 can mean quota/export denial or native masked
+acquisition failure. No later table search assigns a cause or absence of effects.
+
+Native continuation deliberately remains unsafe:43AE94 calls519FA0, which can
+invoke8B43C0 setters and43A0C0 relookup even after registration/raw-release error.
+The wrapper observes, not suppresses or isolates this. Missing resource/failed
+validation andNULL engine paths can dereferenceNULL before any export. Native
+registration allocation failure still omits unlock. No early epilogue, guessed
+unlock, rollback, retry, rescan, cleanup/free, engine/resource lease or UI claim.
+If uncertain release retained nonrecursive R, native continuation may reenter/
+block on lookup; a returning UI test substitute proves neither native progress
+nor that error reporting precedes unsafe work. No return means no promised export.
+Engine/node deletion4395A0 and independent resource deletion493F50 still require
+complete pre-mutation participation and retained contexts before worker wiring.
+See [first-constructor capture scope](folderfollow-reveal-constructor-capture.md).
+
+The fragment is5,876 bytes after the34,200-byte queue prefix, for40,076 bytes.
+At the preceding fixture addresses withQ=01FF0000,T=01F20400,fault=01FE0000,
+slots40 it has SHA-256
+`3bf7a75351ea9c91d2ff629d1a24f6deb478a918b2fa2696217f8c250c000693`.
+Two-pass composition binds actual checked register, supplies Q56/T24/fault4
+exclusions and extends every old outer bulk-source RX guard over the exact tail.
+Queuefollowing_code_bytes default0 preserves the preceding34,200 bytes/labels.
+Inherited internal-entry mapping/data/heap/initial-save/nested-stack premises
+remain. Bounded capture stack is256+136+160+776=1,328 bytes before additional
+native/library costs, distinct from519FA0's320-frame/transitive UI path; no
+complete stack/scheduler/cache/import/native-lifetime proof follows.
+
+Pinned source15 checks pass (1.986 s), including13 encoded direct firstconstructor
+callers and2 registration callers, real engine84 allocation, input/frame/ABI,
+native statusloss, postworkUI/lookup andNULL/cleanup counterexamples. Indirect
+coverage remains unproved; secondconstructor43AF00 is not intercepted.
+
+Serial focused verification: **577 tests pass, no skips** (106.247 s), comprising
+62 new checks (16 actualconstructor/ABI/path,31 adverse/boundary/configuration
+and15 pinned source) plus515 preceding queue/envelope/capture/release/carrier/
+issuance/receipt/retirement/admission checks. Actual43AD00,8B4120,8B0D00 and
+4389E0 execute; allocator/libc/resource/setup/raw and519FA0UI-continuation/name
+boundaries remain explicit hostile-ABI substitutes, not native UI completion.
+Positive creation passes emittedpack, checked native68 FIFO and actual44 paint
+publication; wrong/absent capture produces CNFL rather than latest-row repair.
+Coverage includes full extra/fixed/native/generated RX request/output/descriptor/
+outer-frame boundaries, all12 initial/late dirty output words, NUL64 limits,
+exact unsigned endpoints, guarded-pointer reuse versus request mutation,
+actualengine/status/capture mismatch, native savedRA before outer reads,
+genuine legacy zero-frame fallback, foreign U, stale/duplicate/reentrant tags,
+missing constructor/release hooks, preserved error/native-effects/UI continuation
+and exact NULL-fault counterexamples. The new fixture alone adds missing LBU
+interpretation; shared interpreters and production code were not changed for
+the harness. Two incorrect new fixture expectations (displaced delay-slot trace
+and shortened-RX assembly without matching extra exclusions) were corrected to
+test actual published receipt/commit and the identical composed extent. No
+existing assertion/timer was weakened. Independent core/source/composition/
+documentation review found no remaining issue under the explicit premises.
+All273 Python sources compile without writing files;10 changed/new text paths
+(4 Markdown+6 Python) pass whitespace checks.
+Fresh serial full regression: **2,630 tests pass, no skips** (396.598 s).
+The40,076-byte constructor composition is exactly reverified against3bf7a753...
+at the explicit addresses above. Prior18,416/22,676/25,716/30,224/34,200-byte
+compositions retain b085c15d...,90be0fdb...,3c7b26a0...,49687ac9...,27c7d0fb...
+respectively. Saved action-link/playback-dispatch/renderer-transport images are
+exactly reverified against02fd with unchangedd4306357...,a9a6f02f...,f42fac46...
+hashes,33,492/24,532/23,240 code bytes and310/275/259 changed original bytes.
+All remain autoscrollFalse/hardwareUNTESTED. Existing firmware builders/decoders,
+40-byte core and launcher/timers remain unchanged fromf02b5fe; no firmware image
+was built or modified. No existing assertion/timer was weakened.
+No firmware image, device/network operation, install, commit or push. Active
+scrolling disabled, hardwareUNTESTED; all new changes stay local/uncommitted.
+
+### Offline cooperative outstanding-operation ledger (2026-10-27)
+
+Local successor to the constructor-capture work above. One initially-zero
+ledger binds once to a genuine checkedGCAP32 plus three opaque externally
+retained resource/callback/context words. Its separate native FIFO72 carries
+an append-only token plus unchangedREADY68. Neither FIFO68 nor paint44 changes;
+no stock worker, native cleanup or constructor caller is redirected to this API.
+See [operation accounting scope](folderfollow-reveal-retained-operations.md).
+
+Under a new distinct checked raw mutexM, enqueue validates the immutable bound
+capture and reserves a nonreused operation BEFORE actual nativeAPPEND. A pop
+copies the exact token/head before actualREMOVE, then leaves EXTRACTED outstanding
+across M release, actual R->P publication and nonce binding under a fresh M
+acquisition. Empty transport does not release this accounting. Successful
+publication's actualV1 insertion index is retained independently across rawM
+calls; it is not confused with pthread status. No M->R/P nesting is introduced.
+
+Only exact PUBLISHED nonce can enter ACKING before actual checkedpaint.complete.
+A terminal1/2/3 with successful release, followed by a successful M rebind, can
+mark DONE. An early claim before nonce binding remains outstanding; early exact
+complete refuses before calling paint.complete. Actual complete(0,0) stays
+ACKING without retry: it conflates missing/wrong claim and post-REMOVE/schema
+fault. A valid actual claim is a caller premise, and misuse may prevent drain.
+Raw M/R/P error immediately returns without another lock/shared-state access,
+guessed unlock, post-release fault latch, repair, retry or cleanup. Already
+effective append/remove/ack is not rolled back. Whole-instance coordinated
+isolation, including waiting/in-flight callers, remains an external requirement.
+
+Close irreversibly stops new admission without purging published paint work.
+Queued operations cancel only by successful exact closed pops; inflight and
+published operations remain outstanding. Positive combined quiescence requires
+CLOSED, healthy full ledger, all occupied rows DONE and actual FIFO72 empty,
+then actual checkedpaint.retire and checkedpaint.drained outsideM. The old
+count-only retirement cannot run while tracked acknowledgements are live.
+Ordinary publish(0,0) may finish a local attempt but cannot bypass the checked
+paint fault/drain barrier after partial native append. No result authorizes
+native free, opaque callback invocation or UI operation.
+
+Full schema validation covers reserved words, exact append-only row tokens,
+state/nonce domains, unique positive historical nonces including DONE, and zero
+unused tail. Opaque bundle words are not dereferenced or authenticated; actual
+native lifetime/cleanup coverage is still required before any unlink/detach/free.
+Native4395A0 engine deletion, separate493F50 resource deletion and constructor
+519FA0 unsafe UI/lookup/error continuation remain unchanged and unwired.
+
+At receipt01F50000,binding01F80000,owner01F70000,U01800000,R01F20300,
+P01F20200,code01E80000,oldQ01FF0000,T01F20400,oldfault01FE0000,
+ledger01F40000,Q7201FF1000,M01F20500, capacities16/16/64/40/16/40,
+the exact composition is55,164 bytes: extended constructor prefix41,084 plus
+new fragment14,080. SHA-256:
+`8217a5c2c4a091c73892b76a5f95ae0d178b866e6253ffffb89bc6fad333acb8`.
+New fixed storage is ledger320+FIFOheader56+mutex24, excluding all retained
+native table/chunks and externally retained bundle/stack allocations. Default
+constructor composition stays40,076/3bf7a753...; optional zero-default RX tail
+and empty-default extra-data exclusions preserve old bytes/labels. New outer
+guards cover complete composedRX and all new fixed data; inherited internal
+entry, native heap/list/mapping/nonaliasing and transitive-stack premises remain.
+
+Fresh serial focused verification: **642 tests pass, no skips** (146.975 s),
+including65 new checks (19 actual lifecycle/native paths,31 adverse/ABI/boundary
+and15 pinned native/emitted-source/composition checks) plus577 predecessors.
+Actual43AD00 capture, native72 FIFO methods and checked44 paint methods execute;
+resource/UI/heap/libc/raw services remain explicit bounded substitutes. Coverage
+includes segment crossing, distinct clone tokens/nonces, capacity nonreuse,
+immutable snapshots, exact closed cancellation/acknowledgement, deterministic
+independent-CPU early-claim/close interleavings, raw acquisition/release/rebind
+uncertainty, retained partial effects, ambiguous completion, healthy paint barrier,
+dirty unused rows, duplicate historical nonces, fixed/generated/nativeRX/frame
+aliases and exact unsigned2**32/signed0x80000000 extent boundaries. These fixtures
+do not establish native scheduling, object leases or complete writer coverage.
+Independent core/composition/protocol review found no remaining actionable issue.
+The saved-index detail was corrected before the first test run; no preceding
+assertion, timer, native helper or firmware builder was weakened or modified.
+Fresh serial full regression: **2,695 tests pass, no skips** (426.535 s).
+All278 Python sources compile without writing files. The55,164-byte composition
+is exactly reverified against8217a5c2... at the canonical addresses above.
+Prior18,416/22,676/25,716/30,224/34,200/40,076-byte compositions retain exact
+b085c15d...,90be0fdb...,3c7b26a0...,49687ac9...,27c7d0fb...,3bf7a753...
+hashes respectively. Saved action-link/playback-dispatch/renderer-transport
+images are exactly reverified against02fd, retaining d4306357...,a9a6f02f...,
+f42fac46..., code33,492/24,532/23,240 and310/275/259 changed original bytes;
+all remain autoscrollFalse/hardwareUNTESTED. No firmware image was built or
+modified. All16 changed/new text paths (5 Markdown+11 Python) pass whitespace
+checks. No device/network operation, installation, launch, reboot, commit or
+push; all constructor and operation-ledger changes remain local/uncommitted.
+
+### Optional historical-capture cleanup intent (2026-10-27)
+
+The native cleanup audit rules out simply gating the final engine/resource
+delete pair.4395A0 deletes the first equal NAME, not a supplied captured engine
+or generation; its masked R callbacks do not propagate actual raw errors.
+Its first unlink439618 precedes all frees. The usual earlier439780 already
+purges raw paint rows under R without P, then detaches parent membership through
+8B0760. Explorer's493F44/493F50 pair follows optional worker shutdown493EB4,
+list cleanup493EC8, controller/worker stores493F04/493F14, cache cleanup493F2C
+and purge/detach493F38. Separate485320 resource cleanup forces zero after inner
+operations rather than reporting an exact successful/deferred outcome.
+The bounded source census still does not prove every teardown-arm entry.
+
+An opt-in retained cleanup_intent_address word now enables explicit
+prepare_cleanup(U,owned_zero48). None preserves the preceding55,164-byte
+operation composition exactly. This entry calls no native detach/destructor,
+name lookup, callback, continuation or free; it is not installed in a stock
+caller. See [cleanup intent scope](folderfollow-reveal-cleanup-intent.md).
+
+Before any save or shared-state access, full output/frame/fixed/nativeRX/
+generatedRX guards and all12 zero output words are checked. Under confirmed M,
+the full ledger must be healthy, CLOSED, all occupied rows DONE and FIFO72 empty.
+Busy work refuses before consuming the sole attempt. The immutable GCAP32 plus
+three opaque words are snapshotted, then the separate intent word irreversibly
+moves0->1 before M release. Only confirmed release0 permits the actual existing
+quiescent entry (including its own checked M and P retire/drained barrier).
+Only exact barrier(1,0) and a second all12-word output-zero check can export
+CINT48: magic0, historical boundGCAP32 at4..35 and opaque resource/callback/
+context at36/40/44. Body precedes magic; success is outputpointer/0.
+
+No failed/uncertain release, ordinary barrier denial or dirty late output resets
+the reservation. Duplicate prepare refuses before the P barrier; deterministic
+independent-CPU interleavings cover the gaps before barrier and before export.
+Raw errors return without another lock/call/shared-state read/write; neither
+gate nor output is repaired. Retained native bundle, all shared state, output,
+mutexes, waiting/in-flight callers and future intent consumption remain external
+cooperation/retention premises. CINT is historical captured accounting, not
+current native identity, allocation lease, cleanup result or free permission.
+A later native name relookup remains unsafe against untracked replacement;
+holding R across unchanged native deletion would re-acquire ordinary R.
+
+At the preceding canonical55,164-byte addresses plus intent01F20600, the opt-in
+composition is58,948 bytes: constructor prefix41,420 plus retained fragment17,528.
+SHA-256:
+`1ec55000c87c58bedabd5e4f545ed665955b42f845c3efc4aea82e13949f54e0`.
+The additional fixed state is one retained4-byte word, not a native reference
+counter. New outer guards exclude it and the complete composed RX; inherited
+internal-entry/heap/list/mapping/full-stack nonaliasing premises still apply.
+
+Fresh serial focused verification: **50 tests pass, no skips** (48.304 s):
+15 actual-path/lifecycle checks,20 adverse/ABI/boundary checks and15 pinned
+native/composition contracts. Actual constructor capture, native FIFO72 and
+checked paint44 completion precede real emitted preparation/barrier/export;
+bounded raw/library/heap/resource/UI substitutes remain explicit. Coverage
+includes live/open refusal without reservation, exact closed cancellation and
+acknowledgement, clone accounting, one-shot races, all12 initial/late dirty
+output words, M/P acquire/release uncertainty at both critical sections and
+paint barriers, full fixed/RX/frame boundaries, signed/unsigned endpoints and
+hostile-ABI preservation. No preceding assertion, timer or builder was changed.
+Independent source/protocol/core/composition review found no actionable issue.
+Fresh serial full regression: **2,745 tests pass, no skips** (470.577 s).
+All281 Python sources compile without writing files. The58,948-byte opt-in
+composition is exactly reverified against1ec55000... at the addresses above;
+default55,164/8217a5c2... is unchanged. The preceding18,416/22,676/25,716/
+30,224/34,200/40,076-byte compositions retain b085c15d...,90be0fdb...,
+3c7b26a0...,49687ac9...,27c7d0fb...,3bf7a753... exactly. Saved action-link,
+playback-dispatch and renderer-transport images retain d4306357...,a9a6f02f...,
+f42fac46... and exact verification against02fd:33,492/24,532/23,240 code bytes,
+310/275/259 changed original bytes, autoscrollFalse and hardwareUNTESTED.
+All20 changed/new text paths (6 Markdown+14 Python) pass whitespace checks.
+No firmware image, native cleanup installation, device/network operation,
+launch, reboot, commit or push. Changes remain local/uncommitted.
+
+### Read-only historical binding/current ring comparison (2026-10-27)
+
+The next exact-unlink audit found an unresolved ABA: native node and engine
+addresses can both be freed and reused while their historical48-byte binding
+remains unchanged. A later live ring/field match under checked R cannot prove
+continuous native incarnation. Native4389E0 allocates28-byte nodes, with links
+and five descriptor scalars but no live binding sequence. Coherent publication
+finishes at438A58. Besides name-selected4395A0 deletion, controller teardown
+43CB20 independently unlinks/frees nodes at43CBB0..43CBC0, bypassing4395A0.
+Missing/full issuance cannot veto unchanged native publication, so searching
+the newest equal-pointer historical row cannot repair an uncaptured birth.
+
+The new explicit audit_identity(U,exclusive_CINT48,owned_zero64) therefore
+observes only. Full input/output/frame/fixed/nativeRX/generatedRX arithmetic
+guards precede all input/output accesses and saves. All16 output words must
+initially be zero before saves, source reads or consumption. A valid private
+snapshot consumes owned CINT magic toCCNS before raw R acquisition;
+malformed schema refuses before consumption. Copies remain independent attempts,
+not global replay prevention. Under confirmed R the observer checks controller
+fingerprints and full occupied binding prefix, then the exact captured sequence,
+owner, engine and receipt sequence. It never adopts a latest-by-pointer identity.
+
+Only the actual U+34 ring is followed. Every reached node's full28-byte extent
+is guarded before read, previous links and final tail must agree, and the walk
+must reach the sentinel within strict max_nodes1..1024 (default64). Historical
+node addresses are not dereferenced just because the binding names them. Partial
+matches before a bad/overlong/cyclic tail do not export. No engine/resource/name
+object is read, no native/shared state is written, and no M/P, queue method,
+callback, unlink, destructor or free is called. Current ring/controller/mutex
+mapping, retention and common R writer synchronization remain caller premises;
+these do not revive historical allocations or make their addresses current.
+
+After actual raw release0 and a second16-word output-zero check, body-first/
+magic-last RIAU64 carries kind1 MATCHING_FIELDS,2 NODE_ABSENT or3 ENGINE_MISMATCH,
+historicalGCAP32, opaque context words, historical node, observed engine scalar
+and completed scan count. Outputpointer/0 means diagnostic export only, never
+generation match or native-free authority. Raw R acquire/release errors return
+without further native/shared/input/output access, another lock, guessed unlock,
+fault write or retry. CINT can already be consumed even though no output exists.
+See [registry comparison limits](folderfollow-reveal-registry-identity.md).
+
+The ABA fixture executes actual4395A0, its real unlink stores,8B3F00(NULLqueue),
+8B4220 and8B0D20, with bounded strcmp/widget-destructor/free imports. A second
+actual43AD00/4389E0 reuses the same84-byte engine and28-byte node through the
+controlled allocator. Capacity1 denies a new historical binding/capture while
+native publication still happens. OldCINT then yields MATCHING_FIELDS against
+that new allocation, deliberately proving why this observation cannot authorize
+deletion. The audit itself performs no native mutation. This setup exercises
+the still-uncovered native cleanup path; it does not establish a continuous
+allocation lease, complete native graph destruction or general allocator model.
+
+At the preceding canonical addresses plus intent01F20600 and max_nodes64,
+the composition is64,948 bytes:58,948 cleanup-intent prefix plus6,000 observer.
+SHA-256:
+`195de8d83670ed24f4301a2d01b78f3bd4e59f0efcfa6a5509101603b4dbcc1a`.
+No new shared state is allocated. The retained composer's strict zero-default
+following_code_bytes extends exact outer RX protection; its default55,164 and
+opt-in58,948 bytes/labels remain unchanged. Internal-entry/native heap/list/
+mapping/transitive-stack nonaliasing premises are not universally extended.
+
+Fresh serial focused verification: **55 tests pass, no skips** (116.067 s):
+15 actual-path/comparison/ABA checks,25 adverse/ABI/boundary checks and15 pinned
+native-source/composition contracts. Coverage includes full ring/binding-prefix
+validation, exact captured fields, absent-node no-dereference, scalar mismatch,
+independent copies, raw acquire/release uncertainty, all16 initial/late dirty
+output words, full source/output/node/frame/fixed/RX boundaries, budget/endpoints,
+read-only stores, and hostile ABI. Receipt bounds were corrected to the actual
+configured capacity before tests, not guessed from an unrelated1024 limit.
+Independent source/protocol/core/composition reviews found no remaining issue
+under the stated premises. No preceding assertion, native helper, timer or
+firmware builder was weakened or changed.
+Fresh serial full regression: **2,800 tests pass, no skips** (628.655 s).
+All286 Python sources compile without writing files. The64,948-byte composition
+is exactly reverified against195de8d8... at the canonical addresses above.
+Preceding18,416/22,676/25,716/30,224/34,200/40,076/55,164/58,948-byte
+compositions retain b085c15d...,90be0fdb...,3c7b26a0...,49687ac9...,27c7d0fb...,
+3bf7a753...,8217a5c2...,1ec55000... exactly. The three saved action-link,
+playback-dispatch and renderer-transport images retain d4306357...,a9a6f02f...,
+f42fac46... with exact02fd verification:33,492/24,532/23,240 code bytes and
+310/275/259 changed original bytes; autoscrollFalse, hardwareUNTESTED.
+All26 changed/new text paths (7 Markdown+19 Python) pass whitespace checks.
+No firmware image was built or modified, no native unlink installed, and no
+device/network operation, launch, reboot, commit or push. All changes remain
+local/uncommitted; live native identity/retention/cleanup integration is still gated.

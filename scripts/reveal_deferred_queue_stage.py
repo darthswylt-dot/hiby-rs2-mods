@@ -15,8 +15,15 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
              registry_mutex_address, paint_mutex_address, code_base,
              queue_address, transport_mutex_address, fault_address, *,
              capacity=16, owner_capacity=16, ticket_limit=transport.MAX_TICKET,
-             queue_capacity=64, transport_capacity=40):
-    """Return bytes/labels; caller retains typed FIFO, raw mutex and fault word."""
+             queue_capacity=64, transport_capacity=40, following_code_bytes=0):
+    """Return bytes/labels, protecting an exactly appended optional RX tail.
+
+    Zero preserves preceding bytes and labels. The composing caller must append
+    the exact advertised tail and independently validate its emitted entries.
+    """
+    if (type(following_code_bytes) is not int or following_code_bytes < 0
+            or following_code_bytes % 4):
+        raise ValueError('following code bytes must be a nonnegative aligned integer')
     args = (receipt_address, binding_address, owner_address, controller_address,
             registry_mutex_address, paint_mutex_address, code_base)
     options = dict(capacity=capacity, owner_capacity=owner_capacity,
@@ -32,10 +39,10 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
                          transport_capacity=transport_capacity)
     provisional, labels = transport.assemble(*queue_args, **queue_options)
     prefix = envelopes.assemble(*args, **options,
-                                following_code_bytes=len(provisional))
+                                following_code_bytes=len(provisional) + following_code_bytes)
     if len(prefix['code']) != prefix_bytes or prefix['labels'] != initial['labels']:
         raise ValueError('envelope layout changed while protecting queue RX')
-    protected = (code_base, prefix_bytes + len(provisional))
+    protected = (code_base, prefix_bytes + len(provisional) + following_code_bytes)
     if prefix['protected_code_extent'] != protected:
         raise ValueError('envelope prefix does not protect the exact composed RX')
     emitted, final_labels = transport.assemble(

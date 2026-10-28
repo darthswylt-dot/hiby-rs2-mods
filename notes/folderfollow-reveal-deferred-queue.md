@@ -155,3 +155,8 @@ built or modified. All changes remain local/uncommitted.
 Exact identity, counts and fresh regression results are recorded in [status](status.md).
 No device/network operation, firmware image change, installation, commit or push;
 active scrolling disabled, hardware UNTESTED, changes local.
+
+The [first-constructor capture successor](folderfollow-reveal-constructor-capture.md)
+preserves a genuine per-invocation capture through native construction. It does
+not change this queue's defaults or make the constructor's unchecked native
+continuation isolated, retain engine/resource storage or connect the worker.
