@@ -3413,3 +3413,489 @@ All26 changed/new text paths (7 Markdown+19 Python) pass whitespace checks.
 No firmware image was built or modified, no native unlink installed, and no
 device/network operation, launch, reboot, commit or push. All changes remain
 local/uncommitted; live native identity/retention/cleanup integration is still gated.
+
+### Independent historical native births (2026-10-28)
+
+The next step separates birth observation from historical issuance quotas.
+The receipt observer's opt-in birth_callback receives the actual invocation's
+owned32 event after the final native publication store438A58 and fresh checked
+raw R=0/controller gates, before any receipt header/row/capacity access. Existing
+publication_callback ordering and zero-default bytes/labels stay unchanged.
+The new event has no invented receipt/binding/owner sequence: U,R,node,engine,
+nativeSP,caller,site438A5C,raw0. Caller-supplied callbacks must preserve ALL GPRs
+and HI/LO, as must the emitted independent recorder.
+
+The separate zero-initialized birth history has a16-byte header and40-byte
+BRTH rows: magic,append-only token,U,R,node,engine,nativeSP,caller,site,raw.
+Tokens are rowindex+1 and never reset/reused. Under the genuinely held common
+ordinary R, the callback validates the full occupied prefix and entire unused
+tail before append; corruption or exhaustion permanently latches FAULT=1.
+Rows are committed body-first/magic-last then COUNT. Historical pointer words
+are opaque and never dereferenced by the callback. Its initial192-byte full
+register-save frame is an explicit validity/nonaliasing premise; subsequent
+arithmetic/input/frame/fixed/RX exclusions precede input/controller/state loads,
+not those initial saves. Schema checks do not authenticate forged events.
+
+This is historical observation only, not the proposed live-incarnation sidecar:
+there is no LIVE state, tombstone, exact-token query or native-free permission.
+Native raw acquisition failure may still publish with no safely recordable
+event. A healthy history therefore cannot certify continuous coverage, even
+without reaching its own bound. Neither callback failure nor a full history
+vetoes native publication or existing owner issuance. Whole-instance isolation,
+all allocation/resource/callback lifetimes and stock caller continuations are
+still independent integration gates.
+
+The source census now pins four distinct controller-ring first-unlink sites:
+439618,43CBB0,4E3F48,51A3E8. The latter outer shutdown loops release R before
+reading/calling node callbacks and their unlink/free path, before43CB20.
+Two pre-unlink observers would not provide complete coverage or a valid late
+R guard. Native node+8 lookup escape, alias/computed writes and opaque callbacks
+also prevent claiming an exhaustive lifecycle proof from encoded callsites.
+See [independent birth scope](folderfollow-reveal-registry-birth.md).
+
+The new local birth-stage branch composes explicit checked-release creation
+capture plus the early callback; it does not replace later constructor/retained/
+cleanup-intent/registry-observation compositions. The outer capture and birth
+callback exclude the new state and exact full generated RX. Strict empty-default
+extra_protected_data extends capture's own guards without claiming to extend
+every inherited internal adapter or native heap/transitive-stack guard. The
+generic creation composer requires a birth callback to lie entirely in its
+advertised protected tail, outside its actual prefix and all fixed data.
+No constructor/explorer/worker/unlink hooks, active scrolling or player work.
+
+At the preceding seven canonical creation addresses and birth state01F38000,
+the independent branch is28,088 bytes:26,232 guarded creation/receipt prefix
+plus1,856 historical callback. Birth storage is656 bytes at capacity16.
+SHA-256:
+`0d40bc5bba95d1458af0cd79a7957377a034969fc45ff98fba27c495e3ce07b0`.
+The extra guarded state and optional callback preserve all nine preceding
+composition hashes with their defaults, including the64,948-byte diagnostic
+branch195de8d8...; the new branch does not replace or retag those records.
+
+Fresh serial focused verification: **67 tests pass, no skips** (11.160 s):
+21 actual-event/ABI checks,25 adverse/boundary checks and21 pinned source/
+composition contracts. Actual native publication precedes emitted recording
+while old receipt/binding/owner limits, quarantine, ticket exhaustion and
+nested P errors do not hide the independent event. Raw-acquisition errors,
+missing/wrong witnesses and wrong bound routes cause no birth-state access,
+even when unchanged native code still publishes. Coverage also includes all
+historical prefix schema fields, full unused-tail validation, permanent faults,
+scalar non-dereference, full GPR/HI/LO preservation, late raw-release errors,
+protected-tail-only callbacks and new outer descriptor/output exclusions.
+Direct synthetic equal events remain distinct historical entries, not proof
+of authentic unique births or live incarnations. Independent source/protocol/
+core/composition/fixture reviews found no remaining issue in the stated scope.
+No preceding assertion, timer, native helper or firmware builder was changed.
+
+Fresh serial full regression: **2,867 tests pass, no skips** (620.425 s),
+with the local temporary-file/subprocess access required by the existing suite.
+An earlier restricted run was interrupted after errors and is not counted as
+a successful verification. All291 Python sources compile without file writes.
+The28,088-byte branch is reverified at the addresses above against0d40bc5b...;
+all nine old composition sizes/hashes remain exact. The three saved action-link,
+playback-dispatch and renderer-transport images retain d4306357...,a9a6f02f...,
+f42fac46... and exact02fd verification:33,492/24,532/23,240 code bytes,
+310/275/259 changed original bytes, autoscrollFalse and hardwareUNTESTED.
+All12 changed/new text files (4 Markdown+8 Python) pass whitespace checks;
+independent scope review found no unexpected file, binary, log or secret pattern.
+No image was built/modified, no stock lifecycle hook installed, no device or
+network operation, launch, reboot, commit or push. Changes remain local.
+
+### Four checked retirement frontiers, not confirmed deletion (2026-10-28)
+
+The separate lifecycle-observation branch now pairs actual birth observations
+with field-correlated retirement selection. It does not replace BRTH40, later
+constructor/retained/cleanup-intent/RIAU branches or the saved firmware images.
+An initially zero16-byte header precedes64-byte BRLC rows containing a nonreused
+birth token, U/R/node/engine, exact birth frame/caller/site/raw0, state, retirement
+site/frame/caller and two reserved zeros. State1 NO_RETIREMENT_OBSERVED is not
+LIVE; terminalstate2 RETIREMENT_SELECTED is not DEAD or completed cleanup.
+
+Birth callbacks append directly from the early native publication event,
+independently of old receipt/binding/owner quotas. Under genuine ordinary R,
+both callbacks validate the full occupied schema, global outstanding-node
+uniqueness and all unused tail words. Birth collisions/full capacity, retirement
+missing/mismatched/duplicate fields or admitted corruption permanently fault.
+Retirement marks only a unique outstanding matching node/engine row, never
+reviving a terminal row or minting a new token. Body/synchronized state2-last
+commit is irreversible; a partial body with state1 faults on next admission.
+A full healthy history may still mark an existing retirement. No positive
+return record, LIVE query, token export or old-carrier retagging is supplied.
+
+Eleven passive native redirects now cover fresh acquisition and four selected
+frontiers.439618 and43CBB0 observe before replaying each first unlink pair.
+4E3F18 and51A3B8 instead observe conservatively before the actual native unlock,
+since their later callbacks/direct unlinks run without R. Empty sentinel
+branches skip outer events. A selected callback can leave the node linked;
+duplicate selection may fault conservatively without vetoing native cleanup.
+The43CB20 witness remains captured across all nodes under one R acquisition
+and is invalidated before release43CBD4. Two previously unused non-home scalar
+locals10/14 carry per-scope readiness and exact raw acquisition status.
+
+Global466DA8/466DB0 dispatchers classify the actual callback/native saved-PC
+chain and pinned raw A0; registration/unknown routes fully restore and tailchain
+the preceding receipt observer once. Actual raw V0 is captured before masking.
+Failed/missing/wrong witnesses cannot access lifecycle state, even when native
+code still unlinks/frees. All registers and HI/LO survive each bridge except
+its precise displaced native effects; original native return PCs are retained.
+The full16-pair coherent fixture map includes receipt and checked registration
+release observers; arbitrary partial activation is not fail-closed.
+
+New native/save-frame, input/current-node28 and fixed/native/generated RX
+arithmetic exclusions precede observer loads. Raw N=W+40 overflow is explicitly
+rejected before native-local access; direct executable endpoint tests cover it.
+Initial full architectural-save stores remain an independent retained, mapped,
+writable/nonaliasing frame premise, not a denial-before-store guarantee.
+Unknown allocations/transitive stacks, real ordinary mutex semantics, complete
+native resource/callback retention and coherent field stability remain external.
+
+The new executable counterexample demonstrates that healthy state1 can outlive
+a native raw-error deletion. A second raw-error publication with the same
+node/engine field values can then be missed; a later checked retirement
+correlates the new object's fields with the old historical record. This
+deliberately proves the new terminal record is not authenticated continuous
+incarnation. All four
+known encoded frontiers do not solve missing raw-error events, escaped aliases,
+sentinel reinitialization, complete graph destruction, safe caller continuation
+or whole-instance isolation. No cleanup/free permission or native installation.
+See [lifecycle observation scope](folderfollow-reveal-registry-lifecycle.md).
+
+At the preceding canonical seven creation addresses plus state01F3A000,
+the new branch is58,572 bytes:26,232 capture prefix,2,488 lifecycle callback
+and29,852 retirement bridges. History is1,040 bytes at capacity16.
+SHA-256:
+`bfdee94f95de5d0b0a861dcfe18bb7ad8980f1a3df1556ae76532cd8c687b974`.
+Exact complete generated RX is guarded by all new fragments and outer capture;
+inherited internal-entry/native heap/stack obligations are not universally
+extended. All ten preceding composition sizes/hashes remain exact, including
+28,088/0d40bc5b... and64,948/195de8d8....
+
+Fresh serial focused verification: **43 tests pass, no skips** (13.943 s):
+16 actual-path/ABI tests,18 adverse/counterexample tests and9 pinned source/
+configuration/composition checks. Actual registration and full4395A0 unlink
+execute; bounded43CB8C..43CBDC and outer-loop sections have explicit entry/stop
+boundaries. Pthread, allocation/free, strcmp, logging, paint/engine destruction
+and callback imports are bounded substitutes, not complete object-graph cleanup.
+Controlled28-byte node reuse after observed actual unlink mints a distinct token
+while preserving the old terminal row, including old quota1 refusal. Additional
+coverage includes three-node teardown, outer callback leaving links unchanged,
+pre-unlink/pre-unlock event timing, full/dirty schema and tail, permanent faults,
+each bridge's ALL-GPR/HI/LO boundaries, raw uncertainty/missing witnesses,
+relocated native stores and unchanged native delete final architecture.
+
+Fresh serial full regression: **2,910 tests pass, no skips** (676.168 s),
+with the temporary-file/subprocess access required by the existing suite.
+All297 Python sources compile without file writes. The58,572-byte composition
+is reverified againstbfdee94f... at the addresses above. All ten preceding
+composition sizes/hashes remain exact. The three saved action-link,
+playback-dispatch and renderer-transport images retain d4306357...,a9a6f02f...,
+f42fac46... and exact02fd verification:33,492/24,532/23,240 code bytes,
+310/275/259 changed original bytes, autoscrollFalse and hardwareUNTESTED.
+Independent source/protocol/core/bridge/composition/fixture/scope reviews found
+no remaining issue within the stated observational boundary. All19 changed/new
+text paths (5 Markdown+14 Python), including the preceding uncommitted birth
+increment, pass whitespace/scope checks; no unexpected file or secret pattern.
+No preceding assertion, timer, native helper or firmware builder was weakened.
+No firmware image was built/modified, no native hook installed, no device or
+network operation, launch, reboot, commit or push. Changes remain local and
+uncommitted; safe native lifecycle/cleanup/UI integration is still gated.
+
+### Exact owned birth-token handoff (2026-10-28)
+
+The next separate local branch transfers the just-minted lifecycle token
+directly from its actual birth commit into the exact registration invocation's
+owned output. No node/engine/name/latest-row lookup is used. The optional
+birth_commit_callback runs only after successful new row magic/count commit,
+receiving U, the current lifecycle frame's owned32 snapshot and its actual token
+in A2. Retirement, denied lifecycle birth or historical lookup never invokes
+it; older issuance quotas do not gate it. None preserves previous bytes/labels.
+
+The new register_birth(U,descriptor20,zero_out48) calls the actual existing
+checked registration capture once. An all-GPR/HI/LO-preserving private sink
+checks the exact nested frame relationship: request=L+0x90, native N=L+192+192,
+checked capture C=N+40, outer W=C+160. Full extent/arithmetic exclusions precede
+each deeper read; N+0x24 and the event caller must equal capture.native_return,
+and C+0x70 must equal this outer's capture_return. Pinned C fields, its private
+GCAP-output pointer W+0x10, both descriptor engine scalars and fresh W tag/zero
+token/event must agree. The exact token/event are copied into W, not selected
+from shared state. A fully scoped duplicate poisons export toINVALID without
+reminting or overwriting the first token/event. Tags/bounds do not authenticate
+fabricated frames or prove mapping, retention or unknown stack/heap nonaliasing.
+
+BCAP48 is a distinct type: magic0, token4, owned event32 at8..39, actual native
+result0 at40 and observed raw R-release0 at44. The event contains U,R,node,
+engine,nativeSP,caller,site438A5C and actual raw acquisition0. There is no owner,
+paint-health, native-reference, liveness or cleanup claim. No existing GCAP32,
+CINT48, RIAU64, deferred FIFO or retained-operation format is extended/retagged.
+Copying BCAP does not mint a second birth or enforce global replay prevention.
+Future typed queue transport must carry this exact token explicitly.
+
+Before any outer save/native call, full frame/descriptor20/output48 and known
+fixed/native/generated RX guards, pairwise disjointness and all12 zero output
+words must pass. The descriptor is snapshotted privately. After checked capture
+returns, only W and the exclusive output may be accessed; no shared/native/input
+read or additional service occurs. Nonzero checked V0 returns its exact V0/V1
+using private restoration only, without any late output read/write. Native0
+requires the exact private captured token/event plus a second12-word zero check
+before body-first/magic-last BCAP export, returning0/outputpointer. Otherwise
+ordinary0/0 leaves the output untouched. Raw-release error remainsFFFFFFFF/
+exactstatus; missing witness/allocation failure remainsFFFFFFFF/0. The old
+allocation-failure missing-unlock defect and native continuations are unchanged.
+
+Checked registration's0/0 after owner/receipt denial still witnesses raw R
+release0; a valid independent birth may therefore export BCAP without GCAP.
+Nested P acquire/release uncertainty may likewise coexist with birth-only BCAP,
+which grants no P health, owner issuance or safe reuse/cleanup. Raw R acquire
+failure may still publish but cannot supply a fresh birth sink, so no BCAP.
+Lifecycle fault/full/missing events refuse export without borrowing an old row.
+All preceding missed-event ABA/alias/retention/error-isolation gates remain.
+See [owned birth-capture scope](folderfollow-reveal-birth-capture.md).
+
+The lifecycle composer's strict zero-default following_code_bytes advertises
+the new tail without appending it. Its optional callback must fit wholly in
+that protected tail outside actual emitted prefix/data. All enclosing capture,
+lifecycle and retirement guards receive exact complete RX. At the preceding
+canonical seven creation addresses plus state01F3A000, the new composition is
+65,796 bytes:58,692 guarded lifecycle prefix plus7,104 outer wrapper/sink.
+The optional composed lifecycle core is2,608 rather than default2,488 bytes;
+the standalone default without four extra data extents remains2,104 bytes.
+No additional shared state or native redirect is added:16 coherent fixture
+hook pairs remain. SHA-256:
+`76a95966f8e35f8053408b9a7cd0c472cabd0fed53ea9f1234af261a07331cb7`.
+All eleven preceding composition sizes/hashes remain exact, including
+58,572/bfdee94f...,28,088/0d40bc5b... and64,948/195de8d8....
+
+Fresh serial focused verification: **44 tests pass, no skips** (24.933 s):
+13 actual-handoff/ABI tests,15 adverse/boundary tests and16 pinned source/
+configuration/composition contracts. Actual4389E0, fresh raw-result gates,
+lifecycle commit, old optional owner issuance and native checked release execute;
+allocation/pthread/cleanup imports remain the preceding bounded substitutes.
+Coverage includes equal-engine distinct tokens, native node deletion/reuse,
+quota/P-error independence, lifecycle fault/full, native allocation failure,
+raw R errors/missing release, private-only error return, full initial/late
+output dirtiness, complete fixed/RX/frame aliases, exact request/N/caller/
+return/temp-output/descriptor gates, duplicate poisoning and ABI preservation.
+An initial contract confused standalone/composed guard sizes; the expectation
+was corrected without changing emitted behavior or weakening earlier checks.
+
+Fresh serial full regression: **2,954 tests pass, no skips** (669.912 s),
+with the temporary-file/subprocess access required by the existing suite.
+All302 Python sources compile without file writes. The65,796-byte branch is
+reverified against76a95966... at the addresses above, with16 coherent hooks
+and exact complete RX guards. All eleven preceding sizes/hashes remain exact.
+The three saved action-link, playback-dispatch and renderer-transport images
+retain d4306357...,a9a6f02f...,f42fac46... and exact02fd verification:
+33,492/24,532/23,240 code bytes,310/275/259 changed original bytes,
+autoscrollFalse and hardwareUNTESTED. Independent protocol/core/composition/
+fixture/source/scope reviews found no remaining issue in the stated historical
+handoff boundary. All25 changed/new text paths (6 Markdown+19 Python), including
+the preceding uncommitted birth/lifecycle work, pass whitespace/scope checks;
+no unexpected file, binary, log or secret pattern was found.
+No preceding assertion, timer, native helper or firmware builder was weakened.
+No firmware image was built/modified, no stock producer/worker hook installed,
+no device/network operation, launch, reboot, commit or push. Changes remain
+local/uncommitted. Native lifetime/error isolation and active UI integration
+remain independent gates; BCAP is not a LIVE certificate or free permission.
+
+### Separate typed birth-token FIFO (2026-10-28)
+
+The next local diagnostic branch carries the exact owned BCAP token/event and
+an owned 36-byte payload through a separate preallocated native FIFO. It never
+recovers a token by latest node/engine/name lookup or reinterprets any preceding
+stock/GCAP32/READY68/retained-operation72 format. The new BQ84 record replaces
+only BCAP's magic and preserves its remaining 44 bytes, then appends the payload.
+The payload engine scalar must match the captured engine; historical node,
+engine and native-frame words remain opaque, not live pointers or leases.
+
+enqueue(U,exclusive_BCAP48,owned_payload36) guards complete frame/input extents
+and known fixed/native/generated RX before any load/save, snapshots both inputs
+privately and validates the complete schema. It consumes the source magic as
+BCNS before raw T acquisition. This is one attempt per exclusive source, even
+on full/fault/raw uncertainty; pre-existing clones remain independent and are
+not globally deduplicated. Invalid inputs are not consumed. The separate native
+56-byte header must have width 84, chunk 10, pinned allocated capacity (10..10240,
+multiple of 10), count within capacity and nonzero aligned table. Header +04 is
+not required zero because the pinned factory leaves it uninitialized. Full is
+refused before APPEND/growth. Actual native index and incremented count must
+both agree. No old producer/worker or explorer route is installed.
+
+pop(U,zero_out84) checks all 21 output words before save/T. Under checked T it
+validates GET's borrowed head against known extents, the entire invocation frame
+and caller output, copies all 84 bytes privately before REMOVE, and validates
+the complete BQ84 schema. Actual REMOVE zero and decremented count must agree.
+After raw release zero it rechecks all 21 output words, copies the body and
+commits magic last. Dirty late output refuses export after extraction without
+requeueing. Extraction is not operation completion; concurrent drainers can
+finish/export in another order. There is no paint dispatch, R/P service,
+callback, engine/resource access, cleanup or native LIVE/use/free authority.
+
+An initially zero retained fault word latches permanently under T: header 1,
+head 2, append 3, remove 4. Actual nonzero raw acquire/release returns zero and
+the exact status using private-frame restoration only: no late queue/header/
+fault/source/output access, guessed unlock, rollback or retry. Synchronous
+coordinated whole-instance isolation remains the caller's responsibility.
+Correct initialized ordinary T, all cooperating users and retained, mapped,
+nonaliasing table/complete chunks, exclusive buffers and full native/service
+stack remain independent premises. Native REMOVE can shift 756 spare bytes even
+at count 1. Bounds and immediate head/output disjointness do not certify unknown
+heap graphs, native retention or transitive stacks. All earlier missed-event,
+ABA, field stability and native unsafe-continuation gates remain unresolved.
+
+Q/T/fault exclusions propagate through the parent outer capture, lifecycle and
+retirement paths; complete generated RX includes the new tail. Strict empty/
+zero-default extra-data/following-RX options preserve the preceding twelve
+default compositions. The same 16 coherent fixture hook pairs remain; arbitrary
+partial activation and older internal entries are not universally fail-closed.
+At the preceding canonical seven creation addresses, lifecycle 01F3A000,
+Q 01FF2000, T 01F20700 and fault 01F20800 with 40 allocated slots, the new stage
+is 81,344 bytes: 74,724 guarded capture prefix plus 6,620 transport core.
+SHA-256:
+`95ced6cf23eeda0a1db56f0461d5a5dd331bdc0fa6bfd4b431e937fb799b80d9`.
+The default BCAP-only stage remains 65,796/76a95966.... See
+[typed FIFO scope](folderfollow-reveal-birth-queue.md).
+
+Fresh serial focused verification: **59 tests pass, no skips** (108.576 s):
+12 functional/native/ABI tests, 26 adverse tests and 21 pinned source/schema/
+configuration/composition contracts. The actual native factory and APPEND/GET/
+REMOVE paths execute, with retained complete chunks, bounded heap/libc/raw-mutex
+substitutes and an explicitly controlled two-CPU interleaving after T release.
+Coverage includes exact-token preservation across actual native node deletion/
+reuse, source consumption and clones, full/no-growth and segment boundaries,
+borrowed-head shift/private copy, permanent faults, raw uncertainty/private-only
+return, all initial/late dirty output words, typed replay refusal, fixed/full-RX/
+frame/head-output aliases and callee-saved/HI/LO restoration. Initial new test
+expectations confused injected callback writes with emitted stores, adjacent
+labels with ordered instructions, and an exact unsigned endpoint with wrapping.
+Only the new test instrumentation/expectations were corrected; production bytes
+and earlier assertions/timers were not changed to make the run pass.
+
+The initial 3,013-test full run (765.983 s) had one failure in the unchanged
+launcher fixture's test_normal_exit_preserves_fd_and_status_no_delayed_signal:
+the watchdog signalled its bounded mock child despite a successful normal exit.
+This fixture replaces sleeps with 25 ms and remains scheduler-sensitive.
+All 24 launcher tests pass in a fresh isolated serial run (19.213 s). Neither
+the launcher source, its assertions nor its timer were modified.
+
+Fresh serial full regression: **3,013 tests pass, no skips** (748.232 s),
+with the temporary-file/subprocess access required by the existing suite.
+All 307 Python sources compile without file writes. The 81,344-byte composition
+matches 95ced6cf...; all twelve preceding default sizes/hashes remain exact.
+The three saved action-link, playback-dispatch and renderer-transport images
+retain d4306357..., a9a6f02f..., f42fac46... and exact 02fd verification:
+33,492/24,532/23,240 code bytes, 310/275/259 changed original bytes,
+autoscroll False and hardware UNTESTED. Independent core, composition, fixture,
+contract/source and scope reviews found no remaining issue within the stated
+diagnostic transport boundary. All 31 changed/new text paths (7 Markdown and
+24 Python), including preceding uncommitted birth/lifecycle/capture work, pass
+whitespace/scope checks; the index is empty and no unexpected file, binary,
+log or secret pattern was found. No earlier assertion, timer, native helper or
+firmware builder was weakened. No firmware image file was built/modified,
+no stock producer/worker hook installed, no device/network operation, launch,
+reboot, commit or push. Changes remain local/uncommitted. Native lifetime,
+whole-instance error isolation and active UI integration remain separate gates;
+BQ84 extraction is neither a LIVE certificate nor completion/free permission.
+
+### Exact-token historical queue consumer (2026-10-28)
+
+The next separate local diagnostic branch consumes one native FIFO84 record
+into private storage, completely releases T, then takes a fresh raw R observation
+of the bounded lifecycle history. It never holds T and R together, searches for
+the latest node/engine/name, dereferences historical native/payload pointers or
+calls paint, callbacks, cleanup or native destruction. No old worker/producer
+route is redirected. Both ordinary mutexes must be unheld on entry.
+
+The new take(U,zero_out100) validates the complete output and contiguous known
+consumer 192-byte plus nested pop 224-byte frames before output reads/save.
+All 25 output words must be zero. After one successful typed pop and a complete
+private BQ84 schema recheck, fresh raw R zero permits controller R/helper-binding
+checks and read-only history validation. The entire occupied BRLC prefix, token
+sequence/fixed fields/reserved words, allowed state/site schemas, global
+outstanding-node uniqueness and every unused tail word must pass. Selection is
+by the exact queued token, followed by equality of every birth word at 04..27,
+not merely node/engine equality. A full healthy history is still comparable.
+Faulted, malformed, missing or mismatched history refuses without writing/resetting
+its fault or modifying any row. Tail validation counts remaining words rather
+than requiring a representable one-past 32-bit address.
+
+BOBS100 preserves BQ84 bytes 04..53 verbatim and appends observed state/site/SP/
+caller at 54/58/5C/60. Both NO_RETIREMENT_OBSERVED and RETIREMENT_SELECTED are
+exportable historical metadata, never LIVE/DEAD, native leases, paint admission
+or unlink/free permission. Metadata is copied while R is held; only checked raw
+R release zero and a second complete 25-word zero check permit body-first,
+magic-last export. Empty/ordinary refusal is 0/0; successful export is out/0.
+Later history refusal or dirty output loses an already-extracted item without
+requeue, rollback, retry or completion acknowledgement. Multiple drainers may
+export in another order from extraction.
+
+Any actual raw T/R error returns 0/exact_status with private-frame restoration
+only. No later output, shared table/header/fault or native access, guessed
+unlock, service call or late fault write is permitted; a T error never enters
+R work. Synchronous coordinated isolation of the WHOLE combined instance remains
+external. Correct ordinary mutex semantics, coherent users/writers, mapped and
+retained complete native chunks, exclusive nonaliasing buffers, heap graphs and
+sufficient transitive native/service stacks are independent premises. The known
+416-byte preflight is not universal protection against unknown heap aliases or
+all inherited internal-entry/save-frame obligations.
+
+Exact historical matching does not repair missed raw-error deletion/rebirth
+events or authenticate a currently linked native incarnation. A retirement
+after checked R release can invalidate any current-use interpretation before
+BOBS export while the earlier owned snapshot remains unchanged. Earlier native
+unsafe-continuation, P-health, lifecycle/alias/graph-retention and UI gates remain.
+See [consumer scope](folderfollow-reveal-birth-consumer.md).
+
+The BQ84 composer's strict zero-default following_code_bytes protects but does
+not append the consumer tail. All preceding thirteen default compositions stay
+exact; full generated RX extends through the queue, capture, lifecycle and
+retirement prefixes. The same 16 coherent fixture hook source sites remain.
+At the preceding canonical seven creation addresses, lifecycle 01F3A000,
+Q 01FF2000, T 01F20700 and fault 01F20800 with 40 allocated slots, the new stage
+is 85,044 bytes: 81,344 guarded queue prefix plus 3,700 consumer bytes.
+SHA-256:
+`765759c2a2ee7a29a2f6d7f0b9af90496d4ef0510a5d1fe809c6bb6fbd9db71f`.
+The default queue remains 81,344/95ced6cf..., without a new shared allocation
+or installer. Active scrolling remains disabled; hardware is UNTESTED.
+
+Fresh serial focused verification: **61 distinct tests pass, no skips**
+(187.184 s): 14 functional/native/ABI tests, 24 adverse tests and 23 source/
+format/configuration/composition contracts. The actual native FIFO factory,
+APPEND/GET/REMOVE, birth hooks and native deletion/reuse paths execute with
+bounded raw-mutex, heap/libc and opaque cleanup substitutes. Tests cover both
+observed states, exact old-token selection after observed same-address reuse,
+complete prefix/uniqueness/tail corruption, full healthy history, opaque payload
+and historical scalars, initial/late dirtiness in every output word, raw T/R
+uncertainty with both ownership outcomes, no late access/retry/fault writes,
+complete fixed/full-RX/combined-frame guards and callee-saved/HI/LO restoration.
+A standalone retained history ending exactly at 2**32 exercises both a full
+table and the last unused tail word without dereferencing a wrapped zero.
+Deterministic distinct-stack CPU tests execute real deletion after checked R
+release but before export and demonstrate out-of-order exports. The missed
+raw-error delete/rebirth counterexample still exports only the old observation,
+deliberately proving that exact historical comparison is not native liveness.
+An initially imported test class was being discovered twice; its import was
+namespaced without removing or weakening any assertion. Production behavior
+was unchanged after the first successful focused run.
+
+Fresh serial affected-module regression: **146 tests pass, no skips**
+(140.632 s): the preceding BCAP capture, BQ84 transport and BRLC lifecycle
+functional/adverse/contract suites. Combined with the 61 new tests, this step
+has 207 fresh passing checks. The full project suite was not rerun in this
+increment; its last complete 3,013-test result is recorded in the preceding
+section, not claimed as a new run here. All thirteen preceding default
+composition sizes/hashes are rechecked by the new contracts.
+
+All 312 Python sources compile without file writes. The 85,044-byte branch
+matches 765759c2... and the default BQ84 remains 81,344/95ced6cf.... The three
+saved action-link, playback-dispatch and renderer-transport images retain
+d4306357..., a9a6f02f..., f42fac46... and exact 02fd verification:
+33,492/24,532/23,240 code bytes, 310/275/259 changed original bytes,
+autoscroll False and hardware UNTESTED. Independent design/core/composition/
+fixture/contract/source/scope reviews found no remaining issue within the
+stated historical consumer boundary. All 37 expected changed/new text paths
+(8 Markdown and 29 Python) pass whitespace/scope checks; the index is empty,
+HEAD remains 1c2e9eba..., and no unexpected file, binary, log or secret pattern
+was found. No old assertion, timer, native helper or firmware builder changed.
+No firmware image file was built/modified, no producer/worker hook installed,
+no device/network operation, launch, reboot, commit or push. Changes remain
+local/uncommitted; native use, lifecycle completeness, error isolation and
+active UI integration are still independent gates.

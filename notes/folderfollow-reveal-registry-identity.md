@@ -95,6 +95,12 @@ links at43CBB8/43CBC0 and frees them at43CBBC. This loop bypasses4395A0. Either
 path can allow an allocator to reuse the historical node address; engine
 allocation addresses can likewise be reused.
 
+The subsequent [independent birth-history audit](folderfollow-reveal-registry-birth.md)
+also pins two outer shutdown paths: first unlinks4E3F48 and51A3E8 precede
+43CB20. They release R before callback/unlink work, so the two paths above are
+not a complete tombstone frontier. The new birth history does not install any
+unlink observer or change RIAU kind1 into a live-incarnation match.
+
 Consequently an old historical row and a newly allocated node/engine may have
 identical addresses, scalar fields and neighbor links. Checked R protects the
 current walk, not the missing interval between original birth and observation.

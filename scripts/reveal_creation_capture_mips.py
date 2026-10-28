@@ -92,13 +92,17 @@ def hook_words(labels):
 def assemble(receipt_address, binding_address, owner_address, controller_address,
              registry_mutex_address, paint_mutex_address, code_base, *,
              capacity=16, owner_capacity=16, ticket_limit=MAX_TICKET,
-             protected_code=None, checked_registry_release=False):
+             protected_code=None, checked_registry_release=False,
+             extra_protected_data=()):
     """Return standalone wrapper/sink bytes and labels without I/O.
 
     protected_code=(start, bytes) excludes the whole composed generated RX.
     If omitted, only this complete fragment is known. Both choices emit the
     same instruction count, permitting a composer to resolve the full extent
     in two passes. Complete nested-stack availability remains a premise.
+    Optional extra_protected_data is a tuple of (start, bytes) fixed extents
+    excluded by this fragment's frame/descriptor/output guards. Empty preserves
+    preceding bytes/labels; it does not extend guards in other internal entries.
 
     The optional checked mode additionally requires the three coherent local
     release redirects. It returns FFFFFFFF/exact raw release status on an
@@ -116,6 +120,14 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
                ('controller', controller_address, receipt.CONTROLLER_BYTES),
                ('registry mutex', registry_mutex_address, receipt.MUTEX_BYTES),
                ('paint mutex', paint_mutex_address, receipt.MUTEX_BYTES)]
+    if (type(extra_protected_data) is not tuple
+            or any(type(extent) is not tuple or len(extent) != 2
+                   or any(type(value) is not int for value in extent)
+                   or extent[1] <= 0 or extent[1] % 4
+                   for extent in extra_protected_data)):
+        raise ValueError('extra protected data must be a tuple of aligned extents')
+    extents.extend(('extra data ' + str(index), start, size)
+                   for index, (start, size) in enumerate(extra_protected_data))
     if type(ticket_limit) is not int or not 1 <= ticket_limit <= MAX_TICKET:
         raise ValueError('ticket limit must be a positive signed word')
     for name, address, size in (*extents, ('code', code_base, 4)):

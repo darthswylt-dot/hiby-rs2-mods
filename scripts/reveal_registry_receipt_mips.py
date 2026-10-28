@@ -71,11 +71,18 @@ def hook_words(labels):
 
 
 def assemble(state_address, controller_address, registry_mutex_address, code_base,
-             *, capacity=16, publication_callback=None):
+             *, capacity=16, publication_callback=None, birth_callback=None):
     """Emit standalone bridge bytes/labels; journal is initially all zero.
 
     The journal is append-only, bounded and never reset/reused while visible.
     This is not an authentication scheme against forged native stack frames.
+    Optional birth_callback=(entry, RX start, bytes) receives U and a private
+    owned32 snapshot [U,R,node,engine,nativeSP,caller,site,raw0], after the final
+    native store and fresh raw-zero scope but BEFORE any journal access. It is
+    independent of receipt/owner quotas, not continuous lifetime coverage.
+    Like publication_callback, it must preserve ALL GPRs and HI/LO. None emits
+    exactly the preceding bytes/labels. All four coherent redirects remain a
+    premise; failed native raw acquisitions can still publish without an event.
     """
     state_bytes = memory_bytes(capacity)
     extents = [('state', state_address, state_bytes),
@@ -88,17 +95,22 @@ def assemble(state_address, controller_address, registry_mutex_address, code_bas
             raise ValueError(name + ' must have a nonwrapping aligned extent')
     if code_base >> 28:
         raise ValueError('bridges must share the native jump region')
-    callback_extent = None
-    if publication_callback is not None:
-        if (type(publication_callback) is not tuple or len(publication_callback) != 3
-                or any(type(value) is not int for value in publication_callback)):
+    callback_extents = []
+    for callback in (publication_callback, birth_callback):
+        if callback is None:
+            continue
+        if (type(callback) is not tuple or len(callback) != 3
+                or any(type(value) is not int for value in callback)):
             raise ValueError('callback must be an (entry, code_start, code_bytes) tuple')
-        entry, start, size = publication_callback
+        entry, start, size = callback
         if (start <= 0 or start % 4 or size <= 0 or size % 4
                 or start + size > 0x10000000 or entry % 4
                 or not start <= entry < start + size):
             raise ValueError('callback must lie within its nonwrapping native-region RX extent')
-        callback_extent = (start, start + size)
+        for other_start, other_end in callback_extents:
+            if max(start, other_start) < min(start + size, other_end):
+                raise ValueError('callback RX extents overlap')
+        callback_extents.append((start, start + size))
         for _, address, extent_size in extents[:-1]:
             if max(start, address) < min(start + size, address + extent_size):
                 raise ValueError('callback overlaps private data/controller/mutex')
@@ -211,6 +223,22 @@ def assemble(state_address, controller_address, registry_mutex_address, code_bas
     a.e(b.lw(8, RAW_STATUS, 23))
     a.branch(5, 8, 0, 'published_done')
     controller_fields(16, 'published_done')
+    if birth_callback is not None:
+        # This is an actual native publication, even when the historical
+        # receipt journal or nested owner issuer will refuse it. No receipt
+        # sequence/count is read or guessed to construct this separate event.
+        request = CALLBACK_REQUEST_OFFSET
+        a.e(b.sw(16, request, 29))
+        a.absolute(8, registry_mutex_address)
+        a.e(b.sw(8, request + 4, 29), b.lw(8, SAVE[2], 29),
+            b.sw(8, request + 8, 29), b.lw(8, 8, 8),
+            b.sw(8, request + 12, 29), b.sw(23, request + 16, 29),
+            b.lw(8, 0x24, 23), b.sw(8, request + 20, 29))
+        a.absolute(8, 0x438A5C)
+        a.e(b.sw(8, request + 24, 29), b.sw(0, request + 28, 29),
+            b.move(4, 16), b.addiu(5, 29, request))
+        a.jump(birth_callback[0], link=True)
+        a.e(b.lw(4, SAVE[4], 29), b.lw(5, SAVE[5], 29))
     a.absolute(20, state_address)
     # Only now is a journal access admitted under the pinned raw-zero guard.
     a.e(b.lw(8, FAULT, 20))
@@ -289,7 +317,7 @@ def assemble(state_address, controller_address, registry_mutex_address, code_bas
         raise ValueError('code leaves its native MIPS jump region')
     if max(code_base, NATIVE_RX[0]) < min(code_end, NATIVE_RX[1]):
         raise ValueError('code overlaps the pinned native executable image')
-    if callback_extent is not None:
+    for callback_extent in callback_extents:
         if max(code_base, callback_extent[0]) < min(code_end, callback_extent[1]):
             raise ValueError('receipt code overlaps callback RX extent')
     for name, address, size in extents[:-1]:

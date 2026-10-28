@@ -21,7 +21,8 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
              registry_mutex_address, paint_mutex_address, code_base, *,
              capacity=16, owner_capacity=16, ticket_limit=owner.MAX_TICKET,
              queue_capacity=64, checked_registry_release=False,
-             following_code_bytes=0):
+             following_code_bytes=0, birth_callback=None,
+             extra_protected_data=()):
     """Return local bytes/labels; all old composers and default bytes stay old."""
     if (type(following_code_bytes) is not int or following_code_bytes < 0
             or following_code_bytes % 4):
@@ -32,6 +33,14 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
                ('controller', controller_address, receipt.CONTROLLER_BYTES),
                ('registry mutex', registry_mutex_address, receipt.MUTEX_BYTES),
                ('paint mutex', paint_mutex_address, receipt.MUTEX_BYTES)]
+    if (type(extra_protected_data) is not tuple
+            or any(type(extent) is not tuple or len(extent) != 2
+                   or any(type(value) is not int for value in extent)
+                   or extent[1] <= 0 or extent[1] % 4
+                   for extent in extra_protected_data)):
+        raise ValueError('extra protected data must be a tuple of aligned extents')
+    extents.extend(('extra data ' + str(index), start, size)
+                   for index, (start, size) in enumerate(extra_protected_data))
     for name, start, size in extents:
         if (type(start) is not int or not 0 < start <= 0xFFFFFFFC
                 or start % 4 or start + size > 0x100000000):
@@ -56,7 +65,8 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
                     paint_mutex_address, capture_base)
     capture_options = dict(capacity=capacity, owner_capacity=owner_capacity,
                            ticket_limit=ticket_limit,
-                           checked_registry_release=checked_registry_release)
+                           checked_registry_release=checked_registry_release,
+                           extra_protected_data=extra_protected_data)
     provisional, capture_labels = capture.assemble(*capture_args, **capture_options)
     issuer_base = capture_base + len(provisional)
     issue, issuer_labels = issuer.assemble(
@@ -68,7 +78,8 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
     observe, receipt_labels = receipt.assemble(
         receipt_address, controller_address, registry_mutex_address, receipt_base,
         capacity=capacity, publication_callback=(issuer_labels['issue'], issuer_base,
-                                                 len(issue)))
+                                                 len(issue)),
+        birth_callback=birth_callback)
     prefix_bytes = len(kernel) + len(provisional) + len(issue) + len(observe)
     adapter, adapter_labels = producer.assemble(
         binding_address, owner_address, controller_address, registry_mutex_address,
@@ -79,6 +90,18 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
         following_code_bytes=following_code_bytes)
     total_bytes = prefix_bytes + len(adapter)
     protected_bytes = total_bytes + following_code_bytes
+    if birth_callback is not None:
+        _, callback_start, callback_bytes = birth_callback
+        if (callback_start < code_base
+                or callback_start + callback_bytes > code_base + protected_bytes):
+            raise ValueError('birth callback must be within advertised protected RX tail')
+        if max(code_base, callback_start) < min(
+                code_base + total_bytes, callback_start + callback_bytes):
+            raise ValueError('birth callback overlaps creation capture code')
+        for name, start, size in extents:
+            if max(callback_start, start) < min(callback_start + callback_bytes,
+                                               start + size):
+                raise ValueError('birth callback overlaps ' + name)
     # A fixed-width RX guard changes only its literals. Reassemble with the
     # exact complete code extent, not just this fragment or a bare entrypoint.
     captured, final_labels = capture.assemble(

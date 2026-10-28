@@ -123,6 +123,27 @@ A [read-only registry comparison](notes/folderfollow-reveal-registry-identity.md
 now checks the exact historical binding against the current guarded native ring.
 Reused node/engine addresses can still match an older capture; this observation
 does not authorize unlinking, freeing or reassigning a generation.
+A separate [independent birth history](notes/folderfollow-reveal-registry-birth.md)
+now records the actual publication before old receipt/binding/owner quota gates.
+Its tokens identify historical events, not live allocations: missing raw-result
+coverage and all four known unlink paths still block native cleanup integration.
+A separate [retirement-observation branch](notes/folderfollow-reveal-registry-lifecycle.md)
+now marks the four known frontiers under fresh checked R, before native unlink
+or conservatively before outer unlock. Selected retirement is not completed
+deletion; missed raw-error events can still miscorrelate reused addresses.
+A separate [owned birth-token capture](notes/folderfollow-reveal-birth-capture.md)
+now transfers the just-committed token to its exact registration invocation,
+exporting BCAP48 after checked R release. It performs no latest-by-address
+lookup and grants no native lifetime, owner/paint health or cleanup authority.
+A separate [typed birth-token FIFO](notes/folderfollow-reveal-birth-queue.md)
+now carries that exact token with an owned payload snapshot. Its BQ84 format
+does not change any stock queue or older diagnostic record. Extraction exports
+an owned copy after checked transport release; it does not dispatch paint or
+prove that native objects remain alive.
+A separate [historical queue consumer](notes/folderfollow-reveal-birth-consumer.md)
+now compares that exact queued token and birth event with the recorded history,
+after releasing T and acquiring fresh checked R. It exports an owned snapshot
+of either recorded retirement-observation state, never native-use or UI approval.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered
