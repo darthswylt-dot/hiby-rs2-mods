@@ -3899,3 +3899,642 @@ No firmware image file was built/modified, no producer/worker hook installed,
 no device/network operation, launch, reboot, commit or push. Changes remain
 local/uncommitted; native use, lifecycle completeness, error isolation and
 active UI integration are still independent gates.
+
+### Opt-in pre-mutation raw-acquisition gates (2026-10-28)
+
+Baseline 98d9fc3 is published; the next separate local branch appends two
+explicit admission gates to the historical consumer composition. Registration
+438A10 is checked before its 28-byte node allocator, and name-delete 4395D4
+before its first registry-ring load. The masked facade result is never enough:
+the same invocation's existing private native witness must be CAPTURED with
+actual raw acquisition zero. Registration additionally requires pinned U in
+S0 and its native PTR equal R; deletion requires pinned U in S5 and its own
+distinct retirement TAG namespace. No controller, history, ring, engine, name
+or resource graph is read while the new gate decides admission.
+
+Success preserves all GPRs and HI/LO, leaves witness locals unchanged for the
+later observers and replays exact native effects. Registration enters allocator
+4669E0 with original RA 438A18 and A0=28, not a relocated return address. Delete
+replays the head load, S0/S3 branch and original 4395DC delay-slot load exactly
+once on both paths, then continues at 4395F4 or 4395E0.
+
+The new gate's own denial returns FFFFFFFF/exact captured nonzero raw status,
+including FFFFFFFF itself; missing/incoherent evidence returns FFFFFFFF/0.
+Denial accesses only genuine retained private/native frames. It never guesses
+an unlock, retries, calls cleanup or mutates shared journals. Registration uses
+the non-unlocking native epilogue 438A6C. The stock delete epilogue tail-calls
+unlock and is therefore bypassed: its saved callee registers/RA and 56-byte SP
+are restored locally before direct caller return. This is not a normalized
+native error ABI: an admitted later allocation failure still leaves old V1
+undefined/service-clobbered. Existing checked creation/BCAP wrappers overwrite
+native V1 and do not automatically forward the new gate diagnostic.
+
+These are bounded body-admission checks, not caller or whole-instance isolation.
+Both encoded native constructor callers ignore registration failure and can
+continue object/UI work. All 56 encoded direct delete callers ignore its return;
+54 continue independent resource cleanup. No gate stops or rolls back that outer
+work. Unknown raw ownership or missing witness still requires external synchronous
+coordinated isolation, even if this local body did not mutate anything.
+
+The stock prologues already wrote their 40/56-byte native frames. Fully mapped,
+retained, writable and independently nonaliasing native and 192-byte bridge-save
+frames are hard premises; there is no runtime invalid-stack preflight or safe
+unwind guarantee for fabricated/unmapped/wrapping frames. Strict extra-data/RX
+configuration only validates static placement, not arbitrary dynamic frames.
+The inherited retirement raw-return observer can read U before reaching this
+gate, so the new private-only refusal does not claim to remove earlier shared
+reads after raw error. The exact source boundary is documented in
+[gate scope](folderfollow-reveal-registry-acquire-gate.md).
+
+Other controller teardown/outer-unlink paths remain ungated. Missing later
+frontiers, full/faulted history, opaque callbacks, release errors, allocation-
+failure missing unlock, escaped aliases and engine/resource retention remain
+separate blockers. The known raw-error delete/rebirth body path is narrowed,
+not all missing-event ABA routes. NO_RETIREMENT_OBSERVED remains not LIVE;
+RETIREMENT_SELECTED remains not DEAD, completed deletion or free authority.
+
+The parent's strict zero-default following_code_bytes protects the appended
+tail without appending it or changing the preceding fourteen default hashes.
+All preceding 16 coherent fixture hooks plus the two new sites are required:
+the new stage exports 18 pairs, not an arbitrary-partial fail-closed installer.
+At the preceding canonical seven creation addresses, lifecycle 01F3A000,
+Q 01FF2000, T 01F20700 and fault 01F20800 with 40 allocated slots, the new stage
+is 86,120 bytes: 85,044 guarded consumer prefix plus 1,076 gate bytes.
+SHA-256:
+`a4c3ec89cc4a7b01b2f385abfb5daf2146694a48a03118aaaaea756b524a4041`.
+The default historical consumer remains 85,044/765759c2.... The new metadata
+explicitly says native_callers_isolated=False and native_lifetime_proven=False.
+No shared allocation, stock worker, UI hook, firmware file or installer is added;
+active scrolling remains disabled and hardware is UNTESTED.
+
+Fresh serial focused verification: **48 tests pass, no skips** (111.977 s):
+11 native/ABI/composition-path tests, 11 adverse tests and 26 pinned source/
+protocol/layout contracts. Actual native prologues, receipt/retirement hooks,
+registration and name-delete instructions execute with the inherited bounded
+raw/heap/libc/cleanup substitutes. The new tail-transfer allocator entry uses
+the same bounded allocator substitute once, with original RA and size; it does
+not reconstruct a node or issue a second allocation. Both delete branch paths
+execute the original delay load exactly once.
+
+Coverage includes each nonzero raw status with both possible ownership outcomes,
+missing/corrupt witness and pinned scalar, missing begin/raw/new-gate redirects,
+private-only memory/service boundaries from the new gate onward, negative
+native callee/SP/RA/HI/LO restoration and positive ALL-GPR/HI/LO restoration,
+unchanged witness consumption, observed deletion/reuse minting a new birth,
+BCAP/FIFO/BOBS success and absence of raw-error allocation/publication/unlink/
+free/unlock inside these two bounded bodies. A deliberate adversarial caller
+ignores one refusal and attempts the other failing body; this is not permitted
+error recovery or automatic re-use of an uncertain instance. Other tests retain
+the missing later frontier, full/faulted-history and separate teardown gaps,
+the allocator's undefined V1 and missing unlock, and older BCAP V1 masking.
+All fourteen preceding default sizes/hashes, exact full generated RX, the 18
+coherent source sites and encoded incoming-target/source-caller facts are
+rechecked. No earlier assertion or timer was changed to obtain passing tests.
+
+Fresh serial affected-module regression: **104 tests pass, no skips**
+(187.492 s): historical consumer and lifecycle functional/adverse/contract
+suites. Together with the 48 new tests, this step has 152 fresh passing checks.
+The full project suite was not rerun in this increment; the preceding complete
+3,013-test result and subsequent scoped runs remain historical results, not a
+new full-run claim. All 317 Python sources compile without file writes.
+
+The new 86,120-byte composition matches a4c3ec89...; the default historical
+consumer remains 85,044/765759c2..., and all fourteen prior default sizes/hashes
+are rechecked. The three saved action-link, playback-dispatch and renderer-
+transport images retain d4306357..., a9a6f02f..., f42fac46... and exact 02fd
+verification: 33,492/24,532/23,240 code bytes, 310/275/259 changed original bytes,
+autoscroll False and hardware UNTESTED. Independent native-source, gate/core,
+composition, fixture, contract and scope reviews found no issue within the
+explicit bounded-body admission boundary. All 10 expected changed/new text
+paths (4 Markdown and 6 Python) pass whitespace/scope checks; the index remains
+empty, HEAD is the published 98d9fc3, and no binary, log, secret pattern or
+unexpected path was found. No old assertion, timer, native helper or firmware
+builder changed. No firmware image file was built/modified, no native hook
+installed, no device/network operation, launch, reboot, commit or push. Changes
+remain local/uncommitted. Stopping or isolating ignored native callers, remaining
+mutation routes, complete graph lifetime and active UI integration are not
+implemented by these two gates.
+
+## 2026-10-28: scoped constructor registration-result stops (local, opt-in)
+
+A separate offline composition now follows both native constructor registration
+returns at 43AE94 and 43B038. These addresses are also shared joins for earlier
+skipped-registration paths. The new gates therefore classify only a genuine
+native return with saved S1 equal to pinned U and saved RA equal to that exact
+hook PC. Only then does a nonzero saved V0 skip local 519FA0 and final name
+postwork. V1 is never interpreted; the decision reads neither native SP+50 nor
+an engine/name/controller graph. A wrong U/RA or zero status reproduces the
+displaced native JAL, its original RA and delay A0=S1 exactly.
+
+Stop restores every saved GPR and HI/LO, then enters the existing constructor
+epilogue 43AEA8/43B04C. That epilogue returns its saved engine scalar and unwinds
+the genuine 136/128-byte frame. No new NULL/status return convention, ownership
+handle or V1 error ABI is introduced. No stop-path UI, free, unlock, retry,
+cleanup or rollback is attempted. The complete native frames and separate
+192-byte architectural-save frames must already be mapped, retained, writable
+and independently nonaliasing; arbitrary invalid-stack recovery is not claimed.
+
+This narrow stop is not whole-instance or outer-caller isolation. Thirteen
+encoded direct first-constructor callers and 46 second-constructor callers
+remain unchanged. They can still store, dereference or pass the returned engine
+to later native code. Skipped-registration legacy NULL faults remain, as do
+the second constructor's earlier NULL returns. Native registration masks raw
+release errors as V0=0, which still admits the local UI continuation. Allocation
+failure still skips native unlock. Other mutation paths, escaped aliases and
+complete resource retention remain separate unresolved boundaries. No token,
+history match or local return establishes lifetime or cleanup permission.
+
+The acquire-stage parent's strict zero-default following_code_bytes reserves
+the appended RX without appending it. The new composition contains 87,112 bytes:
+86,120 guarded parent bytes plus 992 constructor-gate bytes. SHA-256:
+`c13d8485f4644b90c1dd2029877a13626cd5d7231e6fa65c54ff6ec87f208dd8`.
+Its 20 coherent fixture hook pairs include all 18 preceding sites plus these
+two new sites; arbitrary partial activation is not a fail-closed installer.
+The preceding 86,120/a4c3ec89... default remains byte-identical. Metadata says
+constructor_status_continuations_gated=True and constructor_engine_return_preserved=True,
+but native_callers_isolated=False, raw_release_proven=False and
+native_lifetime_proven=False. No shared allocation, installer, firmware file,
+worker dispatch or active scrolling is added; hardware remains UNTESTED.
+
+Fresh serial source/layout verification: **26 new contract tests pass, no
+skips** (17.114 s). They recheck both displaced pairs, saved U/RA/V0-only
+classification, ignored V1, exact architecture restoration and stock engine
+epilogues, original forward RA/delay effects, the 13/46 encoded caller counts,
+legacy NULL/masked-result paths, strict static extents, final-tail rejection
+for all ten fixed data roles, complete protected RX and all 20 coherent sites.
+All fifteen preceding default composition sizes/hashes remain unchanged.
+Fresh serial affected-parent regression: **48 acquire-gate tests pass, no
+skips** (112.968 s); its optional zero-default reservation preserves the exact
+old output.
+
+The initial 15-test execution run (265.222 s) reported 20 failed subtests in
+three new adverse tests, not a production-gate failure. A bounded diagnostic
+confirmed that delay-slot NULL reads are recorded at their owning JAL PC
+43AEA0/43B044, not 43AEA4/43B048. The same diagnostic showed the complete raw
+sequence R acquire, nested P acquire/release, then R release; the new test had
+incorrectly expected only the two R events. The corrected tests require the
+exact unmapped-NULL exception and exact (read, owning PC, address 0, size 4)
+record, and all four exact raw target/pointer/status events. No event filtering,
+old assertion/timer change, production-core change or service relaxation was
+used to address these test-observation mistakes.
+
+Fresh complete serial execution rerun: **15 tests pass, no skips** (267.650 s):
+6 native/ABI tests and 9 adverse tests, executing both actual constructors,
+8B4120/8B0D00 and registration with inherited bounded service/libc substitutes.
+Coverage includes every tested nonzero raw acquire result with either ownership
+outcome, allocation failure with undefined V1, poisoned V1 on native success,
+every tested nonzero V0 independent of V1, wrong U/RA forwarding, complete
+architectural restoration before replay/stock unwind and private-only stop
+accesses without later services. The same single-call bounded UI substitute
+handles linked native calls and the emitted unlinked tail transfer.
+
+Explicit counterexamples retain raw-release masking with both ownership
+outcomes, missing acquire/continuation redirects, all tested skipped-registration
+NULL paths and the unchanged second-constructor early NULL returns. The actual
+explorer slice 492908..492930 still stores the stopped constructor's returned
+engine at V+CC and passes it to the bounded 439680 enable-call boundary. The
+opaque enable body is not executed or certified safe. This demonstrates the
+remaining higher-caller gap, not a new approval for using that returned engine.
+
+Together, this increment has **41 new + 48 affected-parent = 89 fresh passing
+tests**. The complete project suite was not rerun; the earlier 3,013-test full
+result and previous scoped runs remain historical evidence only. All 322 Python
+sources compile without file writes. The three saved action-link, playback-
+dispatch and renderer-transport images pass exact 02fd verification unchanged:
+d4306357..., a9a6f02f..., f42fac46..., with 33,492/24,532/23,240 code bytes,
+310/275/259 changed original bytes, autoscroll False and hardware UNTESTED.
+
+Independent core/native, composition, fixture, contract and final scope reviews
+found no remaining issue within the stated local-continuation boundary. The
+corrected tests strengthen rather than filter the observed events. All 16
+expected text paths (5 Markdown, 11 Python) pass whitespace/scope checks; the
+index is empty and HEAD remains published 98d9fc3. No unexpected path or secret
+pattern was found. No old assertion, timer, helper or firmware builder changed.
+No firmware image file was created/modified, no hook installed, no player,
+network, launch, reboot, commit or push operation occurred. Changes remain
+local/uncommitted. Higher-caller isolation, masked release handling, remaining
+mutation coverage, native lifetime and active UI integration are still separate
+unfinished work.
+
+## 2026-10-28: invocation-local explorer failure exit (local, opt-in)
+
+A separate offline successor now narrows the exact explorer492918 caller gap.
+The preceding first constructor gate has already saved its192-byte private
+architecture and classified pinned U, registration return43AE94 and nonzero
+registration V0. The successor splices only that generated stopped label's
+initial HI restore pair (8FA80088/01000011), checking the original words before
+replacing them in the returned prefix. No additional native source site changes.
+
+The56-byte helper reads the genuine constructor's saved outer RA at private
+SP+144. Only492920 selects a rewrite of that same private saved-return slot to
+the appended abort_return trampoline. All other callers leave the slot unchanged.
+Both paths replay the displaced HI restore exactly and resume parent stopped+8.
+The parent restores all architecture and enters stock43AEA8, which returns its
+saved engine scalar and unwinds136 bytes. Only the selected invocation then
+enters the trampoline and stock explorer NULL exit492F84. That existing exit
+sets V0=0 and unwinds its6096-byte frame without graph calls or cleanup.
+
+Thus the selected failure bypasses492920's controller-home load,492924's V+CC
+store,492928's enable call and all later work in this explorer invocation.
+Jumping merely to492930 would be insufficient: later paths still read or
+dereference V+CC. The other exit492F50 returns the partial view and is not used.
+V1 is not reinterpreted and no constructor-wide NULL/status ABI or shared
+failure mailbox is introduced. The raw engine still returns to a private
+trampoline, not to the skipped explorer continuation.
+
+HARD premises now include the genuinely mapped, writable, retained and
+independently nonaliasing selected6096-byte explorer frame, in addition to the
+136-byte constructor and existing192-byte private frame. These frames and
+native/import/storage prerequisites are not authenticated by a scalar saved RA
+or established by static layout checks. No invalid-SP recovery is claimed.
+
+This is a bounded continuation stop, not rollback or whole-instance isolation.
+Before registration explorer491E80 already allocated the view and buffers,
+created resources, published a view alias at resource+7C, installed callbacks
+and bound the resource table. Earlier widget/controller effects persist. The
+later owner-list insertion has not happened yet, but that does not remove those
+escaped aliases. No engine/view/name allocation is freed, no uncertain mutex
+is unlocked, and abandoned graph ownership/retention, safe retry and cleanup
+remain unresolved. There are188 encoded direct explorer491E80 callers; their
+reaction to NULL is not isolated. Other first-constructor callers, the second
+constructor, masked release failures and missing coherent hooks remain outside
+the new guarantee. Historical events still grant no native-use or free authority.
+
+The constructor-stage parent's strict zero-default following_code_bytes protects
+the appended RX without appending it and preserves its87,112-byte/c13d8485...
+default. The new composition is87,168 bytes: the guarded87,112-byte prefix with
+one explicit8-byte generated splice plus56 helper bytes. SHA-256:
+`540034a7349e240a95047fbb39b01a48dc8379669f1510d53c59e64992c888e9`.
+It advertises20 inherited native pairs and one generated pair,21 coherent
+instruction-fetch pairs total. The generated map matches the actual patched
+prefix bytes; it is not merely an advisory fixture override. Arbitrary partial
+activation remains unsupported, and no on-device installer is added.
+
+Scope metadata reports explorer_failed_registration_continuation_stopped=True
+and explorer_returns_native_null_on_classified_failure=True, but keeps
+partial_graph_cleanup_proven=False, native_callers_isolated=False,
+raw_release_proven=False and native_lifetime_proven=False. No shared allocation,
+worker dispatch, image installation or active scrolling is added. Hardware
+remains UNTESTED; no player operation is part of this step.
+
+Fresh serial source/layout verification: **21 new contract tests pass, no
+skips** (41.564 s). The vendor-source checks pin the two native epilogues,
+the exact explorer call, later V+CC uses, existing escaped resource aliases,
+callback binding, the188 encoded direct explorer callers and bounded incoming
+edge facts. Generated-source checks separately pin the original parent restore
+pair, sole saved-RA write, exact HI replay/resume and actual8-byte prefix patch.
+All16 preceding default sizes/hashes, strict parent12-byte pair/resume extent,
+complete outer RX, all ten final-tail data exclusions and the20-native/1-generated
+coherent hook inventory are rechecked.
+
+Fresh serial affected-parent regression: **32 tests pass, no skips** (75.101 s),
+the26 constructor contracts and6 native/ABI tests. The preceding adverse suite
+was not rerun in this increment; its earlier passing run remains historical.
+The new execution fixtures start at the retained bounded492908 explorer slice,
+not the opaque full491E80 setup. They seed the genuine prologue-established
+6096-byte frame and separately mapped caller argument homes, then execute the
+actual constructor, parent restore and both stock epilogues.
+
+Preflight fixture review corrected the observation order so private-stop memory
+checks precede the host's later V+CC assertion. A fixture-only reached-PC native
+return boundary also admits either the original caller RA or emitted abort_return;
+the enclosing interpreter then follows the actual native r31. It neither tests
+status nor invents a host-side abort/unwind, catches an unmapped-return failure,
+or reconstructs a native engine. No old test/helper, assertion or timer changed.
+
+Fresh serial execution verification: **25 tests pass, no skips** (324.757 s),
+10 native/control-flow tests and15 adverse tests. Actual first constructor,
+registration, parent restore,136-byte stock constructor epilogue, emitted
+abort trampoline and6096-byte stock explorer NULL epilogue execute in order.
+The selected route restores all saved architecture before stock constructor
+unwind, preserves HI/LO and outer callee/SP/RA state, leaves V+CC unchanged,
+and makes no UI/name/enable/free/unlock/service call after the new scope entry.
+Unrestricted post-entry memory checks allow only the retained frames and the
+single targeted native saved-RA store; exact helper accesses are checked too.
+
+Coverage includes raw1/22/82/FFFFFFFF with both possible acquisition ownership
+outcomes, actual node allocation failure and its still-missing unlock, arbitrary
+tested nonzero V0 and poisoned V1, unchanged success store/enable, nonexplorer
+first-constructor fallback and unchanged second-constructor ABI. Sequential and
+deterministically interleaved CPUs use independent native/private frames and
+no shared failure latch. The bounded allocator cursor is explicitly handed
+across the serial interleaving so retained live engines do not accidentally
+alias. This adversarial uncertainty test is not permission to retry/reuse an
+uncertain instance or evidence of a real scheduler/whole-instance lifetime.
+
+Missing-splice counterexamples remove both the actual prefix patch and matching
+fetch override; removing only either copy correctly leaves the other active.
+Missing native status/acquire hooks, masked raw release errors with either
+ownership outcome and skipped-registration NULL faults remain explicit gaps.
+The raw-release counterexample still reaches UI, stores and enables the engine;
+the local NULL exit grants no general release or native-use certificate.
+
+This increment therefore has **46 new +32 affected-parent =78 fresh passing
+tests**. The complete project suite was not rerun; earlier full/scoped counts
+remain historical results, not a new full-run claim. All327 Python sources
+compile without file writes. The three saved action-link, playback-dispatch
+and renderer-transport images retain exact02fd verification and hashes
+d4306357..., a9a6f02f..., f42fac46..., with33,492/24,532/23,240 code bytes,
+310/275/259 changed original bytes, autoscroll False and hardware UNTESTED.
+
+Independent native/core, composition, fixture, contract and scope reviews found
+no remaining issue within the bounded explorer-exit contract. All22 expected
+text paths (6 Markdown,16 Python) pass whitespace/scope checks. No unexpected
+path or secret pattern was found; the index is empty and HEAD remains published
+98d9fc3. No old test, timer, helper or firmware builder changed. No firmware
+image file was created/modified, no hook installed, no player/network action,
+launch, reboot, commit or push occurred. Changes remain local/uncommitted.
+Masked release handling, abandoned graph retention/cleanup, other caller paths,
+whole-instance coordination and active folder-follow integration remain
+unfinished work, not implied by this one local failure exit.
+
+## 2026-10-28: constructor-only raw-release result propagation (local, opt-in)
+
+A separate offline successor now preserves the actual pinned raw R release
+result for the two genuine constructor registration returns43AE94/43B038.
+Native raw wrapper466DD4 and registration438A68 otherwise both force V0=0,
+so changing only one return mask would not reach the existing status stops.
+The new four-phase protocol uses no shared failure flag or graph lookup.
+
+At438A60, only pinned S0=U and the two native saved callers select fresh
+registration locals: TAG+10=0, STATUS+14=FFFFFFFF and RAW_SP+18=0, followed by
+NRSL only if the actual saved T9 is437DA0. The preceding publication observer
+has already consumed the old acquisition TAG; synchronous receipt/birth/issuer
+callbacks have completed and native postpublication code does not read these
+three receipt words. The old explicit checked-capture wrapper has a different
+native saved caller and keeps its own unchanged release-witness storage.
+
+At466DC8 the new bridge checks the raw32/facade32 saved return chain437DB0/
+438A68 before following registration N=W+40, then checks the same constructor
+caller, selected state, sentinel/zero locals and actual pre-service A0=R and
+T9=437DA0. It records W and NREN. At466DD0 it checks the same chain, actual
+saved raw-return RA466DD0, NREN and the exact stored W before capturing entry
+V0 and publishing NRCP. Actual FFFFFFFF is an error value, not a missing marker.
+These three bridges always restore all GPRs/HI/LO and tail-chain the preceding
+release observers, which retain original callback/raw argument and return-PC
+effects and execute each service once. Foreign/native checked-wrapper routes
+continue through those old observers unchanged.
+
+At438A68 a new completion check consumes NRCP for the pinned constructor route
+and requires RAW_SP=N-40. Only then may it read STATUS. Zero preserves ordinary
+native completion; nonzero becomes registration FFFFFFFF/exact raw status;
+absent or incoherent evidence becomes FFFFFFFF/0. This is a scoped gate result,
+not a normalized ABI for old allocation failures, foreign callers or raw APIs.
+Both constructor status gates then skip local UI/name work; the specific
+explorer492918 call can reach its existing NULL exit without storing/enabling
+the returned engine. Other higher callers and whole-instance control remain
+outside that local stop.
+
+The completion pair has an independently entered second word:438A6C is reached
+by native allocation-failure branch438A80 and the preceding acquire gate's
+failure jump. Preflight source audit therefore required completion hook
+(J new_complete, original8FBF0024), NOT a NOP delay. Its saved-RA load remains
+executable at6C and runs exactly once in the completion J delay before the
+new bridge saves architecture. Success replays only the V0-zero effect; denial
+sets its scoped result. Both resume438A70 without another RA load. The old
+independent6C failure paths remain unchanged. No old assertion/timer relaxation
+was used to accommodate this shared-entry boundary.
+
+All new decision accesses are retained private/native frames, never U fields,
+engine/name graphs, shared journals or an extra raw service. Genuine mapped,
+writable retained nonaliasing native40/facade32/raw32 frames and each192-byte
+architectural-save allocation remain hard premises, as do all inherited stack,
+import, ordinary-mutex and storage requirements. Scalar saved PCs, witness
+states and static RX/data checks do not authenticate fabricated frames or make
+arbitrary invalid-SP unwinds safe. Global observer redirects still require
+sufficient stack even for unclassified routes.
+
+Publication, birth history and possibly owner state already exist when release
+fails; the new result does not unlink, undo history, free anything, guess mutex
+ownership, retry unlock or revoke resource aliases. A nonzero release can still
+leave R either held or released. Other release routes and foreign controllers,
+missing completion activation, escaped resources, abandoned graph lifetime and
+caller reactions remain separate boundaries. No historical match or local NULL
+return grants cleanup, retry, native use or whole-instance isolation.
+
+The parent explorer composition now has strict zero-default following_code_bytes:
+it protects appended RX without appending it and preserves87,168/540034a7...
+by default. The new composition contains89,140 bytes, its guarded87,168-byte
+prefix plus1,972 release-gate bytes. SHA-256:
+`03ec46d436914eef93a8aa118496608d59df4539926dc6272ff81449e50687de`.
+Three known old native release redirects are checked and replaced by delegates;
+completion adds one new native pair. The coherent inventory is21 native plus
+one unchanged generated explorer splice,22 total. The old release_hooks map is
+retained as observer provenance, not the new dispatch installation map.
+
+Metadata reports constructor_registration_release_gated=True and
+registration_release_failure_propagated=True, but native_callers_isolated,
+raw_release_proven, native_lifetime_proven and partial_graph_cleanup_proven all
+remain False. No installer, shared allocation, stock worker dispatch or active
+scrolling is added; hardware remains UNTESTED. Fresh serial affected-parent
+verification: **41 tests pass, no skips** (47.848 s), the21 explorer contracts
+and20 existing explicit registry-release tests. New tests are recorded below
+only after their serial run completes.
+
+Fresh serial source/layout verification: **25 new contract tests pass, no
+skips** (78.558 s). They pin all four source pairs, the preserved independent
+438A6C failure entry and exact-once delay effect, private phase ordering and
+17 preceding default hashes. They separately check the three exact predecessor
+observer targets, full protected RX, strict legacy-entry/static-data extents,
+all ten final-tail data exclusions and the21-native/1-generated coherent map.
+The154-wrapper/five-raw-site census remains bounded source evidence, not a
+claim of global release coverage. The new89,140/03ec46d4... composition and
+unchanged87,168/540034a7... parent default both match their pinned hashes.
+
+Verification resumed2026-10-29. Preflight separated the foreign-controller
+case into two explicit scenarios: coherent acquisition admission already
+refuses the foreign instance before release; a symmetric diagnostic removal
+of that earlier hook in both old/new fixtures reaches the foreign release
+and retains its legacy masked result. Both raw-service traces must match.
+That partial-hook counterexample is not an allowed activation or retry policy.
+An earlier execution attempt was interrupted before completion for this
+review; no incomplete-run checks are counted as a passing suite.
+
+The new execution fixture now reuses only deterministic assembled code and
+metadata for identical, exact-type argument keys. The temporary cache wraps
+25 explicit pure emitters/composers only during this fixture's construction;
+all original functions restore in finally, including on construction error.
+Every returned mutable metadata/label object is deep-copied. Machine memory,
+registers, service inputs, outcomes and observations are never cached. Direct
+production/source contracts remain outside that context. A new regression
+compares cached and uncached03ec46d4... bytes, native error traces, a separate
+success invocation, metadata independence, bool/int keys, invalid capacity
+and restoration of every original assembler function. No old assertion,
+timing threshold or service behavior was changed to accelerate the run.
+
+The first completed execution run with that cache (35 tests,57.590 s) found
+one new-test setup error: changing U+278 before acquisition invalidated the
+old receipt binding and stopped before any release phase. The callback test
+now keeps acquisition/publication intact and substitutes the actual T9 only
+at release selection. It still requires unknown-result denial, a committed
+birth/allocation, no R unlock and unchanged held-R uncertainty.
+
+A subsequent full new-suite run (60 tests,141.308 s) confirmed that branch
+but exposed a second observation mistake in the same new test: the inherited
+observer tail-jumps to the native callback, so it does not enter the fixture's
+linked-external call log. The test now requires exactly one actual callback
+entry in the post-selection instruction trace and exactly one corresponding
+raw P unlock. No production code, expected failure result, old assertion,
+timer or raw-service substitute changed in either correction. These failed
+runs are not counted as completed passing verification.
+
+2026-10-29 fresh complete serial rerun: **60 new tests pass, no skips**
+(134.479 s):16 native/ABI/cache tests,19 adverse tests and25 source/layout
+contracts. Both actual constructors propagate observed raw1/22/82/FFFFFFFF
+with either release-ownership outcome into the existing local status stops.
+The specific explorer route performs its real NULL unwind without storing or
+enabling the engine. Missing/incoherent phase evidence denies as unknown;
+successful raw release retains the original native engine ABI and callback/raw
+arguments/return PCs. Every dispatcher restores all GPRs/HI/LO before its
+actual predecessor entry, and completion changes only its scoped V0/V1 result.
+
+Coverage includes the exact-once438A6C saved-RA load on success, release error,
+acquire refusal and native allocation failure; old checked BCAP success/error
+outputs and architecture remain equal to uncached predecessor baselines.
+Post-error accesses are restricted to retained private/native frames with no
+extra service, graph/history mutation, unlock retry or free. Committed native
+links, birth/owner history and allocations remain, proving no rollback claim.
+Fresh same-frame reuse, separate CPU frames, V1 poison, wrong callback/actual
+argument/return chain, corrupt tag/SP, registry-versus-paint statuses, foreign
+routes and missing-hook counterexamples are checked. Adversarial second calls
+and symmetric hook removals are not permission to reuse uncertain instances.
+
+Together with the41 affected-parent checks, this increment has **101 passing
+targeted tests**. The full project suite was not rerun; earlier full/scoped
+counts remain historical evidence, not a new whole-project result. All332
+Python sources compile without file writes. The three saved action-link,
+playback-dispatch and renderer-transport files pass exact02fd verification
+unchanged: d4306357..., a9a6f02f..., f42fac46...,33,492/24,532/23,240 code
+bytes and310/275/259 changed original bytes, autoscroll False, hardware UNTESTED.
+
+Independent native/core, stage, fixture/cache and scope reviews found no
+remaining issue within this constructor-only propagation contract. All28
+expected text paths (7 Markdown,21 Python) pass whitespace/scope checks; no
+unexpected path or secret pattern was found. The index is empty and HEAD is
+still published98d9fc3. No old test, timing threshold, native helper or firmware
+builder changed. No firmware file was created/modified, no hook installed,
+and no player/network action, launch, reboot, commit or push occurred. Changes
+remain local/uncommitted. Other callers/release routes, complete graph retention
+and cleanup, whole-instance coordination and active folder-follow integration
+remain unfinished and are not supplied by this scoped release result.
+
+## 2026-10-29: late explorer-destructor delete-result stop (local, opt-in)
+
+The next offline successor stops only the remaining local destructor work
+after the explorer's exact name-delete call returns a nonzero result. It is
+not an implementation of partial-graph cleanup or a fence before cleanup.
+The selected native pair493F4C/493F50 is8E240024/0C1214C8: a controller+24
+load followed by resource-delete485320. A check at493F50 alone would already
+have read the controller after uncertain deletion; the new check precedes it.
+
+The new192-byte save preserves all30 non-SP GPRs and HI/LO before checking
+only private savedS1=pinnedU, savedRA=493F4C and savedV0!=0. V1 is never a
+classifier. Selected failure restores the complete entry architecture and
+jumps to native493C98, whose pure epilogue preserves V0/V1, restores saved
+RA/FP/S7..S0 and unwinds1208 bytes. It skips the U+24 load, resource delete,
+resource callback, owner-list removal, later lists/resources/view frees and
+the native493C7C continuation. No unlock, service, graph access or free occurs
+on this new stopped path.
+
+Zero status, another U or another RA forwards the original path after complete
+architecture restoration. Replay loads A0=*(S1+24) once, then sets the resource
+call's originalRA493F58 and tail-transfers to485320 with original493F54's
+02602821 (A1=S3) as its delay. Native493F54 is not executed a second time.
+Encoded J/JAL and conservative relative-branch scans show no incoming target
+at493F4C,493F50 or493F54; computed/fabricated/runtime entries remain outside
+that bounded census and genuine-route premise.
+
+The native1208-byte destructor frame and separate192-byte save must already
+be mapped, writable, retained and independently nonaliasing. Save precedes
+classification. Scalar U/RA checks and strict static fixed-data/RX placement
+do not establish native lifetime, authenticate a fabricated frame or make an
+invalid SP/unwind safe. The new fragment reads neither controller fields nor
+an engine/name/resource graph to decide the stopped path.
+
+Earlier destructive work remains: the closing flag, worker/private/shared
+cancellation, prior callbacks/frees, worker shutdown4C0A80, list destruction,
+eight440620 calls, controller+F0 clear,4BDA20, cache unlink47AA20 and purge/
+detach439780 all precede the final delete call. A late return cannot roll
+those effects back or regain lost parent membership. Constructor-abandoned
+view/resource aliases and allocation leases remain separate problems. The
+existing raw-acquire gate prevents the name-delete body on refusal, but its
+caller can only suppress additional later work here, not undo its earlier work.
+
+Delete's raw-release error is still masked to native zero; the preceding new
+release protocol applies only to constructor registration. Such a zero still
+forwards resource cleanup. The49 encoded direct destructor callers and other
+name-delete callers remain unisolated. This is neither whole-instance shutdown,
+automatic retry permission nor a positive free/cleanup authority.
+
+The release-stage parent's strict zero-default following_code_bytes protects
+the appended RX without appending it and preserves89,140/03ec46d4... by
+default. The new composition is89,640 bytes: the guarded89,140-byte prefix
+plus500 gate bytes. SHA-256:
+`996f66b14285bdb35490b4e4e2cbc380c2ed888a558323ea1828a58ebc246b1c`.
+It advertises22 native pairs and the inherited one generated explorer splice,
+23 coherent instruction-fetch pairs total. No on-device installer or firmware
+file is added. Metadata says destructor_delete_failure_continuation_stopped=True,
+but destructor_entry_fenced=False and earlier_cleanup_rolled_back=False;
+native_callers_isolated, raw_release_proven, native_lifetime_proven and
+partial_graph_cleanup_proven remain False. Active scrolling stays disabled
+and hardware remains UNTESTED.
+
+Fresh serial affected-parent regression for this destructor increment:
+**27 tests pass, no skips** (84.182 s), the25 release-gate contracts plus
+native constructor-release denial and exact-once shared6C delay/early-entry
+checks. Fresh serial new source/layout verification: **21 tests pass, no
+skips** (141.743 s). The latter pins18 preceding default hashes, native hook
+and separate493F54 delay, genuine1208-byte unwind, earlier destructive order,
+bounded49/56/54 caller census, full architectural restoration, strict fixed
+layout, full appended RX and the23-pair native/generated inventory.
+
+New fixture preflight corrected two observation assumptions before execution:
+the protected89140-byte prefix must equal the parent assembled with a500-byte
+following reservation, not its old default hash; exact U+24 load counts must
+be taken before the host assertion itself reads that field. The missing-
+acquisition-hook counterexample now primes a real node first, so actual native
+unlink/free and subsequent resource continuation are visible after raw error.
+No old assertion or timer was relaxed. The fixture enters only at493F40 and
+seeds the prologue-established1208-byte frame; it does not simulate the earlier
+cleanup as if those effects had been cancelled or rolled back.
+
+Fresh serial execution verification: **15 tests pass, no skips** (34.715 s),
+7 native/ABI/cache and8 adverse tests. The actual493F44 name-delete call,
+existing acquire denial, emitted new gate and native493C98 unwind execute
+from the bounded slice. Tested raw1/22/82/FFFFFFFF with either acquisition
+ownership outcome preserves exact V0/V1 and outer saved registers/SP/RA/HI/LO
+while making no later service/free or non-frame memory access after selection.
+The controller+24 load is absent on that route. Native zero and foreign-scope
+routes preserve complete entry architecture before the original resource
+arguments, RA493F58 and single delay effect. Linked and emitted unlinked
+resource transfers reach the same bounded hostile substitute exactly once;
+the real opaque resource-deletion body is not certified by that substitute.
+
+Coverage includes populated successful native unlink before resource cleanup,
+arbitrary nonzero V0 and poisoned V1, wrong U/RA forwarding, unchanged direct
+native delete ABI, missing new hook, actual masked delete-release error with
+either ownership outcome, and populated unlink/free after a missing earlier
+acquisition gate. Those counterexamples still forward the separate resource
+call; the new gate does not repair zero-masked uncertainty or past mutation.
+Cached/uncached code and native results match996f66b1..., metadata and machine
+state remain separate, and all27 temporary assembler identities restore even
+after invalid construction. No interpreter result or failure decision is cached.
+
+This increment has **36 new +27 affected-parent =63 passing targeted tests**.
+The full project suite was not rerun; earlier full/scoped counts remain
+historical evidence only. All337 Python sources compile without file writes.
+The saved action-link, playback-dispatch and renderer-transport files retain
+exact02fd verification and hashes d4306357..., a9a6f02f..., f42fac46...,
+33,492/24,532/23,240 code bytes and310/275/259 changed original bytes,
+autoscroll False and hardware UNTESTED.
+
+Independent native/core, composition, fixture/cache and scope reviews found
+no remaining issue within this late local-stop boundary. All34 expected text
+paths (8 Markdown,26 Python) pass whitespace/scope checks; no unexpected path
+or secret pattern was found. The index is empty, HEAD remains published98d9fc3.
+No old test assertion, timer, native helper or firmware builder changed. No
+firmware file was created/modified, no hook installed, and no player/network,
+launch, reboot, commit or push operation occurred. Changes remain local and
+uncommitted. Destructor-entry policy, earlier cleanup effects, masked delete
+release, graph retention/reclamation and outer caller coordination remain
+unresolved. This gate is not a completed safe-cleanup implementation.

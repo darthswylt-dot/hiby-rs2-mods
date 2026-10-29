@@ -122,3 +122,9 @@ bounded raw mutex, heap/libc and scheduling substitutes. They do not prove
 hardware pthread behavior, complete lifecycle coverage, object lifetime or
 OS scheduling. Active scrolling remains disabled; hardware is UNTESTED.
 Current serial verification totals are recorded in [status](status.md).
+
+A subsequent opt-in [acquisition gate](folderfollow-reveal-registry-acquire-gate.md)
+adds two pre-mutation refusals to a separate composition. It blocks the observed
+raw-error registration/name-delete bodies, not ignored caller continuation or
+every other writer. The default BOBS consumer, its historical-only interpretation
+and all remaining lifecycle/retention/isolation gates are unchanged.

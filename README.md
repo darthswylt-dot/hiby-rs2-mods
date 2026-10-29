@@ -144,6 +144,30 @@ A separate [historical queue consumer](notes/folderfollow-reveal-birth-consumer.
 now compares that exact queued token and birth event with the recorded history,
 after releasing T and acquiring fresh checked R. It exports an owned snapshot
 of either recorded retirement-observation state, never native-use or UI approval.
+A separate opt-in [raw-acquisition gate](notes/folderfollow-reveal-registry-acquire-gate.md)
+now refuses registration before allocation and name-selected deletion before
+their first ring read when a fresh raw-zero witness is missing. It does not
+isolate ignored caller failures or cover other shutdown/teardown routes; no
+native lifetime, cleanup or active scrolling authority is inferred.
+A separate opt-in [constructor continuation gate](notes/folderfollow-reveal-constructor-continuation-gate.md)
+now skips local UI/name work after a genuinely executed registration returns
+nonzero in either native constructor. It preserves the engine-pointer return
+convention; higher callers, skipped-registration paths and masked release
+errors remain outside this status-only stop.
+A separate opt-in [explorer failure gate](notes/folderfollow-reveal-explorer-failure-gate.md)
+now sends that specific explorer invocation to its stock NULL-return exit
+after a classified registration failure, before storing or enabling the engine.
+Earlier allocations, resource aliases and mutations remain; this is not cleanup,
+rollback or isolation of other callers.
+A separate opt-in [constructor release gate](notes/folderfollow-reveal-registry-release-gate.md)
+now carries the actual registry-unlock result past native forced-zero returns.
+Its same-invocation private witness feeds the existing constructor/explorer
+stops; publication already happened, so this is not rollback, cleanup or a
+global release/lifetime certificate.
+A separate opt-in [destructor continuation gate](notes/folderfollow-reveal-destructor-continuation-gate.md)
+now skips the remaining explorer resource/view cleanup after an explicit
+name-delete failure. This is a late local stop: earlier destructive effects,
+masked delete-release errors and outer caller behavior remain unresolved.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered

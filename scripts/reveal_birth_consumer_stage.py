@@ -17,7 +17,7 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
              lifecycle_address, queue_address, transport_mutex_address,
              fault_address, *, capacity=16, lifecycle_capacity=16,
              owner_capacity=16, ticket_limit=owners.MAX_TICKET,
-             queue_capacity=64, transport_capacity=40):
+             queue_capacity=64, transport_capacity=40, following_code_bytes=0):
     """Return local code, explicit take entry and unchanged coherent fixture hooks.
 
     The consumer drains into private storage before acquiring R, never nesting
@@ -25,7 +25,12 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
     handle or permission to paint, unlink, free or continue after a raw error.
     All ownership, initialization, retention and full-stack premises of the
     preceding queue still apply. No additional shared allocation is introduced.
+    Optional following RX is protected but not appended; zero preserves the
+    preceding composition's bytes and labels.
     """
+    if (type(following_code_bytes) is not int or following_code_bytes < 0
+            or following_code_bytes % 4):
+        raise ValueError('following code bytes must be a nonnegative aligned integer')
     args = (receipt_address, binding_address, owner_address, controller_address,
             registry_mutex_address, paint_mutex_address, code_base,
             lifecycle_address, queue_address, transport_mutex_address, fault_address)
@@ -44,9 +49,10 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
     core_options = dict(capacity=capacity, lifecycle_capacity=lifecycle_capacity,
                         owner_capacity=owner_capacity)
     provisional, labels = consumer.assemble(*core_args, **core_options)
-    protected = (code_base, prefix_bytes + len(provisional))
+    protected = (code_base, prefix_bytes + len(provisional) + following_code_bytes)
     prefix = queue_stage.assemble(
-        *args, **options, following_code_bytes=len(provisional))
+        *args, **options,
+        following_code_bytes=len(provisional) + following_code_bytes)
     if (len(prefix['code']) != prefix_bytes or prefix['labels'] != initial['labels']
             or prefix['protected_code_extent'] != protected):
         raise ValueError('birth queue layout changed while protecting consumer RX')
