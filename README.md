@@ -168,6 +168,20 @@ A separate opt-in [destructor continuation gate](notes/folderfollow-reveal-destr
 now skips the remaining explorer resource/view cleanup after an explicit
 name-delete failure. This is a late local stop: earlier destructive effects,
 masked delete-release errors and outer caller behavior remain unresolved.
+A separate opt-in [destructor delete-release gate](notes/folderfollow-reveal-delete-release-gate.md)
+now carries the actual unlock result from that one name-delete invocation into
+the existing destructor stop. Its fresh private witness prevents a native
+forced-zero result from hiding the observed release error. Earlier unlink/free
+effects, other callers and whole-instance ownership remain unresolved.
+A separate opt-in [refresh failure gate](notes/folderfollow-reveal-refresh-failure-gate.md)
+now skips local view recreation and offset restoration after that refresh
+invocation's destructor returns an explicit error. It preserves the error
+through the native refresh exit; higher callback handling and earlier cleanup
+still require their own coordination.
+A separate opt-in [refresh wrapper gate](notes/folderfollow-reveal-refresh-wrapper-gate.md)
+now carries that classified failure past one wrapper's remaining view work.
+It uses the existing failure decision and native frame exits, preserving the
+exact result without a shared error flag. Higher callbacks remain separate.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered

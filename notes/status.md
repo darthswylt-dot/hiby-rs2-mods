@@ -4538,3 +4538,332 @@ launch, reboot, commit or push operation occurred. Changes remain local and
 uncommitted. Destructor-entry policy, earlier cleanup effects, masked delete
 release, graph retention/reclamation and outer caller coordination remain
 unresolved. This gate is not a completed safe-cleanup implementation.
+
+## 2026-10-29: destructor-scoped name-delete release propagation (local, opt-in)
+
+The next [offline successor](folderfollow-reveal-delete-release-gate.md) carries
+the actual registry-unlock result through native name-delete's forced-zero
+return into the existing late destructor stop. It covers only pinned U's
+493F44 -> 493F4C call. Incoming nonzero acquisition-denial V0/V1 remains
+unchanged; incoming zero requires a fresh captured release witness. Actual
+nonzero becomes FFFFFFFF/exact raw status, missing/incoherent evidence becomes
+FFFFFFFF/zero, and actual zero preserves native completion architecture.
+
+The56-byte delete frame N is popped before its tail unlock, so its old locals
+cannot retain release evidence. A five-phase ARMED -> SELECTED -> ENTERED ->
+CAPTURED -> consumed protocol uses unused14/18/1C words in the still-live
+1208-byte destructor frame D. Fresh begin at4395C0 precedes acquisition and
+deletion; common-tail selection439658 covers empty, no-match and removed-node
+paths and replays native savedRA/S4 loads once. The original callback retains
+SP=D/RA493F4C; raw entry retains W=D-64/RA466DD0. Saved437DB0/493F4C frame
+returns, actual precall A0/T9 and exact W bind the observed raw result. Postraw
+caller-clobbered arguments are not reconstruction evidence.
+
+The full pinned493AC0..494A00 body does not directly use or form an address
+for D+14/18/1C; ordinary four-word argument homes stop at+0F and passed buffers
+begin at+20. D+10 is deliberately excluded because494180/49483C use it for
+fifth arguments. Genuine mapped writable retained simultaneously live frames,
+independent nonaliasing, transitive stack and ordinary ABI cooperation remain
+HARD premises. The popped N frame is deliberately reused by later facade/raw
+calls; it need not remain preserved. Scope constants and tags do not authenticate
+fabricated frames or provide invalid-SP recovery or native lifetime.
+
+All30 non-SP GPRs and HI/LO restore before the exact preceding delete-begin,
+raw-call/raw-return or destructor-gate delegate. Only newly classified
+completion failure changes V0/V1. Four existing native redirects are replaced;
+439658 is the sole added site. The composition advertises23 native plus the
+inherited one generated explorer splice,24 coherent pairs total. Historical
+observer maps remain provenance; coherent_hooks is the operative final map.
+
+The parent's strict zero-default following_code_bytes now protects a later
+tail without appending it. All19 preceding default hashes remain unchanged,
+including89640/996f66b1.... The canonical successor is91940 bytes: guarded
+89640-byte prefix plus2300 new bytes. SHA-256:
+`332b5cf381ecd46f117651638d992475b8ceed505721f66c8cc1eeecdba58364`.
+Metadata adds destructor_name_delete_release_gated=True and
+delete_release_failure_propagated=True. Destructor-entry fencing, rollback,
+native caller isolation, global release proof, native lifetime and partial
+graph cleanup remain False. Active scrolling stays disabled; hardware UNTESTED.
+
+Fresh serial affected-parent regression: **36 tests pass, no skips**
+(210.116 s), all preceding destructor source/layout, native/ABI/cache and
+adverse checks. Fresh serial new execution verification: **26 tests pass,
+no skips** (86.333 s),10 main and16 adverse checks. Actual raw1/22/82/FFFFFFFF
+with either release-ownership outcome reaches the existing pure native unwind,
+with no service, retry, free or non-frame access after raw release uncertainty.
+Success, empty/match/no-match tails, previous acquisition denial, exact callback/
+raw SP/RA, complete phase architecture, foreign native/constructor/checked-birth
+ABIs and cached/uncached output all retain the expected contracts. The29 pure
+assembler wrappers restore their identities; CPU state and execution results
+are uncached.
+
+Controlled wrong A0/T9/PC probes restore the original architecture before the
+legacy service/unwind and test classification only. A separate wrong-selected-
+callback test really executes the paint unlock once, then stops unknown. Fresh
+same-frame reuse and single-phase omissions do not adopt old results. Explicit
+multiple-omission stale-CAPTURED and missing earlier acquisition-gate examples
+still expose unsafe native continuation, so arbitrary partial activation is
+not claimed safe. All inherited and new redirects must participate coherently.
+
+Native unlink/name/paint-queue/engine/node frees can already precede release;
+the populated error case preserves those earlier effects while stopping later
+resource/view cleanup. Earlier destructor worker/cache/purge/detach effects,
+escaped resource aliases, other delete/release callers and outer destructor
+caller coordination remain unresolved. This result grants no cleanup success,
+retention, rollback, ownership inference or retry/free permission.
+
+Fresh serial new source/layout verification: **28 tests pass, no skips**
+(691.088 s). It pins all19 preceding default hashes, the source tail variants,
+private D carrier nonuse, genuine callback/raw frame chain, full architectural
+restoration, four exact delegates,24-hook inventory and strict complete RX.
+Each fixed data role is refused at both the final code word and advertised
+following RX; these uncached full-chain layout checks account for most of the
+run time. This increment has **54 new +36 affected-parent =90 passing targeted
+tests**. The full project suite and hardware were not rerun; earlier full-suite
+counts remain historical evidence only.
+
+All342 Python sources compile without file writes. The three saved action-link,
+playback-dispatch and renderer-transport files pass exact02fd verification
+unchanged: d4306357..., a9a6f02f..., f42fac46...,33492/24532/23240 code bytes
+and310/275/259 changed original bytes, autoscroll False and hardware UNTESTED.
+Independent source/core, composition, fixture/cache and scope reviews found no
+remaining issue within this destructor-only propagation contract. All10
+expected text paths (4 Markdown,6 Python) pass whitespace/scope checks; no
+unexpected path or common secret pattern was found. The index is empty and
+HEAD remains published0b7b591. No old test, timing threshold, native helper or
+firmware builder changed. No firmware file was created/modified, no hook
+installed, and no player/network action, launch, reboot, commit or push occurred.
+Changes remain local and uncommitted. This is still a late local stop, not
+completed cleanup, caller isolation or active folder-follow integration.
+
+## 2026-10-29: ordinary refresh destructor-result stop (local, opt-in)
+
+The next [offline successor](folderfollow-reveal-refresh-failure-gate.md)
+protects one ordinary Files-refresh continuation. Native4ACBC0 calls493AC0
+at4ACD8C, then the4ACD94 branch's24020001 delay overwrites its result with1.
+For the populated ordinary path, refresh can then call491E80 to recreate a view
+and8B43C0 to restore an offset despite an explicit destructor failure.
+
+The new192-byte private save classifies only savedS2=pinnedU, savedRA4ACD94
+and nonzeroV0. V1 is preserved without interpretation. A match restores all30
+non-SP GPRs and HI/LO, then jumps to native4ACCE4, bypassing both success-result
+overwrites. This pure epilogue restores RA/S4..S0 and unwinds1160 bytes while
+preserving V0/V1. It makes no graph read, service, callback, unlock or free.
+The native function already uses this epilogue for its NULL-input -1 result.
+
+Zero and foreign invocations restore the same complete architecture before
+replaying the original S4 branch. Its relative destination is relocated to a
+local taken label, with the original V0=1 delay once on both outcomes. Taken
+resumes4ACCE4; fallthrough resumes4ACD9C. The original4ACD98 is not revisited.
+No controller/view field is reloaded to decide after uncertainty. Genuine
+mapped writable retained nonaliasing simultaneously live native/private frames,
+ordinary ABI cooperation, transitive stack and coherent redirects remain HARD
+premises. Scope constants do not authenticate fabricated frames or make an
+invalid SP/unwind safe; static data/RX exclusions are not native lifetime.
+
+The parent's strict zero-default following_code_bytes already protects this
+appended RX. All20 preceding default hashes remain unchanged, including
+91940/332b5cf3.... The canonical successor is92444 bytes: guarded91940-byte
+prefix plus504 gate bytes. SHA-256:
+`88c32e213641ce6731c4e6eeef00f7fbf2487cef4976d061e27ec1c682e46d85`.
+Only4ACD94 is added, for24 native pairs plus the inherited one generated
+explorer splice,25 coherent pairs total. Metadata sets
+refresh_destructor_failure_continuation_stopped=True; native caller isolation,
+destructor-entry fencing, rollback, global release proof, native lifetime and
+partial-graph cleanup remain False. Active scrolling is disabled; hardware
+remains UNTESTED. No preceding stage default or firmware builder changes.
+
+Fresh serial new source/layout verification: **20 tests pass, no skips**
+(656.913 s). It pins20 preceding hashes, the native prologue/S2 owner load,
+post-destructor pair, pure existing unwind, earlier/later effects, bounded
+incoming census, private decision, full architectural restoration and exact
+relative-branch/delay replay. Each fixed role is excluded by direct core layout
+checks; composed final-tail and following-RX aliases are also refused. Both
+parent/successor following reservations are strict and protect without appending.
+
+The execution fixture explicitly substitutes only a bounded destructor slice:
+native4ACD8C calls a handler that seeds genuine D saves, executes actual493F40
+name deletion and existing gates, and always substitutes493F58 with a jump to
+native493C94/epilogue. No host status check selects its exit. Both baseline and
+new machines use exactly that substitute. Earlier destructor work and the
+opaque remaining success tail are not executed or certified. The refresh
+fixture likewise seeds prologue-established C state; native D/C epilogues and
+the actual refresh branch/continuation execute. Recreation and offset services
+are bounded hostile substitutes with explicitly mapped caller data.
+
+This local stop does not quarantine higher callbacks. The other destructor
+call4ACD1C still masks its result. Wrapper4AD880 can call4ACE40(V) when its
+S3 flag is nonzero and the result differs from1, reading the view path and
+potentially changing a property. Callback450D60 ignores the result before
+freeing its operation context; the inspected4AEC60 error path reads/frees that
+context and clears dialog+58 before exit, without retrying the wrapper. These
+paths remain separate work, as do the49 encoded destructor
+callers, list-destructor loop and gesture chain. Earlier cleanup, escaped
+aliases, uncertain ownership and missing earlier hooks cannot be repaired or
+rolled back by checking this later result. No zero or stopped return grants
+native use, successful cleanup, retry or free permission.
+
+Fresh serial execution and affected-parent regression: **46 tests pass, no
+skips** (218.787 s),9 new native/ABI/cache tests,11 new adverse tests and26
+preceding delete-release tests. Together with20 source/layout contracts, this
+increment has **40 new +26 affected-parent =66 passing targeted tests**.
+Actual raw1/22/82/FFFFFFFF acquisition and release errors, with either chosen
+ownership outcome and both S4 flags, survive both native D/C unwinds with exact
+V0/V1. The selected stop makes no later service/free or non-frame access and
+does not recreate a view or call the offset setter. Earlier native unlink/free
+effects remain visible in the populated error case; they are not rolled back.
+
+Zero, foreign U/RA and poisoned V1 preserve the preceding branch/ABI and single
+delay effect. The bounded recreation-null and mapped positive-offset cases
+execute the actual native caller instructions against identical hostile
+substitutes in baseline/new machines. Controlled arbitrary nonzero V0,
+same-frame reuse and unknown diagnostic zero are covered. Missing new or
+earlier redirects retain explicit masked-error/recreation/unlink
+counterexamples; this is not partial-activation safety or higher-caller
+quarantine. Cached/uncached92444/88c32e21... code and outcomes match, metadata
+and CPU state remain separate, and all31 temporary assembler identities restore
+even after invalid construction. Only pure assembly is cached.
+
+All347 Python sources compile without file writes. Fresh SHA-256 checks confirm
+the three saved action-link, playback-dispatch and renderer-transport files
+remain d4306357..., a9a6f02f..., f42fac46.... Their exact02fd verifier passes
+belong to the preceding increment and were not repeated here; no builder or
+saved-image bytes changed. The full project suite and hardware were not rerun;
+earlier full-suite counts remain historical evidence only.
+
+Independent core, composition, fixture/cache and accumulated-scope reviews found
+no remaining issue within this local refresh stop. All16 expected text paths
+(5 Markdown,11 Python), including the preceding uncommitted delete-release
+increment, pass whitespace/scope checks with no unexpected path or common
+secret pattern. The index is empty and HEAD remains published0b7b591. No earlier
+test assertion, timing threshold or firmware builder was changed. No firmware
+image was created/modified, no hook installed, and no player/network action,
+launch, reboot, commit or push occurred. Changes remain local and uncommitted.
+Higher callback handling, graph retention/cleanup and active folder-follow
+integration remain unfinished.
+
+## 2026-10-29: classified refresh failure escapes one wrapper (local, opt-in)
+
+The next [offline successor](folderfollow-reveal-refresh-wrapper-gate.md)
+skips one known higher continuation after the existing refresh stop. Wrapper
+4AD880 calls4ACBC0 at4AD8D8; its later4ACE40(V) call could still inspect the
+view path and change a property after an explicit destructor/refresh failure.
+The new helper diverts this exact invocation through the existing native frame
+exits, preserving V0/V1 without another controller lookup or shared error flag.
+
+It splices the generated refresh gate_stopped HI-restore pair only after that
+parent has saved all30 non-SP GPRs and HI/LO and classified pinnedS2=U,
+RA4ACD94 and nonzeroV0. The helper creates no extra frame, does not repeat that
+decision and is not an arbitrary entry API. With SP at the retained192-byte
+save, native refresh C starts at SP+192 and its actual saved outer RA is at
+SP+544 hex (192+484). Only4AD8E0 selects a rewrite of that current slot to
+the emitted abort_return. Other refresh outer returns retain their result/RA.
+
+Both outcomes replay8FA80088/01000011 once and resume the original restore at
+parent+8, whose8FA8008C LO-load word is separately verified. The full inherited
+restore recovers T0/T1 and all remaining GPRs/HI/LO before native4ACCE4. Its
+actual1160-byte unwind reaches the selected thunk with SP at wrapper W. The
+thunk jumps4AD904 with8FBF002C (LWRA,+2C(W)) in its delay; the native suffix
+restores S3/S2/S1/S0 and unwinds48 bytes. It skips4AD8E0's result-copy delay,
+the4ACE40 view continuation and4AD900's V0=S1 overwrite. W's saved caller RA
+is neither rewritten nor replaced by a synthetic outer return.
+
+This path makes one C saved-return write and only private/live-frame reads.
+It adds no service, callback, graph access, lock, unlock, free, rollback or
+failure receipt. Genuine mapped writable retained nonaliasing live private192,
+C1160 and selected W48 frames, transitive stack, ordinary ABI semantics and
+coherent redirects are HARD premises. Scalar saved returns are not frame
+authentication, and static fixed-data/RX exclusion does not validate SP,
+mapping or native lifetime or provide malformed-stack recovery.
+
+The stage verifies the actual generated parent pair and separate resume word,
+patches just that pair in its guarded prefix, and appends56 helper bytes.
+The same pair is advertised as an idempotent instruction-fetch override. The
+parent keeps92444/88c32e21..., and all21 preceding default hashes are preserved.
+Canonical code is92500 bytes, SHA-256:
+`b10314826317ea55438b21abcb4de04825346d3c593c132ec6cdd7921b74e696`.
+There are24 unchanged native pairs and two generated pairs,26 coherent pairs
+total; the earlier explorer splice is preserved. Complete RX reservations
+include the parent pair/resume and appended helper, plus any strict optional
+following tail. Metadata sets refresh_wrapper_failure_continuation_stopped=True
+and refresh_wrapper_exact_result_preserved=True. Whole-instance caller
+isolation, destructor-entry fencing, rollback, global release proof, native
+lifetime and partial-graph cleanup remain False. Scrolling stays disabled;
+hardware UNTESTED.
+
+The body-cut fixture preserves the previous bounded C/D substitutes. Actual
+wrapper4AD8D8 supplies the refresh RA; its native C saved return drives the
+nested boundary and enclosing interpreter, including the actual abort thunk
+and native W suffix. No host V0 branch chooses an abort. Earlier wrapper,
+refresh and destructor work remains unexecuted or bounded as already documented;
+the fixture does not certify full UI cleanup, scheduling or object lifetime.
+
+Earlier allocations, mutations, registry unlink/free and escaped aliases remain.
+The other refresh destructor branch, tail refresh caller4AD860 and separate
+4ADBCC ->4ACE40 route remain outside. Higher450D60 ignores the result before
+freeing its operation context;4AEC60 immediately overwrites V1, then reads/frees
+the operation context and clears dialog+58 before exit on the inspected error
+path. It does not retry the wrapper there. This is no quarantine of those callbacks
+or permission to reuse, retry or reclaim a partially changed instance. Missing
+earlier or generated redirects still require coherent-activation premises.
+
+Fresh serial source/layout verification: **23 tests pass, no skips**
+(863.802 s), including the21 preceding hashes, actual generated HI pair and
+resume, native frames/unwinds, private-only helper accesses, one saved-return
+rewrite, complete protected RX and24-native/two-generated inventory. The suite
+stores deep copies of three already-emitted valid compositions for repeated
+metadata inspection; it does not wrap assembler functions. The prior hash
+chain, core checks and distinct invalid/extension inputs run directly.
+
+Fresh serial native/ABI/cache and parent verification: **41 checks pass, no
+skips** (365.439 s), comprising8 new main tests,12 new adverse tests,20 parent
+refresh tests and one focused recheck of the strengthened higher-callback
+source case. That source case is already among the23 new contracts, so this
+increment has **43 new +20 affected-parent =63 distinct passing targeted
+tests**, with one deliberate source-case recheck, not64 distinct tests.
+
+Actual raw1/22/82/FFFFFFFF acquisition/release errors with either chosen
+ownership outcome and both native flags retain exact V0/V1 through actual
+D/C/W unwinds. From the helper scope there is one C+484 return-slot write,
+no service/free or non-frame access, and W's saved caller RA remains unchanged
+and is read once in the thunk delay. All GPRs/HI/LO restore through the parent;
+native W suffix changes only the expected callee/return state. Earlier actual
+unlink/free effects remain visible and are not rolled back.
+
+Ordinary refresh0/1, mapped offset restoration and normal4ACE40 behavior match
+the same bounded baseline. Classified nonzero errors, including1, still take
+the parent failure route; an ordinary native1 does not enter it. Foreign outer
+returns and parent-scope mismatches retain their original architecture/ABI.
+Same-frame reuse, unknown diagnostic0 and missing earlier/generated hooks are
+covered. A genuinely missing splice restores both fetch override and patched
+prefix words; removing only one copy leaves the other active. Those cases are
+counterexamples to partial activation, not an installation/removal protocol.
+Cached/uncached92500/b1031482... code and outcomes match; mutable metadata and
+CPU state remain separate, and all33 temporary assembler identities restore
+even after invalid construction. Only pure assembly is cached in the fixture.
+
+All352 Python sources compile without file writes. Fresh hashes confirm the
+three saved action-link/playback-dispatch/renderer-transport files remain
+d4306357..., a9a6f02f..., f42fac46.... Their exact02fd verifier passes are
+historical evidence from the earlier delete-release increment and were not
+repeated here. No builder or saved-image bytes changed. The full project suite
+and hardware were not rerun; prior full-suite counts remain historical only.
+
+Independent core, stage, fixture/cache, correction and scope reviews found no
+remaining issue within this invocation-local wrapper escape. All22 expected
+text paths (6 Markdown,16 Python), including the preceding uncommitted work,
+pass whitespace/scope checks with no unexpected path or common secret pattern.
+The index is empty and HEAD remains published0b7b591. No earlier test assertion
+or timing threshold was weakened; the higher-callback native-source assertions
+were strengthened and rechecked. No firmware file was created/modified, no
+hook installed, and no player/network action, launch, reboot, commit or push
+occurred. Changes remain local and uncommitted. Higher callbacks, dialog
+synchronization/cleanup and active folder-follow integration remain unfinished.
+
+A further read-only audit corrected the earlier broad outer-loop description:
+4AEEEC's V0!=1 branch reaches4AEEC8, then4AECCC frees the context,4AECD4 clears
+dialog+58 and the callback exits at4AECD8. It does not re-enter4AD880 on this
+error path. The next enclosing47C740 dialog ignores the callback result before
+cache/purge/name/resource cleanup and its +10 lock release/destruction. A direct
+jump to47C814 would skip those synchronization obligations; that boundary
+needs a separate checked lock/release/result policy. No such exit is installed.

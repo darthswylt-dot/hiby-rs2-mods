@@ -152,6 +152,13 @@ scheduling, mutex ownership or lifetime.
 Active scrolling remains disabled and hardware UNTESTED. No player/device,
 network, installation, launch, reboot, commit or push is part of this step.
 
+The separate [delete-release successor](folderfollow-reveal-delete-release-gate.md)
+adds a fresh private witness for this one destructor's actual name-delete
+unlock result. It delegates this unchanged continuation gate after propagating
+an observed release error; earlier unlink/free effects still remain. This
+stage now accepts strict zero-default `following_code_bytes`, protecting a
+successor's RX without appending it or changing these default bytes.
+
 Completed serial verification:21 new source/layout contracts and15 native/
 adverse/cache checks pass, alongside27 affected-parent checks. The complete
 project suite and hardware were not rerun. Exact times, cache isolation and

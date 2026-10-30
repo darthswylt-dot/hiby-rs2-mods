@@ -21,15 +21,19 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
              lifecycle_address, queue_address, transport_mutex_address,
              fault_address, *, capacity=16, lifecycle_capacity=16,
              owner_capacity=16, ticket_limit=owners.MAX_TICKET,
-             queue_capacity=64, transport_capacity=40):
+             queue_capacity=64, transport_capacity=40, following_code_bytes=0):
     """Return local code and22 native plus one generated coherent hook pairs.
 
     The name-delete call and earlier destructor work have already happened.
     The gate reads only saved S1/RA/V0 and skips the remaining local continuation
     on a matching error. Native1208 and private192 frames must be genuinely
     mapped retained writable and nonaliasing. No malformed-SP recovery, graph
-    cleanup permission, caller isolation or rollback is established.
+    cleanup permission, caller isolation or rollback is established. Optional
+    following RX is protected but not appended; zero preserves default bytes.
     """
+    if (type(following_code_bytes) is not int or following_code_bytes < 0
+            or following_code_bytes % 4):
+        raise ValueError('following code bytes must be a nonnegative aligned integer')
     args = (receipt_address, binding_address, owner_address, controller_address,
             registry_mutex_address, paint_mutex_address, code_base,
             lifecycle_address, queue_address, transport_mutex_address, fault_address)
@@ -50,9 +54,10 @@ def assemble(receipt_address, binding_address, owner_address, controller_address
              (transport_mutex_address, queue.MUTEX_BYTES), (fault_address, 4))
     core_args = (controller_address, registry_mutex_address, code_base + prefix_bytes)
     provisional, labels = gates.assemble(*core_args, extra_protected_data=extra)
-    protected = (code_base, prefix_bytes + len(provisional))
+    protected = (code_base, prefix_bytes + len(provisional) + following_code_bytes)
     prefix = release_stage.assemble(
-        *args, **options, following_code_bytes=len(provisional))
+        *args, **options,
+        following_code_bytes=len(provisional) + following_code_bytes)
     if (len(prefix['code']) != prefix_bytes or prefix['labels'] != initial['labels']
             or prefix['protected_code_extent'] != protected):
         raise ValueError('release layout changed while protecting destructor RX')
