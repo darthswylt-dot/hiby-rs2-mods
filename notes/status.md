@@ -4867,3 +4867,559 @@ error path. The next enclosing47C740 dialog ignores the callback result before
 cache/purge/name/resource cleanup and its +10 lock release/destruction. A direct
 jump to47C814 would skip those synchronization obligations; that boundary
 needs a separate checked lock/release/result policy. No such exit is installed.
+
+## 2026-10-30: classified refresh failure exits two callbacks (local, opt-in)
+
+The next [offline successor](folderfollow-reveal-refresh-callback-gate.md)
+extends the existing refresh/wrapper error route through its two known
+encoded callback callers. It adds no shared error latch or new classification.
+The inherited192-byte architectural save has already classified savedS2=U,
+RA4ACD94 and nonzeroV0; the wrapper helper has selected the genuine C saved
+return4AD8E0 before reaching its generated selected label.
+
+Only that label's first T0 LUI/ORI pair is spliced. With privateSP=P,
+refresh C=P+C0, wrapper W=P+548 and W.savedRA=P+574 hex. A single private
+read selects4AEEE8 or450DA4. A match rewrites only W's saved return to the
+corresponding new callback thunk; foreign W callers keep their original word.
+Every path replays the parent's exact abort-address materialization once and
+resumes its preserved AFA80544 write at selected+8. That inherited write still
+sets C.savedRA to the original wrapper abort. All GPRs/HI/LO restore before
+the actual native C1160 and W48 unwinds; no host V0 choice selects an exit.
+
+First callback4AEC60 returns through4AECD8: load genuine RA14BC, restore
+S4..S0 from14B8..14A8 and unwind5312 bytes. Second450D60 returns through
+450DAC: load RA24/S020, unwind40 and JRRA/NOP. Both full native suffixes
+preserve exact V0/V1 and leave the callback's own saved outer RA unchanged.
+The new helper creates no frame and adds no callback, graph lookup, service,
+unlock or free. Its own selected write is W+2C; the parent's existing C+484
+write remains separate.
+
+This skips4AEEE8's V1=1 overwrite, context read/free/clear and possible
+4AE9A0 continuation, or450DA4's unconditional operation-context free.
+The selected path leaves dialog+58 untouched. The native CF0 context and
+copied descriptor gain no allocation lease or ownership guarantee. Earlier
+callback/W/C/D work, registry unlink/free and escaped aliases remain. Native
+callbacks contain no explicit lock-facade call or JALR in the bounded bodies;
+this source fact does not certify transitive services or safe object reuse.
+
+The enclosing47C740 dialog is deliberately outside this local escape. It
+calls the ordinary acquisition facade with the pointer loaded from dialog+10
+before callback entry and ignores the callback result before cache removal,
+purge/detach, name/resource deletion, matching release/destruction and V0=0.
+The facade masks raw acquisition status, so actual ownership is not proved.
+The new thunks preserve that surrounding continuation. Directly bypassing
+the dialog's release/destruction would skip synchronization obligations;
+future handling needs its own checked acquisition/release/result policy.
+
+Genuine mapped writable retained nonaliasing private192/C1160/W48 and selected
+callback5312/40 frames, sufficient transitive stack, native ABI/service
+cooperation and coherent redirects are HARD premises. Scalar saved PCs do not
+authenticate arbitrary frames. Static complete U28C/R24/extra-data/nativeRX/
+generatedRX exclusions do not validate dynamic SP, lifetime or malformed
+unwinds. The generated selected12 and parent abort8 regions are disjoint,
+precede the helper and are both contained by complete protected RX.
+
+The stage verifies the actual label-derived selected pair, separate resume
+and preserved parent abort J4AD904/LWRA2C pair in the guarded prefix. It
+patches exactly one generated pair and appends100 bytes. Its unchanged24
+native hooks plus three generated hooks total27 coherent pairs. Canonical
+code is92600 bytes (92500+100), SHA-256:
+`e76f86cc4cea0ecb445eee4eb712e14993004f3a42138e2b7150831899b9f7c4`.
+Parent selected/abort are01E96930/01E9694C, new helper01E96954. The parent's
+92500-byte default and b1031482... digest remain separate. Strict zero-default
+following_code_bytes reserves later RX without appending it. No builder or
+saved firmware image is produced by this composition.
+
+Metadata sets refresh_callback_failure_continuations_stopped=True and
+refresh_callback_exact_result_preserved=True. Whole-instance caller isolation,
+destructor-entry fencing, earlier cleanup rollback, global raw-release proof,
+native lifetime and partial-graph cleanup remain False. Scrolling stays
+disabled and hardware UNTESTED.
+
+The execution fixture starts at actual callback call slices4AEEDC/450D98 and
+uses the same bounded W/C/D substitutes for baseline and successor. Actual
+JAL/delay arguments and SP/RA drive the nested boundaries, emitted thunks and
+native frame exits. Earlier callback bodies, full teardown, dialog scheduling
+and transitive lifetime remain outside the fixture. Only35 pure assembly
+functions are cached during fixture construction; CPU/state/results are not.
+
+The source-contract class uses the existing33-parent-only pure assembly cache
+and three deep-copied named valid output snapshots. The NEW callback core and
+stage remain unwrapped for each distinct configuration. Class cleanup and a
+nested-error check verify function restoration; every pre-existing assertion
+and configuration in the new suite is retained. The independent execution
+cache check still compares a fully uncached35-function construction against
+the cached bytes/metadata/native result. Older contract/hash-chain suites
+remain separate.
+
+Fresh serial parent verification:20 wrapper native/adverse/cache tests pass,
+no skips (337.022 s). The two initial new checks of actual acquisition errors
+and ordinary0/1 callback behavior pass, no skips (3.016 s); these are preflight
+rechecks of cases in the complete new execution suite, not additional
+distinct tests.
+
+Fresh serial new execution/ABI/cache verification:8 main and11 adverse tests
+pass, no skips (19 total,489.378 s). Fresh serial source/layout verification:
+23 tests pass, no skips (6.328 s), with the33-parent-only cache described above
+and the new core/stage unwrapped. Thus42 new plus20 affected-parent tests
+give62 distinct passing targeted tests. Including the two initial preflight
+rechecks,64 test executions passed; they are not64 distinct tests.
+
+Actual acquisition/release errors1/22/82/FFFFFFFF with either fixture-chosen
+ownership outcome preserve exact V0/V1 through both actual callback exits.
+The helper adds exactly one W saved-return write, followed by the inherited
+C write; callback saved outer returns remain untouched and are read once by
+their actual epilogues. From the new scope there is no service/free or
+non-frame access. Earlier populated unlink/free effects remain observable
+and are not rolled back. The selected path leaves the operation context
+unfreed in the fixture, which does not establish a native lifetime lease.
+
+Ordinary0/1, positive offset restoration and wrapper reset retain the same
+bounded baseline architecture and context free/clear/postwork. Classified
+nonzero1 still escapes, while ordinary native1 never enters the helper.
+Foreign W returns, parent-scope mismatches, arbitrary diagnostic words,
+same-frame fresh native saves and missing earlier/raw-capture hooks are
+covered. A truly absent generated splice restores both its returned prefix
+bytes and fetch override; removing only one copy leaves the other effective.
+These missing-hook cases expose coherent-activation requirements, not an
+installer or safe partial-activation/removal protocol.
+
+Cached and fully uncached35-module constructions match exact92600-byte code,
+guarded-prefix splice, metadata separation and native outcomes; all function
+identities restore after valid and invalid construction. The source class
+separately verifies parent-only nested-error restoration without replacing
+the new core/stage or caching CPU/state/results. No earlier test assertion
+or timing threshold was weakened. Older source/hash-chain suites, the full
+project suite and hardware were not rerun.
+
+All357 Python sources compile without file writes. Fresh primary02fd and
+saved action-link/playback-dispatch/renderer-transport hashes remain
+02fd1dd1..., d4306357..., a9a6f02f..., f42fac46.... Exact saved-image verifier
+passes remain historical from the earlier delete-release increment and were
+not repeated here. All8 expected text paths (3 Markdown,5 Python) pass
+whitespace/conflict/scope/common-secret checks with no unexpected path.
+Independent native, core, fixture/cache and scope reviews found no remaining
+issue within these two invocation-local callback exits.
+
+HEAD remains published37e179e, the index is empty and changes are uncommitted.
+No image or builder bytes changed, no hook installed and no device/player,
+network, installation, launch, reboot, commit or push occurred in this step.
+Whole-instance cleanup, worker quiescence, dialog synchronization/error
+handling and active folder-follow integration remain unfinished.
+
+A separate read-only future-boundary audit, not implemented or covered by
+the new execution fixture, found that the dialog+0C handshake cannot by
+itself prove worker termination. After its +0C unlock call47C6E8, worker
+47C580 still reads dialog+14 at47C6F0, may free it at47C6FC and clears it
+at47C704. Completion47C740's earlier lock/unlock/destroy facades mask raw
+statuses; a fresh +10 acquisition result alone would establish neither that
+worker's quiescence nor authority to destroy/free the mutex or dialog.
+Two concrete +6C callback consumers at47CC8C and47D004 ignore the completion
+result and later free the dialog at47CCC8 and47D02C. They are bounded
+computed-call evidence, not an exhaustive census. A later dialog release
+gate therefore needs an explicit ownership/error policy and coordination
+with those outer lifetimes. No guessed unlock or dialog exit is added here.
+
+## 2026-10-30: fresh dialog acquisition admission (local, opt-in)
+
+The separate [dialog acquisition gate](folderfollow-reveal-dialog-acquire-gate.md)
+adds a prerequisite before47C740's first post-acquire graph reads. The stock
+466DA0 facade forces V0=0 even after actual raw failure. This stage observes
+that actual result and permits the local continuation only after fresh raw
+zero. It does not yet handle an admitted callback's failure, its matching
+release/destruction or the enclosing worker/container lifetime.
+
+Begin47C794 retains the original8E040010 LW A0,+10(S0) as its jump delay.
+It executes once before the architectural save, supplying actual mutex M.
+The genuine104-byte dialog frame D uses otherwise-unused10/14/58 for
+TAG/M/raw evidence, outside argument homes00..0F, buffer18..57 and saves
+S0/S1/RA5C/60/64. Begin clears TAG, writes the FFFFFFFF sentinel and actual
+saved A0, then arms this invocation. After restoring architecture it supplies
+native RA47C79C and transfers to the original466DA0 wrapper.
+
+The direct raw frame W=D-32 has saved caller47C79C at W+1C. The new raw-call
+phase consumes ARMED, checks sentinel and actual A0==M, binds W and enters
+ENTERED. The raw-return phase checks native RA466DB0, that same caller/W
+and ENTERED, then captures actual saved V0 before native466DB4 masks it.
+Both phases restore all GPRs/HI/LO and tail-chain the CURRENT retirement
+raw-call/raw-return observers. Their437D30 registry route and older receipt
+fallback reject this direct dialog chain before graph access. Exactly one
+raw service executes at its original SP/argument homes and466DB0 return.
+
+Gate47C79C consumes CAPTURED once. Observed zero writes distinct ADMITTED,
+restores all architecture, replays8E02003C/8C450000 once and resumes47C7A4.
+Captured nonzero returns FFFFFFFF/exact_raw; absent/incoherent evidence
+returns FFFFFFFF/0. Refusal restores all other registers/HI/LO and follows
+native47C814's full104-byte pure exit, without graph read, callback, unlock,
+destroy, free or retry. It never reloads H+10 to recover M after uncertainty.
+ADMITTED is local admission state, not durable ownership or release authority.
+
+This scope covers ALL genuine47C740+10 invocations, with no invented runtime
+pinned-U classifier. U/R remain static layout exclusions. Raw error may still
+leave M held; the new return neither guesses an unlock nor isolates the outer
+callers. The already-processed masked+0C services, worker post-unlock H+14
+accesses and ignored-result outer frees remain. Successful admission preserves
+native callback handling, later graph cleanup and native H+10 reloads for
+release/destruction. Those later operations are not certified by this stage.
+
+Genuine mapped writable retained nonaliasing D104/W32/private192 frames,
+live initialized ordinary M, transitive stack, ABI/import cooperation and
+coherent inherited/new redirects remain HARD premises. Static full U28C/R24,
+extra-data and native/generated RX checks do not authenticate saved PCs/tags
+or prove dynamic SP mapping, allocation lifetime or mutex initialization.
+Arbitrary partial activation is not fail closed. No firmware builder/image
+or installer is added.
+
+The canonical successor is94232 bytes, guarded92600-byte parent plus1632:
+SHA-256 `6469c7baf0e41b95efbf4992cc74bdb3116ed1e044d84aa3fcffa0d780c0a4f6`.
+Parent92600/e76f86cc... remains unchanged by default; its guarded prefix is
+preserved exactly with no generated-pair patch. The two existing raw native
+hooks are verified/replaced, two new native sites added, and all three parent
+generated hooks retained:26 native plus3 generated,29 coherent pairs total.
+Strict zero-default following_code_bytes protects later RX without appending
+it. Metadata sets dialog_acquire_failure_admission_gated=True; whole-instance
+caller isolation, destructor-entry fencing, rollback, global raw-release proof,
+native lifetime and partial-graph cleanup remain False. Scrolling stays
+disabled; hardware UNTESTED.
+
+The fixture begins at actual47C794 after prologue/+0C-handshake premises,
+executes the raw wrapper/observers and stops on reached47C7A4 or the actual
+native return. No host V0 branch chooses admission. Its optional admitted
+callback route executes actual47C7C8 with bounded earlier callback/W/C/D
+bodies, then stops at47C7D0 with the separate dialog mutex still held. The
+later cleanup is not simulated or permitted by that observation. Dialog and
+registry ownership/status are modeled independently. Only37 pure assembler
+functions are cached during construction, never CPU/state/results.
+
+Fresh serial parent verification:41 selected tests pass, no skips (26.055 s):
+23 callback source/layout plus18 native/adverse cases. The unchanged full
+uncached35-module equivalence case was completed in the preceding increment
+and was intentionally not repeated in this selection. Three initial new
+preflight cases pass, no skips (3.979 s): observed zero, all error/ownership
+outcomes and both actual callback return paths. These three also belong to
+the full new execution suite and are not additional distinct tests.
+
+Fresh serial new execution/ABI/cache verification:8 main plus11 adverse tests
+pass, no skips (19 total,967.861 s), including the fully uncached37-module
+comparison. Fresh serial source/layout verification:21 tests pass, no skips
+(6.284 s). Thus40 new plus41 selected affected-parent tests give81 distinct
+passing targeted tests. Including the three overlapping preflight checks,
+84 test executions passed, not84 distinct tests.
+
+Actual raw zero reaches47C7A4 with the full gate-entry architecture preserved
+except the two original replayed graph-load effects. The source H+10 delay,
+actual raw call and graph loads each execute once. Raw1/22/82/FFFFFFFF with
+either fixture-chosen ownership outcome returns exact MASK/raw and invokes
+no unlock/destroy/free/callback. Refusal accesses only retained private/native
+frames after the decision. Gate CAPTURED is consumed; ADMITTED cannot be
+reused as a second capture. Missing/incoherent evidence returns unknown0,
+distinct from an observed FFFFFFFF raw status.
+
+The actual pre-service pointer survives later H+10 mutation and volatile
+post-service A0/T9/V1 changes. Same-frame reuse resets stale words and takes
+the current pointer/result. Foreign worker direct returns and registry
+registration/deletion retain their preceding architecture, results/history
+and witness behavior; their D104/native/private frames remain independently
+live and nonaliasing in the fixture. Both admitted native callback dispatches
+reach47C7D0 with the exact existing callback error and dialog mutex still held;
+the fixture intentionally ends before the unhandled cleanup/release policy.
+
+In the fresh-state omission fixtures, individually missing phases deny
+unknown0. Missing the gate allows native graph access after an error;
+removing all freshness phases can admit deliberately seeded stale CAPTURED0.
+These are explicit partial-activation counterexamples, not recovery or an
+installer-level fail-closed guarantee. Cached/uncached94232-byte code,
+guarded prefix, fresh metadata/CPU state and outcomes agree. All37 assembler
+identities restore even after invalid construction. The separate source class
+memoizes only35 unchanged parents, restores them after nested errors, and
+leaves the new core/stage unwrapped for distinct configurations. No CPU,
+execution state or result is cached, and no earlier assertion or timing
+threshold was weakened. Full project/hardware checks were not rerun.
+
+All362 Python sources compile without file writes. Fresh primary02fd and
+saved action-link/playback-dispatch/renderer-transport hashes remain
+02fd1dd1..., d4306357..., a9a6f02f..., f42fac46.... Exact saved-image verifier
+passes remain historical from the earlier delete-release increment; they
+were not repeated here. The14 expected text paths (4 Markdown,10 Python),
+including the preceding uncommitted callback work, pass whitespace/conflict/
+scope/common-secret checks with no unexpected path. Independent native,
+core/stage, fixture/cache and scope reviews found no remaining issue within
+this invocation-local acquisition prerequisite.
+
+HEAD remains published37e179e, the index is empty and changes are uncommitted.
+No firmware image/builder bytes changed, no hook was installed and no player,
+network, installation, launch, reboot, commit or push occurred in this step.
+Callback-error matching release, worker quiescence, outer object retention
+and active folder-follow integration remain unfinished.
+
+## 2026-10-30: classified dialog error exit and one qualified release (local, opt-in)
+
+The [dialog failure successor](folderfollow-reveal-dialog-failure-gate.md)
+extends only the already-classified refresh failure through the enclosing
+dialog. It introduces no generic V0 failure test at47C7D0 and no shared error
+mailbox. The two generated callback-abort J/NOP pairs now enter private192
+bridges at genuine callback frame B5312 or B40. Only actual B.savedRA at
+14BC/24 equal47C7D0 selects a rewrite of that one slot to error_return.
+Other saved callers retain the preceding error exit unchanged. Both paths
+restore all30 non-SP GPRs and HI/LO before replaying the full native callback
+epilogue jump. Its actual unwind reaches error_return with genuine D104 SP.
+
+That return PC carries the inherited pinned-U failure classification. The
+dialog exit saves all architecture again, consumes ADMITTED and checks its
+captured acquisition status zero. Under the ADDITIONAL hard premises of
+initialized retained ordinary M and continuous same-thread ownership through
+the cooperative callback, it makes one direct raw unlock with M loaded from
+the private native D+14 snapshot. ADMITTED alone establishes none of those
+ownership/lifetime properties. No H+10 or other object lookup recovers the
+mutex after failure. Missing/incoherent acquisition evidence performs no call
+and still takes the classified dialog exit.
+
+The new direct A5B830 call uses the private192 frame's free00..0F argument
+homes and a generated return PC. The first instruction after it stores actual
+V0 into D+58 before any masking/restoration. D+10 distinguishes ATTEMPTING,
+RELEASE_ZERO, RELEASE_ERROR and NO_RELEASE; the last records0 with no service.
+These are live-frame observations, not durable reports after D is popped.
+The original callback V0/V1, every other GPR and HI/LO restore for every
+outcome before native47C814's full104-byte unwind. No release error replaces
+the callback diagnostic, and no release retry, M destruction/free or dialog
+graph/context cleanup is performed on this selected route.
+
+The skipped native dialog release would have raw-wrapper caller47C808.
+Existing registry release observers require the437DB0 facade chain, so that
+native dialog route was foreign to their witnesses. This new direct import
+does not duplicate that skipped release or omit a matching registry witness;
+it intentionally uses a different SP/RA under ordinary import ABI cooperation.
+Raw status error can still leave M held or released. Neither outcome authorizes
+object reclamation, retry, ownership recovery or worker termination.
+
+Simultaneously live native/private frames and M/H/fixed/RX allocations must
+remain mapped, retained, writable where needed and independently nonaliasing.
+At error_return, D-192 legitimately reuses already-popped callback storage;
+the tests inspect B.savedRA while B is live and do not claim its retention
+after unwind. Static U28C/R24/extra-data/fullRX exclusions and scalar PC/tag
+checks do not authenticate arbitrary frames or establish dynamic ownership.
+Earlier destructive effects, the +0C worker processing/post-unlock use, escaped
+aliases and the outer ignored-result dialog frees remain unresolved.
+
+Canonical code is95300 bytes, guarded94232-byte parent plus1068, SHA-256:
+`92f44f4def0777f77207b6d0c9a1ad973b88f9e667c3919b3b095200b0aa668e`.
+The default94232/6469c7ba... parent remains unchanged. Only its verified
+generated abort pairs01E969A8/01E969B0 are patched; first/second scopes begin
+01E97018/01E9715C, error_return01E972A0 and release_return01E9736C. Native
+hooks remain26; two generated pairs bring that map to5,31 coherent pairs
+total. Both parent8-byte regions are disjoint, precede the helper and belong
+to complete protected RX. Strict following_code_bytes reserves later RX
+without appending it. No saved firmware image, builder or installer changes.
+
+Metadata sets dialog_callback_failure_cleanup_stopped=True,
+dialog_callback_failure_exact_result_preserved=True and
+dialog_failure_release_attempt_guarded=True. Global raw_release_proven,
+native_lifetime_proven, partial_graph_cleanup_proven, native_callers_isolated,
+earlier_cleanup_rolled_back and destructor_entry_fenced remain False.
+Active scrolling remains disabled and hardware UNTESTED.
+
+Fresh serial parent verification:39 selected tests pass, no skips (12.291 s):
+21 acquisition source/layout and18 native/adverse cases. The unchanged fully
+uncached37-module equivalence check remains evidence from the preceding
+increment (967.861 s) and was intentionally not repeated. Fresh new execution:
+8 main plus10 adverse tests pass, no skips (18 total,15.256 s). Fresh new
+source/layout verification:21 pass, no skips (6.886 s). Three source cases
+with strengthened branch-target assertions were explicitly rechecked, all
+pass (2.668 s). Thus39 new plus39 selected parent tests give78 distinct
+passing targeted tests; including those three rechecks,81 test executions
+passed, not81 distinct tests.
+
+Actual deep acquisition/release errors reach both callback paths and preserve
+the exact callback diagnostic across one raw M release. Raw0/1/22/82/FFFFFFFF
+and either chosen release-ownership outcome are covered. Missing acquisition
+proof still skips cleanup without unlock. Saved M survives H+10 rebinding;
+hostile raw homes, A0/T9/V1 and HI/LO clobbers do not alter the callback pair
+or architectural restoration. Ordinary native0/1 and foreign saved B returns
+retain the same bounded baseline. The optional missing-splice baseline runs
+only its first opaque native47AA20 service to47C7DC, not full dialog cleanup.
+
+Both copies of each generated splice must be removed for a true omission;
+removing only the fetch override or only emitted-prefix copy leaves the other
+active. Independent callback splices, same-frame fresh acquisition/return
+saves and stale ADMITTED under missing freshness hooks are covered. Deliberately
+stale evidence can still authorize an invalid attempt when coherent activation
+is absent: the test is an explicit counterexample, not an ownership proof or
+fail-closed installer. Repeated fixture calls are freshness tests, not native
+retry permission.
+
+The source class caches only37 unchanged parent assemblers and three named
+deep-copied valid outputs; both new emitters stay unwrapped. The execution
+equivalence check compares those two actual new emitters with their memoized
+versions under that same unchanged37-parent cache, plus exact guarded-prefix
+patches, output bytes, fresh metadata/CPU state and native outcomes. It does
+not repeat a fully uncached39-module chain. All39 temporary function identities
+restore after valid/invalid construction; no CPU, service outcome or execution
+state is cached. The nested callback fixture stops on reached native or new
+error-return PCs and lets the outer interpreter follow actual r31; no host
+V0 test or synthetic SP transition chooses an abort. Full project/hardware
+checks and older complete default-hash suites were not rerun.
+
+All367 Python sources compile without file writes. Fresh primary02fd and
+saved action-link/playback-dispatch/renderer-transport hashes remain
+02fd1dd1..., d4306357..., a9a6f02f..., f42fac46.... Exact saved-image verifier
+passes remain historical from the earlier delete-release increment and were
+not repeated. All20 expected text paths (5 Markdown,15 Python), including the
+preceding uncommitted callback/acquisition stages, pass whitespace/conflict/
+scope/common-secret checks without an unexpected path. Independent core/stage,
+native-source/cache and final scope reviews found no remaining issue within
+this conditional invocation-local dialog failure exit.
+
+HEAD remains published37e179e, the index is empty and changes are uncommitted.
+No firmware image/builder bytes changed, no hook installed and no player,
+network, installation, launch, reboot, commit or push occurred in this step.
+Continuous ownership/lifetime certification, worker quiescence and protection
+against the outer ignored-result container frees remain unfinished. Active
+folder-follow integration is not enabled by these offline stages.
+
+## 2026-10-30: ownership audit and protected known-dialog retention (local, opt-in)
+
+The requested ownership audit did NOT confirm continuous ownership of M.
+The positive evidence is synchronous47C7C8 callback control flow and no direct
+H+10 access in450D60/4AEC60. The closure gap is concrete:4AE180 publishes H
+through459320/resource+7C and installs widget handlers;4AF008/020 and
+4AF0C8/0E4 recover H and call47D0A0, which uses masked M acquire/release.
+Transitive U/list/virtual callbacks at4ACAC8/4ACB14/4ACB48/4ACC40 and493C38
+remain unclosed. The factory does not check allocation before initialization
+and discards its init result. These are unproved dependencies, not a claim
+that a foreign unlock was observed. ADMITTED cannot be promoted to ownership.
+
+The separate [protected retention stage](folderfollow-reveal-dialog-retention-gate.md)
+therefore suppresses the preceding conditional direct unlock entirely. It
+splices the callback error_return before its prologue/release body and the
+acquisition gate_denied HI-restore pair. Callback retention saves192 once;
+denial reuses the existing192-byte save and privateRAW90. Both paths preserve
+the original error, write only private/live D evidence plus an independent
+quarantine word, and retarget exact D.savedRA+64 values47CC94/47D00C to
+native outer pure epilogues47CCD0/47D034. No H/M lookup, raw service,
+unlock, destroy or free is added on either error route. Denial replays its
+exact HI pair and resumes at+8, preserving the preceding MASK/raw ABI.
+
+An immediate outer unwind alone was insufficient: H remains in the list
+with its completion flag, so the next poll can select it again. This stage
+adds a DISTINCT aligned four-byte process-lifetime guard Q, canonically
+01F20900, separate from transport-owned fault F at01F20800. Required
+guard_address is a new keyword; the composer neither allocates nor initializes
+it. It must be zeroed before quiescent coherent activation. READY0->BUSY1
+claims use bounded LL/SC; BUSY/reentry/any other nonzero value refuses entry
+before H/list/lock accesses. Classified errors permanently SW QUARANTINED2
+with SYNC. There is no runtime reset or ownership-recovery protocol.
+
+The two consumers47CC20/47CF80 claim before native object/list lookup and
+stamp their future48-byte frame's otherwise-unused+10. The entry192-byte
+save's+A0 padding equals futureO+10, beyond the GPR/HI/LO slots through8C.
+Before SP restoration, native tails47CCD8/47D03C consume a valid QOWN stamp
+and SC only BUSY1->READY0. QUARANTINED can never be cleared. Missing owner
+evidence leaves Q unchanged; bounded exit-SC exhaustion latches quarantine.
+This last condition cannot undo ordinary-path cleanup that already occurred.
+Entry exhaustion returns MASK/0 without a claim or object read. Close(NULL)
+keeps its native result and makes no Q claim; like every new entry it still
+requires the extra mapped192-byte save even though its native path was a leaf.
+
+The higher close facade47D060 required protection BEFORE its47C9A0 prelude,
+which otherwise uses M before reaching47CF80. Its entry now owns the same
+atomic claim and a live F32+10 QFAC stamp, written in private+B0 padding.
+Only actual child return47D084, that current F stamp and QBUSY permit the
+synchronous inner close to borrow the claim with QBOR. The O tail consumes
+QBOR without clearing Q. The F tail releases its own BUSY after all H work,
+or retains quarantine and bypasses native47D08C's V0=0 so the child's exact
+error survives F32 as well. Normal facade zero-return behavior is preserved.
+READY ordinary prelude mutex operations remain native/masked and are not
+certified by this guard. BUSY/quarantined facade entry reaches none of them.
+Other escaped-H clients and unguarded/computed entries remain outside scope.
+
+All native paths continue the higher music-loop controller/paint-unlock
+obligations; no higher caller frame is skipped. Protected callback/acquire
+errors bypass known outer flag changes, list removal, optional+7C and H free.
+The control word serializes these known consumers and makes their future
+entries terminally refuse after quarantine, including the close facade.
+It is intentionally a subsystem-wide fail-stop, not per-H reclamation or
+an application recovery mechanism. Earlier+C destruction, worker post-unlock
+use, underlying M ownership/initialization, unknown aliases and universal
+native lifetime remain unresolved. No active folder-follow is enabled.
+
+Hard premises include whole-process Q mapping/lifetime/initial zero, ordinary
+aligned cacheable LL/SC and SYNC semantics, quiescent coherent hook activation,
+genuine native routes, ABI cooperation, sufficient stack and independently
+nonaliasing simultaneously live frames/H/M/fixed/RX allocations. Future-frame
+stamps occupy unused entry-save padding before native prologues; popped D/O
+storage may be reused later. Static full U/R/Q/extra/RX exclusion and scalar
+stamps/PCs are not authentication, arbitrary-SP protection or hardware proof.
+Q is not protected by M or T and does not reuse their uncertain fault words.
+
+Canonical code is99108 bytes, guarded95300-byte parent plus3808, SHA-256:
+`c0ed5db6dcc4a668fe2532ffde5ca3c874c354c97860acb24d56e14f0d4180d3`.
+Parent95300/92f44f4d... retains its default. The generated source regions are
+01E972A0(8 bytes) and01E96EDC(12 including preservedLO resume8FA8008C).
+Only their two pairs change in the guarded prefix. Six added native entry/
+tail pairs and two generated splices yield32 native plus7 generated,39 total.
+Strict retry_limit1..64 defaults8; strict following_code_bytes defaults0 and
+protects later RX without appending it. Required Q is disjoint from F/T and
+every declared fixed/native/generated RX extent. No installer/image produced.
+
+Metadata sets unconfirmed_dialog_unlock_suppressed,
+known_dialog_outer_frees_guarded, known_dialog_reentry_guarded and
+known_dialog_close_facade_guarded=True. It explicitly overrides
+dialog_failure_release_attempt_guarded=False and keeps dialog_ownership_proven,
+native_callers_isolated, raw_release_proven, native_lifetime_proven,
+partial_graph_cleanup_proven, earlier_cleanup_rolled_back and
+destructor_entry_fenced=False. Runtime Q reset is unsupported.
+
+Fresh serial affected-parent verification:39 tests pass, no skips (26.498 s).
+Fresh final new native/adverse verification:11 main plus14 adverse tests pass,
+no skips (25 total,15.002 s). Fresh final source/layout contracts:25 pass,
+no skips (5.119 s). Thus50 new plus39 parent give89 distinct passing targeted
+tests. Initial fixture bring-up completed native SB and nested CF80 execution,
+placed missing-stamp injection at the actual common tail, and limited M-slot
+nonuse to the live-D phase; later O saves legitimately reuse popped D storage.
+Existing parent tests/assertions and timing thresholds were not changed.
+
+Both callback types, all tested raw acquire errors with either chosen owner
+outcome, exact D/O/F error preservation and no post-classification service
+are covered. Normal and empty-list exits, NULL close, facade QFAC/QBOR handoff,
+repeated entries, poisoned H/global fields and bounded SC failures pass.
+Two machines share Q/H with DISTINCT live stacks and a Q-only epoch: competing
+SC invalidation admits only one owner; quarantine published between leave
+LL/SC is never overwritten with READY. Reentry during a service refuses before
+object access. Private writes do not manufacture Q reservation invalidation.
+These deterministic interleavings and structural SYNC checks do not prove
+target CPU cache ordering, scheduling or all native alias lifetimes.
+
+The ordinary fixture executes actual O/F prologues, list dispatch, byte flag
+stores and native returns with bounded list methods/strcmp/sleep services.
+Earlier D work is bounded; a fixed PC cut after its first47AA20 cleanup call
+skips opaque remaining D cleanup identically in baseline/new runs. This cut
+does not choose from V0 or certify complete ordinary destruction. Missing
+redirect cases explicitly restore unsafe object access, old conditional
+unlock or outer free; arbitrary partial activation is not fail closed.
+
+Only39 unchanged parent assembler functions are memoized during source checks;
+the new core/stage remain unwrapped with three deep-copied named valid outputs.
+Execution equivalence compares those two new emitters unwrapped versus cached
+under the unchanged39-parent cache, plus actual code/outcomes/fresh metadata.
+All41 temporary identities restore after valid/invalid construction. No CPU,
+service outcome or execution state is cached. Full uncached41 compositions,
+older complete hash-chain suites, the full project suite and hardware were
+not rerun. Scrolling remains disabled and hardware UNTESTED.
+
+All372 Python sources compile without file writes. Fresh primary02fd and
+saved action-link/playback-dispatch/renderer-transport hashes remain
+02fd1dd1..., d4306357..., a9a6f02f..., f42fac46.... Exact saved-image verifier
+passes remain historical from the earlier delete-release increment and were
+not repeated. All26 expected text paths (6 Markdown,20 Python), including the
+preceding uncommitted stages, pass whitespace/conflict/scope/common-secret
+checks without an unexpected path. Independent ownership/native-source,
+atomic core/stage and fixture/design reviews support only the scoped claims
+above; no universal ownership, lifetime or hardware safety claim is added.
+
+HEAD remains published37e179e, the index is empty and changes are uncommitted.
+No firmware image/builder bytes changed, no hook installed and no player,
+network, installation, launch, reboot, commit or push occurred. The new mode
+requires separate Q storage/setup and coherent activation; it is not installed
+on the player. Continuous M ownership remains UNPROVED. Known classified-error
+outer frees/reentry are guarded; other H/M aliases, prior+C processing,
+worker lifetime and active folder-follow integration remain unfinished.

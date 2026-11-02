@@ -182,6 +182,28 @@ A separate opt-in [refresh wrapper gate](notes/folderfollow-reveal-refresh-wrapp
 now carries that classified failure past one wrapper's remaining view work.
 It uses the existing failure decision and native frame exits, preserving the
 exact result without a shared error flag. Higher callbacks remain separate.
+A separate opt-in [refresh callback gate](notes/folderfollow-reveal-refresh-callback-gate.md)
+extends that classified failure through the two known wrapper callbacks.
+It skips their remaining operation-context cleanup and preserves the exact
+result through their native exits. Context lifetime and the enclosing
+dialog's cleanup and lock obligations remain unresolved.
+A separate opt-in [dialog acquisition gate](notes/folderfollow-reveal-dialog-acquire-gate.md)
+requires a fresh observed zero from its +10 lock attempt before the dialog reads
+its list or invokes a callback. Failed or missing evidence stops the local
+continuation without guessing an unlock. Callback-error release, worker
+completion and the outer callers' object cleanup remain separate.
+A separate opt-in [dialog failure exit](notes/folderfollow-reveal-dialog-failure-gate.md)
+now carries classified callback failures past the dialog's graph cleanup.
+It preserves the callback error and records one qualified raw unlock result
+separately, using the saved mutex pointer. Continuous ordinary ownership
+through the callback is still a hard premise; worker and outer object
+lifetime remain unresolved.
+A separate protected [dialog retention stage](notes/folderfollow-reveal-dialog-retention-gate.md)
+suppresses that unproven unlock and fences the known outer free/reentry paths.
+It serializes completion, close and the close facade with an independent
+atomic word; classified errors quarantine these consumers without a runtime
+reset. Unknown aliases and worker lifetime still prevent a universal
+ownership or retention claim.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered
