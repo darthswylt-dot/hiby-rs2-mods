@@ -5423,3 +5423,196 @@ requires separate Q storage/setup and coherent activation; it is not installed
 on the player. Continuous M ownership remains UNPROVED. Known classified-error
 outer frees/reentry are guarded; other H/M aliases, prior+C processing,
 worker lifetime and active folder-follow integration remain unfinished.
+
+### 2026-11-02: detach the worker buffer before the terminal C release
+
+Added a separate optional offline worker-terminal-tail core/stage, two test
+modules and a source audit note. The preceding protected dialog stage remains
+unchanged by default. No firmware image/builder, installer or active scrolling
+change is supplied.
+
+The worker47C580 has W56, savedS1+20 and savedRA+34. Its matching-name +1C
+completion byte is published before the final H+10/C+0C releases. Its old
+47C6E8 release still precedes LW H+14 at47C6F0, optional466A80 at47C6FC and
+SW0,H+14 at47C704. The starter uses a detached pthread; the H+08 startup
+handshake and repeated H+18 loop handshake do not establish worker termination.
+Even an ordinary C handoff therefore permits completion to precede those old
+direct H accesses. Imported thread/free names are pinned by ELF relocations.
+
+The single new native redirect preserves the original47C6EC LW A0,H+0C delay.
+Its56-byte helper captures H+14 in native callee-ownedS1, clears a nonnull
+field, orders the store with SYNC and calls the same466DC0 once. It then uses
+only the captured pointer for the existing optional466A80 and jumps to the
+complete stack-only47C708 epilogue. S1 is restored from its real W+20 slot.
+No new private frame, Q claim, retry, destroy, raw-status decision or H free is
+introduced. Claiming the shared Q across a worker could exclude its stop
+facade; a tail wait could cycle with a consumer holding Q while waiting on C.
+
+This deliberately moves the visible H+14 clear before release/free. H must
+remain live until capture/clear, its independent nonnull pointer must be
+retained/freeable/nonaliasing, and external field observers/writers must allow
+this order. H+78 callbacks can escape H, so no universal observer/alias proof
+is made. Imported callees must preserve S1, cooperate with the native stack
+ABI, and obey the stated SYNC semantics. There is no worker join, C ownership
+or buffer free-authority certificate. Failed raw release remains masked by
+native466DC0 and still follows the existing optional-free policy.
+
+Canonical composition is99164 bytes: guarded99108-byte retention parent plus
+56. SHA-256 is
+`6449ade76e68805fd8857f7a2f9346e5605b3ba04de42bbc71e962fff3b8d4c0`.
+The protected parent(following56) hash is
+`4f83e6252ba521ccb96049b6471cf214bea1c79dcba023b655b44a49727134ba`;
+only its pre-existing complete-RX bound materializations differ from the
+default parent's c0ed5db6... hash. The new stage preserves that guarded prefix
+exactly and adds no generated splice. Labels entry/captured/release_return/
+finish are01E98324/01E98334/01E98340/01E98354. The inventory is33 native plus
+seven generated coherent pairs,40 total. Static full U/R/Q/extra/RX bounds,
+strict types, nonwrap/alignment and complete following RX are checked.
+
+Metadata explicitly records removal of direct post-terminal-release H accesses,
+the earlier buffer-field detach and continued native raw-status masking.
+worker_termination_proven, worker_terminal_release_proven and
+worker_buffer_free_authority_proven remainFalse. Preceding retention flags,
+independent Q setup, unsupported runtime reset and global lifetime limitations
+are preserved. New entries still require quiescent coherent activation.
+
+Fresh serial verification:25 preceding retention source/layout tests pass
+(5.688s);20 new source/layout tests pass (5.048s);12 independent native-tail
+and three full-composition execution tests pass (15total,2.404s). All60 distinct
+targeted cases pass, no skips. One integration trace expectation was corrected
+from displaced nativeDD4 to the actual DD8 resume; delay effects are verified
+through their owning JR and final SP. No production bytes changed for that
+fixture correction. Stock versus new service order/results and genuine saved
+register restoration are checked under the stated bounded ABI semantics.
+
+Unmapping/poisoning H after the raw release reproduces the old late read/free
+failure while the captured-buffer tail completes without H reads/writes.
+Missing redirects, invalid H before capture and violated S1 ABI are explicit
+counterexamples. The complete-stage tests execute inherited466DC8/DD0 raw
+dispatchers, including removal of H at the raw service with no later H access,
+preserve quarantine without touching Q, and expose that chosen
+raw22 with retained lock still follows the original optional free policy.
+Earlier worker-loop work and native allocation/free services remain bounded;
+no full native destruction, scheduling or hardware-ordering proof is added.
+
+Only41 unchanged parent assembler functions are memoized for source/integration
+construction. New core/stage remain unwrapped; three named valid source outputs
+are deep-copied and temporary identities restore after exceptions. CPU state,
+services and execution results are not cached. Full uncached43 composition,
+the full project suite, earlier hash-chain suites and hardware were not rerun.
+Fresh primary02fd and three saved-image hashes are unchanged; their full saved
+image verifier passes remain historical. Active scrolling remains disabled.
+
+The separate alias audit also confirms that guarding registration47C9E0 alone
+would be insufficient: five factories ignore its result and continue into
+initialization/worker launch. Widget paths access H before47D0A0, which has141
+encoded direct callers including initialization. Neither is silently covered
+by this worker tail or the preceding consumer guard.
+
+Changes remain local and uncommitted after published408ea1f. No device/player,
+network, installation, launch, reboot, commit or push operation occurred in
+this increment. Hardware remains UNTESTED.
+
+All376 Python source files compile without output files. Exact scope is seven
+text paths (three Markdown and four Python); whitespace/conflict/common-secret
+checks pass, the index is empty, and no unrelated file is changed.
+
+### 2026-11-05: refuse admission of one checked dialog factory
+
+Added a separate optional factory-admission core/stage, source/execution test
+modules and a note after the still-local worker-terminal-tail increment.
+The protected entry is only47D720. Other factory entries47D180/47D4A0/47D960/
+47DCE0 remain unguarded. A blanket NULL refusal was rejected on actual source
+evidence, not inferred safe from native factory error branches.
+
+The five factories have51/1/2/157/21 encoded direct callers. Unchecked NULL
+dereferences exist after47D180 (453384 SW+50,V0;4AF964 LW+58,V0) and47D960
+(5091E0 SW+58,S1;50BAD8 SW+58,S0). Some wrappers return factory H to unchecked
+higher callers. No complete refusal policy was established for those four.
+Both known47D720 callers discard its returned pointer:4A4EAC goes to the real
+4A4A18 epilogue, overwriting V0=1;4EC450 frees its prior S0+58 context and
+returns. That prior context's own lifetime is a separate premise.
+
+47D720 uses F568, native local214(foundH)/218(newH), buffer[18,214) and
+saves220..234. Its unused21C word carries QF72. Entry's complete192-byte save
+places the future stamp at P+A4=oldSP-28, beyond GPR/HI/LO slots ending8F.
+It claims shared Q READY0->BUSY1 using bounded LL/SC before replaying native
+47D720/724. Nonzero/BUSY or exhausted attempts restore state and return0/0
+before native F allocation, lookup, allocation or startup. Existing-H lookup
+is denied as well as new creation. No nested borrowed claim is introduced.
+
+Both late leave pairs47D77C/47D93C restoreS1/S0; RA/S4/S3/S2 are already
+restored and after each pair only JR/SP+=568 remain. Each helper preserves
+all30 non-SP GPRs and HI/LO, consumes a valid current F21C stamp and clears only
+BUSY->READY through bounded LL/SC. Q2/unknown states are never cleared. Missing
+stamp evidence leaves Q unchanged; exit-SC exhaustion latches quarantine2.
+The actual native V0/V1 result survives every leave. No created-H rollback,
+free permission or ownership certificate is fabricated.
+
+The native body is not time bounded. Startup47C840 can wait on H+08; a stuck
+body retains BUSY indefinitely. No timeout, reset, exception cleanup or worker
+join is provided. Indirect initializers/imports must tolerate refused reentry
+and must not wait for successful entry of a Q-protected consumer. A fault
+published inside an already admitted body does not cancel its later launch.
+Admission after quarantine is refused; in-flight native work can continue.
+
+Hard premises include genuine checked native routes, coherent quiescent
+activation, process-lifetime initially-zero mapped cacheable Q, cooperative
+LL/SC/SYNC and ABI, sufficient stack, retained independently nonaliasing live
+frames/allocations and native buffer/list bounds. Encoded reference censuses,
+scalar stamps and fixed-data/RX checks are not authentication or universal
+computed-caller/alias protection. Arbitrary partial activation is not a safe
+lifetime protocol. The older ownership/worker/free-authority limitations stay.
+
+Canonical helper1336 bytes appends to guarded99164-byte worker-tail parent,
+total100500. SHA-256:
+`b885d43ec36a534a0bd0d3c9957a51df7eb274266533c309fde0901a5d5f572a`.
+The guarded parent hash is
+`a61f33f9bf5e83949926e0d81d97f3e30aef3ef6720265def58afc97e78c46fb`;
+the default parent's6449ade7... hash remains unchanged. The guarded prefix is
+preserved exactly; three native redirects are added without generated splices.
+Inventory36 native+7 generated=43 coherent pairs. Canonical enter/early_leave/
+created_leave labels are01E9835C/01E9856C/01E98700. Full fixed U/R/Q/extra and
+native/generated/following RX extents, strict types/retries and nonwrap are
+checked by the actual new core/stage.
+
+Metadata identifies47D720 and the two checked callers.
+known_factory_admission_guarded=True; all_dialog_factories_guarded,
+factory_body_runtime_bounded, factory_refusal_universal_caller_safety_proven
+and native_factory_cleanup_rolled_back=False. Preceding flags and independent
+guard setup are preserved.
+
+Fresh serial verification:35 preceding worker source/execution tests pass
+(5.954s),16 new execution tests pass (7.136s),22 new source/layout tests pass
+(6.405s). All73 distinct targeted tests pass without skips. An initial source
+expectation used NOP at4EC454 instead of the actual00003821 MOVE A3,zero; only
+that fixture word was corrected. New code bytes were unchanged by that repair.
+
+Runtime cases execute actual factory prologue, NULL branches, existing lookup,
+both pure tails and both known caller JAL/NULL continuations. Created-body work
+has an explicit fixed-PC cut from47D78C to47D8F0; allocation and middle graph
+construction are not certified. Registration/initializer/view/startup are
+bounded hostile-ABI services. Two machines with distinct live stacks and a
+shared Q epoch show one admission after competing SC; quarantine between leave
+LL/SC cannot reopen READY. Reentry, missing stamp/hook, entry/exit exhaustion,
+preserved native result and unknown states are covered. An initializer latching
+Q2 still reaches the bounded native startup, preserves H and refuses later
+admission, exposing the lack of in-flight cancellation rather than hiding it.
+
+Only43 unchanged parent assembler functions are memoized; new2 stay unwrapped,
+three named valid outputs are deep-copied and temporary identities restore on
+ordinary/exceptional exits. CPU state, services and execution results are not
+cached. Full uncached45 compositions, full project suite, older complete hash
+chain suites, target scheduling/cache ordering and hardware were not rerun.
+
+All work remains offline and local after published408ea1f. No firmware image
+or builder changed, no hook was installed, and no device/player, network,
+installation, launch, reboot, commit or push operation occurred. Active
+scrolling remains disabled; hardware remains UNTESTED.
+
+Final checks:all380 Python sources compile without output files. The exact
+local scope is12 expected text paths (4 Markdown and8 Python), including the
+preceding uncommitted worker-tail increment; whitespace/conflict/common-secret
+checks pass, index is empty and HEAD remains408ea1f. Fresh primary02fd and three
+saved-image hashes remain02fd1dd1.../d4306357.../a9a6f02f.../f42fac46.... Full
+saved-image verifier runs remain historical and were not repeated here.

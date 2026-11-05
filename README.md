@@ -204,6 +204,16 @@ It serializes completion, close and the close facade with an independent
 atomic word; classified errors quarantine these consumers without a runtime
 reset. Unknown aliases and worker lifetime still prevent a universal
 ownership or retention claim.
+A separate optional [worker terminal tail](notes/folderfollow-reveal-worker-terminal-tail.md)
+captures and clears its buffer field before the final completion-lock release.
+The remaining tail uses the captured buffer and native stack exit, removing
+its direct post-release dialog accesses. Worker termination, buffer free
+authority and compatibility with external field observers remain premises.
+A separate optional [factory admission gate](notes/folderfollow-reveal-factory-admission-gate.md)
+refuses the checked `47D720` creation/reuse path before lookup when the shared
+guard is busy or quarantined. Its two known direct callers discard the result.
+The other four factories require further caller checks; native startup can
+still wait indefinitely while retaining the guard.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered
