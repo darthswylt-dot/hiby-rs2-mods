@@ -406,12 +406,34 @@ class NativeNullContinuationTests(unittest.TestCase):
                 self.assertEqual(good.get(HANDLE + 0x58, 4), ALLOCATION)
 
     def test_d960_allocation_failure_can_hide_that_NULL_result_is_unsafe(self):
-        for site, stop in ((0x5091A8, 0x5091E4), (0x50BAB4, 0x50BAEC)):
-            with self.subTest(site=hex(site)):
-                machine = self.machine(allocation_result=0)
-                machine.run_at(site, stop)
-                self.assertEqual(machine.calls, [0x47D960, ALLOCATOR])
-                self.assertFalse(any(address == 0x58 for address, _, _ in machine.writes))
+        exits = ((0x5091A8, 0x5091E4, 144, 17, 3),
+                 (0x50BAB4, 0x50BAEC, 72, 16, 1))
+        for site, suffix, frame_size, handle_register, saved_count in exits:
+            for supplied_early_exit in (False, True):
+                with self.subTest(site=hex(site), supplied_early_exit=supplied_early_exit):
+                    machine = self.machine(allocation_result=0)
+                    ra_offset = frame_size - 4
+                    frame = machine.frame(frame_size, ra_offset)
+                    saved = machine.r[16:16 + saved_count]
+                    for index, value in enumerate(saved):
+                        machine.put(frame + ra_offset - 4 * (saved_count - index), value, 4)
+                    if supplied_early_exit:
+                        machine.run_at(site, site + 8)
+                        self.assertEqual(machine.r[2], 0)
+                        # Model entry into the existing suffix. Stock code
+                        # continues to the allocator at this point.
+                        machine.r[handle_register] = 0
+                        writes_before_exit = machine.writes.copy()
+                        machine.run_at(suffix, RETURN)
+                        self.assertEqual(machine.writes, writes_before_exit)
+                        self.assertEqual(machine.calls, [0x47D960])
+                    else:
+                        machine.run_at(site, RETURN)
+                        self.assertEqual(machine.calls, [0x47D960, ALLOCATOR])
+                    self.assertEqual((machine.r[2], machine.r[29], machine.r[31]),
+                                     (0, STACK, RETURN))
+                    self.assertEqual(machine.r[16:16 + saved_count], saved)
+                    self.assertFalse(any(address == 0x58 for address, _, _ in machine.writes))
 
     def test_dce0_discarded_case_replaces_result_with_preexisting_context_field(self):
         for result in (0, HANDLE):
@@ -791,6 +813,96 @@ class NativeUiLifecycleTests(unittest.TestCase):
         self.assertEqual([machine.get(root, 4) for root in (0xADF208, 0xADF20C, 0xADF210)],
                          [0, 0, 0])
         self.assertEqual((machine.r[29], machine.r[31]), (STACK, RETURN))
+
+
+class InputDialogPropagationMachine(NullCallerMachine):
+    """Execute a selected callback's native factory tail with a supplied frame."""
+    def __init__(self, image, *, wrapper, site, frame_size, saved_count, factory_result):
+        super().__init__(image, factory_result=factory_result)
+        self.wrapper, self.site = wrapper, site
+        self.frame_size, self.saved_count = frame_size, saved_count
+        self.callback_result = None
+
+    def external(self, target):
+        if target == 0x459340:
+            self.calls.append(target)
+            self.run_at(target, self.r[31])
+        elif target == self.wrapper:
+            self.calls.append(target)
+            return_pc = self.r[31]
+            frame = self.r[29] - self.frame_size
+            self.r[29] = frame
+            ra_offset = self.frame_size - 4
+            first_saved = ra_offset - 4 * self.saved_count
+            for index in range(self.saved_count):
+                self.put(frame + first_saved + 4 * index, self.r[16 + index], 4)
+            self.put(frame + ra_offset, return_pc, 4)
+            self.run_at(self.site, return_pc)
+            self.callback_result = self.r[2]
+        else:
+            super().external(target)
+
+
+class NativeInputDialogPropagationTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.image = audit.source_image()
+
+    def test_known_dialog_handler_discards_both_factory_returns_from_six_tails(self):
+        tails = ((0x5066C0, 0x506788, 304, 1),
+                 (0x507440, 0x50767C, 1384, 6), (0x507440, 0x50788C, 1384, 6),
+                 (0x50A600, 0x50A83C, 1384, 6), (0x50A600, 0x50A8EC, 1384, 6),
+                 (0x50C760, 0x50C834, 312, 2))
+        for wrapper, site, frame_size, saved_count in tails:
+            for result in (0, HANDLE):
+                with self.subTest(site=hex(site), factory_result=result):
+                    machine = InputDialogPropagationMachine(
+                        self.image, wrapper=wrapper, site=site, frame_size=frame_size,
+                        saved_count=saved_count, factory_result=result)
+                    machine.put(CONTEXT + 0x7C, ALLOCATION, 4)
+                    machine.put(ALLOCATION + 0xD8, wrapper, 4)
+                    machine.r[4] = CONTEXT
+                    machine.run_at(0x506340, RETURN)
+                    self.assertEqual(machine.callback_result, result)
+                    self.assertEqual((machine.r[2], machine.r[29], machine.r[31]),
+                                     (1, STACK, RETURN))
+                    self.assertEqual(machine.calls, [0x459340, wrapper, 0x47D960])
+
+    def test_five_known_upper_routes_discard_the_two_payload_wrapper_results(self):
+        for continuation, frame_size, expected in ((0x5081E0, 80, CONTEXT),
+                                                   (0x508760, 576, 1),
+                                                   (0x50B350, 568, 1)):
+            for result in (0, HANDLE):
+                with self.subTest(continuation=hex(continuation), supplied_result=result):
+                    machine = NullCallerMachine(self.image)
+                    machine.frame(frame_size, frame_size - 4)
+                    machine.r[2] = result
+                    writes_before = machine.writes.copy()
+                    machine.run_at(continuation, RETURN)
+                    self.assertEqual((machine.r[2], machine.r[29], machine.r[31]),
+                                     (expected, STACK, RETURN))
+                    self.assertEqual(machine.writes, writes_before)
+                    self.assertEqual(machine.calls, [])
+        for wrapper, continuation in ((0x507440, 0x5077DC), (0x50A600, 0x50A8B4)):
+            for result in (0, HANDLE):
+                with self.subTest(wrapper=hex(wrapper), supplied_result=result):
+                    machine = InputDialogPropagationMachine(
+                        self.image, wrapper=wrapper, site=continuation, frame_size=1384,
+                        saved_count=6, factory_result=result)
+                    machine.put(CONTEXT + 0x7C, ALLOCATION, 4)
+                    machine.put(ALLOCATION + 0xD8, wrapper, 4)
+                    machine.r[4] = CONTEXT
+
+                    def supply_callback_result(pc):
+                        if pc == continuation:
+                            machine.r[2] = result
+
+                    machine.before_instruction = supply_callback_result
+                    machine.run_at(0x506340, RETURN)
+                    self.assertEqual(machine.callback_result, result)
+                    self.assertEqual((machine.r[2], machine.r[29], machine.r[31]),
+                                     (1, STACK, RETURN))
+                    self.assertEqual(machine.calls, [0x459340, wrapper])
 
 
 if __name__ == '__main__':

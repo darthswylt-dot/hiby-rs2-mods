@@ -8,6 +8,7 @@ callers, imports, dynamic object lifetimes and arbitrary source changes remain
 outside that evidence. No runtime gate, firmware or device operation is added.
 """
 
+import argparse
 from collections import Counter
 import hashlib
 import json
@@ -28,6 +29,7 @@ MANIFESTS = tuple(ROOT / f'notes/folderfollow-factory-{suffix}-null-audit.json'
                   for suffix in ('d180', 'd960', 'dce0'))
 CALLBACK_BINDINGS = ROOT / 'notes/folderfollow-factory-callback-binding-audit.json'
 CALLBACK_SLOTS = (0x24, 0x274, 0x2A4)
+RESOLVED_IMPORT_ARCHIVE = ROOT / 'artifacts/rs2_14_import_libraries_20261106'
 
 
 def literal_callback_store_inventory(image):
@@ -290,5 +292,87 @@ def report():
                 universal_refusal_safety_proven=False, runtime_guards_added=False)
 
 
+def verify_resolved_imports(document, archive=RESOLVED_IMPORT_ARCHIVE):
+    """Match the observed bindings to captured library bytes and audited prefixes."""
+    capture = document.get('resolved_import_follow_up', {})
+    for flag in ('lazy_resolution_proven', 'mutex_progress_proven',
+                 'universal_refusal_safety_proven'):
+        if capture.get(flag) is not False:
+            raise ValueError('the observed import audit requires its explicit limits')
+    known = {0xA5BC68: ('memset', 'libc-2.16.so', 0xA6FB18),
+             0xA5B968: ('pthread_mutex_lock', 'libpthread-2.16.so', 0xA6FA58)}
+    expected = {hex_word(row['callsite']): hex_word(row['unresolved_boundary']['pc'])
+                for row in document['callers'] if row['classification'] == 'unresolved'
+                and row['unresolved_boundary']['kind'] == 'import'}
+    seen, checked = {}, []
+    libraries = capture.get('libraries')
+    if type(libraries) is not list or len(libraries) != len(known):
+        raise ValueError('expected both captured imports')
+    for record in libraries:
+        frontier = hex_word(record.get('frontier'))
+        slot = hex_word(record.get('got_slot'))
+        if (known.get(frontier) != (record.get('symbol'), record.get('file'), slot)
+                or record.get('version') != 'GLIBC_2.0'):
+            raise ValueError('unexpected captured import identity')
+        path = Path(archive) / record['file']
+        if not path.is_file():
+            raise ValueError(f'missing captured library {path}')
+        library = Elf32(path)
+        if (len(library.data) != record.get('bytes')
+                or hashlib.sha256(library.data).hexdigest() != record.get('sha256')
+                or library.endian != '<' or library.u16(0x10) != 3 or library.u16(0x12) != 8):
+            raise ValueError(f'captured library bytes do not match {path.name}')
+        entry, overwrite, base, target = (hex_word(record.get(key)) for key in
+                                         ('export', 'first_overwrite', 'rx_mapping_start',
+                                          'observed_target'))
+        symbol = hex_word(record.get('dynamic_symbol_entry'))
+        version = hex_word(record.get('version_entry'))
+        attributes = library.word(symbol + 12)
+        if (library.word(symbol + 4) != entry or attributes & 0xF != 2
+                or attributes >> 16 == 0 or library.u16(library.va_to_off(version)) != 2):
+            raise ValueError('captured dynamic symbol entry changed')
+        if (base + entry != target or entry % 4 or overwrite % 4
+                or not 0 <= overwrite - entry <= 0x40
+                or not any(va == offset == 0 and flags & 1 and overwrite + 4 <= size
+                           for va, offset, size, _, flags in library.loads)):
+            raise ValueError('observed target does not match the captured RX mapping')
+        prefix = record.get('prefix', [])
+        offsets = [hex_word(item.get('offset')) for item in prefix]
+        if offsets != list(range(entry, overwrite + 4, 4)) or any(
+                library.word(offset) != hex_word(item.get('word'))
+                for offset, item in zip(offsets, prefix)):
+            raise ValueError('audited library prefix changed or is incomplete')
+        sites = [hex_word(site) for site in record.get('direct_sites', [])]
+        for site in sites:
+            if site in seen or expected.get(site) != frontier:
+                raise ValueError('direct import caller duplicated, invented or moved')
+            seen[site] = frontier
+        checked.append(dict(symbol=record['symbol'], observed_target=f'{target:#x}',
+                            first_overwrite=f'{overwrite:#x}', direct_sites=len(sites)))
+    if seen != expected or len(seen) != 18:
+        raise ValueError('resolved audit must cover all 18 direct import sites')
+    completion = [hex_word(site) for site in capture.get('completion_sites', [])]
+    known_completion = {hex_word(site) for group in document['outer_consumer_follow_up']['groups']
+                        if group['upper_outcome'] == 'live_at_memset_import'
+                        for site in group['sites']}
+    if len(completion) != 5 or set(completion) != known_completion:
+        raise ValueError('resolved audit must match the five known completion paths')
+    return dict(overwritten_with_observed_resolved_targets=len(seen),
+                known_upper_completion_paths=len(completion), checked_libraries=checked,
+                unresolved_computed_sites=sum(row['classification'] == 'unresolved'
+                                              and row['unresolved_boundary']['kind'] == 'computed_callback'
+                                              for row in document['callers']),
+                lazy_resolution_proven=False, mutex_progress_proven=False,
+                universal_refusal_safety_proven=False)
+
+
 if __name__ == '__main__':
-    print(json.dumps(report(), ensure_ascii=False, indent=2))
+    parser = argparse.ArgumentParser(description='Verify factory caller and import evidence')
+    parser.add_argument('--resolved-imports', action='store_true',
+                        help='also check the two locally captured RS2 1.4 libraries')
+    options = parser.parse_args()
+    result = report()
+    if options.resolved_imports:
+        document = json.loads(MANIFESTS[1].read_text(encoding='utf-8'))
+        result['resolved_import_audit'] = verify_resolved_imports(document)
+    print(json.dumps(result, ensure_ascii=False, indent=2))

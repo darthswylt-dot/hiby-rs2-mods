@@ -105,6 +105,7 @@
       ],
       "notes": "Conditional propagation: if the pre-existing S0+0x58 field read after the factory at435174 is zero, actual466a80 branches directly to466ac0 JR RA/NOP without writing V0. Caller435178 clears that old field and only frame restores precede JR43518c, so factory V0 is returned unchanged. For a nonzero old field,466a90 instead overwrites V0 from its allocation header. This is not unconditional propagation or proof that an upper caller tolerates NULL. The old context field is not returned H; the zero-field predicate is a source path condition, not a hardware reachability certificate.",
       "path_conditions": [
+        "The earlier read at 4350F8 is nonzero. Reaching a later zero reload after a bodyless refusal requires a separate field change.",
         "At the post-factory read435174, pre-existing S0 is a valid caller context and its +0x58 field equals zero. This field is not returned H.",
         "The free(NULL) leaf and genuine frame restoration follow the ordinary mapped native ABI. Real-device reachability, upper NULL handling and old-context cleanup authority remain unproved."
       ],
@@ -215,6 +216,7 @@
       ],
       "notes": "Conditional propagation: if the pre-existing S0+0x58 field read after the factory at435174 is zero, actual466a80 branches directly to466ac0 JR RA/NOP without writing V0. Caller435178 clears that old field and only frame restores precede JR43518c, so factory V0 is returned unchanged. For a nonzero old field,466a90 instead overwrites V0 from its allocation header. This is not unconditional propagation or proof that an upper caller tolerates NULL. The old context field is not returned H; the zero-field predicate is a source path condition, not a hardware reachability certificate.",
       "path_conditions": [
+        "The earlier read at 4350F8 is nonzero. Reaching a later zero reload after a bodyless refusal requires a separate field change.",
         "At the post-factory read435174, pre-existing S0 is a valid caller context and its +0x58 field equals zero. This field is not returned H.",
         "The free(NULL) leaf and genuine frame restoration follow the ordinary mapped native ABI. Real-device reachability, upper NULL handling and old-context cleanup authority remain unproved."
       ],
@@ -4203,6 +4205,7 @@
       ],
       "notes": "Conditional propagation: after the factory the old S0+0x58 field is loaded into S1. If zero, BNE4aeb80 is not taken; unconditional branch4aeb88 reaches4aeb08 and its delay4aeb8c clears the old field. The pure native frame restores then JR4aeb18 return factory V0 unchanged. If nonzero,4aeafc calls466a80(S1) and466a90 overwrites V0. The field belongs to a pre-existing caller context, not returned H. The zero-field path does not close upper NULL handling, other field writers or hardware reachability.",
       "path_conditions": [
+        "The earlier read at 4AEACC is nonzero. Reaching a later zero reload after a bodyless refusal requires a separate field change.",
         "At post-factory load4aeb7c, or4aebe0 for the second continuation, the valid pre-existing S0 context has +0x58 equal to zero. This is not a field of returned H.",
         "The zero-field branch skips free and uses the genuine native return frame. Real-device reachability, other writers, upper callers and old-context cleanup authority remain unproved."
       ],
@@ -4333,6 +4336,7 @@
       ],
       "notes": "Conditional propagation: after the factory the old S0+0x58 field is loaded into S1. If zero, BNE4aeb80 is not taken; unconditional branch4aeb88 reaches4aeb08 and its delay4aeb8c clears the old field. The pure native frame restores then JR4aeb18 return factory V0 unchanged. If nonzero,4aeafc calls466a80(S1) and466a90 overwrites V0. The field belongs to a pre-existing caller context, not returned H. The zero-field path does not close upper NULL handling, other field writers or hardware reachability.",
       "path_conditions": [
+        "The earlier read at 4AEACC is nonzero. Reaching a later zero reload after a bodyless refusal requires a separate field change.",
         "At post-factory load4aeb7c, or4aebe0 for the second continuation, the valid pre-existing S0 context has +0x58 equal to zero. This is not a field of returned H.",
         "The zero-field branch skips free and uses the genuine native return frame. Real-device reachability, other writers, upper callers and old-context cleanup authority remain unproved."
       ],
@@ -9638,5 +9642,2343 @@
     "unresolved": "Branch/copy/opaque-call/control-flow obligations were not closed. Immediate-window absence of V0 use is never treated as complete proof; some local NULL guards are annotated without promoting whole-callsite safety."
   },
   "direct_caller_count": 157,
+  "import_provenance": {
+    "local_matching_bodies_found": false,
+    "provenance": "The checked roots were the preserved 1.4 import, nearby 1.3 dump and pre-update backup. The boot ramdisk in the import contains Android AArch64 libc and the DT image has an Android header. The 1.3 dump supplies player ELFs, data and scripts. The relevant MIPS library bodies were absent from these checked roots.",
+    "symbols": [
+      {
+        "name": "memset",
+        "version": "GLIBC_2.0",
+        "provider": "libc.so.6",
+        "direct_unresolved_sites": 8,
+        "frontier": "0xa5bc68",
+        "got": "0xa6fb18",
+        "relocation_file_offset": "0x1b838",
+        "symbol_version_index": 4,
+        "initial_got_target": "0xa5b0c0",
+        "evidence": [
+          {
+            "pc": "0xa5bc60",
+            "word": "0x3c0f00a7"
+          },
+          {
+            "pc": "0xa5bc64",
+            "word": "0x8df9fb18"
+          },
+          {
+            "pc": "0xa5bc68",
+            "word": "0x03200008"
+          },
+          {
+            "pc": "0xa5bc6c",
+            "word": "0x25f8fb18"
+          },
+          {
+            "pc": "0x41b838",
+            "word": "0x00a6fb18"
+          },
+          {
+            "pc": "0x41b83c",
+            "word": "0x0005b77f"
+          },
+          {
+            "pc": "0x408c24",
+            "word": "0x0000178b"
+          },
+          {
+            "pc": "0x408c28",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x408c2c",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x408c30",
+            "word": "0x00000012"
+          },
+          {
+            "pc": "0x418550",
+            "word": "0x00010004"
+          },
+          {
+            "pc": "0xa6fb18",
+            "word": "0x00a5b0c0"
+          }
+        ]
+      },
+      {
+        "name": "pthread_mutex_lock",
+        "version": "GLIBC_2.0",
+        "provider": "libpthread.so.0",
+        "direct_unresolved_sites": 10,
+        "frontier": "0xa5b968",
+        "got": "0xa6fa58",
+        "relocation_file_offset": "0x1b6b8",
+        "symbol_version_index": 2,
+        "initial_got_target": "0xa5b0c0",
+        "evidence": [
+          {
+            "pc": "0xa5b960",
+            "word": "0x3c0f00a7"
+          },
+          {
+            "pc": "0xa5b964",
+            "word": "0x8df9fa58"
+          },
+          {
+            "pc": "0xa5b968",
+            "word": "0x03200008"
+          },
+          {
+            "pc": "0xa5b96c",
+            "word": "0x25f8fa58"
+          },
+          {
+            "pc": "0x41b6b8",
+            "word": "0x00a6fa58"
+          },
+          {
+            "pc": "0x41b6bc",
+            "word": "0x0003f67f"
+          },
+          {
+            "pc": "0x407014",
+            "word": "0x0000704c"
+          },
+          {
+            "pc": "0x407018",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x40701c",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x407020",
+            "word": "0x00000012"
+          },
+          {
+            "pc": "0x4181cc",
+            "word": "0x00020001"
+          },
+          {
+            "pc": "0xa6fa58",
+            "word": "0x00a5b0c0"
+          }
+        ]
+      }
+    ]
+  },
+  "resolved_import_follow_up": {
+    "date": "2026-11-06",
+    "captured_executable": "/usr/bin/hiby_player",
+    "captured_executable_sha256": "0fedb30f91937eafb5baaf3c75422cdbde04a62fe8bac8eca3c7a88bb761da0e",
+    "capture_scope": "Observed stock RS2 1.4 process mappings, two resolved import slots and hashes of the loaded library files. Device observations apply to the sampled process. The library audit checks incoming value liveness with those resolved targets and valid independent arguments.",
+    "libraries": [
+      {
+        "symbol": "memset",
+        "version": "GLIBC_2.0",
+        "file": "libc-2.16.so",
+        "bytes": 1552564,
+        "sha256": "5dd23800d3b2db53311c70538ae89731a26abb5b1d8720e29f18f4ad614a087b",
+        "frontier": "0xa5bc68",
+        "got_slot": "0xa6fb18",
+        "rx_mapping_start": "0x77061000",
+        "observed_target": "0x770e81f0",
+        "export": "0x871f0",
+        "dynamic_symbol_entry": "0x4e9c",
+        "version_entry": "0x121d0",
+        "first_overwrite": "0x871f8",
+        "prefix": [
+          {
+            "offset": "0x871f0",
+            "word": "0x28c90008"
+          },
+          {
+            "offset": "0x871f4",
+            "word": "0x1520001b"
+          },
+          {
+            "offset": "0x871f8",
+            "word": "0x00801021"
+          }
+        ],
+        "direct_sites": [
+          "0x4a16d4",
+          "0x4a3ffc",
+          "0x4a409c",
+          "0x4ac0b8",
+          "0x4ac140",
+          "0x50c7fc",
+          "0x50ccb4",
+          "0x525f0c"
+        ],
+        "arguments": "Zero fills to independent global buffers B8B168/680 and B8B6B8/316, or caller stack buffers +228/520, +18/64 and +318/768. The ordinary BNE delay writes V0 from A0 for either outcome before any incoming V0 use."
+      },
+      {
+        "symbol": "pthread_mutex_lock",
+        "version": "GLIBC_2.0",
+        "file": "libpthread-2.16.so",
+        "bytes": 136614,
+        "sha256": "695952e57dd180d1fe0fb54319bb7e577d2a5d7f6ab53fe4eb6bd4d98d2601a8",
+        "frontier": "0xa5b968",
+        "got_slot": "0xa6fa58",
+        "rx_mapping_start": "0x771d7000",
+        "observed_target": "0x771e0f50",
+        "export": "0x9f50",
+        "dynamic_symbol_entry": "0x13b8",
+        "version_entry": "0x3b52",
+        "first_overwrite": "0x9f74",
+        "prefix": [
+          {
+            "offset": "0x9f50",
+            "word": "0x3c1c0002"
+          },
+          {
+            "offset": "0x9f54",
+            "word": "0x279c60d0"
+          },
+          {
+            "offset": "0x9f58",
+            "word": "0x0399e021"
+          },
+          {
+            "offset": "0x9f5c",
+            "word": "0x27bdffd0"
+          },
+          {
+            "offset": "0x9f60",
+            "word": "0xafbc0010"
+          },
+          {
+            "offset": "0x9f64",
+            "word": "0xafbf002c"
+          },
+          {
+            "offset": "0x9f68",
+            "word": "0xafb20028"
+          },
+          {
+            "offset": "0x9f6c",
+            "word": "0xafb10024"
+          },
+          {
+            "offset": "0x9f70",
+            "word": "0xafb00020"
+          },
+          {
+            "offset": "0x9f74",
+            "word": "0x8c82000c"
+          }
+        ],
+        "direct_sites": [
+          "0x4b6740",
+          "0x4b67f8",
+          "0x4b6990",
+          "0x51ef00",
+          "0x51f2dc",
+          "0x527d0c",
+          "0x5289bc",
+          "0x528a90",
+          "0x528b04",
+          "0x529470"
+        ],
+        "arguments": "The configurator receives the old context and selector 1. The null old context has its own native overwrite at 47D17C. Otherwise 47D0C0 loads the old mutex from +10. The resolved lock prefix sets GP and saves registers, then loads mutex+12 into V0 before any branch or incoming V0 use. The mapped frame and mutex read are prerequisites."
+      }
+    ],
+    "completion_sites": [
+      "0x435168",
+      "0x4351dc",
+      "0x4aeb74",
+      "0x4aebd4",
+      "0x4aefac"
+    ],
+    "completion_scope": "The known upper completion route reaches the same resolved memset with a fresh stack buffer at +18 and length 128. These wrappers still return the factory value at their own direct frontier. Four require an independently justified zero reload of the old field.",
+    "lazy_resolution_proven": false,
+    "mutex_progress_proven": false,
+    "universal_refusal_safety_proven": false
+  },
+  "payload_failure_upper_follow_up": {
+    "scope": "All five encoded direct callers of the two canonical entries and the known registered dialog continuation. The checked routes discard either returned value. Genuine native frames and an unchanged known callback binding are premises.",
+    "wrappers": [
+      {
+        "entry": "0x5090e0",
+        "factory_site": "0x5091a8",
+        "existing_failure_suffix": "0x5091e4",
+        "callers": [
+          {
+            "callsite": "0x5077d4",
+            "continuation": "0x5077dc",
+            "result": "propagated_to_registered_dialog_handler",
+            "evidence": [
+              {
+                "pc": "0x5077d4",
+                "word": "0x0c142438"
+              },
+              {
+                "pc": "0x5077d8",
+                "word": "0x02603021"
+              },
+              {
+                "pc": "0x5077dc",
+                "word": "0x8fbf0564"
+              },
+              {
+                "pc": "0x5077e0",
+                "word": "0x8fb50560"
+              },
+              {
+                "pc": "0x5077e4",
+                "word": "0x8fb4055c"
+              },
+              {
+                "pc": "0x5077e8",
+                "word": "0x8fb30558"
+              },
+              {
+                "pc": "0x5077ec",
+                "word": "0x8fb20554"
+              },
+              {
+                "pc": "0x5077f0",
+                "word": "0x8fb10550"
+              },
+              {
+                "pc": "0x5077f4",
+                "word": "0x8fb0054c"
+              },
+              {
+                "pc": "0x5077f8",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x5077fc",
+                "word": "0x27bd0568"
+              }
+            ]
+          },
+          {
+            "callsite": "0x5081d8",
+            "continuation": "0x5081e0",
+            "result": "replaced_by_preexisting_s0",
+            "overwrite": "0x50817c",
+            "evidence": [
+              {
+                "pc": "0x5081d8",
+                "word": "0x0c142438"
+              },
+              {
+                "pc": "0x5081dc",
+                "word": "0x02803021"
+              },
+              {
+                "pc": "0x5081e0",
+                "word": "0x1000ffe6"
+              },
+              {
+                "pc": "0x5081e4",
+                "word": "0x8fbf004c"
+              },
+              {
+                "pc": "0x50817c",
+                "word": "0x02001021"
+              },
+              {
+                "pc": "0x508180",
+                "word": "0x8fb60048"
+              },
+              {
+                "pc": "0x508184",
+                "word": "0x8fb50044"
+              },
+              {
+                "pc": "0x508188",
+                "word": "0x8fb40040"
+              },
+              {
+                "pc": "0x50818c",
+                "word": "0x8fb3003c"
+              },
+              {
+                "pc": "0x508190",
+                "word": "0x8fb20038"
+              },
+              {
+                "pc": "0x508194",
+                "word": "0x8fb10034"
+              },
+              {
+                "pc": "0x508198",
+                "word": "0x8fb00030"
+              },
+              {
+                "pc": "0x50819c",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x5081a0",
+                "word": "0x27bd0050"
+              }
+            ]
+          },
+          {
+            "callsite": "0x508758",
+            "continuation": "0x508760",
+            "result": "replaced_by_one",
+            "overwrite": "0x508778",
+            "evidence": [
+              {
+                "pc": "0x508758",
+                "word": "0x0c142438"
+              },
+              {
+                "pc": "0x50875c",
+                "word": "0x02603021"
+              },
+              {
+                "pc": "0x508760",
+                "word": "0x8fbf023c"
+              },
+              {
+                "pc": "0x508764",
+                "word": "0x8fb40238"
+              },
+              {
+                "pc": "0x508768",
+                "word": "0x8fb30234"
+              },
+              {
+                "pc": "0x50876c",
+                "word": "0x8fb20230"
+              },
+              {
+                "pc": "0x508770",
+                "word": "0x8fb1022c"
+              },
+              {
+                "pc": "0x508774",
+                "word": "0x8fb00228"
+              },
+              {
+                "pc": "0x508778",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x50877c",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x508780",
+                "word": "0x27bd0240"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "entry": "0x50ba60",
+        "factory_site": "0x50bab4",
+        "existing_failure_suffix": "0x50baec",
+        "callers": [
+          {
+            "callsite": "0x50a8ac",
+            "continuation": "0x50a8b4",
+            "result": "propagated_to_registered_dialog_handler",
+            "evidence": [
+              {
+                "pc": "0x50a8ac",
+                "word": "0x0c142e98"
+              },
+              {
+                "pc": "0x50a8b0",
+                "word": "0x02202821"
+              },
+              {
+                "pc": "0x50a8b4",
+                "word": "0x8fbf0564"
+              },
+              {
+                "pc": "0x50a8b8",
+                "word": "0x8fb50560"
+              },
+              {
+                "pc": "0x50a8bc",
+                "word": "0x8fb4055c"
+              },
+              {
+                "pc": "0x50a8c0",
+                "word": "0x8fb30558"
+              },
+              {
+                "pc": "0x50a8c4",
+                "word": "0x8fb20554"
+              },
+              {
+                "pc": "0x50a8c8",
+                "word": "0x8fb10550"
+              },
+              {
+                "pc": "0x50a8cc",
+                "word": "0x8fb0054c"
+              },
+              {
+                "pc": "0x50a8d0",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x50a8d4",
+                "word": "0x27bd0568"
+              }
+            ]
+          },
+          {
+            "callsite": "0x50b348",
+            "continuation": "0x50b350",
+            "result": "replaced_by_one",
+            "overwrite": "0x50b360",
+            "evidence": [
+              {
+                "pc": "0x50b348",
+                "word": "0x0c142e98"
+              },
+              {
+                "pc": "0x50b34c",
+                "word": "0x02202821"
+              },
+              {
+                "pc": "0x50b350",
+                "word": "0x8fbf0234"
+              },
+              {
+                "pc": "0x50b354",
+                "word": "0x8fb20230"
+              },
+              {
+                "pc": "0x50b358",
+                "word": "0x8fb1022c"
+              },
+              {
+                "pc": "0x50b35c",
+                "word": "0x8fb00228"
+              },
+              {
+                "pc": "0x50b360",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x50b364",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x50b368",
+                "word": "0x27bd0238"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "known_dialog_handler": {
+      "entry": "0x506340",
+      "invocation": "0x506368",
+      "overwrite": "0x506378",
+      "bound_wrappers": [
+        "0x507440",
+        "0x50a600"
+      ],
+      "notes": "Known registrations pass both callback entries in descriptor+310. The constructor copies that field to state+D8. The handler overwrites the callback result with one before returning.",
+      "evidence": [
+        {
+          "pc": "0x507318",
+          "word": "0x3c020050"
+        },
+        {
+          "pc": "0x50731c",
+          "word": "0x27a60018"
+        },
+        {
+          "pc": "0x507320",
+          "word": "0x2610021c"
+        },
+        {
+          "pc": "0x507324",
+          "word": "0x24a5e040"
+        },
+        {
+          "pc": "0x507328",
+          "word": "0x24427440"
+        },
+        {
+          "pc": "0x50732c",
+          "word": "0xafb00324"
+        },
+        {
+          "pc": "0x507330",
+          "word": "0x0c141878"
+        },
+        {
+          "pc": "0x507334",
+          "word": "0xafa20328"
+        },
+        {
+          "pc": "0x50a4d8",
+          "word": "0x3c020051"
+        },
+        {
+          "pc": "0x50a4dc",
+          "word": "0x27a60018"
+        },
+        {
+          "pc": "0x50a4e0",
+          "word": "0x2610021c"
+        },
+        {
+          "pc": "0x50a4e4",
+          "word": "0x24a5e040"
+        },
+        {
+          "pc": "0x50a4e8",
+          "word": "0x2442a600"
+        },
+        {
+          "pc": "0x50a4ec",
+          "word": "0xafb00324"
+        },
+        {
+          "pc": "0x50a4f0",
+          "word": "0x0c141878"
+        },
+        {
+          "pc": "0x50a4f4",
+          "word": "0xafa20328"
+        },
+        {
+          "pc": "0x5062cc",
+          "word": "0x8e420310"
+        },
+        {
+          "pc": "0x5062d0",
+          "word": "0x02602821"
+        },
+        {
+          "pc": "0x5062d4",
+          "word": "0x0c141768"
+        },
+        {
+          "pc": "0x5062d8",
+          "word": "0xae0200d8"
+        },
+        {
+          "pc": "0xaabdec",
+          "word": "0x00506340"
+        },
+        {
+          "pc": "0x50635c",
+          "word": "0x8c5900d8"
+        },
+        {
+          "pc": "0x506360",
+          "word": "0x13200008"
+        },
+        {
+          "pc": "0x506364",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x506368",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x50636c",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x506370",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x506374",
+          "word": "0x8fb00018"
+        },
+        {
+          "pc": "0x506378",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x50637c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x506380",
+          "word": "0x27bd0020"
+        }
+      ]
+    },
+    "computed_consumer_set_closed": false,
+    "runtime_redirection_verified": false
+  },
+  "outer_consumer_follow_up": {
+    "coverage": "All 27 propagated factory sites. Known continuations only. The direct classifications remain propagated and computed binding, lifetime and universal refusal safety remain open.",
+    "resource_handler_words": [
+      {"pc": "0xaacc60", "word": "0x0050c180"},
+      {"pc": "0xab01f8", "word": "0x00535620"},
+      {"pc": "0xaafd50", "word": "0x0052c6c0"},
+      {"pc": "0xa9e798", "word": "0x00525d00"},
+      {"pc": "0x43bbec", "word": "0x03200008"},
+      {"pc": "0x43bbf0", "word": "0x27bd0030"}
+    ],
+    "encoded_upper_census": {
+      "0x4350e0": [],
+      "0x473560": [
+        "0x43c9e4",
+        "0x43ca9c"
+      ],
+      "0x4aea80": [],
+      "0x4aec60": [],
+      "0x4d4d00": [],
+      "0x4d5260": [],
+      "0x5066c0": [],
+      "0x507440": [],
+      "0x50a600": [],
+      "0x50c760": [],
+      "0x51ccc0": [],
+      "0x5257a0": [
+        "0x525e88",
+        "0x525ee8"
+      ],
+      "0x52bec0": [
+        "0x52c1d8",
+        "0x52c78c"
+      ],
+      "0x52bf20": [],
+      "0x5322e0": []
+    },
+    "groups": [
+      {
+        "kind": "input_dialog",
+        "sites": [
+          "0x506788",
+          "0x50767c",
+          "0x50788c",
+          "0x50a83c",
+          "0x50a8ec",
+          "0x50c834",
+          "0x52bf04",
+          "0x52c164",
+          "0x52c218"
+        ],
+        "wrappers": [
+          "0x5066c0",
+          "0x507440",
+          "0x50a600",
+          "0x50c760",
+          "0x52bec0",
+          "0x52bf20"
+        ],
+        "upper_outcome": "overwritten_in_known_continuations",
+        "notes": "The selected callback values enter descriptor+310 for 5061E0 and are copied to state+D8. Resource record AABDA4+48 contains 506340. Its actual callback call 506368 resumes at a pure suffix which sets V0=1 at 506378. For 52BF04, 52C1D8 returns the same value through 52BF20 and thus reaches that registered handler. The other encoded caller 52C78C overwrites V0 at 52C7A0.",
+        "evidence": [
+          {
+            "pc": "0x5064d8",
+            "word": "0x3c020050"
+          },
+          {
+            "pc": "0x5064dc",
+            "word": "0x27a60018"
+          },
+          {
+            "pc": "0x5064e0",
+            "word": "0x26100150"
+          },
+          {
+            "pc": "0x5064e4",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x5064e8",
+            "word": "0x244266c0"
+          },
+          {
+            "pc": "0x5064ec",
+            "word": "0xafb00324"
+          },
+          {
+            "pc": "0x5064f0",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x5064f4",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x507318",
+            "word": "0x3c020050"
+          },
+          {
+            "pc": "0x50731c",
+            "word": "0x27a60018"
+          },
+          {
+            "pc": "0x507320",
+            "word": "0x2610021c"
+          },
+          {
+            "pc": "0x507324",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x507328",
+            "word": "0x24427440"
+          },
+          {
+            "pc": "0x50732c",
+            "word": "0xafb00324"
+          },
+          {
+            "pc": "0x507330",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x507334",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x507608",
+            "word": "0x3c020050"
+          },
+          {
+            "pc": "0x50760c",
+            "word": "0x24427440"
+          },
+          {
+            "pc": "0x507610",
+            "word": "0x02202021"
+          },
+          {
+            "pc": "0x507614",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x507618",
+            "word": "0x02403021"
+          },
+          {
+            "pc": "0x50761c",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x507620",
+            "word": "0xafa20330"
+          },
+          {
+            "pc": "0x5083b0",
+            "word": "0x3c020050"
+          },
+          {
+            "pc": "0x5083b4",
+            "word": "0x02602021"
+          },
+          {
+            "pc": "0x5083b8",
+            "word": "0x02003021"
+          },
+          {
+            "pc": "0x5083bc",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x5083c0",
+            "word": "0x24427440"
+          },
+          {
+            "pc": "0x5083c4",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x5083c8",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x5084f0",
+            "word": "0x3c020050"
+          },
+          {
+            "pc": "0x5084f4",
+            "word": "0x24427440"
+          },
+          {
+            "pc": "0x5084f8",
+            "word": "0x02602021"
+          },
+          {
+            "pc": "0x5084fc",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x508500",
+            "word": "0x02003021"
+          },
+          {
+            "pc": "0x508504",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x508508",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x50a4d8",
+            "word": "0x3c020051"
+          },
+          {
+            "pc": "0x50a4dc",
+            "word": "0x27a60018"
+          },
+          {
+            "pc": "0x50a4e0",
+            "word": "0x2610021c"
+          },
+          {
+            "pc": "0x50a4e4",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x50a4e8",
+            "word": "0x2442a600"
+          },
+          {
+            "pc": "0x50a4ec",
+            "word": "0xafb00324"
+          },
+          {
+            "pc": "0x50a4f0",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x50a4f4",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x50a7c8",
+            "word": "0x3c020051"
+          },
+          {
+            "pc": "0x50a7cc",
+            "word": "0x2442a600"
+          },
+          {
+            "pc": "0x50a7d0",
+            "word": "0x02202021"
+          },
+          {
+            "pc": "0x50a7d4",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x50a7d8",
+            "word": "0x02403021"
+          },
+          {
+            "pc": "0x50a7dc",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x50a7e0",
+            "word": "0xafa20330"
+          },
+          {
+            "pc": "0x50b0f0",
+            "word": "0x3c020051"
+          },
+          {
+            "pc": "0x50b0f4",
+            "word": "0x02602021"
+          },
+          {
+            "pc": "0x50b0f8",
+            "word": "0x02003021"
+          },
+          {
+            "pc": "0x50b0fc",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x50b100",
+            "word": "0x2442a600"
+          },
+          {
+            "pc": "0x50b104",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x50b108",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x50b230",
+            "word": "0x3c020051"
+          },
+          {
+            "pc": "0x50b234",
+            "word": "0x2442a600"
+          },
+          {
+            "pc": "0x50b238",
+            "word": "0x02602021"
+          },
+          {
+            "pc": "0x50b23c",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x50b240",
+            "word": "0x02003021"
+          },
+          {
+            "pc": "0x50b244",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x50b248",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x50c570",
+            "word": "0x3c020051"
+          },
+          {
+            "pc": "0x50c574",
+            "word": "0x8e04000c"
+          },
+          {
+            "pc": "0x50c578",
+            "word": "0x2442c760"
+          },
+          {
+            "pc": "0x50c57c",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x50c580",
+            "word": "0x3c050095"
+          },
+          {
+            "pc": "0x50c584",
+            "word": "0x24020002"
+          },
+          {
+            "pc": "0x50c588",
+            "word": "0x27a60018"
+          },
+          {
+            "pc": "0x50c58c",
+            "word": "0xafa2032c"
+          },
+          {
+            "pc": "0x50c590",
+            "word": "0x26100010"
+          },
+          {
+            "pc": "0x50c594",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x50c598",
+            "word": "0x24020011"
+          },
+          {
+            "pc": "0x50c59c",
+            "word": "0xafb00324"
+          },
+          {
+            "pc": "0x50c5a0",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x50c5a4",
+            "word": "0xafa20330"
+          },
+          {
+            "pc": "0x52b6c8",
+            "word": "0x2442bf20"
+          },
+          {
+            "pc": "0x52b6cc",
+            "word": "0xafb00324"
+          },
+          {
+            "pc": "0x52b6d0",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x52b6d4",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x52c0f4",
+            "word": "0x2442bf20"
+          },
+          {
+            "pc": "0x52c0f8",
+            "word": "0x02202021"
+          },
+          {
+            "pc": "0x52c0fc",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x52c100",
+            "word": "0x02403021"
+          },
+          {
+            "pc": "0x52c104",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x52c108",
+            "word": "0xafa20650"
+          },
+          {
+            "pc": "0x52c500",
+            "word": "0x2442bf20"
+          },
+          {
+            "pc": "0x52c504",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x52c508",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x52c634",
+            "word": "0x2442bf20"
+          },
+          {
+            "pc": "0x52c638",
+            "word": "0x02602021"
+          },
+          {
+            "pc": "0x52c63c",
+            "word": "0x24a5e040"
+          },
+          {
+            "pc": "0x52c640",
+            "word": "0x02003021"
+          },
+          {
+            "pc": "0x52c644",
+            "word": "0x0c141878"
+          },
+          {
+            "pc": "0x52c648",
+            "word": "0xafa20328"
+          },
+          {
+            "pc": "0x506200",
+            "word": "0x00c09021"
+          },
+          {
+            "pc": "0x506204",
+            "word": "0x0c119a78"
+          },
+          {
+            "pc": "0x506208",
+            "word": "0x00a09821"
+          },
+          {
+            "pc": "0x5062cc",
+            "word": "0x8e420310"
+          },
+          {
+            "pc": "0x5062d0",
+            "word": "0x02602821"
+          },
+          {
+            "pc": "0x5062d4",
+            "word": "0x0c141768"
+          },
+          {
+            "pc": "0x5062d8",
+            "word": "0xae0200d8"
+          },
+          {
+            "pc": "0x5062fc",
+            "word": "0x8e050008"
+          },
+          {
+            "pc": "0x506300",
+            "word": "0x02202021"
+          },
+          {
+            "pc": "0x506304",
+            "word": "0x24060001"
+          },
+          {
+            "pc": "0x506308",
+            "word": "0x0c10ef40"
+          },
+          {
+            "pc": "0x50630c",
+            "word": "0x24a50104"
+          },
+          {
+            "pc": "0x50644c",
+            "word": "0x3c0500ab"
+          },
+          {
+            "pc": "0x506450",
+            "word": "0x26440104"
+          },
+          {
+            "pc": "0x506454",
+            "word": "0x24a5bda4"
+          },
+          {
+            "pc": "0x506458",
+            "word": "0x0c296d10"
+          },
+          {
+            "pc": "0x50645c",
+            "word": "0x24060060"
+          },
+          {
+            "pc": "0xaabdec",
+            "word": "0x00506340"
+          },
+          {
+            "pc": "0x43bdb4",
+            "word": "0x8e050048"
+          },
+          {
+            "pc": "0x43bdb8",
+            "word": "0x8c4300d0"
+          },
+          {
+            "pc": "0x43bdbc",
+            "word": "0xac650160"
+          },
+          {
+            "pc": "0x506340",
+            "word": "0x27bdffe0"
+          },
+          {
+            "pc": "0x506344",
+            "word": "0xafb00018"
+          },
+          {
+            "pc": "0x506348",
+            "word": "0xafbf001c"
+          },
+          {
+            "pc": "0x50634c",
+            "word": "0x0c1164d0"
+          },
+          {
+            "pc": "0x506350",
+            "word": "0x00a08021"
+          },
+          {
+            "pc": "0x506354",
+            "word": "0x10400007"
+          },
+          {
+            "pc": "0x506358",
+            "word": "0x8fbf001c"
+          },
+          {
+            "pc": "0x50635c",
+            "word": "0x8c5900d8"
+          },
+          {
+            "pc": "0x506360",
+            "word": "0x13200008"
+          },
+          {
+            "pc": "0x506364",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x506368",
+            "word": "0x0320f809"
+          },
+          {
+            "pc": "0x50636c",
+            "word": "0x02002021"
+          },
+          {
+            "pc": "0x506370",
+            "word": "0x8fbf001c"
+          },
+          {
+            "pc": "0x506374",
+            "word": "0x8fb00018"
+          },
+          {
+            "pc": "0x506378",
+            "word": "0x24020001"
+          },
+          {
+            "pc": "0x50637c",
+            "word": "0x03e00008"
+          },
+          {
+            "pc": "0x506380",
+            "word": "0x27bd0020"
+          },
+          {
+            "pc": "0x52c1d8",
+            "word": "0x0c14afb0"
+          },
+          {
+            "pc": "0x52c1dc",
+            "word": "0x02202021"
+          },
+          {
+            "pc": "0x52c1e0",
+            "word": "0x8fbf0884"
+          },
+          {
+            "pc": "0x52c1e4",
+            "word": "0x8fb50880"
+          },
+          {
+            "pc": "0x52c1e8",
+            "word": "0x8fb4087c"
+          },
+          {
+            "pc": "0x52c1ec",
+            "word": "0x8fb30878"
+          },
+          {
+            "pc": "0x52c1f0",
+            "word": "0x8fb20874"
+          },
+          {
+            "pc": "0x52c1f4",
+            "word": "0x8fb10870"
+          },
+          {
+            "pc": "0x52c1f8",
+            "word": "0x8fb0086c"
+          },
+          {
+            "pc": "0x52c1fc",
+            "word": "0x03e00008"
+          },
+          {
+            "pc": "0x52c200",
+            "word": "0x27bd0888"
+          },
+          {
+            "pc": "0x52c78c",
+            "word": "0x0c14afb0"
+          },
+          {
+            "pc": "0x52c790",
+            "word": "0x02202021"
+          },
+          {
+            "pc": "0x52c794",
+            "word": "0x8fbf0554"
+          },
+          {
+            "pc": "0x52c798",
+            "word": "0x8fb10550"
+          },
+          {
+            "pc": "0x52c79c",
+            "word": "0x8fb0054c"
+          },
+          {
+            "pc": "0x52c7a0",
+            "word": "0x24020001"
+          },
+          {
+            "pc": "0x52c7a4",
+            "word": "0x03e00008"
+          }
+        ]
+      },
+      {
+        "kind": "timer",
+        "sites": [
+          "0x4d4ea0",
+          "0x4d4ee8",
+          "0x4d4f3c",
+          "0x4d4f70",
+          "0x4d5468",
+          "0x4d54e8"
+        ],
+        "wrappers": [
+          "0x4d4d00",
+          "0x4d5260"
+        ],
+        "upper_outcome": "overwritten_in_known_continuations",
+        "notes": "4738A0 stores the supplied timer target at record+14 and its context at +10. The callback at 47362C returns into count and iteration handling. On continuation 473604 replaces V0 before another callback. If the value survives the pump return, both encoded direct pump callers replace it from old U+134 at 43C9EC and 43CAA4.",
+        "evidence": [
+          {
+            "pc": "0x4d4cc8",
+            "word": "0x3c06004d"
+          },
+          {
+            "pc": "0x4d4ccc",
+            "word": "0x27bdffe0"
+          },
+          {
+            "pc": "0x4d4cd0",
+            "word": "0x240500c8"
+          },
+          {
+            "pc": "0x4d4cd4",
+            "word": "0xafbf001c"
+          },
+          {
+            "pc": "0x4d4cd8",
+            "word": "0x0c11ce28"
+          },
+          {
+            "pc": "0x4d4cdc",
+            "word": "0x24c64d00"
+          },
+          {
+            "pc": "0x4d5660",
+            "word": "0x3c06004d"
+          },
+          {
+            "pc": "0x4d5664",
+            "word": "0xae12005c"
+          },
+          {
+            "pc": "0x4d5668",
+            "word": "0xae02007c"
+          },
+          {
+            "pc": "0x4d566c",
+            "word": "0x02002021"
+          },
+          {
+            "pc": "0x4d5670",
+            "word": "0x240500c8"
+          },
+          {
+            "pc": "0x4d5674",
+            "word": "0x24c65260"
+          },
+          {
+            "pc": "0x4d5678",
+            "word": "0x0c11ce28"
+          },
+          {
+            "pc": "0x4d567c",
+            "word": "0x02003821"
+          },
+          {
+            "pc": "0x473920",
+            "word": "0xac440000"
+          },
+          {
+            "pc": "0x473924",
+            "word": "0xac450004"
+          },
+          {
+            "pc": "0x473928",
+            "word": "0xac400008"
+          },
+          {
+            "pc": "0x47392c",
+            "word": "0xac470010"
+          },
+          {
+            "pc": "0x473930",
+            "word": "0xac43000c"
+          },
+          {
+            "pc": "0x473934",
+            "word": "0x16000026"
+          },
+          {
+            "pc": "0x473938",
+            "word": "0xac460014"
+          },
+          {
+            "pc": "0x473984",
+            "word": "0xac440000"
+          },
+          {
+            "pc": "0x473988",
+            "word": "0xac450004"
+          },
+          {
+            "pc": "0x47398c",
+            "word": "0xac400008"
+          },
+          {
+            "pc": "0x473990",
+            "word": "0xac470010"
+          },
+          {
+            "pc": "0x473994",
+            "word": "0xac43000c"
+          },
+          {
+            "pc": "0x473998",
+            "word": "0xac460014"
+          },
+          {
+            "pc": "0x4735e8",
+            "word": "0x12c0001c"
+          },
+          {
+            "pc": "0x4735ec",
+            "word": "0x26909b84"
+          },
+          {
+            "pc": "0x4735f0",
+            "word": "0x00008821"
+          },
+          {
+            "pc": "0x4735f4",
+            "word": "0x8e030000"
+          },
+          {
+            "pc": "0x4735f8",
+            "word": "0x14600014"
+          },
+          {
+            "pc": "0x4735fc",
+            "word": "0x8ea39b74"
+          },
+          {
+            "pc": "0x473600",
+            "word": "0x8e03fffc"
+          },
+          {
+            "pc": "0x473604",
+            "word": "0x8e02fff8"
+          },
+          {
+            "pc": "0x473608",
+            "word": "0xae1e0000"
+          },
+          {
+            "pc": "0x47360c",
+            "word": "0x02e31821"
+          },
+          {
+            "pc": "0x473610",
+            "word": "0x0062102b"
+          },
+          {
+            "pc": "0x473614",
+            "word": "0x1440000c"
+          },
+          {
+            "pc": "0x473618",
+            "word": "0xae03fffc"
+          },
+          {
+            "pc": "0x47361c",
+            "word": "0x8e190008"
+          },
+          {
+            "pc": "0x473620",
+            "word": "0x13200009"
+          },
+          {
+            "pc": "0x473624",
+            "word": "0xae00fffc"
+          },
+          {
+            "pc": "0x473628",
+            "word": "0x8e04fff4"
+          },
+          {
+            "pc": "0x47362c",
+            "word": "0x0320f809"
+          },
+          {
+            "pc": "0x473630",
+            "word": "0x8e050004"
+          },
+          {
+            "pc": "0x473634",
+            "word": "0x8ea39b74"
+          },
+          {
+            "pc": "0x473638",
+            "word": "0x10760005"
+          },
+          {
+            "pc": "0x47363c",
+            "word": "0x26310001"
+          },
+          {
+            "pc": "0x473640",
+            "word": "0x1000ffe9"
+          },
+          {
+            "pc": "0x473644",
+            "word": "0x0060b021"
+          },
+          {
+            "pc": "0x473648",
+            "word": "0x8ea39b74"
+          },
+          {
+            "pc": "0x47364c",
+            "word": "0x26310001"
+          },
+          {
+            "pc": "0x473650",
+            "word": "0x0223182b"
+          },
+          {
+            "pc": "0x473654",
+            "word": "0x1460ffe7"
+          },
+          {
+            "pc": "0x473658",
+            "word": "0x26100018"
+          },
+          {
+            "pc": "0x47365c",
+            "word": "0xae729b6c"
+          },
+          {
+            "pc": "0x473660",
+            "word": "0x8fbf003c"
+          },
+          {
+            "pc": "0x473664",
+            "word": "0x8fbe0038"
+          },
+          {
+            "pc": "0x473668",
+            "word": "0x8fb70034"
+          },
+          {
+            "pc": "0x47366c",
+            "word": "0x8fb60030"
+          },
+          {
+            "pc": "0x473670",
+            "word": "0x8fb5002c"
+          },
+          {
+            "pc": "0x473674",
+            "word": "0x8fb40028"
+          },
+          {
+            "pc": "0x473678",
+            "word": "0x8fb30024"
+          },
+          {
+            "pc": "0x47367c",
+            "word": "0x8fb20020"
+          },
+          {
+            "pc": "0x473680",
+            "word": "0x8fb1001c"
+          },
+          {
+            "pc": "0x473684",
+            "word": "0x8fb00018"
+          },
+          {
+            "pc": "0x473688",
+            "word": "0x03e00008"
+          },
+          {
+            "pc": "0x47368c",
+            "word": "0x27bd0040"
+          },
+          {
+            "pc": "0x43c9e4",
+            "word": "0x0c11cd58"
+          },
+          {
+            "pc": "0x43c9e8",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x43c9ec",
+            "word": "0x8e020134"
+          },
+          {
+            "pc": "0x43ca9c",
+            "word": "0x0c11cd58"
+          },
+          {
+            "pc": "0x43caa0",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x43caa4",
+            "word": "0x8e020134"
+          }
+        ]
+      },
+      {
+        "kind": "completion",
+        "sites": [
+          "0x435168",
+          "0x4351dc",
+          "0x4aeb74",
+          "0x4aebd4",
+          "0x4aefac"
+        ],
+        "wrappers": [
+          "0x4350e0",
+          "0x4aea80",
+          "0x4aec60"
+        ],
+        "upper_outcome": "live_at_memset_import",
+        "notes": "These descriptors publish the closer in H+74 and bind the 47C740 completion handler. 47C7C8 invokes the closer. Its returned V0 is live when 47AA20 reaches 47AA48 and the external memset frontier A5BC68. The later forced zero at 47C810 follows that boundary.",
+        "conditional_sites": [
+          "0x435168",
+          "0x4351dc",
+          "0x4aeb74",
+          "0x4aebd4"
+        ],
+        "conditional_notes": "The four conditional paths require an initially nonzero old H+58 to reach D960 and a later zero reload to propagate V0. The checked wrappers do not explicitly clear H+58 before the factory calls. With bodyless refusal, the changed field requires an independent explanation. A nonzero reload reaches the actual free-header V0 overwrite at 466A90.",
+        "evidence": [
+          {
+            "pc": "0x4350f8",
+            "word": "0x8c910058"
+          },
+          {
+            "pc": "0x4350fc",
+            "word": "0x1220001f"
+          },
+          {
+            "pc": "0x435100",
+            "word": "0x00808021"
+          },
+          {
+            "pc": "0x435104",
+            "word": "0x8e240008"
+          },
+          {
+            "pc": "0x435170",
+            "word": "0x0c119aa0"
+          },
+          {
+            "pc": "0x435174",
+            "word": "0x8e040058"
+          },
+          {
+            "pc": "0x435178",
+            "word": "0xae000058"
+          },
+          {
+            "pc": "0x435194",
+            "word": "0x0c119b68"
+          },
+          {
+            "pc": "0x435198",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x43519c",
+            "word": "0x0c119b70"
+          },
+          {
+            "pc": "0x4351a0",
+            "word": "0x8e240008"
+          },
+          {
+            "pc": "0x4351a4",
+            "word": "0x0c119b78"
+          },
+          {
+            "pc": "0x4351a8",
+            "word": "0x8e240008"
+          },
+          {
+            "pc": "0x4351ac",
+            "word": "0x8e24000c"
+          },
+          {
+            "pc": "0x4351b0",
+            "word": "0x10800003"
+          },
+          {
+            "pc": "0x4351b4",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x4351b8",
+            "word": "0x0c119aa0"
+          },
+          {
+            "pc": "0x4351bc",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x4351c0",
+            "word": "0x1000ffd3"
+          },
+          {
+            "pc": "0x4351c4",
+            "word": "0xae20000c"
+          },
+          {
+            "pc": "0x4351c8",
+            "word": "0x3c050092"
+          },
+          {
+            "pc": "0x4aeacc",
+            "word": "0x8e110058"
+          },
+          {
+            "pc": "0x4aead0",
+            "word": "0x1220000e"
+          },
+          {
+            "pc": "0x4aead4",
+            "word": "0x24030004"
+          },
+          {
+            "pc": "0x4aead8",
+            "word": "0x8e220008"
+          },
+          {
+            "pc": "0x4aeadc",
+            "word": "0x10430041"
+          },
+          {
+            "pc": "0x4aeb7c",
+            "word": "0x8e110058"
+          },
+          {
+            "pc": "0x4aeb80",
+            "word": "0x1620ffde"
+          },
+          {
+            "pc": "0x4aeb84",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x4aeb88",
+            "word": "0x1000ffdf"
+          },
+          {
+            "pc": "0x4aeb8c",
+            "word": "0xae000058"
+          },
+          {
+            "pc": "0x4aebdc",
+            "word": "0x1000ffe8"
+          },
+          {
+            "pc": "0x4aebe0",
+            "word": "0x8e110058"
+          },
+          {
+            "pc": "0x466a80",
+            "word": "0x1080000f"
+          },
+          {
+            "pc": "0x466a84",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x466a88",
+            "word": "0x27bdffe0"
+          },
+          {
+            "pc": "0x466a8c",
+            "word": "0xafbf001c"
+          },
+          {
+            "pc": "0x466a90",
+            "word": "0x8c82fffc"
+          },
+          {
+            "pc": "0x4352f4",
+            "word": "0x3c020043"
+          },
+          {
+            "pc": "0x4352f8",
+            "word": "0x00801821"
+          },
+          {
+            "pc": "0x4352fc",
+            "word": "0x244250e0"
+          },
+          {
+            "pc": "0x435300",
+            "word": "0x27a40020"
+          },
+          {
+            "pc": "0x435304",
+            "word": "0xafa40010"
+          },
+          {
+            "pc": "0x435308",
+            "word": "0xafa20024"
+          },
+          {
+            "pc": "0x43530c",
+            "word": "0x3c04009d"
+          },
+          {
+            "pc": "0x435344",
+            "word": "0xafa00034"
+          },
+          {
+            "pc": "0x435348",
+            "word": "0xafa00038"
+          },
+          {
+            "pc": "0x43534c",
+            "word": "0x0c11f460"
+          },
+          {
+            "pc": "0x435350",
+            "word": "0xafa20028"
+          },
+          {
+            "pc": "0x4afbf0",
+            "word": "0x3c02004b"
+          },
+          {
+            "pc": "0x4afbf4",
+            "word": "0x2442ea80"
+          },
+          {
+            "pc": "0x4afbf8",
+            "word": "0xafa20024"
+          },
+          {
+            "pc": "0x4afbfc",
+            "word": "0x3c02004b"
+          },
+          {
+            "pc": "0x4afc6c",
+            "word": "0x2484eb48"
+          },
+          {
+            "pc": "0x4afc70",
+            "word": "0x02602821"
+          },
+          {
+            "pc": "0x4afc74",
+            "word": "0x0c11f460"
+          },
+          {
+            "pc": "0x4afc78",
+            "word": "0x00003821"
+          },
+          {
+            "pc": "0x4af1f0",
+            "word": "0x3c02004b"
+          },
+          {
+            "pc": "0x4af1f4",
+            "word": "0x2442ec60"
+          },
+          {
+            "pc": "0x4af230",
+            "word": "0x10800106"
+          },
+          {
+            "pc": "0x4af234",
+            "word": "0xafa2022c"
+          },
+          {
+            "pc": "0x4af264",
+            "word": "0x27a20228"
+          },
+          {
+            "pc": "0x4af268",
+            "word": "0xafa20010"
+          },
+          {
+            "pc": "0x4af26c",
+            "word": "0x02602821"
+          },
+          {
+            "pc": "0x4af270",
+            "word": "0x02003021"
+          },
+          {
+            "pc": "0x4af274",
+            "word": "0x0c11f460"
+          },
+          {
+            "pc": "0x4af278",
+            "word": "0x00003821"
+          },
+          {
+            "pc": "0x47d24c",
+            "word": "0x8e420004"
+          },
+          {
+            "pc": "0x47d250",
+            "word": "0xac620074"
+          },
+          {
+            "pc": "0x47d380",
+            "word": "0x3c020048"
+          },
+          {
+            "pc": "0x47d384",
+            "word": "0x2442c740"
+          },
+          {
+            "pc": "0x47d388",
+            "word": "0x0c11f278"
+          },
+          {
+            "pc": "0x47d38c",
+            "word": "0xac62006c"
+          },
+          {
+            "pc": "0x47c7b8",
+            "word": "0x8e190074"
+          },
+          {
+            "pc": "0x47c7bc",
+            "word": "0x13200004"
+          },
+          {
+            "pc": "0x47c7c0",
+            "word": "0x00000000"
+          },
+          {
+            "pc": "0x47c7c4",
+            "word": "0x8e050050"
+          },
+          {
+            "pc": "0x47c7c8",
+            "word": "0x0320f809"
+          },
+          {
+            "pc": "0x47c7cc",
+            "word": "0x02002021"
+          },
+          {
+            "pc": "0x47c7d0",
+            "word": "0x02202021"
+          },
+          {
+            "pc": "0x47c7d4",
+            "word": "0x0c11ea88"
+          },
+          {
+            "pc": "0x47c7d8",
+            "word": "0x27a50018"
+          },
+          {
+            "pc": "0x47aa20",
+            "word": "0x27bdff50"
+          },
+          {
+            "pc": "0x47aa24",
+            "word": "0x24060080"
+          },
+          {
+            "pc": "0x47aa28",
+            "word": "0xafb300a8"
+          },
+          {
+            "pc": "0x47aa2c",
+            "word": "0xafb0009c"
+          },
+          {
+            "pc": "0x47aa30",
+            "word": "0x00809821"
+          },
+          {
+            "pc": "0x47aa34",
+            "word": "0x00a08021"
+          },
+          {
+            "pc": "0x47aa38",
+            "word": "0x27a40018"
+          },
+          {
+            "pc": "0x47aa3c",
+            "word": "0x00002821"
+          },
+          {
+            "pc": "0x47aa40",
+            "word": "0xafbf00ac"
+          },
+          {
+            "pc": "0x47aa44",
+            "word": "0xafb200a4"
+          },
+          {
+            "pc": "0x47aa48",
+            "word": "0x0c296f18"
+          },
+          {
+            "pc": "0x47aa4c",
+            "word": "0xafb100a0"
+          },
+          {
+            "pc": "0x47c810",
+            "word": "0x00001021"
+          },
+          {
+            "pc": "0x47c814",
+            "word": "0x8fbf0064"
+          },
+          {
+            "pc": "0x47c818",
+            "word": "0x8fb10060"
+          },
+          {
+            "pc": "0x47c81c",
+            "word": "0x8fb0005c"
+          },
+          {
+            "pc": "0x47c820",
+            "word": "0x03e00008"
+          },
+          {
+            "pc": "0x47c824",
+            "word": "0x27bd0068"
+          }
+        ]
+      },
+      {
+        "kind": "confirmation_dialogs",
+        "sites": [
+          "0x51ce5c",
+          "0x51ceb8",
+          "0x51cee0",
+          "0x5324b8",
+          "0x5324f8",
+          "0x532520"
+        ],
+        "wrappers": [
+          "0x51ccc0",
+          "0x5322e0"
+        ],
+        "upper_outcome": "overwritten_in_known_continuations",
+        "notes": "The selected confirmation-dialog constructors store the supplied wrapper at state+10. Their actual computed handlers call it at 50C1B4 and 535654, then replace the result with 1 at 50C1C4 and 535664 respectively. Other foreign or computed consumers are open.",
+        "evidence": [
+          {
+            "pc": "0x51d1f4",
+            "word": "0x3c060052"
+          },
+          {
+            "pc": "0x51d1f8",
+            "word": "0x24a5fe9c"
+          },
+          {
+            "pc": "0x51d1fc",
+            "word": "0x0c142fe8"
+          },
+          {
+            "pc": "0x51d200",
+            "word": "0x24c6ccc0"
+          },
+          {
+            "pc": "0x50bfbc",
+            "word": "0x00c0a821"
+          },
+          {
+            "pc": "0x50c098",
+            "word": "0xae150010"
+          },
+          {
+            "pc": "0x50c1a8",
+            "word": "0x8c590010"
+          },
+          {
+            "pc": "0x50c1ac",
+            "word": "0x13200005"
+          },
+          {
+            "pc": "0x50c1b0",
+            "word": "0x8fb00020"
+          },
+          {
+            "pc": "0x50c1b4",
+            "word": "0x0320f809"
+          },
+          {
+            "pc": "0x50c1b8",
+            "word": "0x00002021"
+          },
+          {
+            "pc": "0x50c1bc",
+            "word": "0x8fbf0024"
+          },
+          {
+            "pc": "0x50c1c0",
+            "word": "0x8fb00020"
+          },
+          {
+            "pc": "0x50c1c4",
+            "word": "0x24020001"
+          },
+          {
+            "pc": "0x50c1c8",
+            "word": "0x03e00008"
+          },
+          {
+            "pc": "0x50c1cc",
+            "word": "0x27bd0028"
+          },
+          {
+            "pc": "0x532e3c",
+            "word": "0x3c060053"
+          },
+          {
+            "pc": "0x532e40",
+            "word": "0x02002021"
+          },
+          {
+            "pc": "0x532e44",
+            "word": "0x24a52110"
+          },
+          {
+            "pc": "0x532e48",
+            "word": "0x0c14d518"
+          },
+          {
+            "pc": "0x532e4c",
+            "word": "0x24c622e0"
+          },
+          {
+            "pc": "0x53547c",
+            "word": "0x00c0a821"
+          },
+          {
+            "pc": "0x535558",
+            "word": "0xae150010"
+          },
+          {
+            "pc": "0x535648",
+            "word": "0x8c590010"
+          },
+          {
+            "pc": "0x53564c",
+            "word": "0x13200005"
+          },
+          {
+            "pc": "0x535650",
+            "word": "0x8fb00020"
+          },
+          {
+            "pc": "0x535654",
+            "word": "0x0320f809"
+          },
+          {
+            "pc": "0x535658",
+            "word": "0x00002021"
+          },
+          {
+            "pc": "0x53565c",
+            "word": "0x8fbf0024"
+          },
+          {
+            "pc": "0x535660",
+            "word": "0x8fb00020"
+          },
+          {
+            "pc": "0x535664",
+            "word": "0x24020001"
+          },
+          {
+            "pc": "0x535668",
+            "word": "0x03e00008"
+          },
+          {
+            "pc": "0x53566c",
+            "word": "0x27bd0028"
+          }
+        ]
+      },
+      {
+        "kind": "direct_wrapper",
+        "sites": [
+          "0x5257c0"
+        ],
+        "wrappers": [
+          "0x5257a0"
+        ],
+        "upper_outcome": "overwritten_in_known_continuations",
+        "notes": "Both encoded direct upper callers replace the result with 1. 525E88 reaches 525EA0 and 525EE8 branches to the suffix containing 525D60. The census is limited to encoded direct references.",
+        "evidence": [
+          {
+            "pc": "0x525e88",
+            "word": "0x0c1495e8"
+          },
+          {
+            "pc": "0x525e8c",
+            "word": "0x02002021"
+          },
+          {
+            "pc": "0x525e90",
+            "word": "0x8fbf002c"
+          },
+          {
+            "pc": "0x525e94",
+            "word": "0x8fb20028"
+          },
+          {
+            "pc": "0x525e98",
+            "word": "0x8fb10024"
+          },
+          {
+            "pc": "0x525e9c",
+            "word": "0x8fb00020"
+          },
+          {
+            "pc": "0x525ea0",
+            "word": "0x24020001"
+          },
+          {
+            "pc": "0x525ea4",
+            "word": "0x03e00008"
+          },
+          {
+            "pc": "0x525ee8",
+            "word": "0x0c1495e8"
+          },
+          {
+            "pc": "0x525eec",
+            "word": "0x02002021"
+          },
+          {
+            "pc": "0x525ef0",
+            "word": "0x1000ff98"
+          },
+          {
+            "pc": "0x525ef4",
+            "word": "0x8fbf002c"
+          },
+          {
+            "pc": "0x525d54",
+            "word": "0x8fb20028"
+          },
+          {
+            "pc": "0x525d58",
+            "word": "0x8fb10024"
+          },
+          {
+            "pc": "0x525d5c",
+            "word": "0x8fb00020"
+          },
+          {
+            "pc": "0x525d60",
+            "word": "0x24020001"
+          },
+          {
+            "pc": "0x525d64",
+            "word": "0x03e00008"
+          }
+        ]
+      }
+    ]
+  },
   "safe_to_guard_globally": false
 }

@@ -5981,3 +5981,131 @@ passed whitespace and conflict-marker checks. The index is empty at aa91550,
 and the four reference image hashes match. Independent review checked the
 synthetic initializer status, the bounded cleanup and the one-object shutdown
 case with a null optional callback.
+
+### 2026-11-06: identify linked imports and trace the 27 propagated D960 sites
+
+The pinned ELF binds A5BC68 to memset@GLIBC_2.0 from libc.so.6 and A5B968
+to pthread_mutex_lock@GLIBC_2.0 from libpthread.so.0. Their file-backed GOT
+entries still point at the resolver. The inspected 1.4 import, nearby 1.3
+dump and pre-update backup lack matching MIPS library bodies. The Android
+AArch64 libc in the local boot ramdisk belongs to a different target. The
+18 direct import frontiers therefore remain open at the actual library body.
+
+Traced all 27 propagated sites to 14 wrapper entries. The demonstrated upper
+routes overwrite 22 results before use. Nine reach the input-dialog handler
+506340 or a known direct caller, six reach the timer pump, six reach
+confirmation-dialog handlers, and one reaches the two encoded callers of
+5257A0. Five completion paths reach 47C7C8 and then the 47AA48 memset call
+with incoming V0 still live. These five are upper continuations of propagated
+sites and are separate from the 18 direct import-frontier records.
+
+The four conditional completion wrappers require a nonzero old H+58 at their
+initial read and a zero reload after the factory for propagation. The native
+wrappers have no explicit pre-factory clear of that field. A bodyless refusal
+needs a separate field change to take the zero-reload route. The nonzero
+reload reaches the native free-header overwrite at 466A90. This qualifies the
+earlier post-factory zero-state fixtures without changing their result.
+
+The 27 direct records stay propagated. The source evidence identifies
+specific registrations and encoded direct upper callers. Computed aliases,
+actual library bodies and universal refusal safety remain open. The
+follow-up adds 410 source-word records to the D960 manifest, including import
+slots/relocations, callback publication and the known upper continuations.
+
+All 35 targeted methods passed without skips (6.846 s). The new test runs
+the actual widget-state getter, 506340 dispatch and six selected native
+factory tails. It supplies the bound state and prior wrapper frames, and
+checks that both empty and nonempty factory results reach the outer handler
+before its native return of 1. The factory outcome remains a fixture input.
+
+The report verified 3,218 factory source records and 685 callback-binding
+records. The upper groups partition all 27 propagated sites. All 386 Python
+sources compiled without output files, and the four edited text paths passed
+whitespace checks. Independent review confirmed the import version/provider
+records, the 22/5 split and the conditional old-field boundary.
+
+### 2026-11-06: verify the two resolved imports on the stock RS2 1.4 process
+
+ADB read the stock executable identity, the loaded library mappings and
+two four-byte GOT slots. The running executable matches the stock 1.4
+SHA-256 `0fedb30f91937eafb5baaf3c75422cdbde04a62fe8bac8eca3c7a88bb761da0e`.
+Copies of libc-2.16.so and libpthread-2.16.so match their device hashes.
+The copies are in the ignored `artifacts/rs2_14_import_libraries_20261106`
+directory. The D960 manifest pins their hashes and the observed addresses.
+
+GOT A6FB18 holds 770E81F0, corresponding to libc RX base 77061000 plus
+the memset export at 871F0. Both outcomes of the ordinary branch execute
+the delay-slot `ADDU V0,A0,zero` at 871F8 before any incoming V0 use.
+GOT A6FA58 holds 771E0F50, corresponding to libpthread RX base 771D7000
+plus the lock export at 9F50. Its first V0 operation is `LW V0,+12(A0)`
+at 9F74, after a straight PIC and frame prefix. Both exports use GLIBC_2.0.
+
+The observed resolved targets account for all 18 direct import sites,
+eight memset and ten lock. Their player-side prefixes supply independent
+buffers or the old context's mutex. The known five upper completion
+continuations also lose the propagated value in the same memset. The
+resolved-binding view has 113 discarded sites and 10 remaining computed
+frontiers for D960. The source-only classifications describe the executable
+without the captured library binding. Valid frame/buffer/mutex storage,
+lazy resolution, other bindings, lifetime and lock progress remain scoped
+separately from this incoming-value result.
+
+The optional `--resolved-imports` check matched both ELF hashes, dynamic
+symbol entries, observed mapping arithmetic and actual prefix words. It
+covered all 18 direct import records and five known upper paths. Mutated
+target, missing prefix and missing caller coverage were rejected. All 35
+source and native fixture tests passed (5.457 s). The live evidence is a
+stock-process observation of the resolved slots and loaded files.
+
+### 2026-11-06: verify the two existing payload-failure exits
+
+Extended the existing D960 allocation-failure fixture through both native
+return suffixes. For each site it compares the stock factory/allocator
+double failure with a supplied post-factory transition to the same suffix.
+The latter has a zero saved-handle register and the original caller frame.
+Both produce V0=0 and restore SP, RA and the saved registers. The supplied
+early transition reaches the suffix without allocating the payload, and the
+suffix issues no service call or memory write. The fixture checks the local
+return contract. Runtime redirection and upper-caller NULL handling remain
+separate verification work. All 11 native continuation methods passed
+(0.071 s).
+
+### 2026-11-06: check the five encoded upper callers of both payload wrappers
+
+The pinned executable has three encoded direct calls to 5090E0 and two to
+50BA60. For the first wrapper, 5081D8 returns the preexisting S0 and 508758
+returns 1. For the second, 50B348 returns 1. The other two direct sites,
+5077D4 and 50A8AC, pass the result through 507440 and 50A600. Their known
+dialog consumer 506340 replaces it with 1 at 506378. The 87 new source-word
+records pin these continuations and the relevant callback registration.
+
+One targeted method executes all five upper routes with supplied zero and
+nonzero results. It observes the final V0, restored stack/return state and
+the actual dialog dispatch on the two forwarded routes. The test assumes
+genuine frames and known bound dialog state. Computed consumers and runtime
+redirection remain outside this verification. The full 36-method audit
+suite passed (5.017 s). The report also passed with the captured libraries.
+
+### 2026-11-06 D960 payload guards and one RS2 test run
+
+The test image adds 56 bytes inside the capture build's existing RX page.
+The redirects at 5091B4 and 50BAC0 retain their native delay slots. For a
+zero factory result, the generated code reaches the native failure suffix
+without an allocation. For a live result, the model matches the original
+allocator entry registers and final writes for both allocation outcomes.
+All 41 targeted tests passed.
+
+The 7,146,904-byte test image has SHA-256
+`6d52c40a658bf21cb2d9da03c7266702902ff81e48c70f3775b9b549615c00d0`.
+The RS2 ran it once from SD with the 45-second capture launcher. The user
+heard the next track and saw the highlight move after pressing Next.
+The closed trace decoded 202 events without errors and recorded accepted
+playback pairs for Show No Mercy CUE indices 0 and 1. The physical run
+covers launch and playback. The factory refusal cases were exercised in
+the bounded instruction model.
+
+The player logged SIGTERM and the supervisor requested recovery. A distinct boot
+ran the original stock executable with all three launch flags absent.
+The previous launcher was restored and its SHA-256 rechecked. All nine
+evidence files were copied with matching hashes and sizes under
+`artifacts/d960_payload_guard_trial_20261106/run_20261106T101434_107_0/`.

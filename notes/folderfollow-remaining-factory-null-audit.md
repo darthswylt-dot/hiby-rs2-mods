@@ -61,6 +61,28 @@ payload. On allocation success, `5091E0` or `50BAD8` writes that payload through
 H+58 without a factory NULL check. On allocation failure the write is skipped;
 testing only that failure route would conceal the hazard.
 
+The two existing allocation-failure suffixes can return NULL directly
+from the supplied post-factory state. `5091E4` takes zero in S1, and
+`50BAEC` takes zero in S0. With the genuine caller frames, each suffix
+returns zero, restores SP, RA and the saved registers, and performs no
+write or service call. The fixture compares that supplied transition
+with the original path where both the factory and subsequent allocator
+return zero. This validates the local exit contract.
+
+The exact encoded census finds three callers of the `5090E0` wrapper and
+two of `50BA60`. All five known continuations discard the wrapper result.
+`5081D8` reaches `50817C`, which returns the preexisting S0. `508758` and
+`50B348` set V0 to 1 at `508778` and `50B360`. The calls at `5077D4` and
+`50A8AC` return the value through `507440` and `50A600`. Under their known
+input-dialog registration, `506340` then overwrites it at `506378`.
+
+The fixtures execute the five upper continuations with supplied zero and
+nonzero results. They cover the three immediate replacements and both
+registered dialog routes. They assume the original frames and the known
+callback state. This establishes the result handling for the demonstrated
+routes. Runtime redirection and additional computed callers remain separate
+verification work.
+
 ## Extended return-value review
 
 Twelve initially opaque `47D960` continuations were followed one callee or branch
@@ -79,8 +101,9 @@ further, with a separate source review:
 The next pass follows all 37 initially remaining `47D960` records as detailed
 below. There are now 28 with concrete unresolved indirect frontiers.
 Ordinary caller-saved ABI rules alone do not prove that a callee overwrites V0.
-The 23 `47D180` and 27 `47D960` propagated records still require their downstream
-consumers to be checked before a broader refusal policy can be justified.
+The 23 `47D180` propagated records still require downstream review. The
+`47D960` follow-up below traces known consumers for its 27 propagated records
+and records the remaining dynamic obligations.
 
 ## Follow-up of the 37 remaining continuations
 
@@ -261,6 +284,118 @@ status is injected to exercise the driver's ignored result. The allocator
 fixture records free arguments and the active pointer at each free boundary.
 Actual concurrent reentry and hardware execution remain unverified. The
 follow-up adds 365 source-word records to the binding manifest.
+
+## Library provenance and consumers above the D960 wrappers
+
+The pinned ELF relocations and symbol versions identify the two import
+frontiers. `A5BC68` dispatches `memset@GLIBC_2.0` from `libc.so.6` for eight
+direct continuation records. `A5B968` dispatches
+`pthread_mutex_lock@GLIBC_2.0` from `libpthread.so.0` for ten. The two
+file-backed GOT entries point to the resolver at `A5B0C0`. The relocation,
+version and provider establish the linked interface. The resolved library
+body and its incoming V0 handling require the corresponding MIPS binaries.
+
+The initial local check covered the preserved 1.4 import, the nearby 1.3 dump and
+the pre-update backup. The 1.3 dump contains player executables, data and
+init scripts. The local `boot.img` ramdisk contains Android AArch64 libc
+files and `dtbo.img` has an Android DT table header. A matching RS2 1.4
+library body was absent from the inspected material.
+
+Six propagated sites in `5066C0`, `507440`, `50A600` and `50C760` have a
+concrete input-dialog consumer. Their registrations supply a callback at
+descriptor+310 to `5061E0`, which copies it to dialog state+D8. The resource
+table contains `506340`. With that registration, `506368` calls the selected
+wrapper and `506378` overwrites its return with 1. The outer frame is restored
+without reading the callback result. The bounded fixture executes the actual
+getter, dispatcher and six native factory-call/return tails with both result
+values. It supplies the wrapper frame and already-bound widget state.
+
+Six more sites in `4D4D00` and `4D5260` reach a timer consumer. `4738A0`
+stores the registered function and context. The pump calls it at `47362C`.
+On continued iteration the pump overwrites V0 at `473604` before another
+callback. If the value survives the pump return, its two encoded direct
+callers load V0 from old U+134 at `43C9EC` and `43CAA4`. This closes result
+use along the demonstrated timer route, with computed aliases outside it.
+
+The remaining ten sites have identified confirmation, input-dialog and
+direct-return consumers. `51CCC0` and `5322E0` are registered at dialog
+state+10. Their handlers overwrite the callback result at `50C1C4` and
+`535664`. Both encoded callers of `5257A0` replace V0 at `525EA0` or `525D60`.
+`52BEC0` has two encoded callers. One overwrites V0 at `52C7A0`. The other
+returns through `52BF20`, whose registered input-dialog consumer overwrites
+the result at `506378`. Two additional factory tails in `52BF20` reach
+the same consumer.
+
+Five sites in `4350E0`, `4AEA80` and `4AEC60` reach a completion consumer.
+Their descriptor registrations reach H+74 through `47D180`. The known
+completion handler calls H+74 at `47C7C8`, then `47AA20` reaches imported
+`memset` before a definite V0 overwrite. The completion handler sets zero
+later at `47C810`. The resolved binding checked below supplies the missing
+library prefix for this known route.
+
+For the four conditional sites `435168`, `4351DC`, `4AEB74` and `4AEBD4`,
+the wrapper entry checks for a nonzero old H+58 before reaching the factory.
+The propagation case requires a later reload of zero. A native nonzero
+reload reaches `466A90`, overwriting V0 through the old allocation header.
+The checked wrapper instructions have no explicit H+58 clear before these
+factory calls. A refusal that skips the factory body requires a separate
+explanation for the changed field. Earlier bounded tests supply the zero
+post-call state and establish what happens from there.
+
+The follow-up covers all 27 propagated sites. The known continuations
+overwrite the result for 22 sites, and five retain it at the import frontier.
+Their direct classification stays `propagated` because their own wrappers
+return the factory value. The higher-level evidence concerns the identified
+registrations and continuations. Runtime binding and all possible consumers
+still require separate evidence.
+
+## Observed RS2 1.4 import bindings
+
+The running stock 1.4 executable had the expected SHA-256 prefix `0fedb30f`.
+Its process mappings identified `/lib/libc-2.16.so` and
+`/lib/libpthread-2.16.so`. The two copies in
+`artifacts/rs2_14_import_libraries_20261106` match the device SHA-256 hashes
+recorded in the D960 manifest. Two four-byte reads captured the live GOT
+targets. Both addresses match the corresponding `GLIBC_2.0` exports in the
+copied MIPS ELF32 files.
+
+| Import | Direct sites | Live GOT target | First overwrite in library |
+| --- | ---: | --- | --- |
+| `memset` | 8 | `770E81F0` | `871F8`, `ADDU V0,A0,zero` |
+| `pthread_mutex_lock` | 10 | `771E0F50` | `9F74`, `LW V0,+12(A0)` |
+
+`memset` starts at `871F0`. Its `BNE` at `871F4` uses the ordinary delay slot
+at `871F8` for both branch outcomes. Each caller supplies an independent
+buffer, fill byte zero and fixed length. The factory value dies before the
+first buffer write.
+
+`pthread_mutex_lock` starts at `9F50`. Its straight prefix computes GP from
+T9 and saves registers. The first V0 operation loads the old mutex field
+at `9F74`, before any branch or call. The player supplies the old context's
+mutex from +10. Its separate null-old-context path overwrites V0 locally.
+The library prefix assumes a mapped frame and readable mutex storage.
+Mutex initialization, lifetime and lock progress remain separate premises.
+
+All 18 direct import continuations discard the factory value under the
+observed resolved bindings. In that view, D960 has 113 discarded sites and
+10 unresolved computed sites. The source-only table retains the original
+import frontiers for readers without the captures. The five known upper
+completion continuations also lose the value in the resolved `memset`.
+Their direct wrapper records remain `propagated`, with the earlier field
+conditions intact. The observation concerns the sampled stock process and
+the resolved targets. Lazy resolution and other runtime bindings remain open.
+
+Run the optional capture check from the repository root.
+
+```powershell
+python -B scripts/factory_null_audit.py --resolved-imports
+```
+
+The optional check matches both library hashes, the RX mapping arithmetic,
+dynamic symbol entries and prefix words. It checks coverage of all 18 direct
+sites and five known upper paths. The ordinary source report works with the
+pinned player image and source manifests. The two library copies are local
+artifacts excluded by Git.
 
 ## The `47DCE0` frontier
 
