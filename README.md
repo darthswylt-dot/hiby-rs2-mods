@@ -214,6 +214,25 @@ refuses the checked `47D720` creation/reuse path before lookup when the shared
 guard is busy or quarantined. Its two known direct callers discard the result.
 The other four factories require further caller checks; native startup can
 still wait indefinitely while retaining the guard.
+A separate [secondary factory admission gate](notes/folderfollow-reveal-secondary-factory-admission-gate.md)
+adds `47D4A0` after checking its NULL result through both caller levels. The
+two guarded factories share the same admission word and a common code emitter.
+An offline [audit of the remaining three factories](notes/folderfollow-remaining-factory-null-audit.md)
+lists all 229 encoded direct callers. Two factories have concrete conditional
+NULL dereferences; the third has no found dereference in the checked chains,
+but computed callback binding remains open. These three factories stay
+unguarded while unresolved continuations and downstream consumers are checked.
+Follow-up closes nine more `47D960` continuations locally: four discard the
+result and five already handle NULL. The other 28 now have exact import or
+computed-callback frontiers recorded, with no blanket refusal-safety claim.
+A further source check pins four selected callback assignments and shows that
+the active object is published before its later callback initialization.
+Publication alone does not certify readiness; all ten computed consumers
+retain their explicit binding/lifetime obligations.
+The known own-loop invocation starts after initializer return. Its worker can
+start earlier, after callback assignment. The resource release and active
+pointer replacement occur at separate points on the checked exit paths.
+Escaped UI aliases retain their separate lifetime limitations.
 
 See [notes/status.md](notes/status.md) for the test matrix and exact artifact
 hashes, [notes/addresses.md](notes/addresses.md) for the reverse-engineered

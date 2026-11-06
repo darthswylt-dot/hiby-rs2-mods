@@ -1,0 +1,2162 @@
+{
+  "schema_version": 1,
+  "factory": "0x0047dce0",
+  "source_sha256": "02fd1dd13db7aac1e6d150ec1866b93f57022c1d668b114720a36b7f232e5f87",
+  "source_file": "artifacts/import-20261001/hiby_player_02fd.bin",
+  "audit_date": "2026-11-05",
+  "census": {
+    "kind": "encoded_direct_J_or_JAL",
+    "executable_ranges": [
+      {
+        "start": "0x00400000",
+        "end_exclusive": "0x00a5bfa0"
+      }
+    ],
+    "count": 21,
+    "exhaustive_within_pinned_executable_ranges": true,
+    "computed_callers_exhaustive": false
+  },
+  "callers": [
+    {
+      "callsite": "0x0043c594",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x0043c594",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x0043c598",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x0043c59c",
+          "word": "0x8e020010"
+        },
+        {
+          "pc": "0x0043c5a0",
+          "word": "0x1000ffbd"
+        },
+        {
+          "pc": "0x0043c5a4",
+          "word": "0xae42f200"
+        },
+        {
+          "pc": "0x0043c498",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x0043c49c",
+          "word": "0x8fb20040"
+        },
+        {
+          "pc": "0x0043c4a0",
+          "word": "0x8fb1003c"
+        },
+        {
+          "pc": "0x0043c4a4",
+          "word": "0x8fb00038"
+        },
+        {
+          "pc": "0x0043c4a8",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x0043c4ac",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The return is overwritten by LW V0,+10(old S0); its global store and stack return do not follow the factory pointer. Old S0 lifetime and the ordinary native ABI remain separate premises."
+    },
+    {
+      "callsite": "0x00451d38",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x00451d38",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x00451d3c",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x00451d40",
+          "word": "0x8fbf002c"
+        },
+        {
+          "pc": "0x00451d44",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x00451d48",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x00451d4c",
+          "word": "0x27bd0030"
+        }
+      ],
+      "notes": "Pure stack return sets V0=0."
+    },
+    {
+      "callsite": "0x00451ddc",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x00451ddc",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x00451de0",
+          "word": "0xafa20040"
+        },
+        {
+          "pc": "0x00451de4",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x00451de8",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x00451dec",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x00451df0",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "Pure stack return sets V0=0."
+    },
+    {
+      "callsite": "0x0049a6d8",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x0049a6d8",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x0049a6dc",
+          "word": "0xafa2002c"
+        },
+        {
+          "pc": "0x0049a6e0",
+          "word": "0x1000ff97"
+        },
+        {
+          "pc": "0x0049a6e4",
+          "word": "0x8fbf0cd4"
+        },
+        {
+          "pc": "0x0049a540",
+          "word": "0x8fb60cd0"
+        },
+        {
+          "pc": "0x0049a544",
+          "word": "0x8fb50ccc"
+        },
+        {
+          "pc": "0x0049a548",
+          "word": "0x8fb40cc8"
+        },
+        {
+          "pc": "0x0049a54c",
+          "word": "0x8fb30cc4"
+        },
+        {
+          "pc": "0x0049a550",
+          "word": "0x8fb20cc0"
+        },
+        {
+          "pc": "0x0049a554",
+          "word": "0x8fb10cbc"
+        },
+        {
+          "pc": "0x0049a558",
+          "word": "0x8fb00cb8"
+        },
+        {
+          "pc": "0x0049a55c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x0049a560",
+          "word": "0x27bd0cd8"
+        }
+      ],
+      "notes": "The immediate wrapper returns factory V0 unchanged, but all ten encoded direct upper call continuations discard it. This closes that encoded chain under its native ABI; unknown computed entry/callers remain outside the proof.",
+      "chain": {
+        "wrapper_entry": "0x0049a2e0",
+        "upper_encoded_direct_call_count": 10,
+        "upper_callers": [
+          {
+            "callsite": "0x0049d224",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x0049d224",
+                "word": "0x0c1268b8"
+              },
+              {
+                "pc": "0x0049d228",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x0049d22c",
+                "word": "0x0c1273e8"
+              },
+              {
+                "pc": "0x0049d230",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x0049d234",
+                "word": "0x0c108e60"
+              },
+              {
+                "pc": "0x0049d238",
+                "word": "0x2404006b"
+              }
+            ],
+            "notes": "The next call receives fresh A0=old S0, not factory V0. Its 490B40 leaf overwrites V0 on both input branches; the subsequent 423980 query also overwrites V0 at entry.",
+            "callee_evidence": [
+              {
+                "pc": "0x0049cfa0",
+                "word": "0x27bdffe0"
+              },
+              {
+                "pc": "0x0049cfa4",
+                "word": "0x00002821"
+              },
+              {
+                "pc": "0x0049cfb0",
+                "word": "0x0c1242d0"
+              },
+              {
+                "pc": "0x0049cfb4",
+                "word": "0x00808021"
+              },
+              {
+                "pc": "0x00490b40",
+                "word": "0x10800007"
+              },
+              {
+                "pc": "0x00490b48",
+                "word": "0x8c830070"
+              },
+              {
+                "pc": "0x00490b4c",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x00490b60",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x00490b64",
+                "word": "0x00001021"
+              },
+              {
+                "pc": "0x00423980",
+                "word": "0x3c0200ae"
+              },
+              {
+                "pc": "0x00423984",
+                "word": "0x8c42d360"
+              }
+            ]
+          },
+          {
+            "callsite": "0x0049e5ec",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x0049e5ec",
+                "word": "0x0c1268b8"
+              },
+              {
+                "pc": "0x0049e5f0",
+                "word": "0x02403821"
+              },
+              {
+                "pc": "0x0049e5f4",
+                "word": "0x0c108e60"
+              },
+              {
+                "pc": "0x0049e5f8",
+                "word": "0x2404006b"
+              }
+            ],
+            "notes": "The next call is 423980 with fresh A0=107; its first LUI overwrites incoming V0.",
+            "callee_evidence": [
+              {
+                "pc": "0x00423980",
+                "word": "0x3c0200ae"
+              },
+              {
+                "pc": "0x00423984",
+                "word": "0x8c42d360"
+              }
+            ]
+          },
+          {
+            "callsite": "0x004a86f0",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x004a86f0",
+                "word": "0x0c1268b8"
+              },
+              {
+                "pc": "0x004a86f4",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x004a86f8",
+                "word": "0x0c1273e8"
+              },
+              {
+                "pc": "0x004a86fc",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x004a8700",
+                "word": "0x0c108e60"
+              },
+              {
+                "pc": "0x004a8704",
+                "word": "0x2404006b"
+              }
+            ],
+            "notes": "Fresh A0=old S0 reaches 49CFA0/490B40; the next query receives A0=107. No factory H is transferred to an argument or saved before replacement.",
+            "callee_evidence": [
+              {
+                "pc": "0x0049cfa0",
+                "word": "0x27bdffe0"
+              },
+              {
+                "pc": "0x0049cfa4",
+                "word": "0x00002821"
+              },
+              {
+                "pc": "0x0049cfb0",
+                "word": "0x0c1242d0"
+              },
+              {
+                "pc": "0x0049cfb4",
+                "word": "0x00808021"
+              },
+              {
+                "pc": "0x00490b40",
+                "word": "0x10800007"
+              },
+              {
+                "pc": "0x00490b48",
+                "word": "0x8c830070"
+              },
+              {
+                "pc": "0x00490b4c",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x00490b60",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x00490b64",
+                "word": "0x00001021"
+              },
+              {
+                "pc": "0x00423980",
+                "word": "0x3c0200ae"
+              },
+              {
+                "pc": "0x00423984",
+                "word": "0x8c42d360"
+              }
+            ]
+          },
+          {
+            "callsite": "0x004b231c",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x004b231c",
+                "word": "0x0c1268b8"
+              },
+              {
+                "pc": "0x004b2320",
+                "word": "0x02603821"
+              },
+              {
+                "pc": "0x004b2324",
+                "word": "0x8fbf0fdc"
+              },
+              {
+                "pc": "0x004b2328",
+                "word": "0x8fbe0fd8"
+              },
+              {
+                "pc": "0x004b232c",
+                "word": "0x8fb70fd4"
+              },
+              {
+                "pc": "0x004b2330",
+                "word": "0x8fb60fd0"
+              },
+              {
+                "pc": "0x004b2334",
+                "word": "0x8fb50fcc"
+              },
+              {
+                "pc": "0x004b2338",
+                "word": "0x8fb40fc8"
+              },
+              {
+                "pc": "0x004b233c",
+                "word": "0x8fb30fc4"
+              },
+              {
+                "pc": "0x004b2340",
+                "word": "0x8fb20fc0"
+              },
+              {
+                "pc": "0x004b2344",
+                "word": "0x8fb10fbc"
+              },
+              {
+                "pc": "0x004b2348",
+                "word": "0x8fb00fb8"
+              },
+              {
+                "pc": "0x004b234c",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x004b2350",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x004b2354",
+                "word": "0x27bd0fe0"
+              }
+            ],
+            "notes": "The complete suffix, beyond its first register restores, sets V0=1 at 4B234C. The shorter initial window was not sufficient evidence."
+          },
+          {
+            "callsite": "0x004b242c",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x004b242c",
+                "word": "0x0c1268b8"
+              },
+              {
+                "pc": "0x004b2430",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x004b2434",
+                "word": "0x0c1273e8"
+              },
+              {
+                "pc": "0x004b2438",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x004b243c",
+                "word": "0x8fbf0fdc"
+              },
+              {
+                "pc": "0x004b2440",
+                "word": "0x8fbe0fd8"
+              },
+              {
+                "pc": "0x004b2444",
+                "word": "0x8fb70fd4"
+              },
+              {
+                "pc": "0x004b2448",
+                "word": "0x8fb60fd0"
+              },
+              {
+                "pc": "0x004b244c",
+                "word": "0x8fb50fcc"
+              },
+              {
+                "pc": "0x004b2450",
+                "word": "0x8fb40fc8"
+              },
+              {
+                "pc": "0x004b2454",
+                "word": "0x8fb30fc4"
+              },
+              {
+                "pc": "0x004b2458",
+                "word": "0x8fb20fc0"
+              },
+              {
+                "pc": "0x004b245c",
+                "word": "0x8fb10fbc"
+              },
+              {
+                "pc": "0x004b2460",
+                "word": "0x8fb00fb8"
+              },
+              {
+                "pc": "0x004b2464",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x004b2468",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x004b246c",
+                "word": "0x27bd0fe0"
+              }
+            ],
+            "notes": "The next callee receives old S0 rather than returned H, then the pure suffix returns V0=1.",
+            "callee_evidence": [
+              {
+                "pc": "0x0049cfa0",
+                "word": "0x27bdffe0"
+              },
+              {
+                "pc": "0x0049cfa4",
+                "word": "0x00002821"
+              },
+              {
+                "pc": "0x0049cfb0",
+                "word": "0x0c1242d0"
+              },
+              {
+                "pc": "0x0049cfb4",
+                "word": "0x00808021"
+              },
+              {
+                "pc": "0x00490b40",
+                "word": "0x10800007"
+              },
+              {
+                "pc": "0x00490b48",
+                "word": "0x8c830070"
+              },
+              {
+                "pc": "0x00490b4c",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x00490b60",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x00490b64",
+                "word": "0x00001021"
+              }
+            ]
+          },
+          {
+            "callsite": "0x005308c4",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x005308c4",
+                "word": "0x0c1268b8"
+              },
+              {
+                "pc": "0x005308c8",
+                "word": "0x02603821"
+              },
+              {
+                "pc": "0x005308cc",
+                "word": "0x8fbf10dc"
+              },
+              {
+                "pc": "0x005308d0",
+                "word": "0x8fbe10d8"
+              },
+              {
+                "pc": "0x005308d4",
+                "word": "0x8fb710d4"
+              },
+              {
+                "pc": "0x005308d8",
+                "word": "0x8fb610d0"
+              },
+              {
+                "pc": "0x005308dc",
+                "word": "0x8fb510cc"
+              },
+              {
+                "pc": "0x005308e0",
+                "word": "0x8fb410c8"
+              },
+              {
+                "pc": "0x005308e4",
+                "word": "0x8fb310c4"
+              },
+              {
+                "pc": "0x005308e8",
+                "word": "0x8fb210c0"
+              },
+              {
+                "pc": "0x005308ec",
+                "word": "0x8fb110bc"
+              },
+              {
+                "pc": "0x005308f0",
+                "word": "0x8fb010b8"
+              },
+              {
+                "pc": "0x005308f4",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x005308f8",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x005308fc",
+                "word": "0x27bd10e0"
+              }
+            ],
+            "notes": "The complete suffix sets V0=1 at 5308F4 after its register restores."
+          },
+          {
+            "callsite": "0x005309ec",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x005309ec",
+                "word": "0x0c1268b8"
+              },
+              {
+                "pc": "0x005309f0",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x005309f4",
+                "word": "0x0c1273e8"
+              },
+              {
+                "pc": "0x005309f8",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x005309fc",
+                "word": "0x8fbf10dc"
+              },
+              {
+                "pc": "0x00530a00",
+                "word": "0x8fbe10d8"
+              },
+              {
+                "pc": "0x00530a04",
+                "word": "0x8fb710d4"
+              },
+              {
+                "pc": "0x00530a08",
+                "word": "0x8fb610d0"
+              },
+              {
+                "pc": "0x00530a0c",
+                "word": "0x8fb510cc"
+              },
+              {
+                "pc": "0x00530a10",
+                "word": "0x8fb410c8"
+              },
+              {
+                "pc": "0x00530a14",
+                "word": "0x8fb310c4"
+              },
+              {
+                "pc": "0x00530a18",
+                "word": "0x8fb210c0"
+              },
+              {
+                "pc": "0x00530a1c",
+                "word": "0x8fb110bc"
+              },
+              {
+                "pc": "0x00530a20",
+                "word": "0x8fb010b8"
+              },
+              {
+                "pc": "0x00530a24",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x00530a28",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x00530a2c",
+                "word": "0x27bd10e0"
+              }
+            ],
+            "notes": "The next callee receives old S0 rather than H, then the complete suffix sets V0=1.",
+            "callee_evidence": [
+              {
+                "pc": "0x0049cfa0",
+                "word": "0x27bdffe0"
+              },
+              {
+                "pc": "0x0049cfa4",
+                "word": "0x00002821"
+              },
+              {
+                "pc": "0x0049cfb0",
+                "word": "0x0c1242d0"
+              },
+              {
+                "pc": "0x0049cfb4",
+                "word": "0x00808021"
+              },
+              {
+                "pc": "0x00490b40",
+                "word": "0x10800007"
+              },
+              {
+                "pc": "0x00490b48",
+                "word": "0x8c830070"
+              },
+              {
+                "pc": "0x00490b4c",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x00490b60",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x00490b64",
+                "word": "0x00001021"
+              }
+            ]
+          },
+          {
+            "callsite": "0x00533c90",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x00533c90",
+                "word": "0x0c1268b8"
+              },
+              {
+                "pc": "0x00533c94",
+                "word": "0x02203821"
+              },
+              {
+                "pc": "0x00533c98",
+                "word": "0x0c1273e8"
+              },
+              {
+                "pc": "0x00533c9c",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x00533ca0",
+                "word": "0x8fbf0ab4"
+              },
+              {
+                "pc": "0x00533ca4",
+                "word": "0x8fb20ab0"
+              },
+              {
+                "pc": "0x00533ca8",
+                "word": "0x8fb10aac"
+              },
+              {
+                "pc": "0x00533cac",
+                "word": "0x8fb00aa8"
+              },
+              {
+                "pc": "0x00533cb0",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x00533cb4",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x00533cb8",
+                "word": "0x27bd0ab8"
+              }
+            ],
+            "notes": "The next callee receives old S0 rather than H, and the pure suffix sets V0=1.",
+            "callee_evidence": [
+              {
+                "pc": "0x0049cfa0",
+                "word": "0x27bdffe0"
+              },
+              {
+                "pc": "0x0049cfa4",
+                "word": "0x00002821"
+              },
+              {
+                "pc": "0x0049cfb0",
+                "word": "0x0c1242d0"
+              },
+              {
+                "pc": "0x0049cfb4",
+                "word": "0x00808021"
+              },
+              {
+                "pc": "0x00490b40",
+                "word": "0x10800007"
+              },
+              {
+                "pc": "0x00490b48",
+                "word": "0x8c830070"
+              },
+              {
+                "pc": "0x00490b4c",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x00490b60",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x00490b64",
+                "word": "0x00001021"
+              }
+            ]
+          },
+          {
+            "callsite": "0x00536e7c",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x00536e7c",
+                "word": "0x0c1268b8"
+              },
+              {
+                "pc": "0x00536e80",
+                "word": "0x02803821"
+              },
+              {
+                "pc": "0x00536e84",
+                "word": "0x0c108e60"
+              },
+              {
+                "pc": "0x00536e88",
+                "word": "0x2404006b"
+              }
+            ],
+            "notes": "The next call is 423980 with fresh A0=107, replacing incoming V0 at callee entry.",
+            "callee_evidence": [
+              {
+                "pc": "0x00423980",
+                "word": "0x3c0200ae"
+              },
+              {
+                "pc": "0x00423984",
+                "word": "0x8c42d360"
+              }
+            ]
+          },
+          {
+            "callsite": "0x00536fac",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x00536fac",
+                "word": "0x0c1268b8"
+              },
+              {
+                "pc": "0x00536fb0",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x00536fb4",
+                "word": "0x0c1273e8"
+              },
+              {
+                "pc": "0x00536fb8",
+                "word": "0x02002021"
+              },
+              {
+                "pc": "0x00536fbc",
+                "word": "0x0c108e60"
+              },
+              {
+                "pc": "0x00536fc0",
+                "word": "0x2404006b"
+              }
+            ],
+            "notes": "Fresh A0=old S0 reaches 49CFA0/490B40, followed by the query with A0=107. The returned factory H is not passed as an argument.",
+            "callee_evidence": [
+              {
+                "pc": "0x0049cfa0",
+                "word": "0x27bdffe0"
+              },
+              {
+                "pc": "0x0049cfa4",
+                "word": "0x00002821"
+              },
+              {
+                "pc": "0x0049cfb0",
+                "word": "0x0c1242d0"
+              },
+              {
+                "pc": "0x0049cfb4",
+                "word": "0x00808021"
+              },
+              {
+                "pc": "0x00490b40",
+                "word": "0x10800007"
+              },
+              {
+                "pc": "0x00490b48",
+                "word": "0x8c830070"
+              },
+              {
+                "pc": "0x00490b4c",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x00490b60",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x00490b64",
+                "word": "0x00001021"
+              },
+              {
+                "pc": "0x00423980",
+                "word": "0x3c0200ae"
+              },
+              {
+                "pc": "0x00423984",
+                "word": "0x8c42d360"
+              }
+            ]
+          }
+        ],
+        "checked_chain_status": "all_encoded_direct_upper_callers_discard",
+        "unresolved_boundaries": [
+          {
+            "classification": "unresolved",
+            "kind": "unknown_computed_wrapper_callers",
+            "notes": "No global proof excludes arbitrary computed calls, aliases or imported consumers of wrapper49A2E0. The direct-call census is not authentication."
+          }
+        ]
+      }
+    },
+    {
+      "callsite": "0x004a7080",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x004a7080",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x004a7084",
+          "word": "0xafa2002c"
+        },
+        {
+          "pc": "0x004a7088",
+          "word": "0x1000ffe1"
+        },
+        {
+          "pc": "0x004a708c",
+          "word": "0x8fbf0484"
+        },
+        {
+          "pc": "0x004a7010",
+          "word": "0x8fbe0480"
+        },
+        {
+          "pc": "0x004a7014",
+          "word": "0x8fb7047c"
+        },
+        {
+          "pc": "0x004a7018",
+          "word": "0x8fb60478"
+        },
+        {
+          "pc": "0x004a701c",
+          "word": "0x8fb50474"
+        },
+        {
+          "pc": "0x004a7020",
+          "word": "0x8fb40470"
+        },
+        {
+          "pc": "0x004a7024",
+          "word": "0x8fb3046c"
+        },
+        {
+          "pc": "0x004a7028",
+          "word": "0x8fb20468"
+        },
+        {
+          "pc": "0x004a702c",
+          "word": "0x8fb10464"
+        },
+        {
+          "pc": "0x004a7030",
+          "word": "0x8fb00460"
+        },
+        {
+          "pc": "0x004a7034",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x004a7038",
+          "word": "0x27bd0488"
+        }
+      ],
+      "notes": "The immediate wrapper preserves factory V0 through its pure return. Known registrations make this wrapper a computed callback. One identified dispatcher discards the callback result, but a universal binding/alias proof for all possible invocations is not established.",
+      "chain": {
+        "wrapper_entry": "0x004a6f60",
+        "upper_encoded_direct_call_count": 0,
+        "upper_callers": [],
+        "callback_publications": [
+          {
+            "callsite": "0x004a7a0c",
+            "evidence": [
+              {
+                "pc": "0x004a7a04",
+                "word": "0x3c06004a"
+              },
+              {
+                "pc": "0x004a7a0c",
+                "word": "0x0c1427c8"
+              },
+              {
+                "pc": "0x004a7a10",
+                "word": "0x24c66f60"
+              }
+            ],
+            "notes": "The callback address is formed in the JAL delay as argument A2 to509F20. This is not an encoded direct call to the callback."
+          },
+          {
+            "callsite": "0x004a7aac",
+            "evidence": [
+              {
+                "pc": "0x004a7aa4",
+                "word": "0x3c06004a"
+              },
+              {
+                "pc": "0x004a7aac",
+                "word": "0x0c1427c8"
+              },
+              {
+                "pc": "0x004a7ab0",
+                "word": "0x24c66f60"
+              }
+            ],
+            "notes": "The callback address is formed in the JAL delay as argument A2 to509F20. This is not an encoded direct call to the callback."
+          }
+        ],
+        "callback_storage": {
+          "evidence": [
+            {
+              "pc": "0x00509f3c",
+              "word": "0x00c0a821"
+            },
+            {
+              "pc": "0x0050a018",
+              "word": "0xae150010"
+            }
+          ],
+          "notes": "509F20 retains incoming A2 in S5, then stores S5 into its newly built object+10. Allocation/ABI/alias correctness remains a premise."
+        },
+        "known_computed_dispatches": [
+          {
+            "callsite": "0x0050a13c",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x0050a118",
+                "word": "0x8c590010"
+              },
+              {
+                "pc": "0x0050a11c",
+                "word": "0x13200004"
+              },
+              {
+                "pc": "0x0050a124",
+                "word": "0x94420014"
+              },
+              {
+                "pc": "0x0050a128",
+                "word": "0x14400004"
+              },
+              {
+                "pc": "0x0050a13c",
+                "word": "0x0320f809"
+              },
+              {
+                "pc": "0x0050a140",
+                "word": "0x00002021"
+              },
+              {
+                "pc": "0x0050a144",
+                "word": "0x8fbf001c"
+              },
+              {
+                "pc": "0x0050a148",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x0050a14c",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x0050a150",
+                "word": "0x27bd0020"
+              }
+            ],
+            "notes": "This native dispatcher loads callback object+10, optionally invokes it, then replaces callback V0 with1. No returned factory H is dereferenced here."
+          }
+        ],
+        "unresolved_boundaries": [
+          {
+            "classification": "unresolved",
+            "kind": "computed_callback_target_binding",
+            "pc": "0x0050a13c",
+            "notes": "The found object+10 dispatcher discards its result, but the stored callback can escape. No exhaustive proof covers every copied pointer, alternate dispatcher or imported invocation. Zero encoded direct callers does not prove absence of callers."
+          }
+        ]
+      }
+    },
+    {
+      "callsite": "0x004a8278",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x004a8278",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x004a827c",
+          "word": "0xafa2002c"
+        },
+        {
+          "pc": "0x004a8280",
+          "word": "0x1000ffcf"
+        },
+        {
+          "pc": "0x004a8284",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x004a81c0",
+          "word": "0x8fb10048"
+        },
+        {
+          "pc": "0x004a81c4",
+          "word": "0x8fb00044"
+        },
+        {
+          "pc": "0x004a81c8",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x004a81cc",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "The immediate wrapper preserves factory V0 through its pure return. Known registrations make this wrapper a computed callback. One identified dispatcher discards the callback result, but a universal binding/alias proof for all possible invocations is not established.",
+      "chain": {
+        "wrapper_entry": "0x004a80e0",
+        "upper_encoded_direct_call_count": 0,
+        "upper_callers": [],
+        "callback_publications": [
+          {
+            "callsite": "0x004a7e88",
+            "evidence": [
+              {
+                "pc": "0x004a7e80",
+                "word": "0x3c06004b"
+              },
+              {
+                "pc": "0x004a7e88",
+                "word": "0x0c1427c8"
+              },
+              {
+                "pc": "0x004a7e8c",
+                "word": "0x24c680e0"
+              }
+            ],
+            "notes": "The callback address is formed in the JAL delay as argument A2 to509F20. This is not an encoded direct call to the callback."
+          }
+        ],
+        "callback_storage": {
+          "evidence": [
+            {
+              "pc": "0x00509f3c",
+              "word": "0x00c0a821"
+            },
+            {
+              "pc": "0x0050a018",
+              "word": "0xae150010"
+            }
+          ],
+          "notes": "509F20 retains incoming A2 in S5, then stores S5 into its newly built object+10. Allocation/ABI/alias correctness remains a premise."
+        },
+        "known_computed_dispatches": [
+          {
+            "callsite": "0x0050a13c",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x0050a118",
+                "word": "0x8c590010"
+              },
+              {
+                "pc": "0x0050a11c",
+                "word": "0x13200004"
+              },
+              {
+                "pc": "0x0050a124",
+                "word": "0x94420014"
+              },
+              {
+                "pc": "0x0050a128",
+                "word": "0x14400004"
+              },
+              {
+                "pc": "0x0050a13c",
+                "word": "0x0320f809"
+              },
+              {
+                "pc": "0x0050a140",
+                "word": "0x00002021"
+              },
+              {
+                "pc": "0x0050a144",
+                "word": "0x8fbf001c"
+              },
+              {
+                "pc": "0x0050a148",
+                "word": "0x24020001"
+              },
+              {
+                "pc": "0x0050a14c",
+                "word": "0x03e00008"
+              },
+              {
+                "pc": "0x0050a150",
+                "word": "0x27bd0020"
+              }
+            ],
+            "notes": "This native dispatcher loads callback object+10, optionally invokes it, then replaces callback V0 with1. No returned factory H is dereferenced here."
+          }
+        ],
+        "unresolved_boundaries": [
+          {
+            "classification": "unresolved",
+            "kind": "computed_callback_target_binding",
+            "pc": "0x0050a13c",
+            "notes": "The found object+10 dispatcher discards its result, but the stored callback can escape. No exhaustive proof covers every copied pointer, alternate dispatcher or imported invocation. Zero encoded direct callers does not prove absence of callers."
+          }
+        ]
+      }
+    },
+    {
+      "callsite": "0x004b53b4",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x004b53b4",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x004b53b8",
+          "word": "0xafa2002c"
+        },
+        {
+          "pc": "0x004b53bc",
+          "word": "0x8fbf1c64"
+        },
+        {
+          "pc": "0x004b53c0",
+          "word": "0x8fbe1c60"
+        },
+        {
+          "pc": "0x004b53c4",
+          "word": "0x8fb71c5c"
+        },
+        {
+          "pc": "0x004b53c8",
+          "word": "0x8fb61c58"
+        },
+        {
+          "pc": "0x004b53cc",
+          "word": "0x8fb51c54"
+        },
+        {
+          "pc": "0x004b53d0",
+          "word": "0x8fb41c50"
+        },
+        {
+          "pc": "0x004b53d4",
+          "word": "0x8fb31c4c"
+        },
+        {
+          "pc": "0x004b53d8",
+          "word": "0x8fb21c48"
+        },
+        {
+          "pc": "0x004b53dc",
+          "word": "0x8fb11c44"
+        },
+        {
+          "pc": "0x004b53e0",
+          "word": "0x8fb01c40"
+        },
+        {
+          "pc": "0x004b53e4",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x004b53e8",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x004b53ec",
+          "word": "0x27bd1c68"
+        }
+      ],
+      "notes": "Only stack restores precede V0=1 and return."
+    },
+    {
+      "callsite": "0x004cdd40",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x004cdd40",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x004cdd44",
+          "word": "0x24100001"
+        },
+        {
+          "pc": "0x004cdd48",
+          "word": "0x1000ffc4"
+        },
+        {
+          "pc": "0x004cdd4c",
+          "word": "0x8fbf0034"
+        },
+        {
+          "pc": "0x004cdc5c",
+          "word": "0x02001021"
+        },
+        {
+          "pc": "0x004cdc60",
+          "word": "0x8fb10030"
+        },
+        {
+          "pc": "0x004cdc64",
+          "word": "0x8fb0002c"
+        },
+        {
+          "pc": "0x004cdc68",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x004cdc6c",
+          "word": "0x27bd0038"
+        }
+      ],
+      "notes": "The call delay sets old S0=1; the return suffix replaces factory V0 with that callee-preserved S0."
+    },
+    {
+      "callsite": "0x004e10b8",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x004e10b8",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x004e10bc",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x004e10c0",
+          "word": "0x1000ffd4"
+        },
+        {
+          "pc": "0x004e10c4",
+          "word": "0x8fbf0034"
+        },
+        {
+          "pc": "0x004e1014",
+          "word": "0x8fb10030"
+        },
+        {
+          "pc": "0x004e1018",
+          "word": "0x8fb0002c"
+        },
+        {
+          "pc": "0x004e101c",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x004e1020",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x004e1024",
+          "word": "0x27bd0038"
+        }
+      ],
+      "notes": "The unconditional branch reaches stack restores and V0=1."
+    },
+    {
+      "callsite": "0x004f0b74",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x004f0b74",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x004f0b78",
+          "word": "0xafa200ac"
+        },
+        {
+          "pc": "0x004f0b7c",
+          "word": "0x1000fe80"
+        },
+        {
+          "pc": "0x004f0b80",
+          "word": "0x8fa3013c"
+        },
+        {
+          "pc": "0x004f0580",
+          "word": "0x1060ffc0"
+        },
+        {
+          "pc": "0x004f0584",
+          "word": "0x24020001"
+        }
+      ],
+      "notes": "The branch delay reloads V1 from the existing frame; at the target, the next branch delay unconditionally sets V0=1 before either successor. The factory result has not been saved or dereferenced."
+    },
+    {
+      "callsite": "0x005044bc",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x005044bc",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x005044c0",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x005044c4",
+          "word": "0x1000ffa4"
+        },
+        {
+          "pc": "0x005044c8",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x00504358",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x0050435c",
+          "word": "0x8fb50040"
+        },
+        {
+          "pc": "0x00504360",
+          "word": "0x8fb4003c"
+        },
+        {
+          "pc": "0x00504364",
+          "word": "0x8fb30038"
+        },
+        {
+          "pc": "0x00504368",
+          "word": "0x8fb20034"
+        },
+        {
+          "pc": "0x0050436c",
+          "word": "0x8fb10030"
+        },
+        {
+          "pc": "0x00504370",
+          "word": "0x8fb0002c"
+        },
+        {
+          "pc": "0x00504374",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x00504378",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The unconditional branch delay overwrites V0=1, followed by a stack-only return."
+    },
+    {
+      "callsite": "0x005188cc",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x005188cc",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x005188d0",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x005188d4",
+          "word": "0x1000ffc6"
+        },
+        {
+          "pc": "0x005188d8",
+          "word": "0x8fbf003c"
+        },
+        {
+          "pc": "0x005187f0",
+          "word": "0x8fb30038"
+        },
+        {
+          "pc": "0x005187f4",
+          "word": "0x8fb20034"
+        },
+        {
+          "pc": "0x005187f8",
+          "word": "0x8fb10030"
+        },
+        {
+          "pc": "0x005187fc",
+          "word": "0x8fb0002c"
+        },
+        {
+          "pc": "0x00518800",
+          "word": "0xd7b40040"
+        },
+        {
+          "pc": "0x00518804",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x00518808",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The immediate wrapper returns factory V0 unchanged through its native integer/FPU stack restore. It is installed as a callback in a widget field. Known widget dispatches ignore its result, while complete dynamic target/alias coverage is unresolved.",
+      "chain": {
+        "wrapper_entry": "0x00518780",
+        "upper_encoded_direct_call_count": 0,
+        "upper_callers": [],
+        "callback_publications": [
+          {
+            "evidence": [
+              {
+                "pc": "0x0051836c",
+                "word": "0x3c020052"
+              },
+              {
+                "pc": "0x00518370",
+                "word": "0x24428780"
+              },
+              {
+                "pc": "0x00518374",
+                "word": "0x1000f9ed"
+              },
+              {
+                "pc": "0x00518378",
+                "word": "0xae020284"
+              }
+            ],
+            "notes": "The native initializer forms518780 and stores it to old S0+284 in the branch delay."
+          }
+        ],
+        "known_computed_dispatches": [
+          {
+            "callsite": "0x0045c238",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x0045c220",
+                "word": "0x8e190284"
+              },
+              {
+                "pc": "0x0045c224",
+                "word": "0x13200009"
+              },
+              {
+                "pc": "0x0045c238",
+                "word": "0x0320f809"
+              },
+              {
+                "pc": "0x0045c23c",
+                "word": "0x44050000"
+              },
+              {
+                "pc": "0x0045c240",
+                "word": "0x8e420004"
+              },
+              {
+                "pc": "0x0045c244",
+                "word": "0xae229424"
+              },
+              {
+                "pc": "0x0045c248",
+                "word": "0x24020001"
+              }
+            ],
+            "notes": "This widget callback dispatch loads its target from+284; after the call it overwrites V0 using old context or constant1 without following the callback result. Static offset equality alone does not bind every such load to518780."
+          },
+          {
+            "callsite": "0x0045c514",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x0045c4fc",
+                "word": "0x8e190284"
+              },
+              {
+                "pc": "0x0045c500",
+                "word": "0x13200009"
+              },
+              {
+                "pc": "0x0045c514",
+                "word": "0x0320f809"
+              },
+              {
+                "pc": "0x0045c518",
+                "word": "0x44050000"
+              },
+              {
+                "pc": "0x0045c51c",
+                "word": "0x8e420004"
+              },
+              {
+                "pc": "0x0045c520",
+                "word": "0xae229428"
+              },
+              {
+                "pc": "0x0045c524",
+                "word": "0x24020001"
+              }
+            ],
+            "notes": "This widget callback dispatch loads its target from+284; after the call it overwrites V0 using old context or constant1 without following the callback result. Static offset equality alone does not bind every such load to518780."
+          },
+          {
+            "callsite": "0x0045c850",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x0045c838",
+                "word": "0x8e190284"
+              },
+              {
+                "pc": "0x0045c83c",
+                "word": "0x13200009"
+              },
+              {
+                "pc": "0x0045c850",
+                "word": "0x0320f809"
+              },
+              {
+                "pc": "0x0045c854",
+                "word": "0x44050000"
+              },
+              {
+                "pc": "0x0045c858",
+                "word": "0x8e220004"
+              },
+              {
+                "pc": "0x0045c85c",
+                "word": "0xae42942c"
+              },
+              {
+                "pc": "0x0045c860",
+                "word": "0x24020001"
+              }
+            ],
+            "notes": "This widget callback dispatch loads its target from+284; after the call it overwrites V0 using old context or constant1 without following the callback result. Static offset equality alone does not bind every such load to518780."
+          },
+          {
+            "callsite": "0x0045cd8c",
+            "classification": "discarded",
+            "evidence": [
+              {
+                "pc": "0x0045cd74",
+                "word": "0x8e190284"
+              },
+              {
+                "pc": "0x0045cd78",
+                "word": "0x13200006"
+              },
+              {
+                "pc": "0x0045cd8c",
+                "word": "0x0320f809"
+              },
+              {
+                "pc": "0x0045cd90",
+                "word": "0x44050000"
+              },
+              {
+                "pc": "0x0045cd94",
+                "word": "0x24020001"
+              }
+            ],
+            "notes": "This widget callback dispatch loads its target from+284; after the call it overwrites V0 using old context or constant1 without following the callback result. Static offset equality alone does not bind every such load to518780."
+          }
+        ],
+        "lw_t9_slot284_reference_census": {
+          "count": 11,
+          "references": [
+            "0x004398ac",
+            "0x0043990c",
+            "0x0043996c",
+            "0x004399cc",
+            "0x0045c220",
+            "0x0045c4fc",
+            "0x0045c838",
+            "0x0045cd74",
+            "0x0045ce98",
+            "0x0045cfc0",
+            "0x00504444"
+          ],
+          "scope": "All executable PT_LOAD ranges, opcode LW, destination T9, signed immediate+284 only. Stack/other-register/alias forms are not covered.",
+          "dynamic_target_binding_proven": false
+        },
+        "unresolved_boundaries": [
+          {
+            "classification": "unresolved",
+            "kind": "widget_callback_binding_and_aliases",
+            "pc": "0x00518378",
+            "notes": "The stored callback has no encoded direct caller. Known offset+284 dispatches discard its result, but all pointer copies, alternate loads and imported/computed invocations are not proven exhausted. A matching field offset is not object-instance or lifetime proof."
+          }
+        ]
+      }
+    },
+    {
+      "callsite": "0x00520ff4",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x00520ff4",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x00520ff8",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x00520ffc",
+          "word": "0x8fbf002c"
+        },
+        {
+          "pc": "0x00521000",
+          "word": "0x8fb00028"
+        },
+        {
+          "pc": "0x00521004",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x00521008",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x0052100c",
+          "word": "0x27bd0030"
+        }
+      ],
+      "notes": "Stack restores then V0=1; return does not follow the factory pointer."
+    },
+    {
+      "callsite": "0x005210f0",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x005210f0",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x005210f4",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x005210f8",
+          "word": "0x8fbf002c"
+        },
+        {
+          "pc": "0x005210fc",
+          "word": "0x8fb00028"
+        },
+        {
+          "pc": "0x00521100",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x00521104",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x00521108",
+          "word": "0x27bd0030"
+        }
+      ],
+      "notes": "Stack restores then V0=1; return does not follow the factory pointer."
+    },
+    {
+      "callsite": "0x00521338",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x00521338",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x0052133c",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x00521340",
+          "word": "0x8fbf0034"
+        },
+        {
+          "pc": "0x00521344",
+          "word": "0x02001021"
+        },
+        {
+          "pc": "0x00521348",
+          "word": "0x8fb20030"
+        },
+        {
+          "pc": "0x0052134c",
+          "word": "0x8fb1002c"
+        },
+        {
+          "pc": "0x00521350",
+          "word": "0x8fb00028"
+        },
+        {
+          "pc": "0x00521354",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x00521358",
+          "word": "0x27bd0038"
+        }
+      ],
+      "notes": "The suffix returns the pre-existing callee-preserved S0, never a copy of this factory V0."
+    },
+    {
+      "callsite": "0x00521524",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x00521524",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x00521528",
+          "word": "0xafa2002c"
+        },
+        {
+          "pc": "0x0052152c",
+          "word": "0x1000ffaf"
+        },
+        {
+          "pc": "0x00521530",
+          "word": "0x24030001"
+        },
+        {
+          "pc": "0x005213ec",
+          "word": "0x8fbf012c"
+        },
+        {
+          "pc": "0x005213f0",
+          "word": "0x8fb20128"
+        },
+        {
+          "pc": "0x005213f4",
+          "word": "0x8fb10124"
+        },
+        {
+          "pc": "0x005213f8",
+          "word": "0x8fb00120"
+        },
+        {
+          "pc": "0x005213fc",
+          "word": "0x00601021"
+        },
+        {
+          "pc": "0x00521400",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x00521404",
+          "word": "0x27bd0130"
+        }
+      ],
+      "notes": "The unconditional branch delay assigns V1=1, and the pure suffix returns that value through V0."
+    },
+    {
+      "callsite": "0x00521668",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x00521668",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x0052166c",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x00521670",
+          "word": "0x1000ffc6"
+        },
+        {
+          "pc": "0x00521674",
+          "word": "0x8fbf0034"
+        },
+        {
+          "pc": "0x0052158c",
+          "word": "0x02001021"
+        },
+        {
+          "pc": "0x00521590",
+          "word": "0x8fb10030"
+        },
+        {
+          "pc": "0x00521594",
+          "word": "0x8fb0002c"
+        },
+        {
+          "pc": "0x00521598",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x0052159c",
+          "word": "0x27bd0038"
+        }
+      ],
+      "notes": "The suffix replaces factory V0 with the old callee-preserved S0 and restores the caller frame."
+    },
+    {
+      "callsite": "0x0053cd14",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x0053cd14",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x0053cd18",
+          "word": "0xafa2002c"
+        },
+        {
+          "pc": "0x0053cd1c",
+          "word": "0x8fbf012c"
+        },
+        {
+          "pc": "0x0053cd20",
+          "word": "0x8fb20128"
+        },
+        {
+          "pc": "0x0053cd24",
+          "word": "0x8fb10124"
+        },
+        {
+          "pc": "0x0053cd28",
+          "word": "0x8fb00120"
+        },
+        {
+          "pc": "0x0053cd2c",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x0053cd30",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x0053cd34",
+          "word": "0x27bd0130"
+        }
+      ],
+      "notes": "Pure stack suffix overwrites V0=1."
+    },
+    {
+      "callsite": "0x0053ceb4",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x0053ceb4",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x0053ceb8",
+          "word": "0xafa2002c"
+        },
+        {
+          "pc": "0x0053cebc",
+          "word": "0x8fbf012c"
+        },
+        {
+          "pc": "0x0053cec0",
+          "word": "0x8fb20128"
+        },
+        {
+          "pc": "0x0053cec4",
+          "word": "0x8fb10124"
+        },
+        {
+          "pc": "0x0053cec8",
+          "word": "0x8fb00120"
+        },
+        {
+          "pc": "0x0053cecc",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x0053ced0",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x0053ced4",
+          "word": "0x27bd0130"
+        }
+      ],
+      "notes": "Pure stack suffix overwrites V0=1."
+    },
+    {
+      "callsite": "0x0053d044",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x0053d044",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x0053d048",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x0053d04c",
+          "word": "0x8fbf0034"
+        },
+        {
+          "pc": "0x0053d050",
+          "word": "0x8fb20030"
+        },
+        {
+          "pc": "0x0053d054",
+          "word": "0x8fb1002c"
+        },
+        {
+          "pc": "0x0053d058",
+          "word": "0x8fb00028"
+        },
+        {
+          "pc": "0x0053d05c",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x0053d060",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x0053d064",
+          "word": "0x27bd0038"
+        }
+      ],
+      "notes": "Pure stack suffix overwrites V0=1."
+    },
+    {
+      "callsite": "0x0053e6b8",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x0053e6b8",
+          "word": "0x0c11f738"
+        },
+        {
+          "pc": "0x0053e6bc",
+          "word": "0xafa2002c"
+        },
+        {
+          "pc": "0x0053e6c0",
+          "word": "0x1000ffbe"
+        },
+        {
+          "pc": "0x0053e6c4",
+          "word": "0x8fbf0054"
+        },
+        {
+          "pc": "0x0053e5bc",
+          "word": "0x8fb30050"
+        },
+        {
+          "pc": "0x0053e5c0",
+          "word": "0x8fb2004c"
+        },
+        {
+          "pc": "0x0053e5c4",
+          "word": "0x8fb10048"
+        },
+        {
+          "pc": "0x0053e5c8",
+          "word": "0x8fb00044"
+        },
+        {
+          "pc": "0x0053e5cc",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x0053e5d0",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x0053e5d4",
+          "word": "0x27bd0058"
+        }
+      ],
+      "notes": "The unconditional branch reaches a stack-only suffix that returns V0=1."
+    }
+  ],
+  "summary": {
+    "direct_classifications": {
+      "null_dereference": 0,
+      "discarded": 17,
+      "propagated": 4,
+      "unresolved": 0
+    },
+    "transitive_encoded_chain_closed": [
+      "0x0049a2e0"
+    ],
+    "remaining_callback_wrappers": [
+      "0x004a6f60",
+      "0x004a80e0",
+      "0x00518780"
+    ],
+    "concrete_transitive_NULL_dereference_found": false,
+    "universal_NULL_refusal_proven": false,
+    "runtime_gate_added": false,
+    "notes": "Seventeen immediate returns discard H; a further propagated wrapper has ten checked direct upper callers that also discard H. Three routes reach stored computed callbacks: identified dispatches discard their result, but complete target binding, aliases, imports and unknown indirect calls remain unresolved. This audit does not authorize a blanket47DCE0 gate or infer native lifetime/free authority."
+  },
+  "limitations": [
+    "This is a source audit of pinned instruction words, not runtime execution or a hardware test.",
+    "Encoded direct-call censuses exclude unresolved computed/foreign callers and do not authenticate frames or callback targets.",
+    "Discarded describes only the returned factory V0 on the documented continuation, under the native ABI. Existing context reads, cleanup, callbacks and other side effects keep their independent lifetime/progress premises.",
+    "No firmware, core/stage, image, device, Git or network operation is changed by this JSON report."
+  ]
+}

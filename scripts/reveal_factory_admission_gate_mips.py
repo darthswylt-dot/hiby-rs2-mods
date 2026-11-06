@@ -43,8 +43,13 @@ CHECKED_CALLERS = (0x4A4EAC, 0x4EC450)
 
 def hook_words(labels):
     """Return three native redirects, without mutating an image."""
+    return _hook_words(labels, HOOKS)
+
+
+def _hook_words(labels, hooks):
+    """Shared emitter support for the two pinned F568 factory layouts."""
     result = {}
-    for name, (pc, _) in HOOKS.items():
+    for name, (pc, _) in hooks.items():
         target = labels[name]
         if (type(target) is not int or target % 4 or target < NATIVE_RX[1]
                 or target >= 0x10000000 or (pc + 4) >> 28 != target >> 28):
@@ -56,6 +61,20 @@ def hook_words(labels):
 def assemble(controller_address, registry_mutex_address, code_base, guard_address,
              *, retry_limit=8, protected_code=None, extra_protected_data=()):
     """Emit a bounded atomic admission check; native body time is unbounded."""
+    return _assemble(controller_address, registry_mutex_address, code_base,
+                     guard_address, retry_limit=retry_limit,
+                     protected_code=protected_code, extra_protected_data=extra_protected_data,
+                     hooks=HOOKS, owner_stamp=OWNERSTAMP)
+
+
+def _assemble(controller_address, registry_mutex_address, code_base, guard_address,
+              *, hooks, owner_stamp, retry_limit=8, protected_code=None,
+              extra_protected_data=()):
+    """Internal shared implementation; public emitters pin their own layout.
+
+    Both audited factories have the same F568 locals and late restore pair.
+    This function is not a runtime layout selector or caller-policy verifier.
+    """
     if type(retry_limit) is not int or not 1 <= retry_limit <= 64:
         raise ValueError('retry limit must be an integer in1..64')
     extents = [('controller', controller_address, CONTROLLER_BYTES),
@@ -132,12 +151,12 @@ def assemble(controller_address, registry_mutex_address, code_base, guard_addres
     a.jump('enter_denied')
     a.label('enter_claimed')
     a.e(SYNC)
-    a.absolute(8, OWNERSTAMP)
+    a.absolute(8, owner_stamp)
     a.e(b.sw(8, FUTURE_OWNER, 29))
     restore()
     a.label('enter_replay')
-    a.e(*HOOKS['enter'][1])
-    a.jump(HOOKS['enter'][0] + 8)
+    a.e(*hooks['enter'][1])
+    a.jump(hooks['enter'][0] + 8)
     a.label('enter_denied')
     restore(denied=True)
     a.e(b.r_type(31, 0, 0, 8), 0)
@@ -145,7 +164,7 @@ def assemble(controller_address, registry_mutex_address, code_base, guard_addres
     for name in ('early_leave', 'created_leave'):
         save(name)
         a.e(b.lw(8, OWNER, 23))
-        a.absolute(9, OWNERSTAMP)
+        a.absolute(9, owner_stamp)
         a.branch(5, 8, 9, name + '_done')
         a.e(b.sw(0, OWNER, 23))
         a.absolute(20, guard_address)
@@ -162,8 +181,8 @@ def assemble(controller_address, registry_mutex_address, code_base, guard_addres
         a.e(SYNC)
         restore()
         a.label(name + '_replay')
-        a.e(*HOOKS[name][1])
-        a.jump(HOOKS[name][0] + 8)
+        a.e(*hooks[name][1])
+        a.jump(hooks[name][0] + 8)
 
     code_end = code_base + len(a.w) * 4
     if code_end > 0x10000000:
@@ -175,5 +194,5 @@ def assemble(controller_address, registry_mutex_address, code_base, guard_addres
     for name, start, size in extents:
         if max(code_base, start) < min(code_end, start + size):
             raise ValueError('factory gate overlaps ' + name)
-    hook_words(a.labels)
+    _hook_words(a.labels, hooks)
     return a.finish(), a.labels

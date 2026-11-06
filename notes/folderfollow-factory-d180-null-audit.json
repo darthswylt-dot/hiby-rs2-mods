@@ -1,0 +1,2080 @@
+{
+  "factory": "0x47d180",
+  "source_sha256": "02fd1dd13db7aac1e6d150ec1866b93f57022c1d668b114720a36b7f232e5f87",
+  "source_image": "artifacts/import-20261001/hiby_player_02fd.bin",
+  "audit_scope": "All 51 encoded direct J/JAL callers in the pinned executable ranges; classify the returned V0=0 through its first concrete dereference, native return/field escape, or unconditional overwrite. This is not a proof of computed callers or transitive safety of propagated pointers.",
+  "classification_semantics": {
+    "null_dereference": "A concrete native path dereferences the NULL factory result. Stated independent allocation/path conditions must hold; this category does not claim every service outcome faults.",
+    "discarded": "All local paths followed in this continuation reach an unconditional overwrite/return of an independent scalar without saving or forwarding the returned pointer.",
+    "propagated": "The NULL result reaches a native return or object/global field. Upper callers or field consumers have not been certified safe; this is never counted as discarded.",
+    "unresolved": "Use when the immediate NULL continuation cannot be classified from the bounded source audit. None of these 51 immediate continuations required this fallback; propagated records remain explicitly open beyond their stated frontier."
+  },
+  "delay_slot_policy": "Every callsite+4 evidence word is executed before the factory returns. A store in that delay is not propagation of the returned H; later call/branch delays are tracked using their actual instruction order.",
+  "assumptions": "Genuine native entry/frame, valid pre-existing caller contexts, ordinary cooperating MIPS/O32 callees, and the explicitly stated independent service outcomes. No mutex/allocator/lifetime authority, dynamic alias exclusion or hardware execution is proved.",
+  "callers": [
+    {
+      "callsite": "0x433434",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x433434",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x433438",
+          "word": "0xafa20020"
+        },
+        {
+          "pc": "0x43343c",
+          "word": "0x10400004"
+        },
+        {
+          "pc": "0x433440",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x433450",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x433454",
+          "word": "0x02001021"
+        },
+        {
+          "pc": "0x433460",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x433464",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "NULL is checked before H+0x3c. The branch-delay move retains H in S0, and the same pointer is returned through V0 at 0x433454; upper callers are not closed.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x433460",
+        "value_source": "s0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x43534c",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x43534c",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x435350",
+          "word": "0xafa20028"
+        },
+        {
+          "pc": "0x435354",
+          "word": "0x10400017"
+        },
+        {
+          "pc": "0x435358",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x4353b4",
+          "word": "0x8fbf0054"
+        },
+        {
+          "pc": "0x4353b8",
+          "word": "0x02001021"
+        },
+        {
+          "pc": "0x4353cc",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4353d0",
+          "word": "0x27bd0058"
+        }
+      ],
+      "notes": "The NULL branch reaches the epilogue before allocation or H access. S0 holds the returned H and is copied to V0; NULL propagates through the native return.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4353cc",
+        "value_source": "s0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4358e4",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4358e4",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4358e8",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x4358ec",
+          "word": "0x10400009"
+        },
+        {
+          "pc": "0x4358f0",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x435914",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x435918",
+          "word": "0x02001021"
+        },
+        {
+          "pc": "0x435928",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x43592c",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "The NULL test skips context allocation and H writes. The pointer retained in S0 is returned from the native epilogue; upper NULL handling remains separate.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x435928",
+        "value_source": "s0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x435e68",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x435e68",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x435e6c",
+          "word": "0xafa20020"
+        },
+        {
+          "pc": "0x435e70",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x435e74",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x435e78",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The continuation restores RA and returns factory V0 unchanged, without a NULL check or dereference in this local suffix.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x435e74",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4531ec",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x4531ec",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4531f0",
+          "word": "0x24071388"
+        },
+        {
+          "pc": "0x4531f4",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x4531f8",
+          "word": "0x8fb20048"
+        },
+        {
+          "pc": "0x4531fc",
+          "word": "0x8fb10044"
+        },
+        {
+          "pc": "0x453200",
+          "word": "0x8fb00040"
+        },
+        {
+          "pc": "0x453204",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x453208",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x45320c",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "After the call only saved-register restores precede an unconditional V0=0 overwrite. No returned-H alias is saved in this suffix.",
+      "discard_boundary": "0x453204"
+    },
+    {
+      "callsite": "0x45336c",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x45336c",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x453370",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x453374",
+          "word": "0x8e030008"
+        },
+        {
+          "pc": "0x453378",
+          "word": "0x00402021"
+        },
+        {
+          "pc": "0x45337c",
+          "word": "0x24050004"
+        },
+        {
+          "pc": "0x453380",
+          "word": "0x0c11f428"
+        },
+        {
+          "pc": "0x453384",
+          "word": "0xac430050"
+        }
+      ],
+      "notes": "The configurator call's delay slot stores through factory V0+0x50 without a NULL check. Its execution precedes any configurator NULL handling.",
+      "fault_pc": "0x453384",
+      "fault_address_if_null": "0x50",
+      "path_conditions": [
+        "The pre-existing S0 context is valid for its read at 0x453374."
+      ]
+    },
+    {
+      "callsite": "0x4536c0",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x4536c0",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4536c4",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x4536c8",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x4536cc",
+          "word": "0x8fb20048"
+        },
+        {
+          "pc": "0x4536d0",
+          "word": "0x8fb10044"
+        },
+        {
+          "pc": "0x4536d4",
+          "word": "0x8fb00040"
+        },
+        {
+          "pc": "0x4536d8",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x4536dc",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4536e0",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "Only native saved-register restores precede V0=0 and return. Factory V0 is not copied or dereferenced.",
+      "discard_boundary": "0x4536d8"
+    },
+    {
+      "callsite": "0x47e690",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x47e690",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x47e694",
+          "word": "0xafa2002c"
+        },
+        {
+          "pc": "0x47e698",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x47e69c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x47e6a0",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The short wrapper returns factory V0 unchanged through its restored RA.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x47e69c",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4a4f1c",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x4a4f1c",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4a4f20",
+          "word": "0xafa20010"
+        },
+        {
+          "pc": "0x4a4f24",
+          "word": "0x24030001"
+        },
+        {
+          "pc": "0x4a4f28",
+          "word": "0x3c04004a"
+        },
+        {
+          "pc": "0x4a4f2c",
+          "word": "0xac43005c"
+        }
+      ],
+      "notes": "An immediate SW writes 1 through H+0x5c. There is no branch or call between the factory return and this access.",
+      "fault_pc": "0x4a4f2c",
+      "fault_address_if_null": "0x5c",
+      "path_conditions": []
+    },
+    {
+      "callsite": "0x4af274",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4af274",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4af278",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x4af27c",
+          "word": "0x104000f3"
+        },
+        {
+          "pc": "0x4af280",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x4af64c",
+          "word": "0x1000ff98"
+        },
+        {
+          "pc": "0x4af650",
+          "word": "0x00008821"
+        },
+        {
+          "pc": "0x4af4b0",
+          "word": "0x8fbf027c"
+        },
+        {
+          "pc": "0x4af4b4",
+          "word": "0x02201021"
+        },
+        {
+          "pc": "0x4af4d8",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4af4dc",
+          "word": "0x27bd0280"
+        }
+      ],
+      "notes": "The NULL test takes 0x4af64c, sets S1=0 and branches to the pointer-return epilogue, which returns S1. Non-NULL H+0x58 access at 0x4af284 is skipped; upper callers are not closed.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4af4d8",
+        "value_source": "s1",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4af958",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x4af958",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4af95c",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x4af960",
+          "word": "0x00409021"
+        },
+        {
+          "pc": "0x4af964",
+          "word": "0x8c420058"
+        }
+      ],
+      "notes": "H is saved in S2, then V0 is dereferenced at H+0x58 before any NULL test of H.",
+      "fault_pc": "0x4af964",
+      "fault_address_if_null": "0x58",
+      "path_conditions": []
+    },
+    {
+      "callsite": "0x4afc74",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x4afc74",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4afc78",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x4afc7c",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x4afc80",
+          "word": "0x8c420058"
+        }
+      ],
+      "notes": "The continuation saves H in S1 and immediately reads H+0x58 without checking H.",
+      "fault_pc": "0x4afc80",
+      "fault_address_if_null": "0x58",
+      "path_conditions": []
+    },
+    {
+      "callsite": "0x4b7444",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4b7444",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4b7448",
+          "word": "0xafb1017c"
+        },
+        {
+          "pc": "0x4b744c",
+          "word": "0x8fbf01cc"
+        },
+        {
+          "pc": "0x4b7450",
+          "word": "0x8fbe01c8"
+        },
+        {
+          "pc": "0x4b7454",
+          "word": "0x8fb701c4"
+        },
+        {
+          "pc": "0x4b7458",
+          "word": "0x8fb601c0"
+        },
+        {
+          "pc": "0x4b745c",
+          "word": "0x8fb501bc"
+        },
+        {
+          "pc": "0x4b7460",
+          "word": "0x8fb401b8"
+        },
+        {
+          "pc": "0x4b7464",
+          "word": "0x8fb301b4"
+        },
+        {
+          "pc": "0x4b7468",
+          "word": "0x8fb201b0"
+        },
+        {
+          "pc": "0x4b746c",
+          "word": "0x8fb101ac"
+        },
+        {
+          "pc": "0x4b7470",
+          "word": "0x8fb001a8"
+        },
+        {
+          "pc": "0x4b7474",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4b7478",
+          "word": "0x27bd01d0"
+        }
+      ],
+      "notes": "The complete suffix consists only of native register restores and return; V0 remains the factory pointer.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4b7474",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4cdb68",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4cdb68",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4cdb6c",
+          "word": "0xafa20020"
+        },
+        {
+          "pc": "0x4cdb70",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x4cdb74",
+          "word": "0x3c0300b9"
+        },
+        {
+          "pc": "0x4cdb78",
+          "word": "0xac60baa0"
+        },
+        {
+          "pc": "0x4cdb7c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4cdb80",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "An unrelated global flag is cleared through V1, then factory V0 is returned unchanged.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4cdb7c",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4cf1f4",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x4cf1f4",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4cf1f8",
+          "word": "0xafa20064"
+        },
+        {
+          "pc": "0x4cf1fc",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x4cf200",
+          "word": "0x8c420058"
+        }
+      ],
+      "notes": "The result is retained in S0, then H+0x58 is read through V0 with no preceding NULL test.",
+      "fault_pc": "0x4cf200",
+      "fault_address_if_null": "0x58",
+      "path_conditions": []
+    },
+    {
+      "callsite": "0x4cff38",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x4cff38",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4cff3c",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x4cff40",
+          "word": "0x24040014"
+        },
+        {
+          "pc": "0x4cff44",
+          "word": "0x0c119a78"
+        },
+        {
+          "pc": "0x4cff48",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x4cff4c",
+          "word": "0x1040001e"
+        },
+        {
+          "pc": "0x4cff50",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x4cff5c",
+          "word": "0x0c296f18"
+        },
+        {
+          "pc": "0x4cff68",
+          "word": "0x0c296d8c"
+        },
+        {
+          "pc": "0x4cff6c",
+          "word": "0xae300058"
+        }
+      ],
+      "notes": "Factory H is saved in S1 in the allocation-call delay. On independent allocation success, a later call delay stores the new context through H+0x58. The branch checks the allocation result, not H.",
+      "fault_pc": "0x4cff6c",
+      "fault_address_if_null": "0x58",
+      "path_conditions": [
+        "Allocation 0x4669e0 called at 0x4cff44 returns nonzero; ordinary memset/call ABI cooperation."
+      ]
+    },
+    {
+      "callsite": "0x4d05b4",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4d05b4",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4d05b8",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x4d0578",
+          "word": "0x8fb0003c"
+        },
+        {
+          "pc": "0x4d057c",
+          "word": "0x12000009"
+        },
+        {
+          "pc": "0x4d0588",
+          "word": "0x02001021"
+        },
+        {
+          "pc": "0x4d059c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4d05bc",
+          "word": "0x1040fff1"
+        },
+        {
+          "pc": "0x4d05c0",
+          "word": "0xafa2003c"
+        },
+        {
+          "pc": "0x4d0604",
+          "word": "0x1000ffdf"
+        },
+        {
+          "pc": "0x4d0608",
+          "word": "0x8fb0003c"
+        }
+      ],
+      "notes": "The call is reached only when prior lookup S0==0. Factory NULL branches to the native pointer-return epilogue and returns that zero S0; the non-NULL path later reloads H from F+0x3c into S0. No upper-caller NULL closure is claimed.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4d059c",
+        "value_source": "s0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4d1adc",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x4d1adc",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4d1ae0",
+          "word": "0xafa20064"
+        },
+        {
+          "pc": "0x4d1ae4",
+          "word": "0x24040028"
+        },
+        {
+          "pc": "0x4d1ae8",
+          "word": "0x0c119a78"
+        },
+        {
+          "pc": "0x4d1aec",
+          "word": "0x00409021"
+        },
+        {
+          "pc": "0x4d1af0",
+          "word": "0x10400038"
+        },
+        {
+          "pc": "0x4d1b00",
+          "word": "0x0c296f18"
+        },
+        {
+          "pc": "0x4d1b0c",
+          "word": "0x0c296d8c"
+        },
+        {
+          "pc": "0x4d1b10",
+          "word": "0xae500058"
+        }
+      ],
+      "notes": "H is preserved in S2 before allocating a separate context. With allocation success, SW in a later call delay writes the context to H+0x58 without checking H.",
+      "fault_pc": "0x4d1b10",
+      "fault_address_if_null": "0x58",
+      "path_conditions": [
+        "Allocation 0x4669e0 called at 0x4d1ae8 returns nonzero; ordinary memset/call ABI cooperation."
+      ]
+    },
+    {
+      "callsite": "0x4d2b44",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x4d2b44",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4d2b48",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x4d2b4c",
+          "word": "0x2404000c"
+        },
+        {
+          "pc": "0x4d2b50",
+          "word": "0x0c119a78"
+        },
+        {
+          "pc": "0x4d2b54",
+          "word": "0x00409021"
+        },
+        {
+          "pc": "0x4d2b58",
+          "word": "0x10400032"
+        },
+        {
+          "pc": "0x4d2b5c",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x4d2b68",
+          "word": "0x0c296f18"
+        },
+        {
+          "pc": "0x4d2b70",
+          "word": "0xae510058"
+        }
+      ],
+      "notes": "Factory H is saved in S2 in the allocation-call delay. Allocation success reaches SW context,H+0x58; the branch tests the new allocation only.",
+      "fault_pc": "0x4d2b70",
+      "fault_address_if_null": "0x58",
+      "path_conditions": [
+        "Allocation 0x4669e0 called at 0x4d2b50 returns nonzero; ordinary memset/call ABI cooperation."
+      ]
+    },
+    {
+      "callsite": "0x4d3724",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x4d3724",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4d3728",
+          "word": "0xafa20034"
+        },
+        {
+          "pc": "0x4d372c",
+          "word": "0x24040004"
+        },
+        {
+          "pc": "0x4d3730",
+          "word": "0x0c119a78"
+        },
+        {
+          "pc": "0x4d3734",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x4d3738",
+          "word": "0x10400009"
+        },
+        {
+          "pc": "0x4d373c",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x4d3748",
+          "word": "0x0c296f18"
+        },
+        {
+          "pc": "0x4d3750",
+          "word": "0xae300058"
+        }
+      ],
+      "notes": "H is retained in S1, and successful independent allocation reaches SW context,H+0x58. A failed allocation instead skips this access and may return NULL; that does not remove the concrete success-path fault.",
+      "fault_pc": "0x4d3750",
+      "fault_address_if_null": "0x58",
+      "path_conditions": [
+        "Allocation 0x4669e0 called at 0x4d3730 returns nonzero; ordinary memset/call ABI cooperation."
+      ]
+    },
+    {
+      "callsite": "0x4d4030",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4d4030",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4d4034",
+          "word": "0xafa2002c"
+        },
+        {
+          "pc": "0x4d4038",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x4d403c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4d4040",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The wrapper returns the unmodified factory V0 after restoring RA.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4d403c",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4d5010",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x4d5010",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4d5014",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x4d5018",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x4d501c",
+          "word": "0x3c0200b9"
+        },
+        {
+          "pc": "0x4d5020",
+          "word": "0xac40baa4"
+        },
+        {
+          "pc": "0x4d5024",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x4d5028",
+          "word": "0x1242000e"
+        },
+        {
+          "pc": "0x4d502c",
+          "word": "0x24040004"
+        },
+        {
+          "pc": "0x4d5030",
+          "word": "0xae00004c"
+        },
+        {
+          "pc": "0x4d5064",
+          "word": "0xae12004c"
+        }
+      ],
+      "notes": "H is retained in S0. The S2==1 branch selects SW S2,H+0x4c at 0x4d5064; the other branch writes zero,H+0x4c at 0x4d5030. Both outcomes dereference NULL H.",
+      "fault_pc": "0x4d5030",
+      "alternative_fault_pc": "0x4d5064",
+      "fault_address_if_null": "0x4c",
+      "path_conditions": [
+        "S2!=0x1 selects fault_pc; S2==0x1 selects alternative_fault_pc."
+      ]
+    },
+    {
+      "callsite": "0x4db510",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4db510",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4db514",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x4db518",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x4db51c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4db520",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The native wrapper restores RA and returns factory V0 unchanged.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4db51c",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4db930",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4db930",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4db934",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x4db938",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x4db93c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4db940",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The native wrapper restores RA and returns factory V0 unchanged.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4db93c",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4e1ef8",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4e1ef8",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4e1efc",
+          "word": "0xac4371b8"
+        },
+        {
+          "pc": "0x4e1f00",
+          "word": "0x10400005"
+        },
+        {
+          "pc": "0x4e1f04",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x4e1f18",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x4e1f1c",
+          "word": "0x02001021"
+        },
+        {
+          "pc": "0x4e1f28",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4e1f2c",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "The NULL check skips the configurator. Its delay retains H in S0, which the epilogue copies back into V0 and returns.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4e1f28",
+        "value_source": "s0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4e2ce0",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4e2ce0",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4e2ce4",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x4e2ce8",
+          "word": "0x10400015"
+        },
+        {
+          "pc": "0x4e2cec",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x4e2d40",
+          "word": "0x1000fff4"
+        },
+        {
+          "pc": "0x4e2d44",
+          "word": "0x00008821"
+        },
+        {
+          "pc": "0x4e2d14",
+          "word": "0x8fbf0054"
+        },
+        {
+          "pc": "0x4e2d18",
+          "word": "0x02201021"
+        },
+        {
+          "pc": "0x4e2d2c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4e2d30",
+          "word": "0x27bd0058"
+        }
+      ],
+      "notes": "NULL branches around H writes into a pointer-return suffix, explicitly setting S1=0 before returning S1. Higher callers are not closed.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4e2d2c",
+        "value_source": "s1",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4ec9ac",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4ec9ac",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4ec9b0",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x4ec9b4",
+          "word": "0x10400005"
+        },
+        {
+          "pc": "0x4ec9b8",
+          "word": "0xae620018"
+        },
+        {
+          "pc": "0x4ec9c8",
+          "word": "0xac43005c"
+        },
+        {
+          "pc": "0x4ec9cc",
+          "word": "0x8e110058"
+        },
+        {
+          "pc": "0x4ec9d0",
+          "word": "0x24020001"
+        }
+      ],
+      "notes": "The BEQ delay stores factory V0, including NULL, into the pre-existing S3 object's +0x18 field. The immediate H+0x5c write is skipped on NULL, but the field alias escapes before V0 is overwritten.",
+      "propagation": {
+        "kind": "object_field",
+        "store_pc": "0x4ec9b8",
+        "base_register": "s3",
+        "offset": "0x18",
+        "consumers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4ed2f0",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4ed2f0",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4ed2f4",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x4ed2f8",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x4ed2fc",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4ed300",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The native wrapper restores RA and returns factory V0 unchanged.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4ed2fc",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4ed818",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x4ed818",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4ed81c",
+          "word": "0xafa20230"
+        },
+        {
+          "pc": "0x4ed820",
+          "word": "0x8fbf024c"
+        },
+        {
+          "pc": "0x4ed824",
+          "word": "0x8fb00248"
+        },
+        {
+          "pc": "0x4ed828",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x4ed82c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4ed830",
+          "word": "0x27bd0250"
+        }
+      ],
+      "notes": "Native RA/S0 restores are followed by V0=1 and return; no returned-H alias is saved.",
+      "discard_boundary": "0x4ed828"
+    },
+    {
+      "callsite": "0x4f3b2c",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4f3b2c",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4f3b30",
+          "word": "0xac62bb18"
+        },
+        {
+          "pc": "0x4f3b34",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x4f3b38",
+          "word": "0x8fb10048"
+        },
+        {
+          "pc": "0x4f3b3c",
+          "word": "0x8fb00044"
+        },
+        {
+          "pc": "0x4f3b40",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4f3b44",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "The native suffix returns factory V0 unchanged. The global store in the factory JAL delay at 0x4f3b30 occurs before the factory returns and stores pre-call V0, not the returned H.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4f3b40",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4f8d90",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x4f8d90",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4f8d94",
+          "word": "0xafb2002c"
+        },
+        {
+          "pc": "0x4f8d98",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x4f8d9c",
+          "word": "0x10400035"
+        },
+        {
+          "pc": "0x4f8da0",
+          "word": "0x8e310024"
+        },
+        {
+          "pc": "0x4f8e74",
+          "word": "0x8fbf0034"
+        },
+        {
+          "pc": "0x4f8e78",
+          "word": "0x02001021"
+        },
+        {
+          "pc": "0x4f8e8c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4f8e90",
+          "word": "0x27bd0038"
+        }
+      ],
+      "notes": "The result is saved in S0 and NULL branches directly to an epilogue returning S0. The branch delay only reads the pre-existing S1 context; it does not read H.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x4f8e8c",
+        "value_source": "s0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x4fafc8",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x4fafc8",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4fafcc",
+          "word": "0xafa20020"
+        },
+        {
+          "pc": "0x4fafd0",
+          "word": "0x1000ffdb"
+        },
+        {
+          "pc": "0x4fafd4",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x4faf40",
+          "word": "0x8fb10048"
+        },
+        {
+          "pc": "0x4faf44",
+          "word": "0x8fb00044"
+        },
+        {
+          "pc": "0x4faf48",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x4faf4c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4faf50",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "An unconditional branch reaches register restores, V0=1 and return. No factory-result alias is saved in this continuation.",
+      "discard_boundary": "0x4faf48"
+    },
+    {
+      "callsite": "0x4fb010",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x4fb010",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x4fb014",
+          "word": "0xafa20020"
+        },
+        {
+          "pc": "0x4fb018",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x4fb01c",
+          "word": "0x8fb10048"
+        },
+        {
+          "pc": "0x4fb020",
+          "word": "0x8fb00044"
+        },
+        {
+          "pc": "0x4fb024",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x4fb028",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4fb02c",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "The native epilogue overwrites V0 with1 after saved-register restores, without saving or dereferencing returned H.",
+      "discard_boundary": "0x4fb024"
+    },
+    {
+      "callsite": "0x501a94",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x501a94",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x501a98",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x501a9c",
+          "word": "0x3c040050"
+        },
+        {
+          "pc": "0x501aa0",
+          "word": "0x24841680"
+        },
+        {
+          "pc": "0x501aa4",
+          "word": "0xac440078"
+        },
+        {
+          "pc": "0x501aac",
+          "word": "0xac500054"
+        },
+        {
+          "pc": "0x501ab0",
+          "word": "0xac440034"
+        },
+        {
+          "pc": "0x501ab4",
+          "word": "0xac51005c"
+        }
+      ],
+      "notes": "A callback pointer is immediately stored through H+0x78. Further H+0x54/+0x34/+0x5c writes would follow, also without checking H.",
+      "fault_pc": "0x501aa4",
+      "fault_address_if_null": "0x78",
+      "path_conditions": []
+    },
+    {
+      "callsite": "0x502524",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x502524",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x502528",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x5024c8",
+          "word": "0x3c1000b9"
+        },
+        {
+          "pc": "0x50252c",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x502530",
+          "word": "0xae02bb30"
+        },
+        {
+          "pc": "0x502534",
+          "word": "0x8fb00040"
+        },
+        {
+          "pc": "0x502538",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x50253c",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "S0 is the fixed global base0xb90000. Factory H, including NULL, is stored into global0xb8bb30 and also returned unchanged.",
+      "propagation": {
+        "kind": "global_and_return",
+        "store_pc": "0x502530",
+        "address": "0xb8bb30",
+        "return_pc": "0x502538",
+        "consumers_audited": false
+      }
+    },
+    {
+      "callsite": "0x50506c",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x50506c",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x505070",
+          "word": "0x240707d0"
+        },
+        {
+          "pc": "0x505074",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x505078",
+          "word": "0x8c420058"
+        }
+      ],
+      "notes": "The result is saved in S1, then H+0x58 is immediately read through V0 without checking H.",
+      "fault_pc": "0x505078",
+      "fault_address_if_null": "0x58",
+      "path_conditions": []
+    },
+    {
+      "callsite": "0x509a2c",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x509a2c",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x509a30",
+          "word": "0xafa20028"
+        },
+        {
+          "pc": "0x509a34",
+          "word": "0x24040044"
+        },
+        {
+          "pc": "0x509a38",
+          "word": "0x0c119a78"
+        },
+        {
+          "pc": "0x509a3c",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x509a40",
+          "word": "0x10400006"
+        },
+        {
+          "pc": "0x509a44",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x509a4c",
+          "word": "0x0c296fb8"
+        },
+        {
+          "pc": "0x509a58",
+          "word": "0xae300058"
+        }
+      ],
+      "notes": "H is retained in S1. Successful independent allocation and strcpy lead to SW context,H+0x58 with no check of H.",
+      "fault_pc": "0x509a58",
+      "fault_address_if_null": "0x58",
+      "path_conditions": [
+        "Allocation 0x4669e0 called at 0x509a38 returns nonzero; ordinary strcpy/call ABI cooperation."
+      ]
+    },
+    {
+      "callsite": "0x50e100",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x50e100",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x50e104",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x50e108",
+          "word": "0x3c0400b9"
+        },
+        {
+          "pc": "0x50e10c",
+          "word": "0x02002821"
+        },
+        {
+          "pc": "0x50e110",
+          "word": "0x2484bb88"
+        },
+        {
+          "pc": "0x50e114",
+          "word": "0x0c296fb8"
+        },
+        {
+          "pc": "0x50e118",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x50e11c",
+          "word": "0x8fbf004c"
+        },
+        {
+          "pc": "0x50e120",
+          "word": "0x02201021"
+        },
+        {
+          "pc": "0x50e12c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x50e130",
+          "word": "0x27bd0050"
+        }
+      ],
+      "notes": "A global string copy uses the pre-existing S0 string. Its call delay retains factory H in S1; the epilogue returns that pointer. No local NULL check closes upper callers.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x50e12c",
+        "value_source": "s1",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x515218",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x515218",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x51521c",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x515220",
+          "word": "0x2404001c"
+        },
+        {
+          "pc": "0x515224",
+          "word": "0x0c119a78"
+        },
+        {
+          "pc": "0x515228",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x51522c",
+          "word": "0x10400008"
+        },
+        {
+          "pc": "0x515230",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x51523c",
+          "word": "0x0c296f18"
+        },
+        {
+          "pc": "0x515244",
+          "word": "0xae110058"
+        }
+      ],
+      "notes": "Factory H is saved in S0 before independent context allocation. With allocation success, SW context,H+0x58 executes without a NULL check of H.",
+      "fault_pc": "0x515244",
+      "fault_address_if_null": "0x58",
+      "path_conditions": [
+        "Allocation 0x4669e0 called at 0x515224 returns nonzero; ordinary memset/call ABI cooperation."
+      ]
+    },
+    {
+      "callsite": "0x5270a0",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x5270a0",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x5270a4",
+          "word": "0xac40be04"
+        },
+        {
+          "pc": "0x5270a8",
+          "word": "0x24040010"
+        },
+        {
+          "pc": "0x5270ac",
+          "word": "0x0c119a78"
+        },
+        {
+          "pc": "0x5270b0",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x5270b4",
+          "word": "0x1040000e"
+        },
+        {
+          "pc": "0x5270b8",
+          "word": "0xae220058"
+        }
+      ],
+      "notes": "Factory H is retained in S1 in the allocation-call delay. The following BEQ tests allocation V0, but its unconditional delay slot writes V0 through H+0x58 even when the allocation returned NULL.",
+      "fault_pc": "0x5270b8",
+      "fault_address_if_null": "0x58",
+      "path_conditions": [
+        "The allocation call returns under the ordinary ABI; its result may be zero or nonzero."
+      ]
+    },
+    {
+      "callsite": "0x5276b0",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x5276b0",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x5276b4",
+          "word": "0xafb0002c"
+        },
+        {
+          "pc": "0x5276b8",
+          "word": "0xac500058"
+        }
+      ],
+      "notes": "The first post-return instruction stores S0 through H+0x58 without checking H.",
+      "fault_pc": "0x5276b8",
+      "fault_address_if_null": "0x58",
+      "path_conditions": []
+    },
+    {
+      "callsite": "0x527f9c",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x527f9c",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x527fa0",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x527fa4",
+          "word": "0xac500058"
+        }
+      ],
+      "notes": "The first post-return instruction stores S0 through H+0x58 without checking H.",
+      "fault_pc": "0x527fa4",
+      "fault_address_if_null": "0x58",
+      "path_conditions": []
+    },
+    {
+      "callsite": "0x528ea8",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x528ea8",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x528eac",
+          "word": "0xafa20020"
+        },
+        {
+          "pc": "0x528eb0",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x528eb4",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x528eb8",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The short native wrapper restores RA and returns factory V0 unchanged.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x528eb4",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x5295d8",
+      "classification": "null_dereference",
+      "evidence": [
+        {
+          "pc": "0x5295d8",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x5295dc",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x5295e0",
+          "word": "0xac500058"
+        }
+      ],
+      "notes": "The first post-return instruction stores S0 through H+0x58 without checking H.",
+      "fault_pc": "0x5295e0",
+      "fault_address_if_null": "0x58",
+      "path_conditions": []
+    },
+    {
+      "callsite": "0x531128",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x531128",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x53112c",
+          "word": "0xafa20020"
+        },
+        {
+          "pc": "0x531130",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x531134",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x531138",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The short native wrapper restores RA and returns factory V0 unchanged.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x531134",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x534ae8",
+      "classification": "propagated",
+      "evidence": [
+        {
+          "pc": "0x534ae8",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x534aec",
+          "word": "0xafa20020"
+        },
+        {
+          "pc": "0x534af0",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x534af4",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x534af8",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The short native wrapper restores RA and returns factory V0 unchanged.",
+      "propagation": {
+        "kind": "return",
+        "return_pc": "0x534af4",
+        "value_source": "v0",
+        "upper_callers_audited": false
+      }
+    },
+    {
+      "callsite": "0x53e73c",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x53e73c",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x53e740",
+          "word": "0xafa20020"
+        },
+        {
+          "pc": "0x53e744",
+          "word": "0x1000ff9d"
+        },
+        {
+          "pc": "0x53e748",
+          "word": "0x8fbf0054"
+        },
+        {
+          "pc": "0x53e5bc",
+          "word": "0x8fb30050"
+        },
+        {
+          "pc": "0x53e5c0",
+          "word": "0x8fb2004c"
+        },
+        {
+          "pc": "0x53e5c4",
+          "word": "0x8fb10048"
+        },
+        {
+          "pc": "0x53e5c8",
+          "word": "0x8fb00044"
+        },
+        {
+          "pc": "0x53e5cc",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x53e5d0",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x53e5d4",
+          "word": "0x27bd0058"
+        }
+      ],
+      "notes": "An unconditional branch reaches only saved-register restores and V0=1 before return; no H alias survives.",
+      "discard_boundary": "0x53e5cc"
+    },
+    {
+      "callsite": "0x53e820",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x53e820",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x53e824",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x53e828",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x53e82c",
+          "word": "0x8fb00040"
+        },
+        {
+          "pc": "0x53e830",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x53e834",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x53e838",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "The native epilogue overwrites V0 with1 and returns without saving or dereferencing H.",
+      "discard_boundary": "0x53e830"
+    },
+    {
+      "callsite": "0x53e860",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x53e860",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x53e864",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x53e868",
+          "word": "0x1000fff0"
+        },
+        {
+          "pc": "0x53e86c",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x53e82c",
+          "word": "0x8fb00040"
+        },
+        {
+          "pc": "0x53e830",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x53e834",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x53e838",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "An unconditional branch to the common suffix leads to V0=1 without result propagation.",
+      "discard_boundary": "0x53e830"
+    },
+    {
+      "callsite": "0x53e894",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x53e894",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x53e898",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x53e89c",
+          "word": "0x1000ffe3"
+        },
+        {
+          "pc": "0x53e8a0",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x53e82c",
+          "word": "0x8fb00040"
+        },
+        {
+          "pc": "0x53e830",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x53e834",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x53e838",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "An unconditional branch to the common suffix leads to V0=1 without result propagation.",
+      "discard_boundary": "0x53e830"
+    },
+    {
+      "callsite": "0x53e8c8",
+      "classification": "discarded",
+      "evidence": [
+        {
+          "pc": "0x53e8c8",
+          "word": "0x0c11f460"
+        },
+        {
+          "pc": "0x53e8cc",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x53e8d0",
+          "word": "0x1000ffd6"
+        },
+        {
+          "pc": "0x53e8d4",
+          "word": "0x8fbf0044"
+        },
+        {
+          "pc": "0x53e82c",
+          "word": "0x8fb00040"
+        },
+        {
+          "pc": "0x53e830",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x53e834",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x53e838",
+          "word": "0x27bd0048"
+        }
+      ],
+      "notes": "An unconditional branch to the common suffix leads to V0=1 without result propagation.",
+      "discard_boundary": "0x53e830"
+    }
+  ]
+}

@@ -5616,3 +5616,368 @@ preceding uncommitted worker-tail increment; whitespace/conflict/common-secret
 checks pass, index is empty and HEAD remains408ea1f. Fresh primary02fd and three
 saved-image hashes remain02fd1dd1.../d4306357.../a9a6f02f.../f42fac46.... Full
 saved-image verifier runs remain historical and were not repeated here.
+
+### 2026-11-05: protect a second factory through its checked NULL wrapper chain
+
+Added an optional secondary admission core/stage, source/execution tests and
+note after publishedaa91550. The original factory emitter now delegates to a
+shared private implementation with pinned hooks/stamp. Its public API and
+complete default100500-byte b885d43e... output are unchanged. The new emitter
+uses the shared implementation directly, with no runtime layout selector.
+
+The secondary entry47D4A0 has only one encoded direct caller4F87C0 within
+wrapper4F8760. At4F87C8 the wrapper checks NULL before its H+5C store. It saves
+the result in F80+40, performs existing UI calls using fresh arguments, then
+returns the saved pointer. Its sole encoded upper caller4A326C discards V0,
+supplies fresh arguments to477600, calls469180 and reaches4A3118's return1.
+The UI facades themselves overwrite their V0 input; no returned H is passed as
+an explicit UI argument in this chain. Unknown computed/foreign routes and
+transitive UI/import progress remain hard premises.
+
+The two factories share F568, buffer[18,214), locals214/218, unused owner21C
+and saves220..234. Entry47D4A0's second displaced word savesS1 at224, not RA;
+RA is saved at native resume47D4A8. Incoming fifth/sixth arguments at oldSP10/14
+(F248/24C) are kept at their original addresses. The entry private192 frame's
+future owner location is again P+A4, after saved GPR/HI/LO slots through8F.
+This variant stamps QF4A, distinct from the preceding QF72.
+
+New late tail pairs47D4F8/47D6E8 loadS1/S0, followed only by native JR and
+SP+=568. Entry claims READY0->BUSY1 before lookup; nonzero/exhausted entry
+returns0/0 before the body. Leaves consume only their own frame stamp and
+clear only BUSY1->READY0, preserving actual V0/V1. Quarantine/unknown values
+are never cleared; exit-SC exhaustion quarantines without inventing rollback.
+Both factories use the same independently retained Q word. No nested borrowing
+or guard reset, timeout, worker join or new cleanup permission is introduced.
+
+Known initializer4F8620 publishes H through459320 and installs handler4F86A0
+through459500. The setter is a store, not an immediate callback invocation;
+the later handler can recover H and call unguarded47D0A0. That escaped alias
+is outside this admission fence. Native body/startup/import progress remains
+unbounded. An initializer fault can latch Q2 after admission, yet the existing
+native path can still launch its worker and return H. Later entries are refused.
+
+Canonical helper1336 bytes appends to guarded100500-byte parent, total101836.
+SHA-256:
+`193532af1c92cc1b454184bbc95e7bbe77e1e07ff2ed8b3a70bbfa654a45b0ff`.
+The protected prefix hash is
+`2ebeeeff65ae19a2d2cf92c70cae269c4ebce12a59483fc2291608d3cc4c80db`.
+The prefix is preserved exactly, including its existing complete-RX bounds;
+there are no new generated splices. Three new native pairs give39 native and
+seven generated,46 coherent pairs total. Enter/early_leave/created_leave are
+01E98894/01E98AA4/01E98C38. Strict U/R/Q/extra/static full RX and following RX
+validation runs through the actual shared emitter for both configurations.
+
+Metadata records guarded_factory_addresses=(47D720,47D4A0), the secondary
+factory47D4A0, direct caller4F87C0 and wrapper caller4A326C. Preceding single-
+factory fields stay compatible. known_secondary_factory_admission_guarded=True;
+all_dialog_factories_guarded and all global ownership/worker/lifetime/free-
+authority/progress/rollback flags remainFalse. Three factories are uncovered.
+
+Fresh serial verification passes without skips:38 prior factory source/native
+tests (9.727s),17 new native/execution cases (10.995s),18 new source/layout
+cases (7.167s). All73 distinct targeted tests pass. Both actual wrapper NULL
+and nonnull paths, the upper real JAL/UI continuation, original incoming
+arguments and both factory return suffixes are checked. The shared word excludes
+both factories from each other, and separate-stack epoch interleavings cannot
+reopen quarantine. Wrong owner stamp, missing hook and violated ABI are explicit
+counterexamples; in-flight initializer fault retains the existing startup.
+
+Execution uses a fixed created-body cut47D508->47D69C and bounded registration/
+initializer/view/startup/UI services. Actual prologue and fifth-argument load
+execute; the sixth-argument load is separately checked as a real instruction.
+Earlier allocation/graph work, native UI lifecycle and allocator/worker
+completion are not certified. The source tests pin the NULL chain and unchanged
+published parent, and compare same-base primary/secondary helpers in exactly
+seven scope/stamp/native-replay words.
+
+Only45 parent public assemblers are memoized, including the refactored adapter
+whose default emission is pinned by the preceding38 tests. New2 and the shared
+private emitter remain unwrapped. Three named valid outputs are deep-copied;
+temporary identities restore after errors. No CPU state, services or execution
+results are cached. Full uncached47 compositions, full project/old hash-chain
+suites, native scheduling/cache ordering and hardware were not rerun.
+
+The remaining47D180/47D960/47DCE0 factories stay unguarded. Separate read-only
+audit found17 DCE0 callers that discard its result, but four routes return it
+upward and their complete NULL handling is unfinished; no extra runtime guard
+was inferred from this subset. Escaped handlers and all older native lifetime
+limitations remain unresolved. Active scrolling stays disabled.
+
+All changes remain offline/local and uncommitted afteraa91550. No firmware image
+or builder changed, and no hook, device/player, network, install, launch,
+reboot, commit or push operation occurred. Hardware remains UNTESTED.
+
+Final preflight:all384 Python sources compile without output files. Exactly
+eight expected text paths (three Markdown and five Python), whitespace/conflict/
+common-secret checks pass; index is empty and HEAD staysaa91550. Fresh primary
+02fd and three saved-image hashes remain02fd1dd1.../d4306357.../a9a6f02f.../
+f42fac46.... Their full saved-image verifier passes remain historical and were
+not repeated. Independent review found no material core/stage/API conflict.
+
+### 2026-11-05: audit all encoded callers of the remaining three factories
+
+Added a read-only [NULL-refusal audit](folderfollow-remaining-factory-null-audit.md),
+three JSON instruction-evidence manifests, a source/census verifier and bounded
+native execution tests. This increment adds no guard to 47D180/47D960/47DCE0.
+The local guarded set remains (47D720,47D4A0).
+
+All 229 encoded direct J/JAL sites in the pinned 02fd executable ranges are
+listed: 51 for 47D180, 157 for 47D960 and 21 for 47DCE0. Their manual classifications
+are respectively 18/10/23/0, 2/91/27/37 and 0/17/4/0, in the order NULL-dereference /
+discarded / propagated / unresolved. Totals are 20/118/54/37. These are source
+paths with stated conditions, not 229 observed runtime calls or 20 player crashes.
+
+The 47D180 configurator-call delay at 453384 writes H+50 before any configurator
+NULL check. The 5270B8 allocation-check branch delay writes H+58 even when that
+independent allocation fails. Six other 47D180 fault paths require successful
+subsequent allocation. For 47D960, 5091A8 and 50BAB4 retain the factory H and write
+an independently allocated payload through H+58 on allocation success; allocation
+failure bypasses that write and therefore cannot establish refusal safety.
+
+Extended source review resolves 12 initially opaque 47D960 sites: 8 discard the
+result at explicit native overwrites; 4 can return it unchanged when an old
+context field S0+58 is zero. The actual 466A80 free(NULL) leaf preserves V0;
+the skip-free 4AEB80 branch does too. This field belongs to the old context,
+not the newly returned H. Non-NULL free instead overwrites incoming V0 at 466A90.
+The remaining 37 locally unresolved records retain their specific branch/callee
+obligations; upper consumers of the propagated results remain open.
+
+For 47DCE0, 17 direct continuations discard V0 and 4 wrapper routes propagate it.
+All 10 encoded upper callers of 49A2E0 discard it. Known controller callback
+storage/dispatch for 4A6F60/4A80E0 and widget dispatches for 518780 also discard it.
+No concrete NULL dereference was found in those checked chains. Complete
+computed target binding, aliases, imports and unknown indirect calls remain
+unproved; the four direct records stay propagated and no blanket gate is added.
+
+The verifier checks exact source size/hash and caller census, distinct records,
+known classifications, nonempty textual notes, each call/delay pair and every
+nested PC/word evidence record. It does not automatically prove the manual
+semantic classifications. A discarded result does not establish that suppressing
+other factory effects is safe; native lifetime/free authority and progress are
+independent obligations.
+
+Bounded execution follows actual native call/delay/branch/return instructions,
+with supplied live old-context memory and caller frames. Factory, allocation,
+copy, configurator and callback outcomes are bounded substitutes; actual
+free(NULL) runs without an invented return value. Non-NULL free, earlier native
+bodies, allocator internals, dynamic callback binding and hardware are outside
+the fixture. LDC1 restores one supplied double without FP arithmetic/FCSR or
+pipeline claims. No assembler or execution-state cache is used by these tests.
+
+Fresh serial validation passes without skips: 11 native continuation tests
+(0.060 s) and 6 source/evidence mutation tests (3.255 s), 17 distinct cases.
+The standalone verifier matches all 229 encoded sites and 2,091 instruction
+evidence records (371/1,289/431 by factory, including repeated PCs in separate
+records). It reports universal_refusal_safety_proven=False and
+runtime_guards_added=False. This is not an automatic semantic proof or a new
+full-project/previous assembly-chain/hardware validation run.
+
+All changes remain offline/local and uncommitted after aa91550. The audit changes
+no firmware image, core/stage, builder or installer and performs no device/player,
+network, installation, launch, reboot, commit or push operation. Active scrolling
+remains disabled, all-dialog/universal refusal safety remains unproved and
+hardware remains UNTESTED.
+
+Final audit preflight: all 386 Python sources compile without output files.
+Exactly 14 expected local text paths are changed/untracked, including the
+preceding secondary-factory increment: 4 Markdown, 7 Python and 3 JSON files.
+Whitespace, conflict-marker and common-secret checks pass; the index is empty
+and HEAD remains aa91550. Fresh size/hash comparisons match the primary 02fd
+and the three saved images (02fd1dd1.../d4306357.../a9a6f02f.../f42fac46...).
+Their full saved-image verifier runs remain historical and were not repeated.
+Independent source and note/verifier/native-fixture review found no blocker.
+
+### 2026-11-05: follow every remaining D960 continuation to its local boundary
+
+Extended all 37 previously unresolved records in the existing D960 manifest.
+Three independent read-only source reviews supplied the callee/indirect-target
+evidence; root applied the JSON changes and ran all checks serially. No new
+factory admission guard or firmware change is made by this increment.
+
+Four additional sites discard the result: 4937A8/4937E8/493868 reach 48F800
+with old S0, and every pre-kill branch reaches 48F874 (-1), 48F864 (0), or
+466A90's non-NULL free-header load. 49E794 reaches 490B40 through 49CFA0;
+its two old-A0 branches overwrite V0 at 490B4C or JR-delay 490B64. Valid old
+context/allocations and cleanup progress retain their separate premises.
+
+Added the distinct manual class null_guarded for five existing NULL checks:
+453A0C, 50049C, 4A33A8, 4A33D8 and 52B320. This means the local empty-result
+continuation is handled under a genuine frame/live-old-context/normal-ABI
+premise, not that the whole factory can be refused safely. In particular,
+50049C's delay saves NULL in S3, but the NULL epilogue restores S3 before use
+and clears the old B8BB2C global. The two 4A33 cleanup routes use old contexts;
+the 52B320 guard skips its H+5C store and keeps the native setter/return.
+
+D960 now has 2 NULL-fault / 95 discarded / 27 propagated / 5 null_guarded /
+28 unresolved records, still 157 callers. The three-factory totals are
+20/122/54/5/28, still 229. Every unresolved record now pins an actual indirect
+instruction and its delay, with checked local prefixes: 8 memset PLT routes
+at A5BC68, 10 configurator-import routes at A5B968, 6 object-method routes
+at 4E535C, 1 at 43B150, 2 list-method routes at 4A6E70 and 1 at 4E5590.
+That is 18 external-library and 10 computed-callback frontiers. The source
+does not prove incoming V0 dead before those boundaries. Native constants
+after the opaque call and possible constructor assignments do not close them.
+
+The verifier now validates actual V0/zero BEQ/BNE direction and the NULL
+continuation/delay evidence for null_guarded, requiring explicit local closure.
+Unresolved rows must name a pinned JR/JALR T9 frontier and delay. Semantic
+classification, actual callback binding and linked library behavior remain
+manual/open obligations; universal_refusal_safety_proven remains False.
+
+All 23 distinct targeted tests pass in the full serial run (2.409 s), with
+no skips. After strengthening old-object/argument/copy assertions, the three
+local-NULL execution tests pass again (0.068 s); these are the same methods,
+not three additional cases. Nine source/evidence tests cover guard metadata,
+opposite branch directions and missing/forged indirect frontiers. Fourteen
+native test methods cover the prior hazards plus all five local NULL routes,
+non-NULL controls, both old-S2 branches, the actual global clear and native
+477600 setter writes. Other UI/query/copy services stay bounded substitutes;
+earlier native bodies and lifetime/progress/hardware remain outside the model.
+
+The standalone report verifies all 229 encoded callers and 2,808 PC/word
+records: 371/2,006/431 for D180/D960/DCE0, including repeated PCs in separate
+records. The [audit note](folderfollow-remaining-factory-null-audit.md) and
+README now reflect the updated counts and exact remaining frontiers.
+
+This remains offline/local and uncommitted after aa91550, with the same
+(47D720,47D4A0) guarded set. No device/player, network, installation, launch,
+reboot, commit or push operation occurred. Active scrolling stays disabled;
+all-dialog protection and universal refusal safety remain unproved, hardware
+remains UNTESTED. The next missing evidence is the actual library bodies and
+callback bindings, plus the separate downstream consumers of propagated H.
+
+Final follow-up preflight: all 386 Python sources compile without output files.
+The same 14 expected local text paths remain (4 Markdown, 7 Python, 3 JSON);
+whitespace/conflict/common-secret checks pass. The index is empty and HEAD
+remains aa91550. Fresh primary 02fd and all three saved-image sizes/hashes
+match their preserved references; full saved-image verifiers and older assembly
+chains were not rerun. Independent read-only delta/verifier/native-fixture
+review found no semantic blocker within the stated local scope.
+
+### 2026-11-05: pin callback assignments and expose the publication/readiness boundary
+
+Added a separate callback-binding JSON manifest and extended the existing
+read-only verifier/test module. It covers all 10 still-unresolved computed
+consumers at four load/JALR frontiers. The three original caller manifests and
+their 229-site classifications are unchanged: D960 remains 2 fault / 95 discarded /
+27 propagated / 5 null_guarded / 28 unresolved, including 10 computed routes.
+The other 18 unresolved routes still require linked-library evidence.
+
+Four selected native assignments are pinned: 456CDC stores 4557C0 in list+24;
+439A6C stores 437D20 in UI+274; 45B6CC stores 45B100 in another widget+274;
+4E4E3C stores 4E4A60 in U+2A4. Actual target behavior differs: 4557C0 replaces
+V0 in its return delay, 45B100 loads a field in its JR delay, and 4E4A60 first
+replaces V0 at 4E4A6C. In contrast, 437D20 reaches 466DA0/A5B960 before a V0 kill.
+These are conditional local facts about selected assignments, not authenticated
+runtime bindings or a closed target set.
+
+The source inventory pins aligned encoded SW matches in file-backed PF_X:
+7275/57/48 at literal offsets 24/274/2A4, with 733/18/12 bases other than SP.
+The intentionally narrower partial-store rule includes SB/SH/SWL/SWR whose
+immediate lies in [slot,slot+4): 300/4/4 matches, 135/4/3 non-SP. Counts/digests
+do not enumerate reachable instructions, object-typed writes, earlier-starting
+overlaps, SC/SWC1, shifted bases, bulk copies, imports, reuse or concurrent writes.
+PF_X includes data; non-SP may still be a stack alias. The manifest records
+concrete partial-store and unrelated-copy examples without assigning them to U.
+
+For five consumers through 43D200, a concrete readiness obligation is visible.
+The dispatcher copies pending U into active global ADF208 at 43D028 before
+invoking U+260 at 43D064. For descriptor 94B400, constructor 4E3E40 installs
++260=4E3DE0, which invokes initializer +254=4E4DE0. Its +2A4 assignment occurs
+later at 4E4E3C, after earlier external work. The accessor returns the global
+without a ready/type check. The lifecycle also calls +258 destructor, including
+mutex destruction at 4E3F6C, before returning to the generic dispatcher. Publication
+does not itself prove a fully initialized or retained object/mutex. Runtime
+execution ordering and whether a particular reentry occurs remain unproved.
+
+Native tests execute a supplied pending-object publication prefix, the actual
+accessor and an explicit reentry cut before +2A4 assignment. U is readable with
+its callback still zero in that model. This is a counterexample to an inference
+from publication alone, not an observed player crash or proven hardware race.
+Other fixtures execute the four selected assignment fragments, actual dispatch
+loads/JALRs, a native clear/field-return leaf, an explicit first-kill cut and
+an external-entry cut. A deliberately changed list slot demonstrates why the
+constructor alone cannot authenticate a later target; it is not claimed as a
+native writer. SWC1 uses supplied raw FP0 bits without FP arithmetic/FCSR claims.
+
+The verifier checks source hash, store count/digests, constructor constant
+materialization through intervening stores, selected target words and exact
+coverage of the 10 computed consumers. Runtime binding, a closed write set,
+classification promotion and universal refusal-safety flags must remain False;
+source ordering is not promoted to proven scheduling. Constructor/consumer
+dataflow and dynamic object/target lifetime are not automatically proved.
+
+Final full serial validation passes all 31 distinct targeted tests (4.997 s),
+without skips: 13 source/evidence methods and 18 native methods. Two earlier
+runs exposed test assertions about the inherited runner's tracing: the stock
+list body executes internally, and delay instructions are not separate control
+trace entries. The assertions now check the real native entry/JR and resulting
+V0/list state. Native instruction behavior and firmware bytes were unchanged
+by that test correction. No assembler or execution-result cache is used.
+
+The standalone report passes with the original 2808 factory PC/word records
+and 320 additional callback-binding source-word records. It reports four
+selected assignments (three native value-kill targets and one opaque-before-kill
+target), four frontiers and ten consumers; all binding/promotion flags are False.
+The [audit note](folderfollow-remaining-factory-null-audit.md) now documents the
+conditional targets, exact inventory definition, publication/lifecycle limits
+and bounded execution evidence.
+
+This remains local/uncommitted after aa91550. No image, admission core/stage,
+builder or installer changed in this increment, and no device/player, network,
+installation, launch, reboot, commit or push operation occurred. The guarded
+set stays (47D720,47D4A0), active scrolling remains disabled and hardware UNTESTED.
+All-dialog protection, universal refusal safety and native lifetime/free
+authority remain unproved.
+
+Final binding-audit preflight: all 386 Python sources compile without output
+files. Exactly 15 expected local text paths remain: 4 Markdown, 7 Python and
+4 JSON, including the earlier uncommitted increments. Whitespace/conflict/
+common-secret checks pass; the index is empty and HEAD stays aa91550. Fresh
+size/hash checks match the primary 02fd and all three saved images. Their full
+image verifiers, older assembly chains and hardware were not rerun. Independent
+read-only review found no blocker in the assignment, census, verifier or bounded
+native-fixture claims.
+
+### 2026-11-06: trace own-loop ordering and teardown publication
+
+Extended the existing binding manifest with 365 source-word records for the
+native phase driver, known input and queued routes, worker launch and the
+exit/shutdown paths. The binding report now covers 685 source-word records
+alongside the 2,808 factory records. The audit classifications remain at 229
+encoded callers, with 28 unresolved D960 continuations. Ten of those reach
+computed callbacks.
+
+For descriptor 94B400, native 4E3DE0 calls initializer, own-loop adapter and
+destructor in order. The initializer assigns U+2A4 before either return suffix.
+It can start worker 48EA80 through 439A20 and 48F360 after the assignment, before
+initializer return. The worker starts with an empty initial task input and
+later reaches queued task callbacks. Their producer and actual binding to the
+audited UI routes remain unproved. The known input/queued paths through 43C980
+begin only after initializer return. Imported calls and alternate entry
+routes leave reentry and lifetime obligations open.
+
+The checked destructor suffix invokes 466DE0 for U+290. The wrapper reaches
+free for a nonzero mutex after either supplied raw destroy status. The active
+pointer remains readable at that boundary. Normal dispatcher replacement at
+43D080 follows the lifecycle return. Exit flag 43D074 bypasses that store.
+Separate shutdown 43D140 clears the active pointer at 43D158 before its
+registry loop can free U via 43D4F4. The checked ordinary destructor releases
+resources through its native calls. Complete U lifetime and other free
+routes remain independent obligations.
+
+All 34 targeted tests pass without skips (7.636 s). Three new native methods
+cover phase order with both window values and a supplied nonzero initializer
+result, normal replacement versus exit bypass after mutex release, and
+shutdown clear before object release. The initializer middle and service
+bodies are bounded. The driver, initializer prefix and return suffix,
+loop adapter, getter, destroy wrapper and selected dispatcher instructions
+execute from the pinned ELF. Release observers record call arguments and
+publication state. The fixtures do not establish scheduling or free authority.
+
+The report verified 229 factory callers and 685 binding records. All 386
+Python sources compiled without output files. The 15 expected text paths
+passed whitespace and conflict-marker checks. The index is empty at aa91550,
+and the four reference image hashes match. Independent review checked the
+synthetic initializer status, the bounded cleanup and the one-object shutdown
+case with a null optional callback.

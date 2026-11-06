@@ -1,0 +1,2947 @@
+{
+  "source_sha256": "02fd1dd13db7aac1e6d150ec1866b93f57022c1d668b114720a36b7f232e5f87",
+  "scope": "Encoded literal store matches in file-backed PF_X ranges and selected constant assignments only. The PF_X range includes data, and no instruction reachability, object identity or complete write set is inferred.",
+  "literal_store_inventory": {
+    "0x24": {
+      "sw_count": 7275,
+      "non_sp_sw_count": 733,
+      "sw_pc_word_sha256": "0e93cf7fe39ee0adb65da0ea8fde1b9a96c1ba7192f822807a6987a6cd276dd6",
+      "partial_count": 300,
+      "non_sp_partial_count": 135,
+      "partial_pc_word_sha256": "1990636ccee459ad1b74abbd299dca24ecac33acd9c24898a660d6e6877c1b41"
+    },
+    "0x274": {
+      "sw_count": 57,
+      "non_sp_sw_count": 18,
+      "sw_pc_word_sha256": "9221e985217545474504af49c1324672063a13a242c30dcfade6b47c5965b996",
+      "partial_count": 4,
+      "non_sp_partial_count": 4,
+      "partial_pc_word_sha256": "4524d2498c094fd783bfd320925e9c35d257b8479967fa22067c19f0443b7fbb"
+    },
+    "0x2a4": {
+      "sw_count": 48,
+      "non_sp_sw_count": 12,
+      "sw_pc_word_sha256": "9287e9db17f5a8e5c2c13cfc1eb7f56708254da6bfd39fd31ffc382eeab9545d",
+      "partial_count": 4,
+      "non_sp_partial_count": 3,
+      "partial_pc_word_sha256": "ed362e9d043e4ea0e95f5115214414089be0ba733c9f33714898c5e4c0ef0e93"
+    }
+  },
+  "selected_assignment_candidates": [
+    {
+      "id": "list_clear",
+      "slot": "0x24",
+      "materialization_pc": "0x456cd4",
+      "store_pc": "0x456cdc",
+      "target": "0x4557c0",
+      "target_behavior": "native_value_kill",
+      "notes": "The selected list constructor fragment stores4557C0 in S0+24. With a genuine live list, its non-NULL path returns V0=0 in JR-delay4557D0; the NULL argument leaf returns-6 in4557D8. This conditional method behavior does not authenticate the actual list read by4A6E60.",
+      "evidence": [
+        {
+          "pc": "0x456cd4",
+          "word": "0x3c020045"
+        },
+        {
+          "pc": "0x456cd8",
+          "word": "0x244257c0"
+        },
+        {
+          "pc": "0x456cdc",
+          "word": "0xae020024"
+        },
+        {
+          "pc": "0x4557c0",
+          "word": "0x10800004"
+        },
+        {
+          "pc": "0x4557c4",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x4557c8",
+          "word": "0xac80000c"
+        },
+        {
+          "pc": "0x4557cc",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4557d0",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x4557d4",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4557d8",
+          "word": "0x2402fffa"
+        }
+      ]
+    },
+    {
+      "id": "ui_lock",
+      "slot": "0x274",
+      "materialization_pc": "0x439a64",
+      "store_pc": "0x439a6c",
+      "target": "0x437d20",
+      "target_behavior": "opaque_before_kill",
+      "notes": "The selected UI assignment stores437D20 in S0+274. That method passes the old object's mutex at+13C to466DA0 and reaches external stub A5B960/JR T9 A5B968 before a V0 kill. Even this concrete conditional stock binding does not close incoming-value handling inside the import.",
+      "evidence": [
+        {
+          "pc": "0x439a64",
+          "word": "0x3c020043"
+        },
+        {
+          "pc": "0x439a68",
+          "word": "0x24427d20"
+        },
+        {
+          "pc": "0x439a6c",
+          "word": "0xae020274"
+        },
+        {
+          "pc": "0x437d20",
+          "word": "0x27bdffe0"
+        },
+        {
+          "pc": "0x437d24",
+          "word": "0xafbf001c"
+        },
+        {
+          "pc": "0x437d28",
+          "word": "0x0c119b68"
+        },
+        {
+          "pc": "0x437d2c",
+          "word": "0x8c84013c"
+        },
+        {
+          "pc": "0x437d30",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x437d34",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x437d38",
+          "word": "0x27bd0020"
+        },
+        {
+          "pc": "0x466da0",
+          "word": "0x27bdffe0"
+        },
+        {
+          "pc": "0x466da4",
+          "word": "0xafbf001c"
+        },
+        {
+          "pc": "0x466da8",
+          "word": "0x0c296e58"
+        },
+        {
+          "pc": "0x466dac",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x466db0",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x466db4",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x466db8",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x466dbc",
+          "word": "0x27bd0020"
+        },
+        {
+          "pc": "0xa5b960",
+          "word": "0x3c0f00a7"
+        },
+        {
+          "pc": "0xa5b964",
+          "word": "0x8df9fa58"
+        },
+        {
+          "pc": "0xa5b968",
+          "word": "0x03200008"
+        },
+        {
+          "pc": "0xa5b96c",
+          "word": "0x25f8fa58"
+        }
+      ]
+    },
+    {
+      "id": "other_widget_field",
+      "slot": "0x274",
+      "materialization_pc": "0x45b6b0",
+      "store_pc": "0x45b6cc",
+      "target": "0x45b100",
+      "target_behavior": "native_value_kill",
+      "notes": "LUI/ADDIU and transparent intervening SW/SWC1 stores produce45B100 at S0+274. Its JR-delay45B104 replaces V0 with old A0+1B0. The matching offset in this other widget does not establish that45211C's event context has this type or target.",
+      "evidence": [
+        {
+          "pc": "0x45b6b0",
+          "word": "0x3c020046"
+        },
+        {
+          "pc": "0x45b6b4",
+          "word": "0x2442b100"
+        },
+        {
+          "pc": "0x45b6b8",
+          "word": "0xae00019c"
+        },
+        {
+          "pc": "0x45b6bc",
+          "word": "0xe6000194"
+        },
+        {
+          "pc": "0x45b6c0",
+          "word": "0xae000198"
+        },
+        {
+          "pc": "0x45b6c4",
+          "word": "0xae0001a0"
+        },
+        {
+          "pc": "0x45b6c8",
+          "word": "0xae0001a4"
+        },
+        {
+          "pc": "0x45b6cc",
+          "word": "0xae020274"
+        },
+        {
+          "pc": "0x45b100",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x45b104",
+          "word": "0x8c8201b0"
+        }
+      ]
+    },
+    {
+      "id": "property_object",
+      "slot": "0x2a4",
+      "materialization_pc": "0x4e4e34",
+      "store_pc": "0x4e4e3c",
+      "target": "0x4e4a60",
+      "target_behavior": "native_value_kill",
+      "notes": "The selected initializer assigns4E4A60 to U+2A4. Its first incoming-V0 overwrite is LW V0,U+294 at4E4A6C before any call. This is sufficient locally only with that actual binding and a live ready U; publication/initialization ordering, replacement and lifetime remain unproved.",
+      "evidence": [
+        {
+          "pc": "0x4e4e34",
+          "word": "0x3c02004e"
+        },
+        {
+          "pc": "0x4e4e38",
+          "word": "0x24424a60"
+        },
+        {
+          "pc": "0x4e4e3c",
+          "word": "0xae0202a4"
+        },
+        {
+          "pc": "0x4e4a60",
+          "word": "0x27bdffe0"
+        },
+        {
+          "pc": "0x4e4a64",
+          "word": "0xafb00018"
+        },
+        {
+          "pc": "0x4e4a68",
+          "word": "0xafbf001c"
+        },
+        {
+          "pc": "0x4e4a6c",
+          "word": "0x8c820294"
+        }
+      ]
+    }
+  ],
+  "consumer_frontiers": [
+    {
+      "slot": "0x24",
+      "load_pc": "0x4a6e6c",
+      "call_pc": "0x4a6e70",
+      "consumers": [
+        "0x4a78ec",
+        "0x4a7980"
+      ],
+      "notes": "The old explorer state supplies its list through+64. The actual list+24 target is loaded at call time; the selected list constructor is only a conditional candidate.",
+      "evidence": [
+        {
+          "pc": "0x4a6e60",
+          "word": "0x27bdffe0"
+        },
+        {
+          "pc": "0x4a6e64",
+          "word": "0xafbf001c"
+        },
+        {
+          "pc": "0x4a6e68",
+          "word": "0xafb00018"
+        },
+        {
+          "pc": "0x4a6e6c",
+          "word": "0x8c990024"
+        },
+        {
+          "pc": "0x4a6e70",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x4a6e74",
+          "word": "0x00808021"
+        },
+        {
+          "pc": "0x4a6ec0",
+          "word": "0x27bdffc8"
+        },
+        {
+          "pc": "0x4a6ec4",
+          "word": "0xafbf0034"
+        },
+        {
+          "pc": "0x4a6ec8",
+          "word": "0xafb00030"
+        },
+        {
+          "pc": "0x4a6ecc",
+          "word": "0x00808021"
+        },
+        {
+          "pc": "0x4a6ed0",
+          "word": "0x0c129b98"
+        },
+        {
+          "pc": "0x4a6ed4",
+          "word": "0x8c840064"
+        }
+      ]
+    },
+    {
+      "slot": "0x274",
+      "load_pc": "0x43b144",
+      "call_pc": "0x43b150",
+      "consumers": [
+        "0x45211c"
+      ],
+      "notes": "The event route supplies old U, not factory H. Multiple same-offset structures and the concrete stock import route prevent a universal binding or value-death claim.",
+      "evidence": [
+        {
+          "pc": "0x43b120",
+          "word": "0x10a00033"
+        },
+        {
+          "pc": "0x43b124",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x43b128",
+          "word": "0x27bdffd0"
+        },
+        {
+          "pc": "0x43b12c",
+          "word": "0xafb40028"
+        },
+        {
+          "pc": "0x43b130",
+          "word": "0xafb30024"
+        },
+        {
+          "pc": "0x43b134",
+          "word": "0xafb20020"
+        },
+        {
+          "pc": "0x43b138",
+          "word": "0xafb1001c"
+        },
+        {
+          "pc": "0x43b13c",
+          "word": "0xafb00018"
+        },
+        {
+          "pc": "0x43b140",
+          "word": "0xafbf002c"
+        },
+        {
+          "pc": "0x43b144",
+          "word": "0x8c990274"
+        },
+        {
+          "pc": "0x43b148",
+          "word": "0x0080a021"
+        },
+        {
+          "pc": "0x43b14c",
+          "word": "0x00a09021"
+        },
+        {
+          "pc": "0x43b150",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x43b154",
+          "word": "0x24930034"
+        },
+        {
+          "pc": "0x43b240",
+          "word": "0x27bdffe0"
+        },
+        {
+          "pc": "0x43b244",
+          "word": "0xafbf001c"
+        },
+        {
+          "pc": "0x43b248",
+          "word": "0x0c10ec48"
+        },
+        {
+          "pc": "0x43b24c",
+          "word": "0x00000000"
+        }
+      ]
+    },
+    {
+      "slot": "0x2a4",
+      "load_pc": "0x4e534c",
+      "call_pc": "0x4e535c",
+      "consumers": [
+        "0x436114",
+        "0x4a71a8",
+        "0x4a71d0",
+        "0x4a7274",
+        "0x4a8234",
+        "0x4a82a0"
+      ],
+      "notes": "These consumers use a fresh non-NULL property key; old U's+2A4 method is reached with incoming factory V0 live.",
+      "evidence": [
+        {
+          "pc": "0x4e5320",
+          "word": "0x10a0002b"
+        },
+        {
+          "pc": "0x4e5324",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x4e5328",
+          "word": "0x27bdffc8"
+        },
+        {
+          "pc": "0x4e532c",
+          "word": "0xacc00000"
+        },
+        {
+          "pc": "0x4e5330",
+          "word": "0xafb50030"
+        },
+        {
+          "pc": "0x4e5334",
+          "word": "0xafb4002c"
+        },
+        {
+          "pc": "0x4e5338",
+          "word": "0xafb30028"
+        },
+        {
+          "pc": "0x4e533c",
+          "word": "0xafb20024"
+        },
+        {
+          "pc": "0x4e5340",
+          "word": "0xafb0001c"
+        },
+        {
+          "pc": "0x4e5344",
+          "word": "0xafbf0034"
+        },
+        {
+          "pc": "0x4e5348",
+          "word": "0xafb10020"
+        },
+        {
+          "pc": "0x4e534c",
+          "word": "0x8c9902a4"
+        },
+        {
+          "pc": "0x4e5350",
+          "word": "0x0080a021"
+        },
+        {
+          "pc": "0x4e5354",
+          "word": "0x00a09021"
+        },
+        {
+          "pc": "0x4e5358",
+          "word": "0x00c0a821"
+        },
+        {
+          "pc": "0x4e535c",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x4e5360",
+          "word": "0x24930298"
+        }
+      ]
+    },
+    {
+      "slot": "0x2a4",
+      "load_pc": "0x4e5584",
+      "call_pc": "0x4e5590",
+      "consumers": [
+        "0x505674"
+      ],
+      "notes": "An old object from retained context+0C reaches its actual+2A4 target before incoming V0 dies; identity and lifetime are not certified by the constructor candidate.",
+      "evidence": [
+        {
+          "pc": "0x4e5560",
+          "word": "0x27bdffb8"
+        },
+        {
+          "pc": "0x4e5564",
+          "word": "0xafbf0044"
+        },
+        {
+          "pc": "0x4e5568",
+          "word": "0xafb50040"
+        },
+        {
+          "pc": "0x4e556c",
+          "word": "0xafb4003c"
+        },
+        {
+          "pc": "0x4e5570",
+          "word": "0xafb30038"
+        },
+        {
+          "pc": "0x4e5574",
+          "word": "0xafb20034"
+        },
+        {
+          "pc": "0x4e5578",
+          "word": "0xafb10030"
+        },
+        {
+          "pc": "0x4e557c",
+          "word": "0xafb0002c"
+        },
+        {
+          "pc": "0x4e5580",
+          "word": "0xaca00000"
+        },
+        {
+          "pc": "0x4e5584",
+          "word": "0x8c9902a4"
+        },
+        {
+          "pc": "0x4e5588",
+          "word": "0x0080a021"
+        },
+        {
+          "pc": "0x4e558c",
+          "word": "0x00a0a821"
+        },
+        {
+          "pc": "0x4e5590",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x4e5594",
+          "word": "0x24930298"
+        },
+        {
+          "pc": "0x4e5680",
+          "word": "0x27bdffe0"
+        },
+        {
+          "pc": "0x4e5684",
+          "word": "0xafbf001c"
+        },
+        {
+          "pc": "0x4e5688",
+          "word": "0x0c139558"
+        },
+        {
+          "pc": "0x4e568c",
+          "word": "0x00000000"
+        }
+      ]
+    }
+  ],
+  "publication_and_lifetime": {
+    "publication_pc": "0x43d028",
+    "accessor_load_pc": "0x43d208",
+    "initializer_assignment_pc": "0x4e4e3c",
+    "execution_ordering_proven": false,
+    "concurrent_reentry_feasibility_proven": false,
+    "notes": "The dispatcher copies pending U into active global ADF208 before calling U+260. For descriptor94B400, the registered+260 entry4E3DE0 invokes initializer+254=4E4DE0, which writes+2A4 only after earlier external work. Accessor43D200 returns active U without a ready/type check. The lifecycle later invokes+258 destructor before returning to the dispatcher; mutex destruction is visible at4E3F6C. Publication alone is not proof of completed initialization or retention. Bounded interleaving fixtures are counterexamples to that inference, not observed hardware races or proof that concurrent reentry occurs.",
+    "evidence": [
+      {
+        "pc": "0x43cfe0",
+        "word": "0x27bdffc0"
+      },
+      {
+        "pc": "0x43cfe4",
+        "word": "0xafb0001c"
+      },
+      {
+        "pc": "0x43cfe8",
+        "word": "0x3c1000ae"
+      },
+      {
+        "pc": "0x43cfec",
+        "word": "0x8e02f20c"
+      },
+      {
+        "pc": "0x43cff0",
+        "word": "0xafb70038"
+      },
+      {
+        "pc": "0x43cff4",
+        "word": "0xafb4002c"
+      },
+      {
+        "pc": "0x43cff8",
+        "word": "0xafb30028"
+      },
+      {
+        "pc": "0x43cffc",
+        "word": "0xafb20024"
+      },
+      {
+        "pc": "0x43d000",
+        "word": "0x3c1700ae"
+      },
+      {
+        "pc": "0x43d004",
+        "word": "0x3c1200ae"
+      },
+      {
+        "pc": "0x43d008",
+        "word": "0x3c140092"
+      },
+      {
+        "pc": "0x43d00c",
+        "word": "0x3c130092"
+      },
+      {
+        "pc": "0x43d010",
+        "word": "0xafb60034"
+      },
+      {
+        "pc": "0x43d014",
+        "word": "0xafb50030"
+      },
+      {
+        "pc": "0x43d018",
+        "word": "0xafb10020"
+      },
+      {
+        "pc": "0x43d01c",
+        "word": "0xafbf003c"
+      },
+      {
+        "pc": "0x43d020",
+        "word": "0x00808821"
+      },
+      {
+        "pc": "0x43d024",
+        "word": "0xaee0f214"
+      },
+      {
+        "pc": "0x43d028",
+        "word": "0xae42f208"
+      },
+      {
+        "pc": "0x43d040",
+        "word": "0xae220008"
+      },
+      {
+        "pc": "0x43d044",
+        "word": "0x8c460154"
+      },
+      {
+        "pc": "0x43d048",
+        "word": "0xac510020"
+      },
+      {
+        "pc": "0x43d04c",
+        "word": "0x0c119be0"
+      },
+      {
+        "pc": "0x43d050",
+        "word": "0xaea2f210"
+      },
+      {
+        "pc": "0x43d054",
+        "word": "0x8e44f208"
+      },
+      {
+        "pc": "0x43d058",
+        "word": "0x00002821"
+      },
+      {
+        "pc": "0x43d05c",
+        "word": "0x00003021"
+      },
+      {
+        "pc": "0x43d060",
+        "word": "0x8c990260"
+      },
+      {
+        "pc": "0x43d064",
+        "word": "0x0320f809"
+      },
+      {
+        "pc": "0x43d068",
+        "word": "0xac800134"
+      },
+      {
+        "pc": "0x43d200",
+        "word": "0x3c0200ae"
+      },
+      {
+        "pc": "0x43d204",
+        "word": "0x03e00008"
+      },
+      {
+        "pc": "0x43d208",
+        "word": "0x8c42f208"
+      },
+      {
+        "pc": "0x4e3e40",
+        "word": "0x3c02004e"
+      },
+      {
+        "pc": "0x4e3e44",
+        "word": "0x24424de0"
+      },
+      {
+        "pc": "0x4e3e48",
+        "word": "0xac820254"
+      },
+      {
+        "pc": "0x4e3e4c",
+        "word": "0x3c02004e"
+      },
+      {
+        "pc": "0x4e3e50",
+        "word": "0x24423ea0"
+      },
+      {
+        "pc": "0x4e3e54",
+        "word": "0xac820258"
+      },
+      {
+        "pc": "0x4e3e58",
+        "word": "0x3c02004e"
+      },
+      {
+        "pc": "0x4e3e5c",
+        "word": "0x24424ac0"
+      },
+      {
+        "pc": "0x4e3e60",
+        "word": "0xac82025c"
+      },
+      {
+        "pc": "0x4e3e64",
+        "word": "0x3c02004e"
+      },
+      {
+        "pc": "0x4e3e68",
+        "word": "0x24423de0"
+      },
+      {
+        "pc": "0x4e3e6c",
+        "word": "0xac820260"
+      },
+      {
+        "pc": "0x4e3e70",
+        "word": "0x03e00008"
+      },
+      {
+        "pc": "0x4e3e74",
+        "word": "0x00001021"
+      },
+      {
+        "pc": "0x4e3de0",
+        "word": "0x27bdffe0"
+      },
+      {
+        "pc": "0x4e3de4",
+        "word": "0xafbf001c"
+      },
+      {
+        "pc": "0x4e3de8",
+        "word": "0xafb00018"
+      },
+      {
+        "pc": "0x4e3dec",
+        "word": "0x8c990254"
+      },
+      {
+        "pc": "0x4e3df0",
+        "word": "0x0320f809"
+      },
+      {
+        "pc": "0x4e3df4",
+        "word": "0x00808021"
+      },
+      {
+        "pc": "0x4e3df8",
+        "word": "0x8e19025c"
+      },
+      {
+        "pc": "0x4e3dfc",
+        "word": "0x0320f809"
+      },
+      {
+        "pc": "0x4e3e00",
+        "word": "0x02002021"
+      },
+      {
+        "pc": "0x4e3e04",
+        "word": "0x8e190258"
+      },
+      {
+        "pc": "0x4e3e08",
+        "word": "0x0320f809"
+      },
+      {
+        "pc": "0x4e3e0c",
+        "word": "0x02002021"
+      },
+      {
+        "pc": "0x4e3e10",
+        "word": "0x8fbf001c"
+      },
+      {
+        "pc": "0x4e3e14",
+        "word": "0x8fb00018"
+      },
+      {
+        "pc": "0x4e3e18",
+        "word": "0x00001021"
+      },
+      {
+        "pc": "0x4e3e1c",
+        "word": "0x03e00008"
+      },
+      {
+        "pc": "0x4e3e20",
+        "word": "0x27bd0020"
+      },
+      {
+        "pc": "0x4e4de0",
+        "word": "0x27bdfc80"
+      },
+      {
+        "pc": "0x4e4de4",
+        "word": "0x00002821"
+      },
+      {
+        "pc": "0x4e4de8",
+        "word": "0x24060040"
+      },
+      {
+        "pc": "0x4e4dec",
+        "word": "0xafb00368"
+      },
+      {
+        "pc": "0x4e4df0",
+        "word": "0x00808021"
+      },
+      {
+        "pc": "0x4e4df4",
+        "word": "0x27a40324"
+      },
+      {
+        "pc": "0x4e4df8",
+        "word": "0xafbf037c"
+      },
+      {
+        "pc": "0x4e4dfc",
+        "word": "0xafb1036c"
+      },
+      {
+        "pc": "0x4e4e00",
+        "word": "0xafb40378"
+      },
+      {
+        "pc": "0x4e4e04",
+        "word": "0xafb30374"
+      },
+      {
+        "pc": "0x4e4e08",
+        "word": "0x0c296f18"
+      },
+      {
+        "pc": "0x4e4e0c",
+        "word": "0xafb20370"
+      },
+      {
+        "pc": "0x4e4e10",
+        "word": "0x00002821"
+      },
+      {
+        "pc": "0x4e4e14",
+        "word": "0x24060104"
+      },
+      {
+        "pc": "0x4e4e18",
+        "word": "0x0c296f18"
+      },
+      {
+        "pc": "0x4e4e1c",
+        "word": "0x27a40220"
+      },
+      {
+        "pc": "0x4e4e20",
+        "word": "0x0c108e60"
+      },
+      {
+        "pc": "0x4e4e24",
+        "word": "0x24040004"
+      },
+      {
+        "pc": "0x4e4e28",
+        "word": "0x0c119b58"
+      },
+      {
+        "pc": "0x4e4e2c",
+        "word": "0x00408821"
+      },
+      {
+        "pc": "0x4e4e30",
+        "word": "0xae020290"
+      },
+      {
+        "pc": "0x4e4e34",
+        "word": "0x3c02004e"
+      },
+      {
+        "pc": "0x4e4e38",
+        "word": "0x24424a60"
+      },
+      {
+        "pc": "0x4e4e3c",
+        "word": "0xae0202a4"
+      },
+      {
+        "pc": "0x4e3f6c",
+        "word": "0x0c119b78"
+      },
+      {
+        "pc": "0x4e3f70",
+        "word": "0x8e040290"
+      },
+      {
+        "pc": "0x94b400",
+        "word": "0x009228d0"
+      },
+      {
+        "pc": "0x94b404",
+        "word": "0x00922530"
+      },
+      {
+        "pc": "0x94b408",
+        "word": "0x00000004"
+      },
+      {
+        "pc": "0x94b40c",
+        "word": "0x000002ac"
+      },
+      {
+        "pc": "0x94b410",
+        "word": "0x00b8bac8"
+      },
+      {
+        "pc": "0x94b414",
+        "word": "0x00000000"
+      },
+      {
+        "pc": "0x94b418",
+        "word": "0x004e3e40"
+      },
+      {
+        "pc": "0x94b41c",
+        "word": "0x004e3e80"
+      },
+      {
+        "pc": "0x4e58c8",
+        "word": "0xafbf001c"
+      },
+      {
+        "pc": "0x4e58cc",
+        "word": "0x0c10f4b0"
+      },
+      {
+        "pc": "0x4e58d0",
+        "word": "0x2484b400"
+      }
+    ]
+  },
+  "consumer_provenance": {
+    "notes": "Five+2A4 consumers retain U returned by43D200;436114 reads a resource-backed context+D4;505674 reads a previously saved input U from context+0C. Event4520C0 appears at926C08 with event112 at926C04; dispatcher4542A0 supplies the old saved U. These origins do not authenticate constructor completion, actual current target or lifetime.",
+    "evidence": [
+      {
+        "pc": "0x4a6f8c",
+        "word": "0x0c10f480"
+      },
+      {
+        "pc": "0x4a6f90",
+        "word": "0xafa00454"
+      },
+      {
+        "pc": "0x4a6f94",
+        "word": "0x1040001d"
+      },
+      {
+        "pc": "0x4a6f98",
+        "word": "0x3c120094"
+      },
+      {
+        "pc": "0x4a6f9c",
+        "word": "0x8c440024"
+      },
+      {
+        "pc": "0x4a6fa0",
+        "word": "0x3c060092"
+      },
+      {
+        "pc": "0x4a6fa4",
+        "word": "0x26453e94"
+      },
+      {
+        "pc": "0x4a6fa8",
+        "word": "0x24c608b4"
+      },
+      {
+        "pc": "0x4a6fac",
+        "word": "0x0c121778"
+      },
+      {
+        "pc": "0x4a6fb0",
+        "word": "0x00408021"
+      },
+      {
+        "pc": "0x4a80f0",
+        "word": "0x0c10f480"
+      },
+      {
+        "pc": "0x4a80f4",
+        "word": "0xafa0003c"
+      },
+      {
+        "pc": "0x4a80f8",
+        "word": "0x10400030"
+      },
+      {
+        "pc": "0x4a80fc",
+        "word": "0x3c060092"
+      },
+      {
+        "pc": "0x4a8100",
+        "word": "0x8c440024"
+      },
+      {
+        "pc": "0x4a8104",
+        "word": "0x3c050094"
+      },
+      {
+        "pc": "0x4a8108",
+        "word": "0x24a53e94"
+      },
+      {
+        "pc": "0x4a810c",
+        "word": "0x24c608b4"
+      },
+      {
+        "pc": "0x4a8110",
+        "word": "0x0c121778"
+      },
+      {
+        "pc": "0x4a8114",
+        "word": "0x00408021"
+      },
+      {
+        "pc": "0x5054c0",
+        "word": "0x27bdffc8"
+      },
+      {
+        "pc": "0x5054c4",
+        "word": "0xafb1002c"
+      },
+      {
+        "pc": "0x5054c8",
+        "word": "0x00808821"
+      },
+      {
+        "pc": "0x5054f8",
+        "word": "0x24040164"
+      },
+      {
+        "pc": "0x5054fc",
+        "word": "0x0c119a78"
+      },
+      {
+        "pc": "0x505500",
+        "word": "0xae11000c"
+      },
+      {
+        "pc": "0x459340",
+        "word": "0x10800003"
+      },
+      {
+        "pc": "0x459344",
+        "word": "0x00000000"
+      },
+      {
+        "pc": "0x459348",
+        "word": "0x03e00008"
+      },
+      {
+        "pc": "0x45934c",
+        "word": "0x8c82007c"
+      },
+      {
+        "pc": "0x4520c0",
+        "word": "0x27bdfdc8"
+      },
+      {
+        "pc": "0x4520c4",
+        "word": "0xafb0022c"
+      },
+      {
+        "pc": "0x4520c8",
+        "word": "0x00808021"
+      },
+      {
+        "pc": "0x452104",
+        "word": "0x3c060092"
+      },
+      {
+        "pc": "0x452108",
+        "word": "0x3c050092"
+      },
+      {
+        "pc": "0x45210c",
+        "word": "0x24c6662c"
+      },
+      {
+        "pc": "0x452110",
+        "word": "0x240707d0"
+      },
+      {
+        "pc": "0x452114",
+        "word": "0x02002021"
+      },
+      {
+        "pc": "0x452118",
+        "word": "0x24a56574"
+      },
+      {
+        "pc": "0x45211c",
+        "word": "0x0c11f658"
+      },
+      {
+        "pc": "0x452120",
+        "word": "0xafa00010"
+      },
+      {
+        "pc": "0x452124",
+        "word": "0x3c050092"
+      },
+      {
+        "pc": "0x452128",
+        "word": "0x02002021"
+      },
+      {
+        "pc": "0x45212c",
+        "word": "0x0c10ec90"
+      },
+      {
+        "pc": "0x452130",
+        "word": "0x24a56524"
+      },
+      {
+        "pc": "0x926c04",
+        "word": "0x00000112"
+      },
+      {
+        "pc": "0x926c08",
+        "word": "0x004520c0"
+      },
+      {
+        "pc": "0x454200",
+        "word": "0x27bdffc0"
+      },
+      {
+        "pc": "0x454204",
+        "word": "0xafb10038"
+      },
+      {
+        "pc": "0x454208",
+        "word": "0xafbf003c"
+      },
+      {
+        "pc": "0x45420c",
+        "word": "0xafb00034"
+      },
+      {
+        "pc": "0x454210",
+        "word": "0x0c11d4c8"
+      },
+      {
+        "pc": "0x454214",
+        "word": "0x00808821"
+      },
+      {
+        "pc": "0x454258",
+        "word": "0x3c040092"
+      },
+      {
+        "pc": "0x45425c",
+        "word": "0x24846b94"
+      },
+      {
+        "pc": "0x454260",
+        "word": "0x8fa6001c"
+      },
+      {
+        "pc": "0x45428c",
+        "word": "0x000318c0"
+      },
+      {
+        "pc": "0x454290",
+        "word": "0x00832021"
+      },
+      {
+        "pc": "0x454294",
+        "word": "0x8c990004"
+      },
+      {
+        "pc": "0x454298",
+        "word": "0x1320ffe6"
+      },
+      {
+        "pc": "0x45429c",
+        "word": "0x02202021"
+      },
+      {
+        "pc": "0x4542a0",
+        "word": "0x0320f809"
+      },
+      {
+        "pc": "0x4542a4",
+        "word": "0x27a50018"
+      },
+      {
+        "pc": "0x43c980",
+        "word": "0x27bdffb8"
+      },
+      {
+        "pc": "0x43c984",
+        "word": "0xafb0003c"
+      },
+      {
+        "pc": "0x43c988",
+        "word": "0xafbf0044"
+      },
+      {
+        "pc": "0x43c98c",
+        "word": "0xafb10040"
+      },
+      {
+        "pc": "0x43c990",
+        "word": "0x8c820134"
+      },
+      {
+        "pc": "0x43c994",
+        "word": "0x10400018"
+      },
+      {
+        "pc": "0x43c998",
+        "word": "0x00808021"
+      },
+      {
+        "pc": "0x43c99c",
+        "word": "0x1000002b"
+      },
+      {
+        "pc": "0x43c9a0",
+        "word": "0x8fbf0044"
+      },
+      {
+        "pc": "0x43c9a4",
+        "word": "0x0c115080"
+      },
+      {
+        "pc": "0x43c9a8",
+        "word": "0x02002021"
+      },
+      {
+        "pc": "0x4e4ac0",
+        "word": "0x27bdffe0"
+      },
+      {
+        "pc": "0x4e4ac4",
+        "word": "0xafbf001c"
+      },
+      {
+        "pc": "0x4e4ac8",
+        "word": "0x8c82002c"
+      },
+      {
+        "pc": "0x4e4acc",
+        "word": "0x10400007"
+      },
+      {
+        "pc": "0x4e4ad0",
+        "word": "0x3c050095"
+      },
+      {
+        "pc": "0x4e4ad4",
+        "word": "0x0c10f260"
+      },
+      {
+        "pc": "0x4e4ad8",
+        "word": "0x00000000"
+      }
+    ]
+  },
+  "additional_write_examples": {
+    "notes": "These literal partial stores and other PIC/data-copy structures illustrate why matching offsets are untyped. They are not proved writers of the U/list used by these consumers. The inventory also excludes shifted-base stores, earlier-starting overlaps, SC/SWC1, bulk copies, imports, reuse and concurrent writes. Other conditional PIC code candidates are not a closed runtime target set.",
+    "evidence": [
+      {
+        "pc": "0x68ab58",
+        "word": "0xa6120274"
+      },
+      {
+        "pc": "0x68ab5c",
+        "word": "0xa6040276"
+      },
+      {
+        "pc": "0x68aef4",
+        "word": "0xa6120274"
+      },
+      {
+        "pc": "0x68aef8",
+        "word": "0xa6040276"
+      },
+      {
+        "pc": "0x6548a8",
+        "word": "0xa20202a4"
+      },
+      {
+        "pc": "0x654da4",
+        "word": "0xa20302a4"
+      },
+      {
+        "pc": "0x654db0",
+        "word": "0xa20302a4"
+      },
+      {
+        "pc": "0x72c48c",
+        "word": "0x8f848098"
+      },
+      {
+        "pc": "0x72c490",
+        "word": "0x00431021"
+      },
+      {
+        "pc": "0x72c494",
+        "word": "0x2484aef4"
+      },
+      {
+        "pc": "0x72c498",
+        "word": "0xae060050"
+      },
+      {
+        "pc": "0x72c49c",
+        "word": "0xae070054"
+      },
+      {
+        "pc": "0x72c4a0",
+        "word": "0xae240274"
+      },
+      {
+        "pc": "0x72e0dc",
+        "word": "0x8e020274"
+      },
+      {
+        "pc": "0x72e0e0",
+        "word": "0xae82003c"
+      },
+      {
+        "pc": "0x72e0e4",
+        "word": "0x8f828154"
+      },
+      {
+        "pc": "0x72e0e8",
+        "word": "0xae150278"
+      },
+      {
+        "pc": "0x72e0ec",
+        "word": "0xae020274"
+      },
+      {
+        "pc": "0x72e68c",
+        "word": "0x8f828098"
+      },
+      {
+        "pc": "0x72e690",
+        "word": "0xae100278"
+      },
+      {
+        "pc": "0x72e694",
+        "word": "0x2442aef4"
+      },
+      {
+        "pc": "0x72e698",
+        "word": "0xae020274"
+      },
+      {
+        "pc": "0xadae68",
+        "word": "0x00730000"
+      },
+      {
+        "pc": "0xadaf24",
+        "word": "0x00749b7c"
+      }
+    ]
+  },
+  "native_order_follow_up": {
+    "driver_and_entry": {
+      "known_driver_phases": [
+        "initializer_return",
+        "own_loop_adapter",
+        "destructor"
+      ],
+      "initializer_status_checked": false,
+      "loop_status_checked": false,
+      "direct_pre_assignment_callees": [
+        "0xa5bc60",
+        "0xa5bc60",
+        "0x423980",
+        "0x466d60"
+      ],
+      "notes": "For the selected descriptor, the driver loads and invokes +254, +25C and +258 synchronously in that order. It ignores the first two returns. The initializer has a straight native prefix through +2A4 assignment, with two memset calls, property query 4 and mutex creation before the store. The two native return suffixes lie after the assignment. The error branch on base initializer -1 is encoded. The pinned base initializer forces zero on normal return. The own-loop adapter additionally requires nonzero U+2C. Imported reentry and concurrent scheduling remain open.",
+      "evidence": [
+        {
+          "pc": "0x4e3dec",
+          "word": "0x8c990254"
+        },
+        {
+          "pc": "0x4e3df0",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x4e3df4",
+          "word": "0x00808021"
+        },
+        {
+          "pc": "0x4e3df8",
+          "word": "0x8e19025c"
+        },
+        {
+          "pc": "0x4e3dfc",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x4e3e00",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x4e3e04",
+          "word": "0x8e190258"
+        },
+        {
+          "pc": "0x4e3e08",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x4e3e0c",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x4e3e10",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x4e3e14",
+          "word": "0x8fb00018"
+        },
+        {
+          "pc": "0x4e3e18",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x4e3e1c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4e3e20",
+          "word": "0x27bd0020"
+        },
+        {
+          "pc": "0x4e4e08",
+          "word": "0x0c296f18"
+        },
+        {
+          "pc": "0x4e4e0c",
+          "word": "0xafb20370"
+        },
+        {
+          "pc": "0x4e4e10",
+          "word": "0x00002821"
+        },
+        {
+          "pc": "0x4e4e14",
+          "word": "0x24060104"
+        },
+        {
+          "pc": "0x4e4e18",
+          "word": "0x0c296f18"
+        },
+        {
+          "pc": "0x4e4e1c",
+          "word": "0x27a40220"
+        },
+        {
+          "pc": "0x4e4e20",
+          "word": "0x0c108e60"
+        },
+        {
+          "pc": "0x4e4e24",
+          "word": "0x24040004"
+        },
+        {
+          "pc": "0x4e4e28",
+          "word": "0x0c119b58"
+        },
+        {
+          "pc": "0x4e4e2c",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x4e4e30",
+          "word": "0xae020290"
+        },
+        {
+          "pc": "0x4e4e34",
+          "word": "0x3c02004e"
+        },
+        {
+          "pc": "0x4e4e38",
+          "word": "0x24424a60"
+        },
+        {
+          "pc": "0x4e4e3c",
+          "word": "0xae0202a4"
+        },
+        {
+          "pc": "0x466d60",
+          "word": "0x27bdffe0"
+        },
+        {
+          "pc": "0x466d64",
+          "word": "0x24040018"
+        },
+        {
+          "pc": "0x466d68",
+          "word": "0xafbf001c"
+        },
+        {
+          "pc": "0x466d6c",
+          "word": "0x0c119a78"
+        },
+        {
+          "pc": "0x466d70",
+          "word": "0xafb00018"
+        },
+        {
+          "pc": "0x466d74",
+          "word": "0x00402021"
+        },
+        {
+          "pc": "0x466d78",
+          "word": "0x00002821"
+        },
+        {
+          "pc": "0x466d7c",
+          "word": "0x0c296e28"
+        },
+        {
+          "pc": "0x466d80",
+          "word": "0x00408021"
+        },
+        {
+          "pc": "0x466d84",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x466d88",
+          "word": "0x02001021"
+        },
+        {
+          "pc": "0x466d8c",
+          "word": "0x8fb00018"
+        },
+        {
+          "pc": "0x466d90",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x466d94",
+          "word": "0x27bd0020"
+        },
+        {
+          "pc": "0x920604",
+          "word": "0x004239f8"
+        },
+        {
+          "pc": "0x4239f8",
+          "word": "0x1000ffef"
+        },
+        {
+          "pc": "0x4239fc",
+          "word": "0x8c42001c"
+        },
+        {
+          "pc": "0x423a00",
+          "word": "0x1000ffed"
+        },
+        {
+          "pc": "0x4e4e70",
+          "word": "0x0c10e688"
+        },
+        {
+          "pc": "0x4e4e74",
+          "word": "0x27a50220"
+        },
+        {
+          "pc": "0x4e4e78",
+          "word": "0x2403ffff"
+        },
+        {
+          "pc": "0x4e4e7c",
+          "word": "0x104300c3"
+        },
+        {
+          "pc": "0x4e4e80",
+          "word": "0x2404000c"
+        },
+        {
+          "pc": "0x4e4f8c",
+          "word": "0x8fbf037c"
+        },
+        {
+          "pc": "0x4e4f90",
+          "word": "0x8fb40378"
+        },
+        {
+          "pc": "0x4e4f94",
+          "word": "0x8fb30374"
+        },
+        {
+          "pc": "0x4e4f98",
+          "word": "0x8fb20370"
+        },
+        {
+          "pc": "0x4e4f9c",
+          "word": "0x8fb1036c"
+        },
+        {
+          "pc": "0x4e4fa0",
+          "word": "0x8fb00368"
+        },
+        {
+          "pc": "0x4e4fa4",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4e4fa8",
+          "word": "0x27bd0380"
+        },
+        {
+          "pc": "0x4e51a0",
+          "word": "0x8fbf037c"
+        },
+        {
+          "pc": "0x4e51a4",
+          "word": "0x8fb40378"
+        },
+        {
+          "pc": "0x4e51a8",
+          "word": "0x8fb30374"
+        },
+        {
+          "pc": "0x4e51ac",
+          "word": "0x8fb20370"
+        },
+        {
+          "pc": "0x4e51b0",
+          "word": "0x8fb1036c"
+        },
+        {
+          "pc": "0x4e51b4",
+          "word": "0x8fb00368"
+        },
+        {
+          "pc": "0x4e51b8",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4e51bc",
+          "word": "0x27bd0380"
+        },
+        {
+          "pc": "0x439b94",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x439b98",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x439b9c",
+          "word": "0x27bd0030"
+        },
+        {
+          "pc": "0x4e4ac0",
+          "word": "0x27bdffe0"
+        },
+        {
+          "pc": "0x4e4ac4",
+          "word": "0xafbf001c"
+        },
+        {
+          "pc": "0x4e4ac8",
+          "word": "0x8c82002c"
+        },
+        {
+          "pc": "0x4e4acc",
+          "word": "0x10400007"
+        },
+        {
+          "pc": "0x4e4ad0",
+          "word": "0x3c050095"
+        },
+        {
+          "pc": "0x4e4ad4",
+          "word": "0x0c10f260"
+        },
+        {
+          "pc": "0x4e4ad8",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x4e4adc",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x4e4ae0",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x4e4ae4",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4e4ae8",
+          "word": "0x27bd0020"
+        },
+        {
+          "pc": "0x4e4aec",
+          "word": "0x3c040092"
+        },
+        {
+          "pc": "0x4e4af0",
+          "word": "0x248428d0"
+        },
+        {
+          "pc": "0x4e4af4",
+          "word": "0x0c119c58"
+        },
+        {
+          "pc": "0x4e4af8",
+          "word": "0x24a5b1f4"
+        },
+        {
+          "pc": "0x4e4afc",
+          "word": "0x1000fff8"
+        },
+        {
+          "pc": "0x4e4b00",
+          "word": "0x2402ffff"
+        }
+      ]
+    },
+    "known_input_and_queue": {
+      "getter_consumers": [
+        "0x4a71a8",
+        "0x4a71d0",
+        "0x4a7274",
+        "0x4a8234",
+        "0x4a82a0"
+      ],
+      "list_consumers": [
+        "0x4a78ec",
+        "0x4a7980"
+      ],
+      "queued_consumer": "0x45211c",
+      "notes": "The selected own loop has a synchronous input route through 8B1AA0, widget+4C, resource+138 and resource+160. Template slots A9A618/A9AA30 select the two list handlers. Input dialog registrations store the getter wrappers in dialog state+10 and button handler 50A13C calls them. The queued 112 handler instead uses the loop-supplied old U through 4542A0. These paths belong to the known own-loop invocation and its demonstrated registrations. Alternate dispatch, actual resource selection and target retention remain open.",
+      "evidence": [
+        {
+          "pc": "0x43c9a4",
+          "word": "0x0c115080"
+        },
+        {
+          "pc": "0x43c9a8",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x43c9f8",
+          "word": "0x0c11c968"
+        },
+        {
+          "pc": "0x43c9fc",
+          "word": "0x27a40018"
+        },
+        {
+          "pc": "0x43ca00",
+          "word": "0x27a40018"
+        },
+        {
+          "pc": "0x43ca04",
+          "word": "0x0c11ee60"
+        },
+        {
+          "pc": "0x43ca08",
+          "word": "0x00408821"
+        },
+        {
+          "pc": "0x43ca0c",
+          "word": "0x0c11ee90"
+        },
+        {
+          "pc": "0x43ca10",
+          "word": "0x27a40018"
+        },
+        {
+          "pc": "0x43ca14",
+          "word": "0x1620ffe3"
+        },
+        {
+          "pc": "0x43ca18",
+          "word": "0x8fa20020"
+        },
+        {
+          "pc": "0x43ca1c",
+          "word": "0x8e040028"
+        },
+        {
+          "pc": "0x43ca20",
+          "word": "0x27a50018"
+        },
+        {
+          "pc": "0x43ca24",
+          "word": "0xae02011c"
+        },
+        {
+          "pc": "0x43ca28",
+          "word": "0x8fa20024"
+        },
+        {
+          "pc": "0x43ca2c",
+          "word": "0x0c22c6a8"
+        },
+        {
+          "pc": "0x43ca30",
+          "word": "0xae020120"
+        },
+        {
+          "pc": "0x43ca34",
+          "word": "0x1000ffdb"
+        },
+        {
+          "pc": "0x43ca38",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x43ca3c",
+          "word": "0x0c10ded8"
+        },
+        {
+          "pc": "0x8b1ae8",
+          "word": "0x8ce40008"
+        },
+        {
+          "pc": "0x8b1aec",
+          "word": "0x3c06008b"
+        },
+        {
+          "pc": "0x8b1af0",
+          "word": "0x02002821"
+        },
+        {
+          "pc": "0x8b1af4",
+          "word": "0x0c22d330"
+        },
+        {
+          "pc": "0x8b1af8",
+          "word": "0x24c616a0"
+        },
+        {
+          "pc": "0x9f474c",
+          "word": "0x008b176c"
+        },
+        {
+          "pc": "0x8b17ec",
+          "word": "0xafa30020"
+        },
+        {
+          "pc": "0x8b17f0",
+          "word": "0xafa20024"
+        },
+        {
+          "pc": "0x8b17f4",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x8b17f8",
+          "word": "0x27a50018"
+        },
+        {
+          "pc": "0x43b4f4",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x43b4f8",
+          "word": "0x02402821"
+        },
+        {
+          "pc": "0x43b4fc",
+          "word": "0x02803021"
+        },
+        {
+          "pc": "0x43b500",
+          "word": "0x0c10e3a8"
+        },
+        {
+          "pc": "0x43b504",
+          "word": "0x02203821"
+        },
+        {
+          "pc": "0x43911c",
+          "word": "0x8fb50040"
+        },
+        {
+          "pc": "0x439120",
+          "word": "0x02403021"
+        },
+        {
+          "pc": "0x439124",
+          "word": "0x8fb20034"
+        },
+        {
+          "pc": "0x439128",
+          "word": "0x03200008"
+        },
+        {
+          "pc": "0x43912c",
+          "word": "0x27bd0050"
+        },
+        {
+          "pc": "0x43bbe8",
+          "word": "0x8fb00020"
+        },
+        {
+          "pc": "0x43bbec",
+          "word": "0x03200008"
+        },
+        {
+          "pc": "0x43bbf0",
+          "word": "0x27bd0030"
+        },
+        {
+          "pc": "0xa9a618",
+          "word": "0x004a77a0"
+        },
+        {
+          "pc": "0xa9aa30",
+          "word": "0x004a83c0"
+        },
+        {
+          "pc": "0x4a83c0",
+          "word": "0x08129f60"
+        },
+        {
+          "pc": "0x4a83c4",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x4a79fc",
+          "word": "0x8e0400d4"
+        },
+        {
+          "pc": "0x4a7a00",
+          "word": "0x3c050094"
+        },
+        {
+          "pc": "0x4a7a04",
+          "word": "0x3c06004a"
+        },
+        {
+          "pc": "0x4a7a08",
+          "word": "0x24a55888"
+        },
+        {
+          "pc": "0x4a7a0c",
+          "word": "0x0c1427c8"
+        },
+        {
+          "pc": "0x4a7a10",
+          "word": "0x24c66f60"
+        },
+        {
+          "pc": "0x4a7aa0",
+          "word": "0x8e0400d4"
+        },
+        {
+          "pc": "0x4a7aa4",
+          "word": "0x3c06004a"
+        },
+        {
+          "pc": "0x4a7aa8",
+          "word": "0x24a55888"
+        },
+        {
+          "pc": "0x4a7aac",
+          "word": "0x0c1427c8"
+        },
+        {
+          "pc": "0x4a7ab0",
+          "word": "0x24c66f60"
+        },
+        {
+          "pc": "0x4a7e78",
+          "word": "0x8e0400d4"
+        },
+        {
+          "pc": "0x4a7e7c",
+          "word": "0x3c050094"
+        },
+        {
+          "pc": "0x4a7e80",
+          "word": "0x3c06004b"
+        },
+        {
+          "pc": "0x4a7e84",
+          "word": "0x24a55888"
+        },
+        {
+          "pc": "0x4a7e88",
+          "word": "0x0c1427c8"
+        },
+        {
+          "pc": "0x4a7e8c",
+          "word": "0x24c680e0"
+        },
+        {
+          "pc": "0x50a018",
+          "word": "0xae150010"
+        },
+        {
+          "pc": "0xaac638",
+          "word": "0x0050a100"
+        },
+        {
+          "pc": "0x43bd98",
+          "word": "0xac760138"
+        },
+        {
+          "pc": "0x43bd9c",
+          "word": "0x8e05004c"
+        },
+        {
+          "pc": "0x43bda0",
+          "word": "0x8c4300d0"
+        },
+        {
+          "pc": "0x43bda4",
+          "word": "0xac650164"
+        },
+        {
+          "pc": "0x43bda8",
+          "word": "0x8e050044"
+        },
+        {
+          "pc": "0x43bdac",
+          "word": "0x8c4300d0"
+        },
+        {
+          "pc": "0x43bdb0",
+          "word": "0xac65015c"
+        },
+        {
+          "pc": "0x43bdb4",
+          "word": "0x8e050048"
+        },
+        {
+          "pc": "0x43bdb8",
+          "word": "0x8c4300d0"
+        },
+        {
+          "pc": "0x43bdbc",
+          "word": "0xac650160"
+        },
+        {
+          "pc": "0x43bdc0",
+          "word": "0x8e050040"
+        },
+        {
+          "pc": "0x50a118",
+          "word": "0x8c590010"
+        },
+        {
+          "pc": "0x50a11c",
+          "word": "0x13200004"
+        },
+        {
+          "pc": "0x50a120",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x50a124",
+          "word": "0x94420014"
+        },
+        {
+          "pc": "0x50a128",
+          "word": "0x14400004"
+        },
+        {
+          "pc": "0x50a12c",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x50a130",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x50a134",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x50a138",
+          "word": "0x27bd0020"
+        },
+        {
+          "pc": "0x50a13c",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x50a140",
+          "word": "0x00002021"
+        },
+        {
+          "pc": "0x50a144",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x50a148",
+          "word": "0x24020001"
+        },
+        {
+          "pc": "0x926c04",
+          "word": "0x00000112"
+        },
+        {
+          "pc": "0x926c08",
+          "word": "0x004520c0"
+        },
+        {
+          "pc": "0x45428c",
+          "word": "0x000318c0"
+        },
+        {
+          "pc": "0x454290",
+          "word": "0x00832021"
+        },
+        {
+          "pc": "0x454294",
+          "word": "0x8c990004"
+        },
+        {
+          "pc": "0x454298",
+          "word": "0x1320ffe6"
+        },
+        {
+          "pc": "0x45429c",
+          "word": "0x02202021"
+        },
+        {
+          "pc": "0x4542a0",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x4542a4",
+          "word": "0x27a50018"
+        }
+      ]
+    },
+    "worker_launch": {
+      "assignment_pc": "0x4e4e3c",
+      "start_call_pc": "0x466bfc",
+      "entry": "0x48ea80",
+      "notes": "After +2A4 assignment, the base initializer passes U+30, U, 0, 0 to 48F360. The worker context saves U at +138. Zero A2 skips the initial task-construction path. The thread-create call passes entry 48EA80 and the worker context. This launch can occur before initializer return. The worker's checked initial path waits and uses queued task methods. A producer/task binding to the audited UI callbacks has not been established.",
+      "evidence": [
+        {
+          "pc": "0x439b38",
+          "word": "0x3c02009b"
+        },
+        {
+          "pc": "0x439b3c",
+          "word": "0x2442e978"
+        },
+        {
+          "pc": "0x439b40",
+          "word": "0x26040030"
+        },
+        {
+          "pc": "0x439b44",
+          "word": "0x02002821"
+        },
+        {
+          "pc": "0x439b48",
+          "word": "0x00003021"
+        },
+        {
+          "pc": "0x439b4c",
+          "word": "0x00003821"
+        },
+        {
+          "pc": "0x439b50",
+          "word": "0x0c123cd8"
+        },
+        {
+          "pc": "0x439b54",
+          "word": "0xafa20010"
+        },
+        {
+          "pc": "0x48f3d4",
+          "word": "0x12600011"
+        },
+        {
+          "pc": "0x48f3d8",
+          "word": "0xae300000"
+        },
+        {
+          "pc": "0x48f428",
+          "word": "0xae140138"
+        },
+        {
+          "pc": "0x48f4b4",
+          "word": "0x8e060018"
+        },
+        {
+          "pc": "0x48f4b8",
+          "word": "0x3c040049"
+        },
+        {
+          "pc": "0x48f4bc",
+          "word": "0x02002821"
+        },
+        {
+          "pc": "0x48f4c0",
+          "word": "0x24c6000c"
+        },
+        {
+          "pc": "0x48f4c4",
+          "word": "0x24070080"
+        },
+        {
+          "pc": "0x48f4c8",
+          "word": "0x0c119ae8"
+        },
+        {
+          "pc": "0x48f4cc",
+          "word": "0x2484ea80"
+        },
+        {
+          "pc": "0x466bf4",
+          "word": "0x02203021"
+        },
+        {
+          "pc": "0x466bf8",
+          "word": "0x02003821"
+        },
+        {
+          "pc": "0x466bfc",
+          "word": "0x0c296e6c"
+        },
+        {
+          "pc": "0x466c00",
+          "word": "0x27a4003c"
+        },
+        {
+          "pc": "0x48eaf0",
+          "word": "0x0c119b38"
+        },
+        {
+          "pc": "0x48eaf4",
+          "word": "0x2405ffff"
+        },
+        {
+          "pc": "0x48eb2c",
+          "word": "0x8c99002c"
+        },
+        {
+          "pc": "0x48eb30",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x48eb34",
+          "word": "0x00002821"
+        },
+        {
+          "pc": "0x48ebb4",
+          "word": "0x8e3902b8"
+        },
+        {
+          "pc": "0x48ebb8",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x48ebbc",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x48ebc0",
+          "word": "0x02202821"
+        },
+        {
+          "pc": "0x48ec48",
+          "word": "0x8e3902c0"
+        },
+        {
+          "pc": "0x48ec4c",
+          "word": "0x1320000b"
+        },
+        {
+          "pc": "0x48ec50",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x48ec54",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x48ec58",
+          "word": "0x02202821"
+        },
+        {
+          "pc": "0x48ec68",
+          "word": "0x8e3902bc"
+        },
+        {
+          "pc": "0x48ec6c",
+          "word": "0x13200003"
+        },
+        {
+          "pc": "0x48ec70",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x48ec74",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x48ec78",
+          "word": "0x02202821"
+        },
+        {
+          "pc": "0x48ec8c",
+          "word": "0x8e020138"
+        },
+        {
+          "pc": "0x48ec90",
+          "word": "0x0c119b40"
+        },
+        {
+          "pc": "0x48ec94",
+          "word": "0x8c440144"
+        }
+      ]
+    },
+    "teardown_and_shutdown": {
+      "mutex_release_call_pc": "0x466dfc",
+      "normal_replacement_pc": "0x43d080",
+      "exit_branch_pc": "0x43d074",
+      "shutdown_clear_pc": "0x43d158",
+      "generic_release_pc": "0x43d4f4",
+      "notes": "The checked destructor suffix passes U+290 to the destroy wrapper and then U to base cleanup. The wrapper frees a nonzero mutex after the raw destroy call regardless of status. The checked suffix leaves +290 and active ADF208 intact. Normal dispatcher replacement is at 43D080, with 43D0A8 on the idle route. Exit-flag control goes to 43D0DC and bypasses normal replacement. The separate shutdown clears the active global before its registry loop can reach generic object release. Other callback bindings, release callers and aliases remain outside this order proof.",
+      "evidence": [
+        {
+          "pc": "0x4e3efc",
+          "word": "0x8e190274"
+        },
+        {
+          "pc": "0x4e3f00",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x4e3f04",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x4e3f08",
+          "word": "0x8e110034"
+        },
+        {
+          "pc": "0x4e3f0c",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x4e3f10",
+          "word": "0x12330014"
+        },
+        {
+          "pc": "0x4e3f14",
+          "word": "0x8e190278"
+        },
+        {
+          "pc": "0x4e3f18",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x4e3f1c",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x4e3f20",
+          "word": "0x8e390018"
+        },
+        {
+          "pc": "0x4e3f24",
+          "word": "0x1720fff0"
+        },
+        {
+          "pc": "0x4e3f28",
+          "word": "0x02a02021"
+        },
+        {
+          "pc": "0x4e3f64",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x4e3f68",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x4e3f6c",
+          "word": "0x0c119b78"
+        },
+        {
+          "pc": "0x4e3f70",
+          "word": "0x8e040290"
+        },
+        {
+          "pc": "0x4e3f74",
+          "word": "0x0c10f2c8"
+        },
+        {
+          "pc": "0x4e3f78",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x4e3f7c",
+          "word": "0x8fbf0034"
+        },
+        {
+          "pc": "0x4e3f80",
+          "word": "0x8fb50030"
+        },
+        {
+          "pc": "0x4e3f84",
+          "word": "0x8fb4002c"
+        },
+        {
+          "pc": "0x4e3f88",
+          "word": "0x8fb30028"
+        },
+        {
+          "pc": "0x4e3f8c",
+          "word": "0x8fb20024"
+        },
+        {
+          "pc": "0x4e3f90",
+          "word": "0x8fb10020"
+        },
+        {
+          "pc": "0x4e3f94",
+          "word": "0x8fb0001c"
+        },
+        {
+          "pc": "0x4e3f98",
+          "word": "0x27bd0038"
+        },
+        {
+          "pc": "0x4e3f9c",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x4e3fa0",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x466de0",
+          "word": "0x27bdffe0"
+        },
+        {
+          "pc": "0x466de4",
+          "word": "0xafb00018"
+        },
+        {
+          "pc": "0x466de8",
+          "word": "0xafbf001c"
+        },
+        {
+          "pc": "0x466dec",
+          "word": "0x0c296c3c"
+        },
+        {
+          "pc": "0x466df0",
+          "word": "0x00808021"
+        },
+        {
+          "pc": "0x466df4",
+          "word": "0x12000004"
+        },
+        {
+          "pc": "0x466df8",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x466dfc",
+          "word": "0x0c119aa0"
+        },
+        {
+          "pc": "0x466e00",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x466e04",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x466e08",
+          "word": "0x8fb00018"
+        },
+        {
+          "pc": "0x466e0c",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x466e10",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x466e14",
+          "word": "0x27bd0020"
+        },
+        {
+          "pc": "0x43cb38",
+          "word": "0x0c123d48"
+        },
+        {
+          "pc": "0x43cb3c",
+          "word": "0x8c840030"
+        },
+        {
+          "pc": "0x43cb94",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x43cb98",
+          "word": "0x26320034"
+        },
+        {
+          "pc": "0x43cbd4",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x43cbd8",
+          "word": "0x02202021"
+        },
+        {
+          "pc": "0x43d06c",
+          "word": "0x1440001b"
+        },
+        {
+          "pc": "0x43d070",
+          "word": "0x8ee2f214"
+        },
+        {
+          "pc": "0x43d074",
+          "word": "0x14400019"
+        },
+        {
+          "pc": "0x43d078",
+          "word": "0x8e02f20c"
+        },
+        {
+          "pc": "0x43d07c",
+          "word": "0xae00f20c"
+        },
+        {
+          "pc": "0x43d080",
+          "word": "0xaec2f208"
+        },
+        {
+          "pc": "0x43d084",
+          "word": "0x02802021"
+        },
+        {
+          "pc": "0x43d098",
+          "word": "0x8e02f20c"
+        },
+        {
+          "pc": "0x43d09c",
+          "word": "0x8ee3f214"
+        },
+        {
+          "pc": "0x43d0a0",
+          "word": "0xae00f20c"
+        },
+        {
+          "pc": "0x43d0a4",
+          "word": "0x1060fff7"
+        },
+        {
+          "pc": "0x43d0a8",
+          "word": "0xae42f208"
+        },
+        {
+          "pc": "0x43d0dc",
+          "word": "0x3c040092"
+        },
+        {
+          "pc": "0x43d0e0",
+          "word": "0x3c050092"
+        },
+        {
+          "pc": "0x43d0e4",
+          "word": "0x24842868"
+        },
+        {
+          "pc": "0x43d0e8",
+          "word": "0x0c119be0"
+        },
+        {
+          "pc": "0x43d0ec",
+          "word": "0x24a528fc"
+        },
+        {
+          "pc": "0x43d0f0",
+          "word": "0x0c112080"
+        },
+        {
+          "pc": "0x43d0f4",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x43d0f8",
+          "word": "0x8fbf003c"
+        },
+        {
+          "pc": "0x43d0fc",
+          "word": "0x8fb70038"
+        },
+        {
+          "pc": "0x43d100",
+          "word": "0x8fb60034"
+        },
+        {
+          "pc": "0x43d104",
+          "word": "0x8fb50030"
+        },
+        {
+          "pc": "0x43d108",
+          "word": "0x8fb4002c"
+        },
+        {
+          "pc": "0x43d10c",
+          "word": "0x8fb30028"
+        },
+        {
+          "pc": "0x43d110",
+          "word": "0x8fb20024"
+        },
+        {
+          "pc": "0x43d114",
+          "word": "0x8fb10020"
+        },
+        {
+          "pc": "0x43d118",
+          "word": "0x8fb0001c"
+        },
+        {
+          "pc": "0x43d11c",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x43d120",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x43d124",
+          "word": "0x27bd0040"
+        },
+        {
+          "pc": "0x474814",
+          "word": "0x0c10f3f8"
+        },
+        {
+          "pc": "0x474818",
+          "word": "0xae029c6c"
+        },
+        {
+          "pc": "0x47481c",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x474820",
+          "word": "0xae009c6c"
+        },
+        {
+          "pc": "0x474824",
+          "word": "0x8fb00018"
+        },
+        {
+          "pc": "0x474868",
+          "word": "0x0c10f450"
+        },
+        {
+          "pc": "0x47486c",
+          "word": "0x3c1100b9"
+        },
+        {
+          "pc": "0x43d140",
+          "word": "0x27bdffd0"
+        },
+        {
+          "pc": "0x43d144",
+          "word": "0xafb0001c"
+        },
+        {
+          "pc": "0x43d148",
+          "word": "0x3c1000a9"
+        },
+        {
+          "pc": "0x43d14c",
+          "word": "0x26100f98"
+        },
+        {
+          "pc": "0x43d150",
+          "word": "0x3c0200ae"
+        },
+        {
+          "pc": "0x43d154",
+          "word": "0x8e070004"
+        },
+        {
+          "pc": "0x43d158",
+          "word": "0xac40f208"
+        },
+        {
+          "pc": "0x43d15c",
+          "word": "0x3c0200ae"
+        },
+        {
+          "pc": "0x43d160",
+          "word": "0xac40f20c"
+        },
+        {
+          "pc": "0x43d164",
+          "word": "0x3c0200ae"
+        },
+        {
+          "pc": "0x43d168",
+          "word": "0xafbf002c"
+        },
+        {
+          "pc": "0x43d16c",
+          "word": "0xafb30028"
+        },
+        {
+          "pc": "0x43d170",
+          "word": "0xafb20024"
+        },
+        {
+          "pc": "0x43d174",
+          "word": "0xafb10020"
+        },
+        {
+          "pc": "0x43d178",
+          "word": "0x10e0000e"
+        },
+        {
+          "pc": "0x43d17c",
+          "word": "0xac40f210"
+        },
+        {
+          "pc": "0x43d180",
+          "word": "0x3c040092"
+        },
+        {
+          "pc": "0x43d184",
+          "word": "0x3c050092"
+        },
+        {
+          "pc": "0x43d188",
+          "word": "0x00008821"
+        },
+        {
+          "pc": "0x43d18c",
+          "word": "0x24932868"
+        },
+        {
+          "pc": "0x43d190",
+          "word": "0x24b2291c"
+        },
+        {
+          "pc": "0x43d194",
+          "word": "0x8e020000"
+        },
+        {
+          "pc": "0x43d198",
+          "word": "0x1040000d"
+        },
+        {
+          "pc": "0x43d19c",
+          "word": "0x00402021"
+        },
+        {
+          "pc": "0x43d1a0",
+          "word": "0x0c10f530"
+        },
+        {
+          "pc": "0x43d1a4",
+          "word": "0x26100008"
+        },
+        {
+          "pc": "0x43d1a8",
+          "word": "0x8e070004"
+        },
+        {
+          "pc": "0x43d1ac",
+          "word": "0x14e0fff9"
+        },
+        {
+          "pc": "0x43d1b0",
+          "word": "0x26310001"
+        },
+        {
+          "pc": "0x43d4c0",
+          "word": "0x27bdffe0"
+        },
+        {
+          "pc": "0x43d4c4",
+          "word": "0xafb00018"
+        },
+        {
+          "pc": "0x43d4c8",
+          "word": "0xafbf001c"
+        },
+        {
+          "pc": "0x43d4cc",
+          "word": "0x8c99001c"
+        },
+        {
+          "pc": "0x43d4d0",
+          "word": "0x13200008"
+        },
+        {
+          "pc": "0x43d4d4",
+          "word": "0x00808021"
+        },
+        {
+          "pc": "0x43d4d8",
+          "word": "0x0320f809"
+        },
+        {
+          "pc": "0x43d4dc",
+          "word": "0x00000000"
+        },
+        {
+          "pc": "0x43d4e0",
+          "word": "0x8e030010"
+        },
+        {
+          "pc": "0x43d4e4",
+          "word": "0x8c640000"
+        },
+        {
+          "pc": "0x43d4e8",
+          "word": "0x2484ffff"
+        },
+        {
+          "pc": "0x43d4ec",
+          "word": "0x14400004"
+        },
+        {
+          "pc": "0x43d4f0",
+          "word": "0xac640000"
+        },
+        {
+          "pc": "0x43d4f4",
+          "word": "0x0c119aa0"
+        },
+        {
+          "pc": "0x43d4f8",
+          "word": "0x02002021"
+        },
+        {
+          "pc": "0x43d4fc",
+          "word": "0x00001021"
+        },
+        {
+          "pc": "0x43d500",
+          "word": "0x8fbf001c"
+        },
+        {
+          "pc": "0x43d504",
+          "word": "0x8fb00018"
+        },
+        {
+          "pc": "0x43d508",
+          "word": "0x03e00008"
+        },
+        {
+          "pc": "0x43d50c",
+          "word": "0x27bd0020"
+        }
+      ]
+    }
+  },
+  "runtime_binding_proven": false,
+  "closed_write_set_proven": false,
+  "universal_refusal_safety_proven": false,
+  "classification_promoted": false
+}
