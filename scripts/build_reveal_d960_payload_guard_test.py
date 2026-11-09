@@ -21,7 +21,7 @@ def build(baseline):
     return _append_payload_guards(baseline, guard.assemble)
 
 
-def _append_payload_guards(baseline, assemble):
+def _append_payload_guards(baseline, assemble, *, delay_source_index=1):
     """Extend the final RX page of a verified baseline."""
     offset, address, _, old_size = struct.unpack_from('<4I', baseline, RX_HEADER + 4)
     code, patches = assemble(address + old_size)
@@ -33,9 +33,9 @@ def _append_payload_guards(baseline, assemble):
     for pc, (original, replacement) in patches.items():
         if struct.unpack_from('<2I', baseline, pc - BASE) != original:
             raise ValueError(f'unexpected original pair at {pc:#x}')
-        if replacement[1] != original[1]:
-            raise ValueError(f'payload redirect changes the native delay at {pc:#x}')
-        struct.pack_into('<I', candidate, pc - BASE, replacement[0])
+        if replacement[1] != original[delay_source_index]:
+            raise ValueError(f'payload redirect has an unexpected delay at {pc:#x}')
+        struct.pack_into('<2I', candidate, pc - BASE, *replacement)
     struct.pack_into('<2I', candidate, RX_HEADER + 16, new_size, new_size)
     candidate.extend(code)
     return bytes(candidate)

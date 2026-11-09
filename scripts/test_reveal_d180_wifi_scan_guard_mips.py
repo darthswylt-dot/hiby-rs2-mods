@@ -1,21 +1,37 @@
 #!/usr/bin/env python3
-"""Execute the selected wifi_scan path with bounded factory and transport."""
+"""Execute the built wifi_scan path with bounded factory and transport."""
 
+import struct
 import unittest
 
+import build_reveal_bridge_diag as bridge
+import build_reveal_d180_payload_guard_test as payload
+import build_reveal_d180_ui_guard_test as build_test
+import build_reveal_d960_payload_guard_test as d960
 import factory_null_audit as audit
-import reveal_d180_wifi_scan_guard_mips as guard
 from test_factory_null_audit import CONTEXT, HANDLE, RETURN, STACK, NullFault
 from test_reveal_d960_payload_guard_mips import PayloadGuardMachine
 
 
 CODE_BASE = 0xC70E5C
+PATCH_SITES = (0x4A4F24, 0x4AF960, 0x4CF1FC, 0x4AFC7C)
+RX_HEADER = 0x154
 START, FACTORY, SETTER = 0x4A4C24, 0x47D180, 0x477600
 SCAN, MARK, CLOCK, TRANSPORT = 0x469CA0, 0x477680, 0x466960, 0x701640
 CALLBACK, INTERFACE, TIME = 0x4A48E0, 0x92B480, 0x10203040
 STATE_WORDS = (0xB8ABBC, 0xB8AA54, 0xB8AB08, 0xB8AC60, 0xB8ACD0, 0xB8ACD4)
 INITIAL = (0x44440001, 0x44440002, 0x44440003, 0xA0, 0x44440005, 0x44440006)
 SAVED = (0x55000000, 0x55000001, 0x55000002)
+
+
+def ui_guard_fixture(image):
+    capture, _ = bridge.build(image.data)
+    baseline = payload.build(d960.build(capture))
+    candidate = build_test.build(baseline)
+    patches = {pc: (struct.unpack_from('<2I', baseline, pc - bridge.BASE),
+                    struct.unpack_from('<2I', candidate, pc - bridge.BASE))
+               for pc in PATCH_SITES}
+    return baseline, candidate, patches
 
 
 class WifiScanMachine(PayloadGuardMachine):
@@ -53,21 +69,36 @@ class D180WifiScanGuardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.image = audit.source_image()
-        cls.code, cls.patches = guard.assemble(CODE_BASE)
+        cls.baseline, cls.candidate, cls.patches = ui_guard_fixture(cls.image)
+        cls.code = cls.candidate[len(cls.baseline):]
 
     def guarded(self, **options):
         return WifiScanMachine(self.image, code=self.code, patches=self.patches,
                                code_base=CODE_BASE, **options)
 
     def test_redirect_replays_the_pinned_setup_before_the_unchanged_store(self):
-        self.assertEqual(len(self.code), 24)
-        self.assertEqual(set(self.patches), {0x4A4F24})
         original, replacement = self.patches[0x4A4F24]
         self.assertEqual(original, (self.image.word(0x4A4F24), self.image.word(0x4A4F28)))
         self.assertEqual(replacement, ((2 << 26) | (CODE_BASE >> 2), original[0]))
         self.assertEqual(self.image.word(0x4A4F2C), 0xAC43005C)
         self.assertEqual(self.image.word(0xA9A40C), 0x4A6120)
         self.assertEqual(self.image.word(0x4A6120), 0x08129270)
+
+    def test_ui_image_extends_the_same_rx_page_and_replaces_only_four_pairs(self):
+        self.assertEqual(len(self.baseline), 0x6D0E5C)
+        self.assertEqual(len(self.candidate), 0x6D0EBC)
+        self.assertEqual(struct.unpack_from('<8I', self.candidate, RX_HEADER),
+                         (1, 0x6D0000, 0xC70000, 0xC70000, 0xEBC, 0xEBC, 5, 0x10000))
+        restored = bytearray(self.candidate[:len(self.baseline)])
+        restored[RX_HEADER + 16:RX_HEADER + 24] = self.baseline[RX_HEADER + 16:RX_HEADER + 24]
+        for index, pc in enumerate(PATCH_SITES):
+            original, replacement = self.patches[pc]
+            target = CODE_BASE + 24 * index
+            self.assertEqual(replacement, ((2 << 26) | (target >> 2), original[0]))
+            struct.pack_into('<2I', restored, pc - bridge.BASE, *original)
+        self.assertEqual(bytes(restored), self.baseline)
+        with self.assertRaisesRegex(ValueError, 'exact hardware-tested combined ELF'):
+            build_test.build(self.candidate)
 
     def test_null_returns_one_without_changing_the_callback_or_scan_state(self):
         native = WifiScanMachine(self.image)

@@ -236,6 +236,55 @@ on the live route. The factory, clock and final transport are supplied
 services. Callback execution and actual scan results remain outside
 the fixture.
 
+### Context reads at `4AF958`, `4AFC74` and `4CF1F4`
+
+The `remove_song` wrapper `4AF8C0` saves the factory result in S2 and
+then reads H+58. The local guard keeps the save and sends a zero result
+to the existing validation exit at `4AFB54`. This exit returns 0 before
+the context allocation and UI updates. The sole encoded caller at
+`4B9884` returns 1 through its own epilogue.
+
+The `settings_color` wrapper `4CF180` saves H in S0 before the same
+read. With a zero H, the local guard takes `4CF20C` with S0=0, and the
+sole encoded caller at `4C84B0` returns 1 through `4C82FC`. The live
+route preserves the cached-context branch and the allocation branch,
+including the H+58 store in its delay at `4CF24C`.
+
+The emitted-code fixtures execute the two upper calls and both native
+wrapper epilogues for zero results. For live results they compare
+registers and writes through the empty and populated context branches.
+The color cases also cover allocator failure through return and success
+through publication. The model supplies the factory, view lookup and
+allocation outcomes. Later UI updates and computed callers are outside
+this check.
+
+The `loading` wrapper `4AFBE0` has a local return-zero exit at
+`4AFCAC`. Its live path may copy caller-owned data into a new context
+before returning. Callers at `4A7328` and `4A79AC` then free their
+original temporary buffers. The latter returns 1 explicitly; the former
+can propagate V0 through the free(NULL) leaf when its temporary is zero.
+The `4AFDD8` route originates in the completion of an existing
+`remove_song` operation and subsequently uses its own saved view and
+old context. It asks the saved view for its list count, then looks for
+a record whose +4 field equals 1. On a match it frees the current old
+H+58 and clears the field. An empty list or a scan without a match
+retains the source pointer.
+
+The local guard at `4AFC7C` keeps the save of H in S1. With a live H it
+replays the H+58 load and resumes at `4AFC84`; with a zero H it takes
+the native exit at `4AFCAC`. The fixture executes the emitted transition
+through all three known caller continuations and compares it with live
+creation and the native second-lookup miss.
+The old completion has the same release decision in all three cases.
+With a newly created loading dialog, the wrapper copies the source fields,
+UTF-16 path and view name to a distinct context before publishing it.
+It also registers `4AEA80` and `4ADBE0`. A reused live dialog returns H
+with its existing context and callbacks intact. Both zero-return cases leave
+the loading continuation absent. The two temporary-buffer callers
+likewise execute their native free calls for either wrapper result.
+The fixtures supply the resolved view, factory, allocator and raw services.
+The pending operation's later execution and any retry remain separate.
+
 ## Extended return-value review
 
 Twelve initially opaque `47D960` continuations were followed one callee or branch

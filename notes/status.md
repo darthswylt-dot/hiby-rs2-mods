@@ -6136,3 +6136,31 @@ boot ran the original stock executable with all four launch flags absent.
 The previous launcher was restored and its SHA-256 rechecked. All nine
 evidence files were copied with matching hashes and sizes under
 `artifacts/d180_payload_guard_trial_20261109/run_20261109T090035_107_0/`.
+
+### 2026-11-09 D180 UI guard test image
+
+The UI test builder starts from the exact combined ELF already run on the
+RS2. It appends 96 bytes within the existing RX page and replaces four
+instruction pairs at `4A4F24`, `4AF960`, `4CF1FC` and `4AFC7C`.
+The first native word is executed in each redirect's delay. The image
+test restores all eight native words and both RX sizes, truncates the
+helpers and compares the entire baseline.
+
+The 7,147,196-byte local image is
+`artifacts/hiby_player_1.4_d180_ui_guard_test_20261109.bin`.
+Its SHA-256 is
+`38819c764a9c5bb34eda8c10a46f50ebf34089d26aea3aac0de9fcf5f666e250`.
+All 76 targeted tests passed. The Wi-Fi, context and loading fixtures
+execute the actual bytes from the deterministic combined build.
+
+The image ran once from SD with the 45-second capture launcher. The user
+heard the next track and saw the highlight move. The closed trace decoded
+170 events without errors and accepted Show No Mercy playback pairs for
+CUE indices 0 and 1. The device run covers launch and playback. The new
+guard paths were exercised separately in the bounded instruction model.
+
+The player logged SIGTERM and the supervisor requested recovery. A distinct
+boot ran the original stock executable with all five launch flags absent.
+The previous launcher was restored and its SHA-256 rechecked. All nine
+evidence files were copied with matching hashes and sizes under
+`artifacts/d180_ui_guard_trial_20261109/run_20261109T140546_108_0/`.
