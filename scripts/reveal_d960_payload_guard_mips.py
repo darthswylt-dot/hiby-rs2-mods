@@ -26,10 +26,21 @@ def assemble(code_base):
     return _assemble(code_base, SITES)
 
 
-def _assemble(code_base, sites):
+def _validate_code_base(code_base):
     if type(code_base) is not int or not 0x10000 <= code_base < J_REGION_END or code_base % 4:
         raise ValueError('payload guard requires an aligned address in the native jump region')
 
+
+def _validate_code_extent(code_base, size):
+    code_end = code_base + size
+    if code_end > J_REGION_END:
+        raise ValueError('payload guard extends past the native jump region')
+    if any(code_base < end and start < code_end for start, end in (NATIVE_RX, NATIVE_RW)):
+        raise ValueError('payload guard overlaps a native load')
+
+
+def _assemble(code_base, sites):
+    _validate_code_base(code_base)
     asm = Asm(code_base)
     patches = {}
     for site, save_handle, failure, failure_delay in sites:
@@ -45,9 +56,5 @@ def _assemble(code_base, sites):
                          (b.j_type(2, entry), save_handle))
 
     code = asm.finish()
-    code_end = code_base + len(code)
-    if code_end > J_REGION_END:
-        raise ValueError('payload guard extends past the native jump region')
-    if any(code_base < end and start < code_end for start, end in (NATIVE_RX, NATIVE_RW)):
-        raise ValueError('payload guard overlaps a native load')
+    _validate_code_extent(code_base, len(code))
     return code, patches

@@ -144,6 +144,98 @@ callback state. This establishes the result handling for the demonstrated
 routes. Runtime redirection and additional computed callers remain separate
 verification work.
 
+### Queued context at `45336C`
+
+The `data_dealing` wrapper at `453320` handles event `0x138` through table
+pair `926D2C/926D30` and the JALR at `4542A0`. Its epilogue at
+`453388` returns 0 and the dispatcher forwards that value. The factory
+delay saves the completion address `450D60` in the descriptor. On
+success, the configurator call delay at `453384` copies message+8 to the
+new dialog's +50, and mode 4 writes 1 to the dialog's +5C.
+
+One producer reads the operation from the old dialog's +58 at `4AECB4`.
+It posts the same pointer at `4AEF10`; `4743E4` writes it into message+8.
+After posting, `4AEF24` uses operation+50 as the source of a 2,696-byte
+copy into the worker's storage. The producer returns through `4AECDC`
+with the old +58 still populated. On successful dialog completion,
+`47C7C4` passes new dialog+50 to `450D60`, which reaches the free call
+at `450DA4`.
+
+The bounded fixture executes the producer tail, the post record stores,
+the worker copy path, the table-driven dispatcher and the completion
+call. It supplies the view/path selection, queue handoff and dialog
+allocation, and bounds mutex, notification and free services. With a
+supplied zero factory result and transition to `453388`, the dispatcher
+still returns 0. The checked completion no longer receives the operation
+and the old dialog still holds its pointer. An early-exit design must
+account for the producer's post-enqueue copy, the old alias and the
+release authority for the queued context. The fixture establishes the
+loss of this completion route, with other teardown and aliases open.
+
+The old-dialog teardown fixture also runs the normal poll at `47CC20` and
+close-by-name at `47CF80` with one live list record. Both invoke `47C740`,
+which runs the selected producer branch before destroying the old mutexes.
+The bound list method `455860` removes the record. At the final free call
+(`47CCC8` or `47D02C`), the argument is the old dialog and its +58 still
+holds the operation pointer. The checked poll uses the zero +7C state of
+a newly cleared dialog. Reused dialogs and a changed optional +7C binding
+are separate cases. Registry/resource services and the raw free body are
+bounded in this fixture.
+
+The normal music loop calls the dispatcher at `43C9A4` before dialog
+completion at `43C9CC`. In the checked continuing iteration, the next
+dispatch boundary sees the published record only after the worker copy and
+old-dialog free calls. This order belongs to that serial loop invocation.
+The queue publishes the record before the worker lock and copy, so an
+independent dispatch route needs its own ordering proof.
+
+With a full ring, the actual queue writer returns -1 via `4505C8` before
+allocating or publishing a record. The producer still copies from the
+operation and the old dialog still reaches its free call. This path leaves
+the checked completion without an event even when the dialog factory has
+yet to run. The queued-context lifetime therefore also depends on the
+producer's handling of enqueue failure.
+
+The two dispatchers obtain the queue through `475320` and the returned
+application object's +14. For the same posted record, both reach
+`450600`, which copies 20 bytes, frees the record at `450694`, clears
+the slot and advances the read index. The music dispatcher finds
+`0x138` and transfers the operation to the new dialog. With that dialog
+live, the completion fixture reaches a separate free of the operation.
+The other dispatcher at `4542C0` scans all 128 entries from `926F94`
+and returns after the search. Its table has no `0x138` handler.
+
+On shutdown, `474880` drains the queue through `4507E0`. Its free at
+`450830` takes the record address and the free at `45085C` takes the
+queue address. The fixture observes no load from inside the record during
+the drain. The global queue pointer is cleared at `474898`. The alternate
+dispatch and shutdown fixtures both reach the queue cleanup with the
+operation still outside the observed free arguments. These results cover
+the checked record and shutdown slice with bounded free and earlier
+application teardown.
+
+### Wi-Fi scan at `4A4F1C`
+
+The `4A49C0` wrapper creates `wifi_scan` on this branch. Its table entry
+at `A9A40C` points to the `4A6120` tail trampoline. The branch builds
+the descriptor at F+20, and the factory delay at `4A4F20` saves that
+pointer in F+10. After the unchecked H+5C write, the normal path registers
+callback `4A48E0` in slot 12, marks operation 2 and requests a scan on
+`wlan0`. The registration and request belong to the same scan.
+
+The local emitter redirects `4A4F24` and keeps V1=1 in the delay. With a
+live dialog it restores the A0 high half and jumps to the original
+`4A4F2C` store. With a zero factory result it enters `4A4A14`, restores
+the native frame and returns 1. This exit leaves the existing callback
+and request state intact.
+
+The bounded fixture executes the descriptor preparation, emitted guard,
+native setter and request marking. It checks that the zero result skips
+the store and the request, and compares registers and writes with stock
+on the live route. The factory, clock and final transport are supplied
+services. Callback execution and actual scan results remain outside
+the fixture.
+
 ## Extended return-value review
 
 Twelve initially opaque `47D960` continuations were followed one callee or branch
