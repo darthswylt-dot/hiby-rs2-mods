@@ -14,7 +14,7 @@ from reveal_registry_receipt_mips import NATIVE_RX
 
 ALLOCATOR = 0x4669E0
 NATIVE_RW = (RW_HEADER[2], RW_HEADER[2] + RW_HEADER[5])
-# Allocator JAL, saved handle delay, failure suffix, failure branch delay.
+# Allocator JAL, saved handle delay, failure suffix, NULL exit delay.
 SITES = (
     (0x5091B4, 0x00408821, 0x5091E4, 0x00408021),  # s1 = v0; s0 = v0
     (0x50BAC0, 0x00408021, 0x50BAEC, 0x3C040051),  # s0 = v0; lui a0,0x51
@@ -23,12 +23,16 @@ SITES = (
 
 def assemble(code_base):
     """Return little-endian helper code and {site: (old_pair, new_pair)}."""
+    return _assemble(code_base, SITES)
+
+
+def _assemble(code_base, sites):
     if type(code_base) is not int or not 0x10000 <= code_base < J_REGION_END or code_base % 4:
         raise ValueError('payload guard requires an aligned address in the native jump region')
 
     asm = Asm(code_base)
     patches = {}
-    for site, save_handle, failure, failure_delay in SITES:
+    for site, save_handle, failure, failure_delay in sites:
         entry = code_base + len(asm.w) * 4
         refuse = f'refuse_{site:x}'
         resume = site + 8

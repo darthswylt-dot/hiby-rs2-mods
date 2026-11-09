@@ -12,6 +12,7 @@ import json
 import unittest
 
 import factory_null_audit as audit
+from mips_static_trace import Elf32
 from test_reveal_lineage_stage import LineageMachine, STACK, RETURN, MASK
 
 
@@ -601,6 +602,43 @@ class CallbackBindingMachine(NullCallerMachine):
             raise AssertionError(f'unbounded callback target {target:#x}')
 
 
+class ResolvedLockCallbackMachine(CallbackBindingMachine):
+    """Follow the selected UI method through the captured lock prefix."""
+    def __init__(self, image, library, capture, factory_result):
+        super().__init__(image)
+        self.factory_result = factory_result
+        self.library = library
+        self.lock_base = audit.hex_word(capture['rx_mapping_start'])
+        self.lock_entry = audit.hex_word(capture['observed_target'])
+        self.lock_overwrite = self.lock_base + audit.hex_word(capture['first_overwrite'])
+        self.got_slot = audit.hex_word(capture['got_slot'])
+        self.map(self.got_slot, 4)
+        self.put(self.got_slot, self.lock_entry, 4)
+
+    def word(self, pc):
+        if self.lock_entry <= pc <= self.lock_overwrite:
+            self.fetch_pc = pc
+            return self.library.word(pc - self.lock_base)
+        return super().word(pc)
+
+    def external(self, target):
+        if target == 0x47D960:
+            NullCallerMachine.external(self, target)
+        elif target in (0x43B240, 0x43B120):
+            self.calls.append(target)
+            self.run_at(target, self.r[31])
+        elif target == 0xA5B960:
+            self.calls.append(target)
+            self.run_at(target, self.lock_entry)
+            self.lock_inputs = (self.r[2], self.r[4], self.r[25])
+            self.run_at(self.lock_entry, self.lock_overwrite)
+            self.before_overwrite = self.r[2]
+            self.run_at(self.lock_overwrite, self.lock_overwrite + 4)
+            raise CallbackCut('resolved_value_kill', self.lock_overwrite)
+        else:
+            super().external(target)
+
+
 class NativeCallbackBindingTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
@@ -660,6 +698,36 @@ class NativeCallbackBindingTests(unittest.TestCase):
                 self.assertEqual((cut.exception.kind, cut.exception.target, opaque.r[2]),
                                  ('import_entry', 0xA5B960, incoming))
                 self.assertEqual(opaque.calls, [0x437D20, 0x466DA0, 0xA5B960])
+
+    def test_selected_lock_callback_kills_the_factory_result_with_the_captured_binding(self):
+        archive = audit.RESOLVED_IMPORT_ARCHIVE
+        if not all((archive / name).is_file() for name in ('libc-2.16.so', 'libpthread-2.16.so')):
+            self.skipTest('optional RS2 1.4 import captures are unavailable')
+        document = json.loads(audit.MANIFESTS[1].read_text(encoding='utf-8'))
+        audit.verify_resolved_imports(document, archive)
+        capture = next(row for row in document['resolved_import_follow_up']['libraries']
+                       if row['symbol'] == 'pthread_mutex_lock')
+        library = Elf32(archive / capture['file'])
+
+        for incoming in (0, HANDLE):
+            with self.subTest(incoming=incoming):
+                machine = ResolvedLockCallbackMachine(self.image, library, capture, incoming)
+                machine.put(CONTEXT + 0x13C, ALLOCATION, 4)
+                machine.put(ALLOCATION + 0xC, 0x31415926, 4)
+                machine.run_at(0x439A64, 0x439A70)
+                self.assertEqual(machine.get(CONTEXT + 0x274, 4), 0x437D20)
+
+                with self.assertRaises(CallbackCut) as cut:
+                    machine.run_at(0x45211C, 0x452134)
+                self.assertEqual((cut.exception.kind, cut.exception.target),
+                                 ('resolved_value_kill', 0x771E0F74))
+                self.assertEqual(machine.calls, [0x47D960, 0x43B240, 0x43B120, 0x437D20,
+                                                 0x466DA0, 0xA5B960])
+                self.assertEqual(machine.lock_inputs, (incoming, ALLOCATION, 0x771E0F50))
+                self.assertEqual(machine.before_overwrite, incoming)
+                self.assertEqual(machine.r[2], 0x31415926)
+                self.assertIn(('read', 0xA5B964, 0xA6FA58, 4), machine.accesses)
+                self.assertIn(('read', 0x771E0F74, ALLOCATION + 0xC, 4), machine.accesses)
 
     def test_pending_publication_is_readable_before_assignment_and_bound_targets_kill_later(self):
         pending = CallbackBindingMachine(self.image)

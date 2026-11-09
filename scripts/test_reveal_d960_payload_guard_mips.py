@@ -25,8 +25,9 @@ CASES = (
 
 
 class PayloadGuardMachine(GuardedNullCallerMachine):
-    def __init__(self, image, code=b'', patches=None, **options):
+    def __init__(self, image, code=b'', patches=None, *, code_base=CODE_BASE, **options):
         super().__init__(image, **options)
+        self.base = code_base
         self.code = code
         self.replacements = {
             pc + offset: word
@@ -39,8 +40,8 @@ class PayloadGuardMachine(GuardedNullCallerMachine):
         self.fetch_pc = pc
         if pc in self.replacements:
             return self.replacements[pc]
-        if CODE_BASE <= pc < CODE_BASE + len(self.code):
-            return struct.unpack_from('<I', self.code, pc - CODE_BASE)[0]
+        if self.base <= pc < self.base + len(self.code):
+            return struct.unpack_from('<I', self.code, pc - self.base)[0]
         return super().word(pc)
 
     def external(self, target):

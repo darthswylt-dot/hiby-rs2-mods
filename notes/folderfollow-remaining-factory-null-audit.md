@@ -56,6 +56,67 @@ Six other `47D180` hazard paths require a successful subsequent allocation:
 `4CFF38`, `4D1ADC`, `4D2B44`, `4D3724`, `509A2C` and `515218`.
 Their conditions remain explicit in the manifest.
 
+For these six sites, the model executes the native allocation branch and
+its delay. A successful allocation reaches the unchecked H+58 store with
+both a zero and a live H. A failed allocation skips the store and returns
+the saved H through the native epilogue, restoring the frame. The success
+fixtures end at the store, with bounded allocator, clear, time and copy
+services where needed.
+
+| Factory call | Allocation-failure exit | Sole encoded direct wrapper caller | Upper return |
+| --- | --- | --- | --- |
+| `4CFF38` | `4CFFC8` | `4CB100` | 1 at `4CB118` |
+| `4D1ADC` | `4D1BD4` | `4CB0A4` | 1 at `4CB0BC` |
+| `4D2B44` | `4D2C24` | `4C9124` | 1 at `4C82FC` |
+| `4D3724` | `4D3760` | `4C8C20` | 1 at `4C82FC` |
+| `509A2C` | `509A5C` | `509368` | 1 at `509394` after configuring the old object |
+| `515218` | `515250` | `4C1A2C` | 1 at `4C1A38` |
+
+The upper fixtures supply both wrapper results and execute the actual
+continuations. The notice path at `509368` passes the previous S1 and
+selector 1 to `47D0A0`. With a live old object, the native configurator
+passes that object's mutex to lock and unlock and stores 1 in old object+4.
+A zero old object takes the configurator's own return-minus-one path.
+Both then reach the upper return-one suffix. The fixture bounds the mutex
+services. Runtime mutex ownership and computed wrapper callers remain open.
+
+The D180 emitter adds redirects at `4CFF44`, `4D1AE8`, `4D2B50`,
+`4D3730` and `515224`, where the upper continuation returns 1 directly.
+Each keeps the handle-save delay. With a zero H, it takes the original
+allocation-failure exit and replays that branch's delay. With a live H,
+the allocator receives the original register state and return address.
+The emitted-code fixtures check the full failure returns and the success
+paths through the H+58 store.
+
+For the notice wrapper `5099C0`, the redirect at `509A38` keeps S1=H.
+The zero-H route replays S0=0 and takes the original exit at `509A5C`.
+The fixture starts at `509360` and runs the actual upper call, lower wrapper
+and mode-1 configurator. It compares early exit with stock allocation failure
+after a zero factory result. The two executions deliberately supply
+different volatile A2/A3 values at the configurator. Both pass the same
+old S1 and selector 1, touch the same old mutex and store the same old-object
+flag. Both return 1 to the upper caller. The known event route supplies a
+live old object, and a zero old object is also covered as a local control.
+The model bounds the factory, allocator and imported mutex operations.
+With a live factory result, the fixture also compares both allocation
+outcomes from the native wrapper entry through its return, including the
+bounded string copy and the H+58 store.
+
+For the `527040` wrapper, the emitter redirects the allocator call at
+`5270AC` and preserves the delay that saves H in S1. A zero H jumps
+straight to `5270F0`, bypassing both allocation and the hazardous branch
+delay. The earlier clear of `B8BE04` at `5270A4` still executes.
+With a live H, the helper enters the allocator with the original arguments
+and link `5270B4`. The native delay stores the allocation result in H+58
+for both outcomes. On success, four native lookups fill the payload.
+
+The bounded fixture executes the emitted helper, the native wrapper and
+its lookup paths for both allocation outcomes. The zero-H test returns
+zero through the original epilogue. The sole encoded caller at `4C1A3C`
+then returns one through `4C1860`, which the fixture also executes.
+The checked scope is this wrapper and its encoded caller. The model
+supplies factory and allocator results, a mapped resource and valid frames.
+
 For `47D960`, calls at `5091A8` and `50BAB4` save H, then allocate an independent
 payload. On allocation success, `5091E0` or `50BAD8` writes that payload through
 H+58 without a factory NULL check. On allocation failure the write is skipped;
@@ -384,6 +445,22 @@ completion continuations also lose the value in the resolved `memset`.
 Their direct wrapper records remain `propagated`, with the earlier field
 conditions intact. The observation concerns the sampled stock process and
 the resolved targets. Lazy resolution and other runtime bindings remain open.
+
+### Selected lock callback at `43B150`
+
+With the `439A6C` assignment of `437D20` to the old object's +274 slot,
+factory call `45211C` reaches that method through `43B240` and `43B120`.
+The method passes the old object's +13C mutex to `466DA0`. The native PLT
+loads the sampled lock target from `A6FA58` and enters the captured library
+with the factory result still in V0. At `9F74` the library loads V0 from
+the mutex's +C field.
+
+The bounded test executes the assignment, the native caller chain and PLT,
+and the captured library prefix through that load with factory results zero
+and nonzero. Both reach the same overwrite from the independently supplied
+mutex. This conditional result requires the selected callback, the resolved
+import and readable mutex storage. The actual callback at a live call and
+the remainder of the mutex operation are outside this check.
 
 Run the optional capture check from the repository root.
 

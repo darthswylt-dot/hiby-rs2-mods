@@ -18,9 +18,13 @@ RX_HEADER = PHOFF + CODE_INDEX * PHENTSIZE
 def build(baseline):
     if hashlib.sha256(baseline).hexdigest() != BASELINE_SHA256:
         raise ValueError('expected the exact hardware-tested capture ELF')
+    return _append_payload_guards(baseline, guard.assemble)
 
+
+def _append_payload_guards(baseline, assemble):
+    """Extend the final RX page of a verified baseline."""
     offset, address, _, old_size = struct.unpack_from('<4I', baseline, RX_HEADER + 4)
-    code, patches = guard.assemble(address + old_size)
+    code, patches = assemble(address + old_size)
     new_size = old_size + len(code)
     if offset + old_size != len(baseline) or new_size > PAGE_ALIGNMENT:
         raise ValueError('payload guards must fit in the existing final RX page')
@@ -37,14 +41,14 @@ def build(baseline):
     return bytes(candidate)
 
 
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+def main(build_image=build, description=__doc__):
+    parser = argparse.ArgumentParser(description=description)
     parser.add_argument('baseline', type=Path)
     parser.add_argument('candidate', type=Path)
     parser.add_argument('--verify', action='store_true')
     args = parser.parse_args()
     try:
-        candidate = build(args.baseline.read_bytes())
+        candidate = build_image(args.baseline.read_bytes())
         if args.verify:
             if args.candidate.read_bytes() != candidate:
                 raise ValueError('candidate differs from the deterministic build')

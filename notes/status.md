@@ -6109,3 +6109,30 @@ ran the original stock executable with all three launch flags absent.
 The previous launcher was restored and its SHA-256 rechecked. All nine
 evidence files were copied with matching hashes and sizes under
 `artifacts/d960_payload_guard_trial_20261106/run_20261106T101434_107_0/`.
+
+### 2026-11-09 Combined D180 and D960 test image
+
+The combined builder starts from the exact D960 ELF tested on the RS2.
+It appends 196 bytes for seven D180 helpers at `C70D98` within the existing
+RX page. The seven redirect words and the two segment size fields are
+the only changes within the baseline bytes. The image verification test
+restores those words and fields, then compares the entire baseline.
+
+The 7,147,100-byte local image is
+`artifacts/hiby_player_1.4_d180_d960_payload_guard_test_20261109.bin`.
+Its SHA-256 is
+`6f9cfb9c9a25fd65b4522c6b2e2eaea3073162d15a7194d8b21c36e426bc90cf`.
+All 56 targeted tests passed, including execution of the new D180
+redirects from the combined build and the earlier D960 checks.
+
+The combined image ran once from SD with the 45-second capture launcher.
+The user heard the next track and saw the highlight move. The closed trace
+decoded 196 events without errors and accepted Show No Mercy playback
+pairs for CUE indices 0 and 1. This run covers launch and playback on RS2.
+The factory refusal cases were exercised in the bounded instruction model.
+
+The player logged SIGTERM and the supervisor requested recovery. A distinct
+boot ran the original stock executable with all four launch flags absent.
+The previous launcher was restored and its SHA-256 rechecked. All nine
+evidence files were copied with matching hashes and sizes under
+`artifacts/d180_payload_guard_trial_20261109/run_20261109T090035_107_0/`.
