@@ -285,6 +285,28 @@ likewise execute their native free calls for either wrapper result.
 The fixtures supply the resolved view, factory, allocator and raw services.
 The pending operation's later execution and any retry remain separate.
 
+### Volume dialog at `50506C`
+
+The `505000` wrapper clears the owner's +208 before calling the factory
+for `volume`. Its post-factory pair at `505074` saves H in S1 and reads
+H+58. The local guard retains the save and takes the native return-zero
+exit at `5050A8` for H=0. The earlier +208 clear still executes, and
+the later +170 activation store is skipped.
+
+The dispatcher `43C360` checks zero at `43C3A4` before using the dialog
+on one branch and forwards the wrapper result on the other branch.
+The known direct dispatcher callers both replace that value.
+`43C530` loads the old state and `4E106C` sets 1. The fixture executes
+both dispatcher branches through both upper continuations.
+
+For a live dialog, the cached-context path returns H and sets owner+170
+as before. The empty-context case executes the native 12-byte
+allocation path, reads properties 17 and 4 and publishes the new
+context at `5050F8`. The fixture compares registers and writes with
+stock through publication. It supplies the factory, lookup and allocator
+outcomes, and ends the fresh-context comparison before the later UI
+updates.
+
 ## Extended return-value review
 
 Twelve initially opaque `47D960` continuations were followed one callee or branch

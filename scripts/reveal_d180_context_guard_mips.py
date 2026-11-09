@@ -15,10 +15,14 @@ SITES = {
 
 def assemble(code_base):
     """Keep the saved handle in the native delay and load its context only when live."""
+    return _assemble(code_base, SITES)
+
+
+def _assemble(code_base, sites):
     _validate_code_base(code_base)
     asm = Asm(code_base)
     patches = {}
-    for site, (original, failure) in SITES.items():
+    for site, (original, failure) in sites.items():
         entry = code_base + len(asm.w) * 4
         refuse = f'refuse_{site:x}'
         asm.branch(4, 2, 0, refuse)  # beq v0,zero
