@@ -21,19 +21,24 @@ def build(baseline):
     return _append_payload_guards(baseline, guard.assemble)
 
 
-def _append_payload_guards(baseline, assemble, *, delay_source_index=1):
-    """Extend the final RX page of a verified baseline."""
+def _append_payload_guards(baseline, assemble, *, delay_source_index=1, delay_overrides=None,
+                           rx_page_limit=1):
+    """Extend the final RX segment of a verified baseline within the page limit."""
     offset, address, _, old_size = struct.unpack_from('<4I', baseline, RX_HEADER + 4)
     code, patches = assemble(address + old_size)
     new_size = old_size + len(code)
-    if offset + old_size != len(baseline) or new_size > PAGE_ALIGNMENT:
-        raise ValueError('payload guards must fit in the existing final RX page')
+    if offset + old_size != len(baseline) or new_size > rx_page_limit * PAGE_ALIGNMENT:
+        raise ValueError('payload guards exceed the final RX page limit')
 
+    delay_overrides = delay_overrides or {}
+    if delay_overrides.keys() - patches.keys():
+        raise ValueError('delay override has no corresponding patch')
     candidate = bytearray(baseline)
     for pc, (original, replacement) in patches.items():
         if struct.unpack_from('<2I', baseline, pc - BASE) != original:
             raise ValueError(f'unexpected original pair at {pc:#x}')
-        if replacement[1] != original[delay_source_index]:
+        expected_delay = delay_overrides.get(pc, original[delay_source_index])
+        if replacement[1] != expected_delay:
             raise ValueError(f'payload redirect has an unexpected delay at {pc:#x}')
         struct.pack_into('<2I', candidate, pc - BASE, *replacement)
     struct.pack_into('<2I', candidate, RX_HEADER + 16, new_size, new_size)

@@ -301,8 +301,8 @@ class NativeOldDialogRetirementTests(unittest.TestCase):
 
 
 class QueueDisposalMachine(OldDialogRetirementMachine):
-    def __init__(self, image, **options):
-        super().__init__(image, factory_result=HANDLE, **options)
+    def __init__(self, image, *, factory_result=HANDLE, **options):
+        super().__init__(image, factory_result=factory_result, **options)
         self.put(0xB8A9EC, CONTEXT, 4)
         self.put(CONTEXT + 0x14, QUEUE, 4)
         table_size = 128 * 8
@@ -322,8 +322,8 @@ class QueueDisposalMachine(OldDialogRetirementMachine):
 
 
 class ReusedDataDealingMachine(QueueDisposalMachine):
-    def __init__(self, image):
-        super().__init__(image)
+    def __init__(self, image, **options):
+        super().__init__(image, **options)
         self.reuse_dialog = False
         self.map(SECOND_RECORD, 20)
         self.map(SECOND_OPERATION, 0xCF0)

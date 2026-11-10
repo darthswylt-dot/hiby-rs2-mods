@@ -27,6 +27,12 @@ TRACKED = 0xB894AC
 PERCENT_BITS, SAVED_FP = 0x42480000, 0x123456789ABCDEF0
 
 
+def book_guard_fixture(image):
+    _, ui_image, _ = ui_guard_fixture(image)
+    baseline = volume.build(ui_image)
+    return baseline, build_test.build(baseline)
+
+
 class BookPercentMachine(PayloadGuardMachine):
     def __init__(self, image, *, allocate=True, resource_failure=False, **options):
         super().__init__(image, **options)
@@ -97,9 +103,7 @@ class D180BookPercentGuardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.image = audit.source_image()
-        _, ui_image, _ = ui_guard_fixture(cls.image)
-        cls.baseline = volume.build(ui_image)
-        cls.candidate = build_test.build(cls.baseline)
+        cls.baseline, cls.candidate = book_guard_fixture(cls.image)
         cls.code = cls.candidate[len(cls.baseline):]
         cls.patches = {
             PATCH_PC: (struct.unpack_from('<2I', cls.baseline, PATCH_PC - BASE),

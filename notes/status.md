@@ -6213,3 +6213,35 @@ redirect and helper from this build through the checked cleanup and
 live-dialog paths. The owner confirmed that the test RS2 has no reader
 entry in its menu. Validation of this dialog is limited to the local
 fixture.
+
+### 2026-11-10 D180 data_dealing test image
+
+The builder pins the preceding local book-percent ELF. It appends
+764 bytes at `C70EFC` and extends the final RX segment to `0x11F8`
+bytes across two 4 KiB pages. Its load address, file offset,
+alignment and permissions are unchanged. Seven instructions and
+the two RX size fields differ within the baseline. Restoring those
+words and truncating the appended code reproduces the baseline.
+
+The 7,148,024-byte local image is
+`artifacts/hiby_player_1.4_d180_data_dealing_test_20261110.bin`.
+Its SHA-256 is
+`2a0c358fbe663eea7093412a6a9d73034e31d0a55843692c1a5ab408a9a40845`.
+The CLI verified the saved image byte for byte against the build.
+All 111 targeted tests passed. The producer, charge, shutdown and
+music fixtures execute the redirects and helper bytes from the
+combined image. Live dialog retention and release after a mutex
+error remain outside the checked scope.
+
+The RS2 launched the two-page image from SD with a 90-second test
+window. The user confirmed volume adjustment, Next and the moved
+highlight. The trace decoded 251 events without errors and accepted
+playback pairs for Show No Mercy CUE indices 0 and 1. The device
+run covers launch and ordinary playback. The new ownership paths
+were exercised in the local instruction model.
+
+The run ended with SIGTERM and supervisor-requested recovery. A
+distinct boot ran the stock executable with all seven launch flags
+absent. The original launcher was restored and its SHA-256 rechecked.
+All nine evidence files were copied with matching hashes and sizes
+under `artifacts/d180_data_dealing_trial_20261110/run_20261110T134240_108_0/`.

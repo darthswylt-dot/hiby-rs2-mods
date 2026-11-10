@@ -3,21 +3,38 @@
 
 import struct
 import unittest
+from unittest.mock import patch
 
+import build_reveal_d180_data_dealing_test as build_test
 import factory_null_audit as audit
 import reveal_d180_data_dealing_snapshot_mips as snapshot
+from build_reveal_bridge_diag import BASE
+from build_reveal_d960_payload_guard_test import RX_HEADER
 from test_factory_d180_data_dealing_continuation import (
     APP_QUEUE, CHARGE_ACTIVITY, CLOSE, COPY_BYTES, DESCRIPTOR, EVENT, OLD_DIALOG, OLD_NAME,
     OPERATION, OTHER_DISPATCH, POLL, POST, QUEUE, QUEUE_DESTROY, QUEUE_RECORD, QUEUE_WRITE,
     SECOND_OPERATION, SECOND_RECORD, WORKER, WORKER_COPY, ChargeTransitionMachine, QueueDisposalMachine,
 )
 from test_factory_null_audit import CONTEXT, MASK, RETURN, STACK
+from test_reveal_d180_book_percent_guard_mips import book_guard_fixture
 
 
 CODE_BASE = 0xC70EFC
+PATCH_SITES = (0x4AEF08, 0x4AEF24, 0x45056C, 0x45431C, 0x450830, 0x453374)
 NOTIFY = 0x466D00
 TICKS = 0x12345678
 PATH_PREFIX = b'worker path fixture\0'
+
+
+def data_dealing_fixture(image):
+    _, baseline = book_guard_fixture(image)
+    candidate = build_test.build(baseline)
+    patches = {
+        pc: (struct.unpack_from('<2I', baseline, pc - BASE),
+             struct.unpack_from('<2I', candidate, pc - BASE))
+        for pc in PATCH_SITES
+    }
+    return baseline, candidate, patches
 
 
 class SnapshotMachine(QueueDisposalMachine):
@@ -61,17 +78,50 @@ class DataDealingSnapshotTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.image = audit.source_image()
-        cls.code, cls.patches = snapshot.assemble(CODE_BASE)
+        cls.baseline, cls.candidate, cls.patches = data_dealing_fixture(cls.image)
+        cls.code = cls.candidate[len(cls.baseline):]
 
     def guarded(self):
         return SnapshotMachine(self.image, code=self.code, patches=self.patches, code_base=CODE_BASE)
 
-    def test_patches_match_the_native_post_setup_and_worker_call(self):
-        self.assertEqual(set(self.patches), {0x4AEF08, 0x4AEF24, 0x45056C, 0x45431C, 0x450830})
-        for pc, (original, _) in self.patches.items():
+    def test_patches_match_the_six_native_pairs_and_expected_delays(self):
+        code, emitted = snapshot.assemble(CODE_BASE)
+        self.assertEqual(code, self.code)
+        self.assertEqual(emitted, self.patches)
+        changed_delays = {0x4AEF24: 0x27A70020, 0x453374: 0x8E030008}
+        for pc, (original, replacement) in self.patches.items():
             self.assertEqual(original, (self.image.word(pc), self.image.word(pc + 4)))
+            self.assertEqual(replacement[1], changed_delays.get(pc, original[1]))
         self.assertEqual(self.image.word(0x4AEF10), 0x0C11D0E0)
         self.assertEqual(self.patches[0x4AEF24][1][0], self.image.word(0x4AEF24))
+
+    def test_image_restores_to_the_entire_book_baseline(self):
+        self.assertEqual(len(self.baseline), 0x6D0EFC)
+        self.assertEqual(len(self.code), 0x2FC)
+        self.assertEqual(len(self.candidate), 0x6D11F8)
+        self.assertEqual(struct.unpack_from('<8I', self.candidate, RX_HEADER),
+                         (1, 0x6D0000, 0xC70000, 0xC70000, 0x11F8, 0x11F8, 5, 0x10000))
+        restored = bytearray(self.candidate[:len(self.baseline)])
+        restored[RX_HEADER + 16:RX_HEADER + 24] = self.baseline[RX_HEADER + 16:RX_HEADER + 24]
+        for pc, (original, _) in self.patches.items():
+            struct.pack_into('<2I', restored, pc - BASE, *original)
+        self.assertEqual(bytes(restored), self.baseline)
+        with self.assertRaisesRegex(ValueError, 'exact book-percent test ELF'):
+            build_test.build(self.candidate)
+
+    def test_builder_rejects_a_third_rx_page(self):
+        oversized = self.code.ljust(0x2004 - 0xEFC, b'\0')
+        with patch.object(snapshot, 'assemble', return_value=(oversized, self.patches)):
+            with self.assertRaisesRegex(ValueError, 'final RX page limit'):
+                build_test.build(self.baseline)
+
+    def test_builder_rejects_an_unexpected_delay_at_each_redirect(self):
+        for pc, (original, replacement) in self.patches.items():
+            with self.subTest(pc=hex(pc)):
+                patches = {**self.patches, pc: (original, (replacement[0], 0))}
+                with patch.object(snapshot, 'assemble', return_value=(self.code, patches)):
+                    with self.assertRaisesRegex(ValueError, f'unexpected delay at {pc:#x}'):
+                        build_test.build(self.baseline)
 
     def test_original_buffer_is_copied_before_publish_and_worker_is_notified_after(self):
         machine = self.guarded()

@@ -379,8 +379,39 @@ premise that the ring is quiescent during destruction.
 The fixtures exercise the emitted redirects through the music-to-charge
 transition and a mixed application drain. They verify one release of
 the marked request, preservation of ordinary records and continued
-support for an eight-byte worker drain. The normal music dispatcher
-still needs a release rule for factory refusal and same-name reuse.
+support for an eight-byte worker drain.
+
+#### Transfer to the music dialog
+
+The redirect at `453374` checks the factory result before the H+50
+store. With H zero, it releases a marked request and returns through
+`453388`. An unmarked record takes the same return with its existing
+ownership unchanged.
+
+A live dialog accepting a marked request stores a private adapter
+in H+74 and the request in H+50. A dialog with an unmarked incoming
+record and its original callback continues through the native
+configurator. For an owned update, the helper uses the raw mutex
+imports with H+10 and checks the result. The native wrappers mask
+those results. The helper sets H+5C under the mutex, matching the
+mode-4 configurator.
+
+On reuse, a different marked request replaces the old one. The
+previously marked pointer is released after successful unlock. An
+unmarked replacement restores the native completion callback, and
+the same pointer retains its existing ownership. A foreign callback
+keeps its request and callback and declines a distinct marked input.
+When the native close calls the adapter with its current request,
+the adapter clears the owned slot, restores `450D60` and passes the
+original arguments to it, including the native success refresh.
+
+The fixtures run marked and ordinary records through factory
+refusal, live completion, same-name reuse, an unfamiliar callback
+and unsuccessful mutex calls. The checked scope assumes a live
+dialog through the ordinary serial dispatch. The helper leaves
+release unresolved if it cannot confirm lock or unlock. A mutex
+call alone does not establish a retained dialog or serialize
+independent teardown routes.
 
 ### Wi-Fi scan at `4A4F1C`
 
