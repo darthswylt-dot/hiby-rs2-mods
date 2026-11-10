@@ -484,6 +484,32 @@ likewise execute their native free calls for either wrapper result.
 The fixtures supply the resolved view, factory, allocator and raw services.
 The pending operation's later execution and any retry remain separate.
 
+### Update-check dialog at `4D5010`
+
+The `4D4FA0` wrapper calls `454BA0(4, 1)` before the factory.
+That call writes pending status to `B8927C`. The initializer
+`4D4CC0` registers `4D4D00` as a 200-ms timer. The registration
+stores its function and context for later dispatch. The timer reads
+the pending status through `454B80(4)`. The live wrapper clears
+the progress counter at `B8BAA4`, posts an eight-byte worker record
+`(4, mode)` on the `B89250` ring and clears owner+208.
+
+The local guard moves the arm call past the factory result. It keeps
+the descriptor clear at `4D4FF4` and the handle save at `4D5018`.
+With H zero it takes the native return at `4D5048`, preserving the
+prior status, progress counter and owner field. With H live it arms
+status and rejoins `4D5020` before the counter clear and worker post.
+The three encoded upper callers at `453CF8`, `4CBEEC` and
+`4D732C` return 0, 1 and 1 respectively, regardless of H.
+
+The fixture supplies the factory result and runs the native initializer,
+timer registration and queue write for both live modes. It compares the
+timer record, worker message and final state with stock. The refusal
+cases start with idle, pending and terminal status values and keep them.
+The check covers the selected UI invocation. Independent worker writes,
+later timer execution and recovery from a rejected live worker post
+remain outside this fixture.
+
 ### Volume dialog at `50506C`
 
 The `505000` wrapper clears the owner's +208 before calling the factory

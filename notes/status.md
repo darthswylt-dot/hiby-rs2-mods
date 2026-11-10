@@ -6245,3 +6245,40 @@ distinct boot ran the stock executable with all seven launch flags
 absent. The original launcher was restored and its SHA-256 rechecked.
 All nine evidence files were copied with matching hashes and sizes
 under `artifacts/d180_data_dealing_trial_20261110/run_20261110T134240_108_0/`.
+
+### 2026-11-10 D180 update-check test image
+
+The builder pins the data_dealing ELF run on the RS2. It appends
+36 bytes at `C711F8` within the existing second RX page. Three
+instruction words and both RX size fields differ within the baseline.
+Restoring those words and truncating the helper reproduces the
+baseline. The new RX size is `0x121C`.
+
+The 7,148,060-byte local image is
+`artifacts/hiby_player_1.4_d180_check_upgrade_test_20261110.bin`.
+Its SHA-256 is
+`c553e85d0da312b839e40928b9cb7c1776736db6fcf0aab2c161062b4deaf16a`.
+The CLI verified the saved image byte for byte against the build.
+All 117 targeted tests passed. The upgrade fixture runs the emitted
+guard and the inherited queue writer redirect. A live dialog with
+a refused worker post keeps the stock pending status and timer.
+Independent status writes by an older worker remain outside the fixture.
+
+The owner checked the stock RS2 menu. Firmware update opens an
+installation confirmation with OK and Cancel. OK reboots to install
+the image from the memory card. The menu on this unit exposes no
+separate update-check action. The local fixture covers `check_upgrade`.
+
+The RS2 launched the image from SD with a 90-second test window.
+The owner confirmed that Next started the second Show No Mercy track,
+the highlight moved, and volume worked in both directions. The closed
+trace decoded 163 events without errors and accepted playback pairs for
+Show No Mercy CUE indices 0 and 1. The run covers startup and playback.
+
+The test ended with SIGTERM and supervisor-requested recovery. A
+distinct boot ran the verified stock executable with all eight launch
+flags absent. The temporary launcher was removed to restore the
+pre-test state, where `/ui_data` was absent. ADB reconnected automatically
+on both boots after the delayed startup script was restored. All nine
+evidence files were copied with matching hashes and sizes under
+`artifacts/d180_check_upgrade_trial_20261110/run_20261110T141729_108_0/`.
