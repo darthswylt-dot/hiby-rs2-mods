@@ -196,14 +196,33 @@ the checked completion without an event even when the dialog factory has
 yet to run. The queued-context lifetime therefore also depends on the
 producer's handling of enqueue failure.
 
-The two dispatchers obtain the queue through `475320` and the returned
-application object's +14. For the same posted record, both reach
+With an absent queue, `47438C` loads zero and `47439C` returns that zero
+without calling the queue writer. The fixture takes this path through
+the worker copy and old-dialog retirement. The post wrapper's zero
+result alone cannot certify a published record.
+
+The application startup calls `450460` with capacity 128 at `4747AC`,
+stores the returned ring in `B89C68` at `4747BC` and copies the same
+pointer to application+14 at `4747CC`. The startup fixture executes the
+ring constructor and both stores with a supplied allocation and
+application object. The producer loads the global and both UI dispatchers
+obtain the ring through `475320` and the application's +14. For the
+same posted record, both dispatchers reach
 `450600`, which copies 20 bytes, frees the record at `450694`, clears
 the slot and advances the read index. The music dispatcher finds
 `0x138` and transfers the operation to the new dialog. With that dialog
 live, the completion fixture reaches a separate free of the operation.
 The other dispatcher at `4542C0` scans all 128 entries from `926F94`
 and returns after the search. Its table has no `0x138` handler.
+
+The remaining two encoded direct reads of `450600` occur at `42E280`
+and `454410`. They load separate worker queue globals at `ADD368`
+and `B89250` and request eight bytes. Their startup paths create
+separate rings of capacity 50 at `42BAE4` and `455590`. The worker
+fixture executes both native reader prefixes and verifies that each
+consumes its own eight-byte record while the application ring retains
+the posted `0x138` record. The fixture supplies distinct initialized
+queue storage and bounds the thread setup and lock services.
 
 On shutdown, `474880` drains the queue through `4507E0`. Its free at
 `450830` takes the record address and the free at `45085C` takes the
@@ -213,6 +232,155 @@ dispatch and shutdown fixtures both reach the queue cleanup with the
 operation still outside the observed free arguments. These results cover
 the checked record and shutdown slice with bounded free and earlier
 application teardown.
+
+#### Music teardown and the charge controller
+
+The normal music poll at `43C9CC` is the sole encoded direct call to
+`47CC20`. A dialog can also complete after the music loop returns.
+The music driver calls its +258 teardown at `4E3E08`. The teardown
+walks controller records at `4E3EA0` and calls record+18 with
+record+14 at `4E3EE8`. For the dialog created at `4AF274`,
+`47D320` supplies the close callback `47D060`. Its call at
+`47D07C` reaches the close-by-name path, which can invoke the
+`4AEC60` producer and retire the old dialog after the post and copy.
+
+The application calls `474800` at `47569C`. The selected controller's
+driver returns before that call returns. The application can then read
+property 11 as nonzero and select `lg_activity_charge` at `47567C`.
+It calls `474800` again with the same application and ring. The charge
+driver runs `43CA60` and dispatches through `4542C0`.
+
+The fixture starts with a live remove-song record awaiting teardown
+and takes that application branch with supplied exit requests, power
+results and UI bindings. Music dispatch sees an empty ring. Music
+teardown posts `0x138`, copies the request bytes and retires the old
+dialog before the charge controller starts. Charge then frees the
+20-byte record after an unsuccessful handler search. Neither the
+dialog factory nor the request deallocator is called on that route.
+The model bounds registry removal and the final controller cleanup.
+This route requires the supplied live record and charge transition.
+It establishes a sequential disposal path without assuming that the
+two loops run concurrently.
+
+The checked completion `450D60` needs a live dialog. With a nonzero
+operation it reads dialog+58 at `450D74` before choosing its continuation.
+The source and fixture still leave release authority open across
+independent dispatch, failed publication and shutdown.
+
+#### Same-name dialog reuse
+
+The five encoded sends that load event `0x138` directly into A0
+reach `474380` at the following call sites.
+
+| Send | Message+8 | Work after the send |
+| --- | --- | --- |
+| `4AEF10` | Operation from old dialog+58 | Worker copy from operation+50 in mode 2 |
+| `4ABFA4` | Zero | `4A8A60` selects and copies separate worker input in mode 1 |
+| `4B213C` | Zero | `4327C0` supplies stack data for the mode-1 copy at `4B2160` |
+| `4B67B0` | Zero | Mode-1 worker copy at `4B67C4` uses the selected view's data |
+| `53076C` | Zero | `4327C0` supplies stack data for the mode-1 copy at `530790` |
+
+For a live `data_dealing` dialog, the native lookup `47CA40` compares
+the registered dialog name and returns the existing handle through
+`47D1D8` and `47D1E0`. That route bypasses allocation and descriptor
+setup. The caller still writes message+8 to H+50 in the delay at
+`453384`, before the configurator locks the dialog and sets H+5C.
+The original owner, completion callback and timing fields stay in
+place. The completion reads the current H+50 once at `47C7C4`.
+
+The fixture dispatches the owned request, supplies the registered
+live dialog for reuse and executes the native lookup for a second
+queued event. It covers all four native zero-payload send slices and
+a second distinct owned operation. In both cases the first request
+loses its completion route. With a zero second payload, completion
+has no request to release. With a distinct second payload, the
+checked H+58=0 completion releases only that second operation.
+The fixture supplies the two dispatches before dialog retirement,
+with queue allocation and name comparison bounded.
+
+#### Copy before publication
+
+The stock mode-2 handoff at `48F220` copies the descriptor under the
+worker mutex at `48F290`, unlocks it at `48F260`, then signals the
+worker at `48F268`. After the worker wakes, `48EB58` copies the
+descriptor and `48EB80` invokes the mode-2 operation. That operation
+can post events `0x139` or `0x13A`, for example at `4A94C0` or
+`4A952C`. Moving `0x138` past the stock handoff would allow those
+events to enter the same application queue first. Both handlers
+look up `data_dealing` by name and request completion when they find
+it. Their ordering affects which live dialog receives the request.
+
+The producer-local helper copies 2,696 bytes from operation+50 to the
+stack at F+20 before publication. The range ends at F+AA8, where the
+path buffer begins. The callback uses that descriptor-sized local
+for the property-24 copy at `4AEDB4` on the other path. The selected
+post tail leaves that range available. The worker call at
+`4AEF24` receives the snapshot in A3 and keeps the original worker,
+mode and F+AA8 argument. The worker helper still copies and signals
+under its original lock ordering. The producer performs its last
+descriptor read from the operation before it publishes the record.
+
+#### Producer transfer and refusal
+
+The producer checks that the old dialog still holds the selected
+operation in +58 and that its optional +7C callback is zero. On that
+path it clears +58 after the snapshot and before publication. The
+ordinary completion code after `4AEC60` uses the saved owner, name
+and mutex. The poll's optional +7C call is absent for the checked
+freshly initialized `remove_song` binding, and close-by-name has no
+such call. A different alias or nonzero +7C takes the native post
+with the snapshot still supplied to the worker.
+
+The checked transfer loads the application queue once. With a live
+queue it constructs the five-word record in a separate frame as
+`(ownership tag, 0x138, operation, 0, ticks)` and calls `4504E0`. A zero
+return transfers the request to the published record. An absent
+queue or a writer refusal leaves release with the producer. The
+producer calls `466A80` once and continues to the original worker
+handoff with the snapshot.
+
+The shared queue writer now checks the allocation at `45056C`.
+A zero result takes its existing refusal epilogue at `4505C8`,
+which restores the writer count and returns -1 before the slot and
+write index change. The live route replays both native copy-argument
+instructions.
+
+The fixture executes poll and close-by-name with available, full and
+absent queues. It verifies unchanged worker data, path and lock order,
+native record bytes, alias clearing before publication and one release
+on refusal. Separate cases cover allocation failure and the two
+conditions that retain the native post. The candidate assumes a live
+ring through the writer call in the checked application invocation.
+
+#### Disposal by the charge controller and application shutdown
+
+The marked producer writes `OD38` into message+0. The stock posts
+at `474380` and `474420` clear that word. The other four encoded
+20-byte writes into the application ring at `44F804`, `44F8C8`,
+`44F914` and `44FC98` use the alias at `B890D8` and clear it too.
+The known dispatchers
+select the handler using message+4. Handler `453320` uses message+8
+as its request. The ring copy keeps all five words.
+
+After a successful charge dequeue, the redirect at `45431C` checks
+the tag, event `0x138` and a nonzero payload in the local record.
+It releases that payload after the native queue reader has freed
+the record allocation. The helper replays the table setup and keeps
+the native scan and return. Other records take the original scan.
+
+The redirect at `450830` checks the drain's saved link for
+`474888`, the continuation of the application shutdown call. It
+releases a matching payload before freeing that record and
+resumes the native drain. Other callers, including eight-byte
+worker queues, reach the native record free without inspecting
+message fields. The checked application shutdown retains the stock
+premise that the ring is quiescent during destruction.
+
+The fixtures exercise the emitted redirects through the music-to-charge
+transition and a mixed application drain. They verify one release of
+the marked request, preservation of ordinary records and continued
+support for an eight-byte worker drain. The normal music dispatcher
+still needs a release rule for factory refusal and same-name reuse.
 
 ### Wi-Fi scan at `4A4F1C`
 

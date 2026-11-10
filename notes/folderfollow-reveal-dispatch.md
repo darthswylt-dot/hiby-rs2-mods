@@ -27,7 +27,7 @@ There is a concrete positive route toward UI ownership:
 - 0x47569C calls 0x474800, which calls 0x43CFE0 at 0x474814.
 - 0x43CFE0 synchronously invokes current controller+0x260 at 0x43D064.
   Only after it returns does the ordinary transition update current controller
-  0xAEF208 from next-controller 0xAEF20C (0x43D06C..080).
+  0xADF208 from next-controller 0xADF20C (0x43D06C..080).
 - Music construction 0x4E3E40 binds +0x260 to 0x4E3DE0 and +0x25C to
   0x4E4AC0. 0x4E3DE0 calls init(+0x254), loop(+0x25C), then teardown(+0x258)
   serially. Its loop proceeds through 0x43C980 to the timer pump.
