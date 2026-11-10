@@ -6164,3 +6164,52 @@ boot ran the original stock executable with all five launch flags absent.
 The previous launcher was restored and its SHA-256 rechecked. All nine
 evidence files were copied with matching hashes and sizes under
 `artifacts/d180_ui_guard_trial_20261109/run_20261109T140546_108_0/`.
+
+### 2026-11-10 D180 volume guard test image
+
+The volume builder pins the UI ELF tested on the RS2 on November 9.
+It appends 24 bytes at `C70EBC` in the existing RX page and replaces
+the pair at `505074`. The image test restores that pair and both RX
+sizes, truncates the helper and compares the entire baseline.
+
+The 7,147,220-byte local image is
+`artifacts/hiby_player_1.4_d180_volume_guard_test_20261110.bin`.
+Its SHA-256 is
+`ffd64aaf914cc49da1aeb20c5536469e26ed9cad1d7d658de3aae8f2d93ca786`.
+The CLI reproduces the saved image byte for byte with `--verify`.
+All 81 targeted tests passed. The volume fixtures execute the new
+image bytes through both NULL dispatcher branches and the native
+cached-context and fresh-context paths.
+
+The first RS2 run reached the first Show No Mercy track before the
+45-second window ended. The same image ran from SD again with a 90-second
+window. The user confirmed that volume changed in both directions, Next
+started the next track and the highlight moved. The second trace decoded
+240 events without errors and recorded accepted playback pairs for Show
+No Mercy CUE indices 0 and 1. The volume and highlight observations came
+from the user. The NULL outcomes were exercised in the local model.
+
+The second run ended with SIGTERM and supervisor-requested recovery.
+A distinct boot ran the stock executable with all six launch flags absent.
+The previous launcher was restored and its SHA-256 rechecked. All nine
+evidence files from the second run were copied with matching sizes and
+hashes under
+`artifacts/d180_volume_guard_trial_20261110/run_20261110T085917_104_0/`.
+
+### 2026-11-10 D180 text reader progress guard test image
+
+The builder starts from the exact volume image tested on the RS2.
+It appends 40 bytes at `C70ED4` in the existing RX page and changes
+the instruction at `5276B8`. The test restores that word and both RX
+sizes, truncates the helper and compares the entire volume image.
+
+The 7,147,260-byte local image is
+`artifacts/hiby_player_1.4_d180_book_percent_guard_test_20261110.bin`.
+Its SHA-256 is
+`e28a7cb7e798548aad0b20f867cf32308385a8a9a83bfda83e832238f3c02c08`.
+The CLI verifies the saved image against the deterministic build.
+All 87 targeted tests passed. The book progress fixture runs the
+redirect and helper from this build through the checked cleanup and
+live-dialog paths. The owner confirmed that the test RS2 has no reader
+entry in its menu. Validation of this dialog is limited to the local
+fixture.

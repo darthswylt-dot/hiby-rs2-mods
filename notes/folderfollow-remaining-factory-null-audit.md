@@ -307,6 +307,36 @@ stock through publication. It supplies the factory, lookup and allocator
 outcomes, and ends the fresh-context comparison before the later UI
 updates.
 
+### Text reader progress dialog at `5276B0`
+
+The `527620` wrapper allocates a four-byte progress value before the
+`book_percent` factory call. The original call delay puts the pointer
+in descriptor +0C. The factory can copy it to the provisional dialog's
++4C before loading resources. Its checked failure exits precede
+registration at `47D388` and the initializer at `47D3A0`. The resource
+failure path destroys the lock and releases the provisional dialog.
+The missing-widget branch passes the provisional dialog to the raw
+deallocator. These branches do not call the descriptor destructor or
+release the separate progress allocation.
+
+The local redirect at `5276B8` preserves the return-address load.
+With a live dialog, the original store hands the progress pointer to
+H+58. The destructor at `527120` later reads that field and releases it
+if nonzero. With a zero dialog result, the guard skips the store,
+releases a nonzero progress pointer through the paired deallocator at
+`466A80` and rejoins the native epilogue with V0 zero. The sole encoded
+caller at `4C1B78` replaces either wrapper result with 1. Its handler
+checks that the active widget is `vg_listview_book`, which belongs to
+the text reader.
+
+The fixture executes the complete wrapper, the native allocator and
+deallocator wrappers, the sole encoded caller and the normal destructor.
+It covers all four combinations of progress allocation and dialog result.
+One case executes the native factory through a supplied resource-load
+failure and observes separate releases for the provisional dialog and
+progress value. The model supplies raw heap, resource and lock services
+and treats the progress value as raw floating-point bits.
+
 ## Extended return-value review
 
 Twelve initially opaque `47D960` continuations were followed one callee or branch

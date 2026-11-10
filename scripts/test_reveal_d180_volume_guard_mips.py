@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
 """Run the emitted volume guard and the native lower and upper slices."""
 
+import struct
 import unittest
 
+import build_reveal_d180_volume_guard_test as build_test
 import factory_null_audit as audit
-import reveal_d180_volume_guard_mips as guard
+from build_reveal_bridge_diag import BASE
+from build_reveal_d960_payload_guard_test import RX_HEADER
 from test_factory_null_audit import ALLOCATION, ALLOCATOR, CONTEXT, HANDLE, RETURN, STACK, LineageMachine
+from test_reveal_d180_wifi_scan_guard_mips import ui_guard_fixture
 from test_reveal_d960_payload_guard_mips import OLD_PAYLOAD, PayloadGuardMachine
 
 
 CODE_BASE = 0xC70EBC
+PATCH_PC = 0x505074
 VOLUME, VOLUME_DISPATCH, FACTORY = 0x505000, 0x43C360, 0x47D180
 READY, FIND_WIDGET, MEMSET, PROPERTY = 0x468D40, 0x43A0C0, 0xA5BC60, 0x423980
 OWNER, OLD_STATE, WIDGET = CONTEXT, CONTEXT + 0x100, CONTEXT + 0x180
@@ -65,7 +70,13 @@ class D180VolumeGuardTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.image = audit.source_image()
-        cls.code, cls.patches = guard.assemble(CODE_BASE)
+        _, cls.baseline, _ = ui_guard_fixture(cls.image)
+        cls.candidate = build_test.build(cls.baseline)
+        cls.code = cls.candidate[len(cls.baseline):]
+        cls.patches = {
+            PATCH_PC: (struct.unpack_from('<2I', cls.baseline, PATCH_PC - BASE),
+                       struct.unpack_from('<2I', cls.candidate, PATCH_PC - BASE)),
+        }
 
     def guarded(self, **options):
         return VolumeGuardMachine(self.image, code=self.code, patches=self.patches,
@@ -73,11 +84,23 @@ class D180VolumeGuardTests(unittest.TestCase):
 
     def test_redirect_replaces_only_the_pinned_save_and_read_pair(self):
         self.assertEqual(len(self.code), 24)
-        self.assertEqual(set(self.patches), {0x505074})
-        original, replacement = self.patches[0x505074]
+        original, replacement = self.patches[PATCH_PC]
         self.assertEqual(original, (0x00408821, 0x8C420058))
-        self.assertEqual(original, (self.image.word(0x505074), self.image.word(0x505078)))
+        self.assertEqual(original, (self.image.word(PATCH_PC), self.image.word(PATCH_PC + 4)))
         self.assertEqual(replacement, ((2 << 26) | (CODE_BASE >> 2), original[0]))
+
+    def test_volume_image_changes_only_one_pair_and_extends_the_existing_rx_page(self):
+        self.assertEqual(len(self.baseline), 0x6D0EBC)
+        self.assertEqual(len(self.candidate), 0x6D0ED4)
+        self.assertEqual(struct.unpack_from('<8I', self.candidate, RX_HEADER),
+                         (1, 0x6D0000, 0xC70000, 0xC70000, 0xED4, 0xED4, 5, 0x10000))
+        restored = bytearray(self.candidate[:len(self.baseline)])
+        restored[RX_HEADER + 16:RX_HEADER + 24] = self.baseline[RX_HEADER + 16:RX_HEADER + 24]
+        original, _ = self.patches[PATCH_PC]
+        struct.pack_into('<2I', restored, PATCH_PC - BASE, *original)
+        self.assertEqual(bytes(restored), self.baseline)
+        with self.assertRaisesRegex(ValueError, 'exact hardware-tested UI ELF'):
+            build_test.build(self.candidate)
 
     def test_null_returns_through_both_dispatch_branches_and_outer_callers(self):
         for site, size, count, expected in UPPER:
