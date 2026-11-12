@@ -6282,3 +6282,478 @@ pre-test state, where `/ui_data` was absent. ADB reconnected automatically
 on both boots after the delayed startup script was restored. All nine
 evidence files were copied with matching hashes and sizes under
 `artifacts/d180_check_upgrade_trial_20261110/run_20261110T141729_108_0/`.
+
+### 2026-11-10 D180 book and bookmark removal test image
+
+The builder pins the update-check ELF run on the RS2 and adds two
+40-byte helpers at `C7121C` and `C71244` in the existing second RX page.
+The only changes within the baseline are the stores at `527FA4` and
+`5295E0` and the two RX size fields. Reverting them and truncating
+the helpers reproduces the baseline. The new RX size is `0x126C`.
+
+The 7,148,140-byte image is
+`artifacts/hiby_player_1.4_d180_book_remove_guard_test_20261110.bin`.
+Its SHA-256 is
+`d6f40e26013cd89de7dd2b1fb0be0192f60df0e71ce2c9eadb4d02b92da2e5b2`.
+The CLI verified the saved image byte for byte against the build.
+All 122 targeted tests passed. The fixtures cover factory refusal with
+and without an allocation, native resource-open failure, live publication
+and normal destructor release for both wrappers, and the ten encoded
+caller continuations.
+
+The owner confirmed that the RS2 has no reader in its menu. The local
+fixtures cover the removal handlers. The RS2 ran the image from SD for
+90 seconds and the owner confirmed Next, the moved highlight and volume
+adjustment in both directions. The closed trace decoded 197 events
+without errors and accepted playback pairs for Show No Mercy CUE indices
+0 and 1.
+
+The test ended with SIGTERM and supervisor-requested recovery. A distinct
+boot ran the verified stock executable with all nine launch flags absent.
+The temporary launcher was removed and ADB reconnected automatically on
+both boots. All nine evidence files were copied with matching hashes and
+sizes under `artifacts/d180_book_remove_trial_20261110/run_20261110T145659_108_0/`.
+
+### 2026-11-10 D180 QR dialog audit
+
+The offline fixtures exercise the ordinary QR wrapper's payload and owner
+state, a native resource-open failure, same-name reuse and destruction.
+The Tidal fixture checks the queue writer and the shared status with a
+supplied worker completion before the dialog opens. All 63 factory tests
+passed. On the stock RS2, the owner opened the ordinary QR from the serial
+number row in About and dismissed it by tapping empty space. The hardware
+observation covers this ordinary open and close sequence.
+
+### 2026-11-11 D180 ordinary QR guard test image
+
+The builder pins the removal-dialog ELF already run on the RS2 and adds
+156 bytes at `C7126C` in its existing second RX page. The three instruction
+pairs at `501A54`, `501A80` and `501A9C` and the two RX size fields are the
+only changes inside the baseline. Restoring them and truncating the helper
+reproduces that baseline. The new RX size is `0x1308`.
+
+The 7,148,296-byte image is
+`artifacts/hiby_player_1.4_d180_qr_guard_test_20261111.bin`.
+Its SHA-256 is
+`d3727d618daf95a59d8cb6cf1c0b176fc7c60ca10bb39dc67e4c88a64b124564`.
+The CLI verified the saved image byte for byte. All 134 targeted tests
+passed, including eight QR guard tests for allocation refusal, native
+resource failure, owner restoration, interrupted LL/SC, successful and
+same-name returns, and the checked nonzero-mode continuations. The tests
+assume a live owner. A zero-to-zero update before LL and indefinite
+contention remain outside their guarantee.
+
+The 90-second launcher is prepared under
+`artifacts/d180_qr_trial_20261111/`. The RS2 reconnected during preparation.
+The image and inert launcher were staged on SD with matching hashes and
+sizes, and the device shell accepted the launcher syntax. The verified
+stock process stayed active, `/ui_data` stayed absent and all ten launch
+flags were absent.
+
+The RS2 ran the guarded image once from SD with a 90-second window. The
+owner confirmed the requested sequence of repeated QR opening and dismissal
+from About, followed by Next, highlight and volume checks. The closed trace
+decoded 280 events without errors and accepted playback pairs for Show No
+Mercy CUE indices 0, 1 and 2. The hardware observation covers ordinary QR
+use and playback. Refusal handling was checked in the local instruction model.
+
+The test ended with SIGTERM and supervisor-requested recovery. A distinct
+boot ran the verified stock executable with all ten flags absent. The
+temporary launcher was removed to restore the absent `/ui_data` state.
+ADB reconnected automatically on both boots. All nine evidence files were
+copied with matching hashes and sizes under
+`artifacts/d180_qr_trial_20261111/run_20261111T085545_108_0/`.
+
+### 2026-11-11 Tidal response lifetime follow-up
+
+Seven new local tests execute native response publication, the successful
+worker command-zero suffix, and enabled/disabled cleanup. They confirm that
+a nonzero cleanup result retains the field values passed to the release
+services. The native presence reader then still reports a response. They
+also cover request failure, follow-up failure and publication over prior fields.
+Request, follow-up and object-release internals are bounded in this fixture.
+
+The encoded cleanup route is worker command one. The direct POST census
+has no identified command-one producer, and the worker's existing lock
+lasts until termination. Connecting Tidal refusal recovery requires a
+separate shared-session ownership contract and explicit cleanup scheduling.
+
+### 2026-11-11 Shared Tidal response reader inventory
+
+The new source manifest covers all 41 encoded calls to the session getter,
+two QR-payload alias routes and seven upper copy/field call pairs. It records
+six direct response consumers beyond the QR path. A native copy fixture
+shows that a reader keeps its earlier data pointer after session replacement.
+The previous allocation stays mapped throughout this check.
+
+Two upper pairs pass copied text and a separately obtained response field
+to the same service. Two discard that field and three preserve it for later
+branches. A whole-session escape into `8D1200` and indirect callbacks remain
+explicit analysis frontiers. The follow-up service forwards response+4
+under the `userId` key; the selected-parser fixture supplies an identifier value.
+
+All nine local response tests passed. The manifest test checks the exact
+getter census and native instruction evidence for callers, aliases and
+upper pairs. The documented integration contract requires request identity,
+checked pair publication, retained readers and detached cleanup after reader
+completion. This step supplies the coverage and contract for that integration.
+
+### 2026-11-11 First native shared-response reader bridges
+
+The local emitted bridge connects entries `4B1620` and `513A40` to a common
+supplied mutex and executes their native bodies. Raw lock and unlock errors
+return explicit failure/status, and the normal copy retains mutex coverage
+through its string query and copy. Six new bridge tests and the nine response
+tests passed. The existing fixture forwards emitted code and native redirect
+pairs to the same instruction interpreter used for the earlier guards.
+
+This is partial native integration in a local fixture. A checked runtime
+mutex initializer, caller quarantine, the remaining borrow spans, publication
+and disposal are still required for a firmware candidate. The selected
+whole-session callback route now has pinned conditional closure evidence
+in the access manifest.
+
+### 2026-11-11 Checked shared-response mutex initialization
+
+The native startup redirect at `475448` now initializes the shared reader
+mutex before the original session publication at `47545C`. A zeroed sidecar
+records initialization phase and raw error status. LL/SC claims one init
+attempt, and raw failure keeps reader entry unavailable. The helper preserves
+all GPRs and HI/LO and replays the original instruction pair before resuming.
+
+The reader entries check both mutex readiness and a nonzero published session
+under lock. The local fixture covers repeat init, init failure, reservation
+loss and a ready mutex before publication. All 20 targeted Tidal tests passed,
+including 11 native bridge checks. A retained sidecar and session are still
+fixture premises. Session teardown/rebinding and caller quarantine remain
+required before a firmware candidate can use these hooks.
+
+### 2026-11-11 Native shared-session binding and retirement
+
+The local bridge now connects both native session publications (`475458`,
+`475660`), both close entries (`475788`, `475834`) and the post-cleanup finish
+at `475818`. The retained sidecar grows to 44 bytes with the bound pointer,
+generation and EMPTY/LIVE/CLOSING state. Unused native frame words `+1C/+20`
+carry its generation and stamp. All eight hooks require coherent activation.
+
+Closing acquires the same mutex as the two guarded readers, waits for their
+current copies to finish and changes LIVE to CLOSING. Late readers recheck
+admission after acquisition. Native cleanup runs outside the mutex while the
+old global stays available for its native reloads. Finish clears that pointer
+and binding only after the native free and allocator reset return. A saved
+older token cannot close a newer generation at a reused allocation address.
+The counter refuses exhaustion without wrapping.
+
+Raw lock/unlock failures latch FAILED and block further guarded entries.
+They skip cleanup before close admission; finish failure can occur after the
+native free. No guessed unlock, provisional-session cleanup or recovery is
+added. Policy rejection preserves the current binding. The helper restores
+the native frame and reports `-1/status` through a stack-only epilogue.
+
+All 32 Tidal tests passed, including 23 bridge/lifecycle checks. They exercise
+both full native teardown suffixes, active-reader draining, a late reader,
+closing-time publication refusal, address reuse with a saved old generation,
+counter exhaustion and raw errors during publication, close and finish.
+A source CFG cut test checks the selected hook boundaries under ordinary
+callee returns. The separate factory suite passed 72 tests (including the nine
+response tests also counted in the Tidal suite). `git diff --check` passed.
+
+This remains local partial integration. Complete response-pair publication and
+disposal, remaining borrowed-use spans and caller quarantine are still required
+before producing a firmware candidate. Teardown services are bounded in these
+tests; raw worker-stop progress and hardware scheduling remain outside them.
+No device operation or firmware image change was performed in this step.
+
+### 2026-11-11 Queued Tidal request generation and in-flight retention
+
+The new local composer `reveal_tidal_request_identity_mips.py` adds three
+redirects to the existing eight. Command-zero POST at `454B40` captures the
+current LIVE session generation under the checked mutex and carries it in the
+native eight-byte record's unused argument. The access manifest pins all four
+identified direct command-zero producers and the enqueue/dequeue instructions.
+Other commands keep their original argument and native entry.
+
+The worker gate is at `45442C`, before its busy notification. It validates the
+queued generation, READY/LIVE binding and global pointer, then claims a single
+writer pin. Its displaced notification preserves delay `24050001` and native
+RA `454438`. Input copy and network calls run outside the mutex. The sidecar
+now has 48 bytes, with WRITER at +44. Both native close gates return EBUSY
+before CLOSING or teardown while this pin is nonzero.
+
+At `4547D4`, the native result store and clearing the matching pin happen in
+one checked mutex transaction. After unlock the bridge only loads the native
+stack status and resumes at `4547DC`. A newly bound session's status therefore
+cannot be overwritten by this old helper after the lock is released. Raw
+failures latch FAILED and suppress the selected continuation without guessed
+unlock. END unlock failure can follow a completed result store. Policy errors
+do not clear another pin or publish a rejected result.
+
+All 45 targeted Tidal tests passed: nine response tests, 23 reader/lifecycle
+checks and 13 new transport checks. They include a full native POST/queue-reader
+roundtrip, early stale rejection before notification, input/network execution
+outside the mutex, both busy-close routes followed by explicit local retry,
+atomic result/pin completion, preserved GPRs/HI/LO and raw-error quarantine.
+A deterministic interleave closes and republishes generation two immediately
+after END unlock, then verifies that the old helper keeps its newer status.
+Independent review found no concrete code defect. `git diff --check` passed.
+
+This is a local single-worker retention stage. An EBUSY return does not schedule
+shutdown retry. END rejection can leave the earlier busy/pending status, so UI
+recovery and progress remain open. Native queue lifetime during POST, mutable
+input strings, request sequence within one session, response-pair publication
+and disposal, and postprocessing after `4547DC` still require integration.
+All eleven redirects require coherent activation with retained valid storage,
+192 extra helper stack bytes and the pinned ABI. No firmware image was built
+or installed in this step.
+
+### 2026-11-11 Private Tidal response pair commit and detached cleanup
+
+The selected native payload constructors, parser/string copies, destructors
+and import bindings now have 377 pinned instruction words in the access
+manifest. These bindings allocate fresh payloads and independent string
+backing. Primary response+4 is scalar userId on this selected parser route;
+the fixture has been corrected from an identifier pointer to a scalar value.
+Runtime method replacement and ownership of arbitrary existing slots remain
+outside this source evidence.
+
+The pair composer adds five request redirects (sixteen total). The worker
+passes its queued generation to request admission, which checks the bound
+session and existing writer pin. Both native stores are deferred through
+private frame locals until the common finish. A complete pair is swapped
+under the reader mutex, then detached old objects are released outside it
+with the worker pin still held. Failed preparation keeps both old fields;
+follow-up failure releases only its fresh private primary. Ambiguous aliases
+reject reclamation without modifying the fields.
+
+The cleanup composer adds the seventeenth redirect. It detaches both fields
+under the mutex and retains a distinct negative owner pin through close and
+release callbacks. Fields stay empty for nonzero close results, preventing
+native cleanup's released-pointer retention. Finalization clears only its
+exact pin. Empty cleanup is idempotent; disabled cleanup keeps native -1.
+
+Raw lock/unlock errors latch FAILED. Commit/detach effects are preserved on
+unlock failure, callbacks are skipped, and no ownership or unlock is guessed.
+Readiness checks before each callback stop later disposal after an observed
+reentrant fault. Remaining allocations may leak; there is no retirement
+journal or general recovery protocol.
+
+All 72 targeted Tidal tests passed: nine response/source checks, 23 reader and
+lifecycle checks, 13 transport, 13 pair and 14 cleanup tests. Coverage includes
+active native reader draining, partial request failure, empty initial fields,
+alias refusal, callback reentry, busy close, raw failures, preservation of ABI
+and a full composed worker/commit/cleanup/idempotent-repeat route. Independent
+review found no additional concrete code defect after callback-fault checks.
+
+This remains local partial integration. Valid owned starting fields and full
+borrow closure are prerequisites for reclamation. Compound readers, QR aliases
+and destructor, command-one queue identity, later worker status/postprocessing,
+input snapshots, shutdown retry and UI recovery remain open. The code does not
+provide a deployable firmware candidate, and no player operation was performed.
+
+### 2026-11-11 Retained native readers and QR shared-release separation
+
+The source manifest now records 665 additional words for selected reader and
+service-result bindings. Under those native bindings, the returned collections
+and copied-result object are independently allocated; arbitrary callbacks and
+runtime class replacements remain outside the evidence.
+
+The retained-reader composer adds four whole-entry wrappers (`48CAC0`,
+`48CE80`, `4B16E0`, `4B16A0`), reaching 21 redirects. It extends the sidecar to
+52 bytes with BORROWS at +48. Each admitted invocation increments the count
+under the shared mutex, runs its complete original body outside the mutex and
+decrements only after ordinary return and identity revalidation. Nested readers
+retain separate counts. Helper frames preserve the native inputs/outcome,
+HI/LO, argument homes and original caller RA.
+
+Cleanup and both close paths now refuse EBUSY before detach/teardown while a
+count is active. A busy complete-pair commit preserves the old slots, disposes
+only its checked disjoint private candidates outside the mutex, and returns
+`-2/16`. Unsupported callbacks reject before execution; null paired-copy inputs
+reject before the native nonreturning assertions. Raw failures latch FAILED;
+count changes already completed are not rolled back and owned results may leak.
+
+The QR composer adds one redirect, `500D10 -> 500D34`, for 22 total. The native
+destructor frees only its dialog payloads and restores the owner. It no longer
+reads a shared-session alias, releases the common primary response or clears
+its field. Old aliases and same-address generation reuse cannot affect a new
+pair through destruction. Shared responses stay available for replacement or
+explicit cleanup. Ordinary QR matches the unmodified native destructor.
+
+All 93 targeted Tidal tests passed, including 13 retained-reader and eight QR
+tests. Coverage includes native result/copy/scalar returns, nested spans,
+reentrant busy reclamation, private-candidate disposal, raw failures and a QR
+destruction inside an active retained service. Independent review found no
+concrete defect in the final counter and busy-commit paths. `git diff --check`
+passed.
+
+The remaining direct `48D820` response branch, compound copy/field snapshots,
+QR timer generation transport, final session pair disposal, queue and worker
+progress, caller quarantine and unjoined aliases still prevent a device
+candidate. The existing QR payload has no proved spare generation word; the
+mode-two descriptor capture and payload extension/metadata design remain open.
+The counter protects physical retention under selected bindings, not arbitrary
+service thread safety or internal callbacks after nested faults. No firmware
+image or player state was changed in this step.
+
+### 2026-11-11 Coherent compound snapshots and stamped QR timer admission
+
+Two native consumers previously copied text and then separately obtained
+userId, allowing a response replacement between those calls. The new snapshot
+composer captures both from one primary under a checked mutex, bounds the
+128-byte native destination and includes NUL. After unlock, native API calls
+use only the private text and captured scalar. Errors skip those API calls
+through native stack-only tails. Eight tests cover both paths, ABI, replacement
+after unlock, boundary lengths and raw failures. The five other upper pairs
+remain separately scoped, including the path holding its own native job lock.
+
+The QR generation composer adds nine redirects to that prefix, for 33 total.
+The mode-two caller captures pointer/generation atomically and carries the
+generation in a spare descriptor word. Its specific POST validates the original
+capture and queues that generation without passing through the generic retag
+entry. A rebind after unlock therefore leaves a stale packet for rejection.
+Queue lifetime and earlier file/pending effects remain outside this guarantee.
+
+Mode-two payloads grow by four bytes to hold the generation. Binding validates
+the descriptor; timer admission checks the allocation header before reading
+the added word, then retains the expected generation through native return.
+Ordinary payload size and timer behavior remain native. Allocation/factory
+refusal handles private storage and conditional owner restore; reused handles
+keep old metadata and release only the unused fresh payload.
+
+Source review also found incompatible timer schema use: status 200 treats
+primary+4 and +10 as strings, while the selected primary class stores userId
+and a parser method there. A guard now returns policy diagnostic 71 before
+those reads, preserving it through successful unpin. This is refusal handling,
+not working Tidal authentication. Raw errors override that diagnostic, preserve
+the actual counter effects and quarantine without guessed cleanup.
+
+All 115 targeted Tidal tests passed (the previous 93, eight snapshots and
+14 QR-generation checks). The new tests cover the full native OPEN/queue/
+constructor flow, stale and same-address generations, old metadata on reused
+dialogs, owner LL/SC rollback, ordinary timer equivalence, schema refusal and
+raw failures. Independent reviews found no remaining concrete defect after
+restoring exact displaced-JAL link addresses. `git diff --check` passed.
+
+This remains local partial integration. A future image builder must reconcile
+the existing ordinary QR OWNER/RESULT patches with the new source redirects.
+Remaining direct/compound readers, native job-lock recovery, caller quarantine,
+final pair disposal, queue lifetime, input freshness, retry scheduling and the
+Tidal QR schema still prevent a device candidate. No firmware image or player
+operation was performed in this step.
+
+### 2026-11-11 Direct-branch retention and final response-pair disposal
+
+The remaining direct response branch in `48D820` is now retained from its
+getter through the handler's ordinary return. Four new redirects initialize
+unused frame markers, admit only that branch and unpin at both native epilogues.
+Unrelated paths keep native behavior without a session-availability gate.
+Source CFG and output-width checks cover both returns and the two unused
+locals, including the NULL-primary path that skips the service call.
+
+The final disposal composer adds two redirects, reaching 39 total. After
+native worker-stop returns, it detaches both response fields under the mutex
+and releases distinct owned objects outside it before context destruction.
+The original session-free call has a final identity, drained-count and empty-
+field check. CLOSING persists until native free/reset and the existing finish
+hook complete. No remote close API is introduced.
+
+Raw failures quarantine without guessed unlock, rollback or repeated releases.
+Observed callback faults suppress later teardown/free. Error exits bypass the
+patched finish so an unresolved closing binding stays retained. Enabled flags,
+null primary data and orphan secondary objects do not prevent final owned-
+object disposal; ambiguous alias ownership rejects unchanged.
+
+All 137 targeted Tidal tests passed (the previous 115 plus 11 direct-branch
+and 11 disposal checks). Selected native postprocessing runs through logging,
+owned-result release and the final unpin. Both complete close routes confirm
+pair release before context teardown and native session free/reset. Coverage
+includes NULL/empty/alias cases, reentry, field repopulation and all raw phases.
+The source manifest adds 243 pinned words for the new branch and disposal.
+Independent review found no concrete defects; `git diff --check` passed.
+
+This remains a local fixture. Native worker-stop completion, valid owned
+starting objects, selected runtime bindings and live callback contexts remain
+premises. Other aliases/derived fields, five upper pairs, native job-lock
+recovery, queue lifetime, caller quarantine, retry/recovery and the Tidal QR
+schema still prevent a device candidate. No firmware image or player state
+was changed.
+
+### 2026-11-12 Remaining upper snapshots and checked native job locking
+
+Two more preserved consumers now take coherent text/scalar snapshots in their
+native 128-byte buffers, then retain the scalar in S4/S3 outside the session
+mutex. Pure native error tails skip their local APIs/UI; outer-caller quarantine
+remains separate. This composer reaches 41 redirects.
+
+The final live upper consumer already owns a native job mutex. Three local
+redirects check its raw acquisition/release and capture the actual successful
+mutex in unused native SP+FBC, reaching 44 composed hooks. Snapshot refusal
+balances that independent lock once and returns through the native pure
+epilogue. Selected completion/index and pending callbacks run only while READY;
+job status/UI effects are skipped on refusal. Session raw failure does not
+guess-unlock its uncertain mutex. Nested observed raw diagnostics override
+policy errors, and failed job unlock is not retried.
+
+The two discarded pairs have a new source/CFG regression: scalar results die
+before use, and no caller use of the old copied bytes is identified. They remain
+native; this is not alias closure, bounded-copy proof or dead-call elimination.
+
+All 160 targeted Tidal tests passed (137 preceding, seven preserved snapshots,
+13 job-lock cases and three source checks). Native execution covers snapshot
+postprocessing/API/completion and ordinary non-snapshot/null-job returns. It
+also covers pair replacement after unlock, changed job+0C, raw failures and
+nested completion faults. Independent review confirmed ABI and mutex balancing.
+It identified diagnostic publication/nested-fault cases, which were corrected.
+The source manifest adds 150 instruction records (134 new unique PCs); all
+match the pinned image. Its nine source/lifecycle tests and whitespace checks
+also passed after the documentation update.
+
+Job/controller/mutex lifetime, native completion/progress after refusal, queue
+lifetime, caller quarantine, selected callback bindings, remaining aliases and
+the unsupported Tidal QR schema still prevent a device candidate. Successful
+native continuations have no new internal fault gates. No firmware image or
+player state was changed.
+
+### 2026-11-12 Tidal queue transport and caller refusal review
+
+Reviewed the native eight-byte POST ring from creation through worker dequeue
+and shutdown. Serial success copies the caller's command/generation by value,
+then dequeue copies and frees the heap packet. Caller stack retention is not
+required on that path. Generation admission remains separate from ring lifetime.
+
+Seven new native diagnostics reproduce conditional boundaries: two producers
+can both return success while one packet is logically unreachable; allocation
+NULL reaches memcpy with size eight; two hypothetical readers can capture one
+packet before one frees it; and an already admitted POST can read a retired
+ring after the stamped session close gate and selected destroy suffix. A full
+or absent ring returns -1 without clearing earlier pending state. Only one
+native Tidal worker consumer is identified; concurrent producer reachability
+and the second-reader topology are not established by these tests.
+
+Six caller tests trace the four command-zero producers. Login callers retain
+their earlier shared input copies, may arm pending after refusal and continue
+UI work. The startup caller can still post native command six after command-
+zero refusal. QR policy refusal skips construction, while native queue failure
+after admission still reaches construction. The worker's skip suffix omits its
+busy-clear notification: raw result-boundary refusal retains pending/WRITER and
+still takes the native sleep/stop/independent-mutex-return suffix under its
+selected ownership premise. Opaque UI/file/network services remain bounded.
+
+Native startup/shutdown use masked mutex results; thread creation success is
+not checked. The selected stop route does not seal POST admission or clear the
+freed ring pointer. A successful detached-worker completion protocol remains a
+premise, including its cross-thread startup unlock and external library behavior.
+
+All 173 targeted Tidal tests passed (160 preceding, seven queue diagnostics and
+six caller checks). The passing new tests assert these deficiencies; no queue
+repair or caller recovery is claimed. Independent review confirmed the bounded
+schedules and QR refusal distinction. Full findings and reproduction limits are
+in [queue lifetime review](folderfollow-tidal-queue-lifetime-review.md).
+The new manifest section has 329 instruction records, covering 309 distinct
+PCs including 281 new ones. All match the pinned image; its nine source/
+lifecycle tests and whitespace checks passed after the final update.
+
+Before firmware integration, queue admission and in-flight producers need a
+reclamation protocol, ordinary queue operations need proven serialization,
+allocation refusal needs handling, and callers need an explicit completion/
+refusal policy. No runtime redirects, firmware image or player state changed.

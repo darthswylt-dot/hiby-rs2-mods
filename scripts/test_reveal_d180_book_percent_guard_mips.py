@@ -34,6 +34,9 @@ def book_guard_fixture(image):
 
 
 class BookPercentMachine(PayloadGuardMachine):
+    payload_size = 4
+    descriptor_name = DESCRIPTOR
+
     def __init__(self, image, *, allocate=True, resource_failure=False, **options):
         super().__init__(image, **options)
         self.allocate = allocate
@@ -74,7 +77,7 @@ class BookPercentMachine(PayloadGuardMachine):
                 self.hostile_result(self.factory_result)
         elif target == RAW_ALLOC:
             self.calls.append(target)
-            addresses = {20: ALLOCATION - 4 if self.allocate else 0, 144: HANDLE - 4}
+            addresses = {self.payload_size + 16: ALLOCATION - 4 if self.allocate else 0, 144: HANDLE - 4}
             self.hostile_result(addresses[self.r[4]])
         elif target == RAW_FREE:
             self.calls.append(target)
@@ -94,8 +97,8 @@ class BookPercentMachine(PayloadGuardMachine):
     def assert_descriptor(self):
         frame = self.r[29]
         descriptor = self.get(frame + 0x10, 4)
-        if self.r[4] != DESCRIPTOR or descriptor != frame + 0x20:
-            raise AssertionError('unexpected book-percent descriptor')
+        if self.r[4] != self.descriptor_name or descriptor != frame + 0x20:
+            raise AssertionError('unexpected reader dialog descriptor')
         self.descriptors.append(tuple(self.get(descriptor + offset, 4) for offset in range(0, 28, 4)))
 
 
