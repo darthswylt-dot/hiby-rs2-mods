@@ -50,9 +50,10 @@ HOOKS = ((CALL, CALL_PAIR), (ADMIT, ADMIT_PAIR), (FIRST, FIRST_PAIR),
          (SECOND, SECOND_PAIR), (FINISH, FINISH_PAIR))
 
 
-def assemble(mutex_address, code_base):
+def assemble(mutex_address, code_base, *, close_queue_gate=None):
     """Return the composed local code and all sixteen pinned redirect pairs."""
-    prefix, patches = identity.assemble(mutex_address, code_base)
+    prefix, patches = identity.assemble(
+        mutex_address, code_base, close_queue_gate=close_queue_gate)
     asm = Asm(code_base + len(prefix))
 
     def redirect(site, original):
@@ -207,4 +208,5 @@ def assemble(mutex_address, code_base):
     _validate_code_extent(code_base, len(code))
     if code_base < mutex_address + session.CONTROL_BYTES and mutex_address < code_base + len(code):
         raise ValueError('response pair helpers overlap their sidecar')
+    session._validate_close_queue_gate(mutex_address, code_base, len(code), close_queue_gate)
     return code, patches

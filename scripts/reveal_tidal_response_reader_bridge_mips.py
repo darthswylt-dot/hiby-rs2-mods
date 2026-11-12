@@ -24,6 +24,11 @@ WRITER. Close rejects a nonzero pin with EBUSY before native teardown. That
 module owns pin release; this gate adds no wait or rescheduling. The retained
 reader composer also counts active BORROWS; close refuses them before CLOSING.
 Pair replacement and cleanup share this retention boundary in their composers.
+An optional separate queue gate is sealed before CLOSING, only when idle.
+Sealing is fail-closed for one retained lifetime: no error or later finish
+releases or reinitializes it. It does not prove native worker-stop completion.
+That option alone is not a queue protocol: the cooperating queue-operation
+wrappers and one common retained gate must also be activated coherently.
 Remaining readers, compound calls and caller quarantine still need integration
 before a firmware candidate can establish shared-response lifetime. These hooks
 do not protect unconnected aliases.
@@ -44,6 +49,7 @@ EMPTY, LIVE, CLOSING = 0, 1, 2
 NATIVE_FRAME, TOKEN, STAMP = 56, 0x1C, 0x20
 FRAME_MAGIC, MAX_GENERATION = 0x314C5354, 0x7FFFFFFF
 TEMP_ERROR = 0x90
+QUEUE_GATE_BYTES, QUEUE_SEALED, QUEUE_CLAIM_ATTEMPTS = 4, 2, 4
 INIT_SITE, INIT_PAIR, RAW_INIT = 0x475448, (0x3C04009D, 0x2484F4D4), 0xA5B8A0
 SESSION_SLOT = 0xB8A9EC
 PUBLISH_SITES = (
@@ -62,11 +68,26 @@ READERS = (
 )
 
 
-def assemble(mutex_address, code_base):
+def _validate_close_queue_gate(mutex_address, code_base, code_size, close_queue_gate):
+    """Check optional retained gate storage, including each composer's extent."""
+    if close_queue_gate is None:
+        return
+    _validate_code_base(close_queue_gate)
+    _validate_code_extent(close_queue_gate, QUEUE_GATE_BYTES)
+    if (close_queue_gate < mutex_address + CONTROL_BYTES
+            and mutex_address < close_queue_gate + QUEUE_GATE_BYTES):
+        raise ValueError('close queue gate overlaps the session sidecar')
+    if (code_size is not None and code_base < close_queue_gate + QUEUE_GATE_BYTES
+            and close_queue_gate < code_base + code_size):
+        raise ValueError('close queue gate overlaps the helper code')
+
+
+def assemble(mutex_address, code_base, *, close_queue_gate=None):
     """Return helper bytes and pinned native entry redirects for a local fixture."""
     _validate_code_base(code_base)
     _validate_code_base(mutex_address)
     _validate_code_extent(mutex_address, CONTROL_BYTES)
+    _validate_close_queue_gate(mutex_address, code_base, None, close_queue_gate)
     asm, patches = Asm(code_base), {}
 
     def save_native():
@@ -250,6 +271,21 @@ def assemble(mutex_address, code_base):
                     asm.branch(4, 10, 0, label + '_readers_drained')
                     asm.jump('lifecycle_unlock_error', delay=b.addiu(2, 0, 16))
                     asm.label(label + '_readers_drained')
+                    if close_queue_gate is not None:
+                        # Keep T0 as the session-control base for the following
+                        # lifecycle store. Only a zero queue gate can be sealed.
+                        asm.absolute(11, close_queue_gate)
+                        asm.e(b.addiu(12, 0, QUEUE_CLAIM_ATTEMPTS), b.addiu(2, 0, 16))
+                        asm.label(label + '_queue_claim')
+                        asm.e(b.i_type(0x30, 11, 9, 0))
+                        asm.branch(5, 9, 0, 'lifecycle_unlock_error')
+                        asm.e(b.addiu(10, 0, QUEUE_SEALED), b.i_type(0x38, 11, 10, 0))
+                        asm.branch(5, 10, 0, label + '_queue_sealed')
+                        asm.e(b.addiu(12, 12, -1))
+                        asm.branch(5, 12, 0, label + '_queue_claim')
+                        asm.jump('lifecycle_unlock_error')
+                        asm.label(label + '_queue_sealed')
+                        asm.e(0xF)
                     # Native teardown still reloads this global. Keep it bound
                     # and closed through free and allocator reset.
                     asm.e(b.addiu(10, 0, CLOSING), b.sw(10, LIFECYCLE, 8))
@@ -293,4 +329,5 @@ def assemble(mutex_address, code_base):
     _validate_code_extent(code_base, len(code))
     if code_base < mutex_address + CONTROL_BYTES and mutex_address < code_base + len(code):
         raise ValueError('reader bridges overlap their sidecar')
+    _validate_close_queue_gate(mutex_address, code_base, len(code), close_queue_gate)
     return code, patches

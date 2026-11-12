@@ -6757,3 +6757,40 @@ Before firmware integration, queue admission and in-flight producers need a
 reclamation protocol, ordinary queue operations need proven serialization,
 allocation refusal needs handling, and callers need an explicit completion/
 refusal policy. No runtime redirects, firmware image or player state changed.
+
+### 2026-11-12 Local queue operation protection and early retirement seal
+
+The new 47-hook operation composer adds a common ring allocation-NULL check
+and two Tidal-only callsite wrappers. NULL allocation returns -1/ENOMEM through
+the native stack-only epilogue, balancing +C without memcpy or publication.
+A separate retained four-byte LL/SC gate serializes whole native WRITE/READ
+calls and refuses contention before ring access. READ keeps this gate through
+its index commit after its own early +C clear. The session mutex is not held
+across a queue operation or native busy wait.
+
+A separate close-seal composer retains 47 redirects and extends both close
+gates. With identity and pins validated under the checked session mutex, it
+seals an idle queue before CLOSING and any native teardown. An active operation
+aborts close through the pure outer epilogue. Earlier POST/READ pointer captures
+then refuse before accessing the retired ring. Raw error after sealing retains
+SEALED/CLOSING. The seal remains after finish and new session publication;
+safe reopening is deliberately absent from this one-lifetime fixture.
+
+Optional gate forwarding/extent checks touch 12 existing composers. Without
+the option, their exact bytes and patch dictionaries match HEAD before this
+change. A lower close-only composition needs cooperating operation wrappers
+and the same gate; the top seal composer supplies both coherently.
+
+All 199 targeted Tidal tests passed: 173 preceding, 15 operation checks and 11
+early-seal checks. Shared gate reservations cover competing LL/SC, ABA, bounded
+exhaustion/final-attempt success and both operation-versus-close race outcomes.
+Native paths cover allocation refusal, full publication/index commits, both close routes and
+the selected queue-destroy suffix. Independent review confirmed the operation
+gate, ABI and source boundary assumptions.
+
+Native startup/worker-stop success, opaque teardown progress, selected-callsite
+closure, valid storage, safe reopening and caller pending/retry policy remain
+required. No image builder or player operation uses the new modules. Details:
+[queue lifetime review](folderfollow-tidal-queue-lifetime-review.md).
+Source evidence and whitespace checks passed. The two new manifest sections
+add 72 pinned instruction records across operation and close-seal boundaries.

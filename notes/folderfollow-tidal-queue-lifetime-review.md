@@ -2,9 +2,10 @@
 
 Date: 2026-11-12. Source: `artifacts/import-20261001/hiby_player_02fd.bin`,
 SHA-256 `02fd1dd13db7aac1e6d150ec1866b93f57022c1d668b114720a36b7f232e5f87`.
-The current local composer is `scripts/reveal_tidal_job_snapshot_mips.py`
-with 44 coherent redirects. This review adds evidence and diagnostic tests,
-without changing those redirects, building an image or operating the player.
+The diagnostic baseline is `scripts/reveal_tidal_job_snapshot_mips.py`
+with 44 coherent redirects. The first sections record its native boundaries.
+The later local operation and close-seal composers described below have 47
+redirects. No firmware image or player operation is introduced here.
 
 ## What the serial transport establishes
 
@@ -121,3 +122,77 @@ solution: it would introduce new lock-order, callback and progress obligations.
 The review's passing diagnostic tests assert the present deficiencies. They do
 not mean the queue is ready for firmware activation. Test counts and commands
 are recorded in [project status](status.md).
+
+## Local operation protection
+
+`reveal_tidal_queue_operations_mips.py` composes the 44-hook baseline with three
+redirects. A common ring WRITE check at `45056C` branches on allocation NULL
+before memcpy. Refusal balances native +C once, publishes no slot/index and
+takes the native 48-byte epilogue with V0=-1 and V1=12 (ENOMEM). Non-NULL
+execution replays the displaced A0/A1 moves. Other queues receive this refusal
+check but acquire no new gate.
+
+Tidal callsites `454B5C` and `454410` use a separate retained four-byte gate.
+Bounded LL/SC admits one whole native WRITE or READ, with at most four failed
+reservation attempts. Contention returns -1/16 without touching the ring or
+releasing another operation's gate. Admission refuses a null pointer or nonzero
+legacy counter before the native sleep loop. The session mutex is not held
+while the native operation runs.
+
+The gate stays held through full native return, including READ's index store
+at `4506D4` after native +C was cleared at `4506CC`. Reentry through guarded
+callsites refuses instead of waiting. Release is ordered after native effects
+with SYNC. Wrappers return native V0/V1 and restore other saved registers and
+HI/LO, replaying the native delay effect and JAL link address. Exact native
+caller-clobber effects are not claimed; these callers do not consume them.
+
+Fifteen tests cover competing LL reservations, invalidation after a 0→1→0 gate
+ABA, bounded failure/final-attempt success, producer refusal/retry, reader
+serialization, publication/index ordering, reentry, legacy state and allocation
+NULL. The reservation epoch is shared between modeled CPUs. Direct native ring
+calls remain outside this selected-callsite protocol. Bounded native services
+and ordinary return assumptions remain in force.
+
+## One-lifetime early close seal
+
+`reveal_tidal_queue_close_seal_mips.py` retains 47 redirects and enables the
+optional seal in both existing session close gates. Under the checked session
+mutex, after identity/token and zero WRITER/BORROWS validation, bounded LL/SC
+changes an idle gate from 0 to SEALED=2. This precedes CLOSING and the first
+native teardown call. A busy operation causes EBUSY through the pure outer
+epilogue, leaving the session and operation untouched. An operation winning
+between close's LL and SC also prevents retirement. The session mutex is
+released before native teardown.
+
+Selected operation wrappers reject SEALED before reading ring storage. Thus an
+earlier generation-admitted POST, or a READ with an already loaded pointer,
+refuses even after native ring destruction. Nonzero commands through the same
+POST callsite also refuse. An unlock error after sealing retains SEALED and
+CLOSING with FAILED, without guessed unseal or native teardown.
+
+The seal is permanent in this fixture. Finish, session re-publication and
+later errors never reset it. Reopening a Tidal queue is unsupported until a
+separate queue-generation protocol exists. This one-lifetime limit prevents
+stale pointer captures from entering a newly opened gate. Activation starts
+coherently with an exclusive retained zeroed gate and a valid first ring.
+
+Eleven tests follow both close routes, active-operation refusal/retry, both
+outcomes of an LL/SC race, stale POST/READ pointer captures, raw errors,
+reservation exhaustion and closure after finish/re-publication. The STOP
+substitute executes only `455748..45575B`'s queue-destroy suffix under the
+worker-stop premise. Earlier opaque cleanup, worker completion and startup
+are not proved by this fixture.
+The first native teardown callback is also checked for an already sealed gate
+and a released session mutex.
+
+The optional address passes through 12 session-to-job composers, with overlap
+checks against every complete appended extent. With the option absent, all
+12 emitted byte strings and patch dictionaries match their pre-change versions.
+A lower close-only composition is not a queue protocol without cooperating
+operation wrappers using the same gate.
+
+All 199 targeted Tidal tests pass: 173 preceding tests, 15 operation tests and
+11 close-seal tests. Caller pending recovery, fairness/retries, native creation/
+stop success, opaque teardown progress, unconnected aliases and concurrent
+native initialization/CLEAR/DESTROY remain outside the guarantee. No builder
+or hardware test activates these composers.

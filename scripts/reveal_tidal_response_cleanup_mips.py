@@ -38,9 +38,10 @@ SESSION, GENERATION, PIN = 0x90, 0x94, 0x98
 PRIMARY, SECONDARY, DATA, RESULT, ERROR = 0x9C, 0xA0, 0xA4, 0xA8, 0xAC
 
 
-def assemble(mutex_address, code_base):
+def assemble(mutex_address, code_base, *, close_queue_gate=None):
     """Append a complete checked cleanup replacement to the local pair fixture."""
-    prefix, patches = pair.assemble(mutex_address, code_base)
+    prefix, patches = pair.assemble(
+        mutex_address, code_base, close_queue_gate=close_queue_gate)
     asm = Asm(code_base + len(prefix))
     entry = asm.base
     patches[ENTRY] = ENTRY_PAIR, (b.j_type(2, entry), 0)
@@ -170,4 +171,5 @@ def assemble(mutex_address, code_base):
     _validate_code_extent(code_base, len(code))
     if code_base < mutex_address + session.CONTROL_BYTES and mutex_address < code_base + len(code):
         raise ValueError('cleanup helpers overlap the sidecar')
+    session._validate_close_queue_gate(mutex_address, code_base, len(code), close_queue_gate)
     return code, patches

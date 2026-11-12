@@ -45,8 +45,9 @@ STRLEN, COPY, COMPLETE_INDEX, CLEAR_PENDING = 0xA5B4E0, 0xA5B6E0, 0x42DCC0, 0x42
 TEXT, USER_ID, ERROR = 0x90, 0x94, 0x98
 
 
-def assemble(mutex_address, code_base):
-    prefix, patches = preserved.assemble(mutex_address, code_base)
+def assemble(mutex_address, code_base, *, close_queue_gate=None):
+    prefix, patches = preserved.assemble(
+        mutex_address, code_base, close_queue_gate=close_queue_gate)
     asm = Asm(code_base + len(prefix))
 
     def hook(site, pair):
@@ -198,4 +199,5 @@ def assemble(mutex_address, code_base):
     _validate_code_extent(code_base, len(code))
     if code_base < mutex_address + session.CONTROL_BYTES and mutex_address < code_base + len(code):
         raise ValueError('job snapshot helpers overlap the sidecar')
+    session._validate_close_queue_gate(mutex_address, code_base, len(code), close_queue_gate)
     return code, patches

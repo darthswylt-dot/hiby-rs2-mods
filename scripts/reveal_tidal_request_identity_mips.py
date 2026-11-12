@@ -38,11 +38,12 @@ TEMP_ERROR, TEMP_GENERATION = 0x90, 0x94
 HOOKS = ((POST, POST_PAIR), (WORK_BEGIN, BEGIN_PAIR), (WORK_END, END_PAIR))
 
 
-def assemble(mutex_address, code_base):
+def assemble(mutex_address, code_base, *, close_queue_gate=None):
     """Append checked transport/pin helpers to the base local session fixture."""
     if session.CONTROL_BYTES != 52 or session.WRITER != 44 or session.BORROWS != 48:
         raise ValueError('request identity requires the 52-byte session sidecar')
-    prefix, patches = session.assemble(mutex_address, code_base)
+    prefix, patches = session.assemble(
+        mutex_address, code_base, close_queue_gate=close_queue_gate)
     asm = Asm(code_base + len(prefix))
 
     def save():
@@ -158,4 +159,5 @@ def assemble(mutex_address, code_base):
     _validate_code_extent(code_base, len(code))
     if code_base < mutex_address + session.CONTROL_BYTES and mutex_address < code_base + len(code):
         raise ValueError('request identity helpers overlap the sidecar')
+    session._validate_close_queue_gate(mutex_address, code_base, len(code), close_queue_gate)
     return code, patches

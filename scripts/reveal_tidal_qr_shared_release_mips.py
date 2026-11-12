@@ -22,8 +22,9 @@ SITE, ORIGINAL = 0x500D10, (0x8E32018C, 0x12400007)
 ORIGINAL_DELAY, RESUME = 0, 0x500D34
 
 
-def assemble(mutex_address, code_base):
+def assemble(mutex_address, code_base, *, close_queue_gate=None):
     """Return the retained-reader code and one additional destructor redirect."""
-    code, patches = retained.assemble(mutex_address, code_base)
+    code, patches = retained.assemble(
+        mutex_address, code_base, close_queue_gate=close_queue_gate)
     patches[SITE] = ORIGINAL, (b.j_type(2, RESUME), 0)
     return code, patches

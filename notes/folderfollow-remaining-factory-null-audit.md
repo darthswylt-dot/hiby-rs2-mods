@@ -1211,6 +1211,30 @@ safety. Native startup result masking, queue serialization and producer
 reclamation, allocation failure and caller completion policy require further
 implementation. No new runtime hook, image builder or device action is added.
 
+### Local operation gate and one-lifetime close seal
+
+The subsequent 47-hook operation composer adds an allocation-NULL branch before
+memcpy and a separate retained four-byte LL/SC gate around Tidal WRITE/READ
+callsites. It holds this gate through full native return, including READ's
+index commit after native +C became zero. Contention refuses without waiting
+or touching the ring. The common NULL guard balances +C and returns ENOMEM;
+direct calls on other queues receive no new operation gate.
+
+The close-seal composer enables an optional claim in the existing checked
+session close gates. After identity/pin checks, idle gate 0 becomes SEALED=2
+before CLOSING or native teardown. Active operations stop close before side
+effects; older admitted POST/READ pointer captures refuse before ring reads
+after sealing. SEALED remains on raw errors, finish and session re-publication.
+This is one-lifetime admission sealing, with no automatic queue reopening.
+
+All 199 targeted Tidal tests pass, including 15 operation and 11 seal tests.
+Optional propagation through 12 older composers preserves exact output when
+absent. Worker-stop completion, opaque teardown progress, initialization,
+unconnected actors, safe reopening and caller recovery remain premises or
+future work. The [queue review](folderfollow-tidal-queue-lifetime-review.md)
+separates the earlier counterexamples from these local fixes. No firmware
+builder or player action activates the new modules.
+
 ## Extended return-value review
 
 Twelve initially opaque `47D960` continuations were followed one callee or branch
